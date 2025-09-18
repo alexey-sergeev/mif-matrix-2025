@@ -1,0 +1,92 @@
+/* Body */
+
+img.icons {
+    height: 48px;
+    /* width: 48px; */
+}
+
+.mr-btn {
+    display: inline-block;
+    /* font-size: 14px; */
+    padding: 8px 12px;
+    margin: 0 8px 0 0;
+    border-radius: 3px;
+}
+
+
+
+
+/* Fix */
+
+a, .content a {
+    text-decoration: none !important;
+}
+
+
+html {
+    overflow-x: visible !important;
+}
+
+.sortable thead th:not(.no-sort)::after, .sortable thead th:not(.no-sort)::before {
+    font-size: inherit !important;
+}
+
+
+
+
+/* Цвета */
+
+.mr-red {
+    background-color: #ffc2cc !important;
+}
+
+.mr-yellow {
+    background-color: #ffffb0 !important;
+}
+
+.mr-green {
+    background-color: #bbffbb !important;
+}
+
+.mr-gray {
+    background-color: #f0f0f0 !important;
+}
+
+/* table th {
+    /* background: #f4f4f4; */
+/*} */
+
+/* a:hover, .content a:hover {
+    color: #ff5400;
+    transition: all 200ms linear;
+} */
+
+
+/* Каталог */
+
+/* .logo {
+    padding: 2ex;
+    background-color: ;
+} */
+
+.cover {
+    background-color: #2b5387;
+}
+
+.cover img {
+    height: 40px;
+    margin: 30px 5px;
+}
+
+.catalog img {
+    max-width: none !important;
+}
+
+.logo img {
+    height: 24px;
+    margin: 0 3px;
+}
+/* 
+.logo {
+    background-color: #888;
+} */
