@@ -50,7 +50,19 @@ class mif_mr_part_core {
         global $tree;
 
         $out = 'none';
-        if ( ! empty( $tree[$main_key][$key]['from_id'] ) ) $out = $tree[$main_key][$key]['from_id'];
+
+        // if ( ! empty( $tree[$main_key][$key]['from_id'] ) ) $out = $tree[$main_key][$key]['from_id'];
+        if ( ! empty( $tree[$main_key][$key]['from_id'] ) ) {
+            
+            $out = '';
+            $f = $tree['main']['id'] != $tree[$main_key][$key]['from_id'];
+
+            if ( $f ) $out .= '<a href="' . get_permalink( $tree[$main_key][$key]['from_id'] ) . '" ' .
+                                'title="' . $this->mb_substr( get_the_title( $tree[$main_key][$key]['from_id'] ), 20 ) . '">';
+            $out .= $tree[$main_key][$key]['from_id'];
+            if ( $f ) $out .= '</a>';
+
+        }
 
         return apply_filters( 'mif_mr_part_core_get_from_id', $out, $key, $main_key );
     }
@@ -222,6 +234,20 @@ class mif_mr_part_core {
         return apply_filters( 'mif_mr_core_get_form_end', $out );
     }
     
+    
+    
+
+    
+    //
+    //  
+    //
+    
+    public function mb_substr( $s, $length )
+    {
+        $out = mb_substr( $s, 0, $length - 3 );
+        if ( mb_strlen( $s ) >= $length ) $out .= '...';
+        return apply_filters( 'mif_mr_part_core_mb_substr', $out );
+    }
     
     
 

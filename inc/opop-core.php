@@ -16,14 +16,19 @@ class mif_mr_opop_core {
     
     // private $opops_per_page = 9;
     
-    protected $param_map = array();
-        
-        
-        
-        
+    private $param_map = array();
+    private $parents_arr = array();
+    
+    
+    
+    
     function __construct()
     {
         global $messages;
+        global $tree;
+        
+        $this->get_save_to_opop();
+
         $messages = array();
         
         $this->param_map = apply_filters( 'mif-mr-param', array(
@@ -55,8 +60,9 @@ class mif_mr_opop_core {
             
                                     ) );
 
-        $this->get_save_to_opop();
-        $this->get_tree(); 
+        $tree = $this->get_tree(); 
+
+        // p($tree);
                                     
     }
     
@@ -68,22 +74,194 @@ class mif_mr_opop_core {
     private function get_tree()
     {
         global $post;
-        
+        // global $tree;
         // p($post);
         if ( $post->post_type != 'opop' ) return;
         
-        global $tree;
+        // global $t;
         
-        $tree['main']['title'] = $post->post_title;
-        $tree['main']['id'] = $post->ID;
+        $t = array();
         
-        $tree = array_merge( $tree, $this->get_param_and_meta() );
+        // $tree['main']['title'] = $post->post_title;
+        // $tree['main']['id'] = $post->ID;
         
+        // $t = array_merge( $tree, $this->get_param_and_meta() );
+        // $t = $this->get_param_and_meta();
+        // 
         // p( $post );
         // p( WP_Post::get_instance( 176 ) );
         // p( $tree );
+        $this->get_parents_arr( $post->ID );
+        
+        
+        // p( $this->parents_arr );
+        $this->parents_arr = array_reverse( $this->parents_arr );
+        // p( $this->parents_arr );
+        
+        
+        foreach ( $this->parents_arr as $item ) {
+            
+            // p($item);
+            // p($this->get_param_and_meta( $item ));
+            $t = array_replace_recursive( $t, $this->get_param_and_meta( $item ) ); 
+            // 
+            
+        }
+
+
+
+
+        return apply_filters( 'mif_mr_core_opop_get_tree', $t );
+    }
+    
+    
+    
+    
+    
+    private function get_parents_arr( $opop_id )
+    {
+        $t = $this->get_param_and_meta( $opop_id );
+        
+        // p($t);
+        // p($t['param']['parents']['data']);
+        // p($t['main']['title']);
+        // $this->parents_arr[] = $t['main']['title'];
+        $this->parents_arr[] = $t['main']['id'];
+        
+        if ( ! isset( $t['param']['parents']['data'] ) ) return;
+        
+        foreach ( $t['param']['parents']['data'] as $item ) {
+            
+            // p($item);
+            $this->get_parents_arr( $item );
+            
+            
+        }
         
     }
+    
+
+    
+    
+    
+    // 
+    // 
+    // 
+    
+    private function get_param_and_meta( $opop_id = NULL )
+    {
+        // global $post;
+        
+        if ( $opop_id === NULL ) $opop_id = get_the_ID();
+
+        $t = wp_cache_get( 'get_param_and_meta', $opop_id );
+        
+        if ( false === $t ) {
+
+            $post = WP_Post::get_instance( $opop_id ); 
+            
+            if ( $post->post_type != 'opop' ) return;
+
+            $t = array();
+            $main_key = 'param';
+            
+            $t['main']['title'] = $post->post_title;
+            $t['main']['id'] = $post->ID;
+
+            $arr = explode( "\n", $post->post_content );
+            $arr = array_map( 'strim', $arr );
+            
+            $pm_index = $this->param_map_index();
+            $n = array();
+            
+            // p($arr);
+            // p($pm_index);
+            
+            foreach ( $arr as $item ) {
+                
+                if ( empty( $item ) ) continue;
+                
+                if ( preg_match( '/^@@(?<key>\w+)/', $item, $m ) ) {
+                    
+                    $main_key = $m['key'];
+                    continue;
+                    
+                }
+                
+                $grid = '';
+                
+                if ( preg_match( '/(^#+\s*)(?<item>.*)/', $item, $m ) ) {
+                    
+                    $grid = '# ';
+                    $item = $m['item'];
+                    
+                }
+                
+                if ( preg_match( '/^@(?<key>\w+)(?<value>.*)/', $item, $m ) ) {
+                    
+                    // p($item);
+                    // p($m);
+                    $key = ( isset( $pm_index[$m['key']] ) ) ? $pm_index[$m['key']] : $m['key'];
+                    $value = trim( $m['value'] );
+                    
+                    if ( $main_key == 'param' && ! isset( $n[$key] ) ) $n[$key] = -1;
+                    // p($n);
+                }
+                // p('@');
+                // p($item);
+                // p($value);
+                $value = ( isset( $value )) ? $value : $item;
+                
+                if ( ! empty( $value ) ) {
+                    
+                    if ( $main_key == 'param' ) {
+                        
+                        // p('@');
+                        // p($value);
+                        // p($value);
+                        
+                        preg_match_all( '/\S+/', $value, $m2 );
+                        // preg_match_all( '/(#?)\S+/', $value, $m2 );
+                        
+                        $arr2 = array();
+                        // $n = 0;
+                        foreach ( $m2[0] as $item2 ) {
+                            
+                            if ( ! preg_match( '/^\(.*/', $item2 ) ) $n[$key]++;
+                            
+                            $t[$main_key][$key]['data'][$n[$key]] = ( isset( $t[$main_key][$key]['data'][$n[$key]] ) ) ?
+                                                                    $t[$main_key][$key]['data'][$n[$key]] . ' ' . $item2 :
+                                                                    $grid . $item2;
+                            
+                            // p($item2);
+                        }
+                        
+                        // p($m2[0]);
+                        
+                    } else {
+                        
+                        $t[$main_key][$key]['data'][] = $grid . $value;
+                        
+                    }
+                    
+                    $t[$main_key][$key]['from_id'] = $post->ID;
+                
+                } 
+                
+                if ( isset( $value ) ) unset( $value );
+                
+                
+            }
+            
+
+            wp_cache_set( 'get_param_and_meta', $t, $opop_id );
+
+        }
+
+        return apply_filters( 'mif_mr_core_opop_get_param_and_meta', $t, $opop_id );
+    }
+    
+    
     
     
     
@@ -103,110 +281,6 @@ class mif_mr_opop_core {
         return $arr;    
     
     }
-
-    
-
-
-    // 
-    // 
-    // 
-    
-    private function get_param_and_meta()
-    {
-        // global $post;
-
-        $post = WP_Post::get_instance( get_the_ID() ); 
-
-        $t = array();
-        $main_key = 'param';
-        
-        $arr = explode( "\n", $post->post_content );
-        $arr = array_map( 'strim', $arr );
-        
-        $pm_index = $this->param_map_index();
-        $n = array();
-        // p($pm_index);
-        
-        foreach ( $arr as $item ) {
-            
-            if ( empty( $item ) ) continue;
-
-            if ( preg_match( '/^@@(?<key>\w+)/', $item, $m ) ) {
-            
-                $main_key = $m['key'];
-                continue;
-                
-            }
-            
-            $grid = '';
-
-            if ( preg_match( '/(^#+\s*)(?<item>.*)/', $item, $m ) ) {
-            
-                $grid = '# ';
-                $item = $m['item'];
-
-            }
-            
-            if ( preg_match( '/^@(?<key>\w+)(?<value>.*)/', $item, $m ) ) {
-                
-                // p($item);
-                // p($m);
-                $key = ( isset( $pm_index[$m['key']] ) ) ? $pm_index[$m['key']] : $m['key'];
-                $value = trim( $m['value'] );
-                
-                if ( $main_key == 'param' && ! isset( $n[$key] ) ) $n[$key] = 0;
-                // p($n);
-            }
-            // p('@');
-            // p($item);
-            // p($value);
-            $value = ( isset( $value )) ? $value : $item;
-
-            if ( ! empty( $value ) ) {
-                
-                if ( $main_key == 'param' ) {
-
-                    // p('@');
-                    // p($value);
-                    // p($value);
-                    
-                    preg_match_all( '/\S+/', $value, $m2 );
-                    // preg_match_all( '/(#?)\S+/', $value, $m2 );
-                    
-                    $arr2 = array();
-                    // $n = 0;
-                    foreach ( $m2[0] as $item2 ) {
-
-                        if ( ! preg_match( '/^\(.*/', $item2 ) ) 
-                        $n[$key]++;
-                        
-                        $t[$main_key][$key]['data'][$n[$key]] = ( isset( $t[$main_key][$key]['data'][$n[$key]] ) ) ?
-                            $t[$main_key][$key]['data'][$n[$key]] . ' ' . $item2 :
-                            $grid . $item2;
-                            
-                        // p($item2);
-                    }
-                    
-                    // p($m2[0]);
-
-                } else {
-
-                    $t[$main_key][$key]['data'][] = $grid . $value;
-                    
-                }
-                
-            } 
-            
-            if ( isset( $value ) ) unset( $value );
-            
-            $t[$main_key][$key]['from_id'] = $post->ID;
-           
-        }
-
-        return apply_filters( 'mif_mr_core_opop_get_param_and_meta', $t );
-    }
-
-
 
 
     //

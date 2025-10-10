@@ -72,7 +72,7 @@ class mif_mr_param  extends mif_mr_part_core {
 
         } else {
             
-            $out .= 'none';
+            $out .= '<div class="col-12 p-2">none</div>';
 
         }
 
@@ -97,6 +97,7 @@ class mif_mr_param  extends mif_mr_part_core {
         if ( isset( $_REQUEST['edit'] ) ) return $this->get_edit_textarea( $key, 'param' );
         
         $out = '';
+        $out .= '<div class="col-12 p-2">'; 
         
         if ( isset( $tree['param'][$key]['data'] ) ) {
             
@@ -105,16 +106,18 @@ class mif_mr_param  extends mif_mr_part_core {
                 if ( preg_match( '/^#.*/', $item ) ) continue; 
             
                 // $out .= '<div class="col-12 p-2 mt-3">' . $mr->get_link_post( (int) $item, $key ) . '</div>';
-                $out .= '<div class="col-12 p-2">' . $this->get_link_post( (int) $item, '' ) . '</div>'; // ###!!!
-
+                // $out .= '<div class="col-12 p-2">' . $this->get_link_post( (int) $item, '' ) . '</div>'; // ###!!!
+                $out .= $this->get_link_post( (int) $item, '' ); // ###!!!
+                
             } 
-
+            
         } else {
             
             $out .= 'none';
-
+            
         }
-
+        
+        $out .= '</div>'; 
         // p($tree);
 
         return apply_filters( 'mif_mr_part_get_item_text', $out, $key );
@@ -135,6 +138,7 @@ class mif_mr_param  extends mif_mr_part_core {
         if ( isset( $_REQUEST['edit'] ) ) return $this->get_edit_textarea( $key, 'param' );
 
         $out = '';
+        $out .= '<div class="col-12 mt-2">';
         
         if ( isset( $tree['param'][$key]['data'] ) ) {
             
@@ -144,8 +148,9 @@ class mif_mr_param  extends mif_mr_part_core {
 
                 if ( preg_match( '/^#.*/', $item ) ) continue; 
                 
-                $out .= '<div class="col-12 mt-2">' . $this->get_link_user( $item ) . '</div>'; // ###!!!
-
+                $out .= $this->get_link_user( $item ); // ###!!!
+                // $out .= '<div class="col-12 mt-2">' . $this->get_link_user( $item ) . '</div>'; // ###!!!
+                
             }
             
         } else {
@@ -154,6 +159,7 @@ class mif_mr_param  extends mif_mr_part_core {
             
         }
         
+        $out .= '</div>';
         
         return apply_filters( 'mif_mr_part_get_item_text', $out, $key );
     }
