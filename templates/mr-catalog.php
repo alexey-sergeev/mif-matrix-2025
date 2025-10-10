@@ -1,8 +1,3 @@
-<!-- <div>Hello</div>
-<H1>Hello</H1> -->
-
-
-
 <div class="catalog">
 <form method="POST">
 

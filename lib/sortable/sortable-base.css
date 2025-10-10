@@ -4,7 +4,7 @@
 }
 .sortable thead th:not(.no-sort)::after, .sortable thead th:not(.no-sort)::before {
   transition: color 0.1s ease-in-out;
-  /* font-size: 1.2em; */
+  font-size: 1.2em;
   color: transparent;
 }
 .sortable thead th:not(.no-sort)::after {

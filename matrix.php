@@ -103,54 +103,6 @@ function mif_mr_customizer_styles()
 
 
 
-// function mif_level_access( $post = NULL ) 
-// {
-//     //  http://codex.wordpress.org/Roles_and_Capabilities
-    
-//     // 0 - ничего не умеет
-//     // 1 - просмотр общедоступной информации
-//     // 2 - просмотр всей информации ОПОП
-//     // 3 - изменение информации ОПОП
-//     // 4 - редактор
-//     // 5 - админ
-
-//     // if ( $post == NULL ) global $post;
-
-//     if ( ! is_user_logged_in() ) return 0;
-    
-//     if ( current_user_can( 'administrator' ) ) return 5;
-//     if ( current_user_can( 'editor' ) ) return 4;
-    
-//     // !!!
-//     if ( current_user_can( 'author' ) ) return 3;
-//     if ( current_user_can( 'contributor' ) ) return 2;
-//     if ( current_user_can( 'subscriber' ) ) return 1;
-//     // !!!
-
-
-
-//     // if ( current_user_can( 'manage_options' ) ) return 5;
-//     // if ( current_user_can( 'edit_pages' ) ) return 4;
-    
-    
-//     // // !!!
-//     // if ( current_user_can( 'edit_post' ) ) return 3;
-//     // if ( current_user_can( 'read' ) ) return 2;
-//     // if ( current_user_can( 'read' ) ) return 1;
-//     // // !!!
-    
-// }
-
-
-// function mif_user_can( $level_access, $post = NULL )
-// {
-//     if ( mif_level_access( $post ) >= $level_access ) return true;
-//     return false;
-// }
-
-
-
-
 if ( ! function_exists( 'p' ) ) {
 
     function p( $data )

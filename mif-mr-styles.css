@@ -1,5 +1,17 @@
 /* Body */
 
+/* a, .content a {
+    text-decoration: none !important;
+} */
+
+body {
+    line-height: 1.6 !important;
+}
+
+article a {
+    color: crimson;
+}
+
 img.icons {
     height: 48px;
     /* width: 48px; */
@@ -13,25 +25,15 @@ img.icons {
     border-radius: 3px;
 }
 
-
-
-
-/* Fix */
-
-a, .content a {
-    text-decoration: none !important;
-}
-
-
 html {
     overflow-x: visible !important;
 }
 
-.sortable thead th:not(.no-sort)::after, .sortable thead th:not(.no-sort)::before {
-    font-size: inherit !important;
+/* Редактирование */
+
+.edit.textarea {
+    height: 16em;
 }
-
-
 
 
 /* Цвета */
@@ -68,6 +70,11 @@ html {
     padding: 2ex;
     background-color: ;
 } */
+
+.catalog a {
+    color: #5e81ac;
+    text-decoration: none !important;
+}
 
 .cover {
     background-color: #2b5387;

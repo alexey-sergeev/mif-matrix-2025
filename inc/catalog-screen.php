@@ -26,7 +26,7 @@ class mif_mr_catalog extends mif_mr_catalog_core {
 
 
     // 
-    // Показывает каталога
+    // Показывает каталог
     // 
 
     public function the_catalog()
