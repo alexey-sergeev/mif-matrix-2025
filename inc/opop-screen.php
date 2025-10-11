@@ -74,7 +74,7 @@ class mif_mr_opop extends mif_mr_opop_core {
         $out = '';
         // p($wp_query);
         $part = NULL; 
-        if ( isset( $wp_query->query_vars["part"] ) ) $part = $wp_query->query_vars["part"];
+        if ( isset( $wp_query->query_vars['part'] ) ) $part = $wp_query->query_vars['part'];
         
         switch ( $part ) {
             case 'param':
@@ -129,12 +129,37 @@ class mif_mr_opop extends mif_mr_opop_core {
             // $out .= '<div class="bd-callout bd-callout-warning">';
             $out .= $item[0];
             $out .= '</div>';
-
+            
         }
 
         $messages = array();
         
         return apply_filters( 'mif_mr_opop_show_messages', $out );
+    }
+    
+    
+    
+    //
+    // 
+    //
+    
+    public function show_explanation( $key = NULL )
+    {
+        global $explanation;
+
+        if ( ! isset( $_REQUEST['edit'] ) ) return;
+
+        $out = '';
+        
+        if ( isset( $key ) && isset( $explanation[$key] ) ) {
+            
+            $out .= '<div class="col pt-2 pb-2 mt-3">';
+            $out .= $explanation[$key];
+            $out .= '</div>';
+
+        }
+
+        return apply_filters( 'mif_mr_opop_explanation', $out );
     }
 
 

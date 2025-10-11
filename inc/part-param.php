@@ -12,12 +12,26 @@ include_once dirname( __FILE__ ) . '/part-core.php';
 
 class mif_mr_param  extends mif_mr_part_core {
     
+    // private $explanation = array();
+
 
     function __construct()
     {
 
         parent::__construct();
         
+        global $explanation;
+        
+        $explanation = apply_filters( 'mif-mr-param-explanation', array(
+        
+            'users' => 'Имя пользователя',
+            'parents' => 'Идентификатор страницы программы',
+            'references' => 'Идентификатор страницы справочника',
+            'specifications' => 'Идентификатор страницы параметров метаданных',
+        
+        ) );
+
+
     }
     
 
@@ -62,7 +76,16 @@ class mif_mr_param  extends mif_mr_part_core {
 
                 if ( preg_match( '/^#.*/', $item ) ) continue; 
 
-                $arr = explode( ' ', $item );
+                // $arr = explode( ' ', $item );
+                // p($arr);
+                
+                preg_match_all( '/\d+|\(.*\)/', $item, $m );
+                // p($m);
+                $arr = $m[0];
+
+                if ( empty( $m[0] ) ) continue;
+                // p($arr);
+
                 $out .= '<div class="col-12 bg-light p-2 mt-3 border border-light">' . $this->get_link_post( $arr[0], 'opop' ) . '</div>';
             
                 unset( $arr[0] );
@@ -148,8 +171,8 @@ class mif_mr_param  extends mif_mr_part_core {
 
                 if ( preg_match( '/^#.*/', $item ) ) continue; 
                 
-                $out .= $this->get_link_user( $item ); // ###!!!
-                // $out .= '<div class="col-12 mt-2">' . $this->get_link_user( $item ) . '</div>'; // ###!!!
+                // $out .= $this->get_link_user( $item ); // ###!!!
+                $out .= '<div class="col-12 mt-2">' . $this->get_link_user( $item ) . '</div>'; // ###!!!
                 
             }
             

@@ -27,14 +27,13 @@ class mif_mr_opop_core {
         global $messages;
         global $tree;
         
-        $this->get_save_to_opop();
-
         $messages = array();
+        $this->get_save_to_opop();
         
         $this->param_map = apply_filters( 'mif-mr-param', array(
-        
-                                        // array(
-                                        //     'key' => array( 'description', 'd' ),
+            
+            // array(
+                //     'key' => array( 'description', 'd' ),
                                         //     'description' => __( 'Description', 'mif-mr' )
                                         // ),
                                         array(
@@ -57,9 +56,9 @@ class mif_mr_opop_core {
                                             'key' => array( 'specifications', 'specs', 's' ),
                                             'description' => __( 'Specification (meta)', 'mif-mr' )
                                         ),
-            
-                                    ) );
-
+                                        
+                                        ) );
+                                        
         $tree = $this->get_tree(); 
 
         // p($tree);
@@ -124,8 +123,10 @@ class mif_mr_opop_core {
         
         // p($t);
         // p($t['param']['parents']['data']);
-        // p($t['main']['title']);
+        // p($t['main']['id']); 
         // $this->parents_arr[] = $t['main']['title'];
+        if ( ! isset( $t['main']['id'] ) ) return;
+        
         $this->parents_arr[] = $t['main']['id'];
         
         if ( ! isset( $t['param']['parents']['data'] ) ) return;
@@ -151,7 +152,7 @@ class mif_mr_opop_core {
     private function get_param_and_meta( $opop_id = NULL )
     {
         // global $post;
-        
+        // p($opop_id);        
         if ( $opop_id === NULL ) $opop_id = get_the_ID();
 
         $t = wp_cache_get( 'get_param_and_meta', $opop_id );
@@ -160,6 +161,7 @@ class mif_mr_opop_core {
 
             $post = WP_Post::get_instance( $opop_id ); 
             
+            if ( empty( $post ) ) return;
             if ( $post->post_type != 'opop' ) return;
 
             $t = array();
@@ -220,9 +222,13 @@ class mif_mr_opop_core {
                         // p($value);
                         // p($value);
                         
-                        preg_match_all( '/\S+/', $value, $m2 );
-                        // preg_match_all( '/(#?)\S+/', $value, $m2 );
-                        
+                        // preg_match_all( '/\S+/', $value, $m2 );
+                        // preg_match_all( '/\d+|\(.*\)/', $value, $m2 );
+                        preg_match_all( '/\w+|\(.*\)/', $value, $m2 );
+                        // preg_match_all( '/(\+)||(\(.*\))/', $value, $m2 );
+                        // preg_match_all( '/(\(.*\))/U', $value, $m2 );
+
+                        // p($m2);
                         $arr2 = array();
                         // $n = 0;
                         foreach ( $m2[0] as $item2 ) {
@@ -359,6 +365,8 @@ class mif_mr_opop_core {
         global $messages;
 
         $messages[] = ( $res ) ? array( 'Сохранено', 'success' ) : array( 'Какая-то ошибка. Код ошибки: 101', 'danger' );
+
+        wp_cache_delete( 'get_param_and_meta', $post->ID );
 
         // p($out);
 

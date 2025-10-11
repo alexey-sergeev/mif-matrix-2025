@@ -46,6 +46,19 @@ function mif_mr_show_messages()
 
 
 
+//
+// Выводит пояснение
+//
+
+function mif_mr_show_explanation( $key = NULL )
+{
+    global $mif_mr_opop;
+    echo $mif_mr_opop->show_explanation( $key );
+}
+
+
+
+
 
 
 ?>

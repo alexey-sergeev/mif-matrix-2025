@@ -18,7 +18,24 @@ class mif_mr_part_core {
     }
     
 
-        // 
+    // 
+    // Выноска
+    // 
+    
+    public function get_callout( $text, $class = 'body' )
+    {
+        $out = '';
+
+        $out .= '<div class="callout mt-4 mb-4 pt-2 pb-2 bg-' . $class . ' border-start border-5 border-' . $class . '">';
+        $out .= $text;
+        $out .= '</div>';
+
+        return apply_filters( 'mif_mr_part_core_get_callout', $out, $text, $class );
+    }
+    
+    
+    
+    // 
     // Наследование от кого? 
     // 
     
@@ -111,25 +128,41 @@ class mif_mr_part_core {
     {
 
         $user = get_user_by( 'login', $login );
-
+        
         if ( empty( $user ) ) return $login;
         
         // p($user);
-
+        
         // if ( function_exists( 'bp_core_get_user_domain' ) ) {
-        //     $user_url = bp_core_get_user_domain( $user_id );
-        // } else {
+            //     $user_url = bp_core_get_user_domain( $user_id );
+            // } else {
         //     $user_url = get_the_author_link( $user_id );
         // }
-
+        
         $out = $user->display_name . ' (' . $user->user_login . ')';
-
+        
         return apply_filters( 'mif_mr_core_get_link_user', $out );
     }
 
+    
+    
+    
+    //
+    //  
+    //
+    
+    public function get_permalink_part()
+    {
+        global $wp_query;
 
-
-
+        $out = get_permalink();
+        if ( isset( $wp_query->query_vars['part'] ) ) $out .= $wp_query->query_vars['part'];
+        
+        return apply_filters( 'mif_mr_core_get_link_part', $out );
+    }
+    
+    
+    
 
     //
     // Форма textarea 
@@ -139,9 +172,28 @@ class mif_mr_part_core {
     {
         $out = '';
 
-        $out .= '<div class="mt-3 mb-3">123</div>';
+        $text = $this->get_tree_to_text($key, $main_key, false);
 
-        $out .= '<textarea name="' . $main_key . '[' . $key . ']" class="edit textarea">';
+        if ( ! empty( $text ) ) {
+            
+            $from_id = $this->get_tree_to_from_id($key, $main_key);
+
+            $out .= $this->get_callout( 
+                
+                // 'Наследство от страницы ' . get_the_title($from_id) . ': <pre>' . $text . '</pre>'
+                'Данные от страницы «<a href="' . get_the_permalink($from_id) . '">' . get_the_title($from_id) . '</a>»: <pre>' . $text . '</pre>'
+            
+            
+            
+            , 'warning-subtle' );
+
+            // $out .= '<div class="mt-3 mb-3">';
+            // $out .= $text;
+            // $out .= '</div>';
+
+        }
+
+        $out .= '<textarea name="' . $main_key . '[' . $key . ']" class="edit textarea mt-4">';
         $out .= $this->get_tree_to_text($key, $main_key);
         $out .= '</textarea>';
 
@@ -156,6 +208,23 @@ class mif_mr_part_core {
 
 
     //
+    // Дерево ОПОП в from_id для редактирования 
+    //
+
+    public function get_tree_to_from_id( $key, $main_key = 'param' )
+    {
+        global $tree;
+
+        $out = '';
+        // p($tree[$main_key][$key]['from_id']);
+        if ( isset( $tree[$main_key][$key]['from_id'] ) ) $out .= $tree[$main_key][$key]['from_id'];
+        
+        return apply_filters( 'mif_mr_core_get_tree_to_from_id', $out, $key, $main_key );
+    }
+
+
+
+    //
     // Дерево ОПОП в тексте для редактирования 
     //
 
@@ -163,24 +232,32 @@ class mif_mr_part_core {
     {
         global $tree;
         global $mif_mr_opop;
+      
         $out = '';
         
-        if ( isset( $tree[$main_key][$key]['from_id'] ) &&
-            ( $own && $tree[$main_key][$key]['from_id'] === $mif_mr_opop->get_opop_id() ) ) 
-                if ( isset( $tree[$main_key][$key]['data'] ) )    
-                    $out .= implode( "\n", $tree[$main_key][$key]['data'] );
+        // if ( isset( $tree[$main_key][$key]['from_id'] ) &&
+        //     ( $own && $tree[$main_key][$key]['from_id'] === $mif_mr_opop->get_opop_id() ) ) 
+        //         if ( isset( $tree[$main_key][$key]['data'] ) )    
+        //             $out .= implode( "\n", $tree[$main_key][$key]['data'] );
         
+        
+        
+        if ( isset( $tree[$main_key][$key]['from_id'] ) && isset( $tree[$main_key][$key]['data'] ) ) {
+            
+            if ( $own && $tree[$main_key][$key]['from_id'] == $mif_mr_opop->get_opop_id() ||
+                 ! $own && $tree[$main_key][$key]['from_id'] != $mif_mr_opop->get_opop_id() )
+                        $out .= implode( "\n", $tree[$main_key][$key]['data'] );
+
+        }
+
+
         
         // p( $tree[$main_key][$key]['data'] );
-        
-        
         // p($out);
-        
-        
         // p($key);
         // p($main_key);
         
-        return apply_filters( 'mif_mr_core_get_tree_to_text', $out, $key, $main_key );
+        return apply_filters( 'mif_mr_core_get_tree_to_text', $out, $key, $main_key, $out );
     }
     
     
@@ -192,19 +269,17 @@ class mif_mr_part_core {
     
     public function get_form_begin()
     {
-        global $wp_query;
-
-        // p( $_REQUEST );
-        // $this->get_save_to_opop();
+        // global $wp_query;
 
         if ( ! isset( $_REQUEST['edit'] )) return;
         
-        $part = ''; 
-        if ( isset( $wp_query->query_vars["part"] ) ) $part = $wp_query->query_vars["part"];
+        // $part = ''; 
+        // if ( isset( $wp_query->query_vars["part"] ) ) $part = $wp_query->query_vars["part"];
         
         // p($wp_query);
         
-        $out = '<form method="POST" action="' . get_permalink() . $part . '">';
+        // $out = '<form method="POST" action="' . get_permalink() . $part . '">';
+        $out = '<form method="POST" action="' . $this->get_permalink_part() . '">';
         return apply_filters( 'mif_mr_core_get_form_begin', $out );
     }
     
@@ -228,14 +303,21 @@ class mif_mr_part_core {
         // $out .= '<button class="btn-primary btn-lg">' . $button . '</button>';
         
         $out .= '<input type="submit" name="save" value="Сохранить" class="btn btn-primary mt-6 mb-6 mr-3" />';
-        $out .= '<input type="submit" name="cancel" value="Отмена" class="btn btn-light mt-6 mb-6 mr-3" />';
+        $out .= '<input type="button" onclick="location.href=\'' . $this->get_permalink_part(). '\';"  value="Отмена" class="btn btn-light mt-6 mb-6 mr-3" />';
+        // $out .= '<input type="submit" name="cancel" value="Отмена" class="btn btn-light mt-6 mb-6 mr-3" />';
+        // $out .= '<a href="' . $this->get_permalink_part() . '" class="btn btn-light mt-6 mb-6 mr-3">Отмена</a>';
+        // $out .= '<button href="' . $this->get_permalink_part() . '" class="btn btn-light mt-6 mb-6 mr-3">Отмена</button>';
+        // $out .= '<button class="btn btn-light mt-6 mb-6 mr-3">Отмена</button>';
         $out .= '</form>';        
 
         return apply_filters( 'mif_mr_core_get_form_end', $out );
     }
     
     
+   
     
+
+
 
     
     //

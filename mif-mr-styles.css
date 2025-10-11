@@ -29,6 +29,11 @@ html {
     overflow-x: visible !important;
 }
 
+.callout pre {
+
+    background-color: inherit;
+}
+
 /* Редактирование */
 
 .edit.textarea {
