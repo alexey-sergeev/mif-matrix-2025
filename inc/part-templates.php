@@ -26,8 +26,8 @@ function mif_mr_the_parents()
 
 function mif_mr_the_text( $key )
 {
-    global $mif_mr_param;
-    echo $mif_mr_param->get_item_text( $key );
+    global $mif_mr_part;
+    echo $mif_mr_part->get_item_text( $key );
 }
 
 
@@ -38,8 +38,8 @@ function mif_mr_the_text( $key )
 
 function mif_mr_the_from_id( $key, $main_key = 'param' )
 {
-    global $mif_mr_param;
-    echo $mif_mr_param->get_from_id( $key, $main_key );
+    global $mif_mr_part;
+    echo $mif_mr_part->get_from_id( $key, $main_key );
 }
 
 
@@ -62,8 +62,8 @@ function mif_mr_the_user( $key = 'admins' )
 
 function mif_mr_the_link_edit()
 {
-    global $mif_mr_param;
-    echo $mif_mr_param->get_link_edit();
+    global $mif_mr_part;
+    echo $mif_mr_part->get_link_edit();
 }
 
 
@@ -73,8 +73,8 @@ function mif_mr_the_link_edit()
 
 function mif_mr_the_form_begin()
 {
-    global $mif_mr_param;
-    echo $mif_mr_param->get_form_begin();
+    global $mif_mr_part;
+    echo $mif_mr_part->get_form_begin();
 }
 
 
@@ -84,8 +84,40 @@ function mif_mr_the_form_begin()
 
 function mif_mr_the_form_end()
 {
-    global $mif_mr_param;
-    echo $mif_mr_param->get_form_end();
+    global $mif_mr_part;
+    echo $mif_mr_part->get_form_end();
+}
+
+//
+// Выводит 
+//
+
+function mif_mr_the_courses()
+{
+    global $mif_mr_courses;
+    echo $mif_mr_courses->get_courses();
+}
+
+
+//
+// Выводит 
+//
+
+function mif_mr_the_matrix()
+{
+    global $mif_mr_matrix;
+    echo $mif_mr_matrix->get_matrix();
+}
+
+
+//
+// Выводит 
+//
+
+function mif_mr_the_curriculum()
+{
+    global $mif_mr_curriculum;
+    echo $mif_mr_curriculum->get_curriculum();
 }
 
 

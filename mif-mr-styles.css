@@ -40,6 +40,12 @@ html {
     height: 16em;
 }
 
+.courses .edit.textarea,
+.matrix .edit.textarea,
+.curriculum .edit.textarea {
+    height: 48em;
+}
+
 
 /* Цвета */
 

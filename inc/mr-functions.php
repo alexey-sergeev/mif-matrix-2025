@@ -71,6 +71,16 @@ class mif_mr_functions {
         return false;
     }
     
+    
+    
+    function access_denied()
+    {
+        return '<div class="alert alert-warning" role="alert">
+                    Доступ ограничен. Возможно, надо просто <a href="' . get_site_url() . '/wp-login.php?redirect_to=' . get_permalink() . '">войти на сайт</a>.
+                    </div>';
+    }
+    
+
 
 
     // //

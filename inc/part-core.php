@@ -207,6 +207,66 @@ class mif_mr_part_core {
 
 
 
+    // //
+    // // Форма редактирования связанной записи (список дисциплин, матрица компетенций, учебный план или др.) 
+    // //
+
+    // public function get_companion_edit()
+    // {
+    //     $out = '';
+
+    //     $out .= '<textarea name="content" class="edit textarea mt-4" autofocus>';
+    //     // $out .= $this->get_tree_to_text($key, $main_key);
+    //     $out .= '</textarea>';
+
+    //     return apply_filters( 'mif_mr_core_get_companion_edit', $out );
+    // }
+
+
+
+
+    // 
+    // Обычный текст (справочники, параметры для метаданных, ...) 
+    // 
+    
+    public function get_item_text( $key )
+    {
+        global $tree;
+        // global $mr;
+
+        if ( isset( $_REQUEST['edit'] ) ) return $this->get_edit_textarea( $key, 'param' );
+        
+        $out = '';
+        $out .= '<div class="col-12 p-2">'; 
+        
+        if ( isset( $tree['param'][$key]['data'] ) ) {
+            
+            foreach ( (array) $tree['param'][$key]['data'] as $item ) {
+
+                if ( preg_match( '/^#.*/', $item ) ) continue; 
+            
+                // $out .= '<div class="col-12 p-2 mt-3">' . $mr->get_link_post( (int) $item, $key ) . '</div>';
+                // $out .= '<div class="col-12 p-2">' . $this->get_link_post( (int) $item, '' ) . '</div>'; // ###!!!
+                $out .= $this->get_link_post( (int) $item, '' ); // ###!!!
+                
+            } 
+            
+        } else {
+            
+            $out .= 'none';
+            
+        }
+        
+        $out .= '</div>'; 
+        // p($tree);
+
+        return apply_filters( 'mif_mr_part_get_item_text', $out, $key );
+    }
+
+
+
+
+
     //
     // Дерево ОПОП в from_id для редактирования 
     //
@@ -331,85 +391,23 @@ class mif_mr_part_core {
         return apply_filters( 'mif_mr_part_core_mb_substr', $out );
     }
     
+
+    //
+    //  
+    //
+    
+    public function remove_at( $s )
+    {
+        return preg_replace( '/@/', '', $s );
+    }
+
     
 
-    // //
-    // //  
-    // //
+
+
     
-    // public function get_save_to_opop()
-    // {
-    //     if ( ! isset( $_REQUEST['save'] )) return false;
-        
-    //     global $tree;
-    //     global $post;
-    //     // global $mif_mr_opop;
 
-    //     // p($tree);
-    //     // p($_REQUEST);
-    //     // $mif_mr_opop->get_tree_to_text();
-        
-    //     $arr = array();
-
-    //     foreach ( $tree as $main_key => $item ) {
-            
-    //         if ( ! in_array( $main_key, array( 'param', 'meta' ) ) ) continue;
-        
-    //         foreach ( $item as $key => $item2 )
-    //             if ( isset( $item2['data'] ) ) $arr[$main_key][$key] = implode( "\n", (array) $item2['data'] );
-
-    //     }
-        
-    //     // p($arr);
-        
-    //     foreach ( $_REQUEST as $main_key => $item ) {
-            
-    //         if ( ! in_array( $main_key, array( 'param', 'meta' ) ) ) continue;
-            
-    //         foreach ( $item as $key => $item2 ) $arr[$main_key][$key] = sanitize_textarea_field( $item2 );
-            
-    //     }
-        
-    //     // p($arr);
-
-    //     $out = '';
-
-    //     foreach ( $arr as $main_key => $item ) {
-            
-    //         $out .= '@@' . $main_key . "\n";
-    //         $out .= "\n";
-
-    //         foreach ( $item as $key => $item2 ) {
-
-    //             // if ( $item2['from_id'] != $tree['main']['id'] ) continue;
-    //             // if ( ! isset( $item2['data'] ) ) continue;
-    //             // p($item2['data']);
-
-    //             $out .= '@' . $key . "\n";
-    //             $out .= "\n";
-    //             $out .= $item2;
-    //             $out .= "\n\n";
-
-    //             // $out .= $key . ' ' . $item2['data'] . "\n";
-
-    //         }
-
-
-    //     }
-
-    //     $res = wp_update_post( array(
-
-    //                                 'ID' => $post->ID,
-    //                                 'post_content' => $out,
-
-    //                             ) );
-
-    //     p($out);
-
-    //     return $res;
-    //     // return apply_filters( 'mif_mr_core_get_save_to_opop', $out );
-    // }
-
+    
 
 
 }

@@ -70,6 +70,9 @@ class mif_mr_opop extends mif_mr_opop_core {
     {
         // global $mr;
         global $wp_query;
+        
+        global $mif_mr_part;
+        $mif_mr_part = new mif_mr_part_core();
 
         $out = '';
         // p($wp_query);
@@ -77,33 +80,38 @@ class mif_mr_opop extends mif_mr_opop_core {
         if ( isset( $wp_query->query_vars['part'] ) ) $part = $wp_query->query_vars['part'];
         
         switch ( $part ) {
+            
             case 'param':
                 global $mif_mr_param;
                 $mif_mr_param = new mif_mr_param();
                 $mif_mr_param->the_show();
                 // p('param');
             break;
-            // case 1:
-            //     echo "Значение переменной \$i равно 1";
-            //     break;
-            // case 2:
-            //     echo "Значение переменной \$i равно 2";
-            //     break;
+            
+            case 'courses':
+                global $mif_mr_courses;
+                $mif_mr_courses = new mif_mr_courses();
+                $mif_mr_courses->the_show();
+            break;
+            
+            case 'matrix':
+                global $mif_mr_matrix;
+                $mif_mr_matrix = new mif_mr_matrix();
+                $mif_mr_matrix->the_show();
+            break;
+            
+            case 'curriculum':
+                global $mif_mr_curriculum;
+                $mif_mr_curriculum = new mif_mr_curriculum();
+                $mif_mr_curriculum->the_show();
+            break;
+            
             default:
                 p('home');
                 break;
-            }
-
-
-        // p($part);
-        // p($_REQUEST);
-        // p(sanitize_key( $_REQUEST['part'] ));
-
-
-
-        // if ( ! empty( $text ) ) $out .= '<div><a href=' . $mr->get_opop_url() . $url . '>' . $text . '</a></div>';
-        // else $out .= '&nbsp;';
         
+        }
+
         return apply_filters( 'mif_mr_opop_get_part', $out );
     }
 

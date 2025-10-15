@@ -19,9 +19,9 @@
         <div class="row">
             <div class="col-sm">
 
-                <?php mif_mr_the_menu_item( 'Дисциплины', '', 1 ); ?>
-                <?php mif_mr_the_menu_item( 'Матрица компетенций', '', 1 ); ?>
-                <?php mif_mr_the_menu_item( 'Учебный план', '', 1 ); ?>
+                <?php mif_mr_the_menu_item( 'Дисциплины', 'courses', 1 ); ?>
+                <?php mif_mr_the_menu_item( 'Матрица компетенций', 'matrix', 1 ); ?>
+                <?php mif_mr_the_menu_item( 'Учебный план', 'curriculum', 1 ); ?>
                 <?php mif_mr_the_menu_item(); ?>
                 <?php mif_mr_the_menu_item( 'Описание разделов', '', 1 ); ?>
                 <?php mif_mr_the_menu_item( 'Оценочные средства', '', 1 ); ?>

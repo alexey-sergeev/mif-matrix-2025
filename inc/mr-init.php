@@ -13,35 +13,24 @@ include_once dirname( __FILE__ ) . '/mr-functions.php';
 include_once dirname( __FILE__ ) . '/catalog-screen.php';
 include_once dirname( __FILE__ ) . '/opop-screen.php';
 
-include_once dirname( __FILE__ ) . '/part-param.php';
+include_once dirname( __FILE__ ) . '/part-core.php';
+include_once dirname( __FILE__ ) . '/part-companion.php';
 include_once dirname( __FILE__ ) . '/part-templates.php';
-// include_once dirname( __FILE__ ) . '/shortcode-opops-list.php';
 
-// include_once dirname( __FILE__ ) . '/qm-workroom.php';
-// include_once dirname( __FILE__ ) . '/qm-results.php';
-// include_once dirname( __FILE__ ) . '/qm-profile.php';
-
-// include_once dirname( __FILE__ ) . '/qm-global.php';
-// include_once dirname( __FILE__ ) . '/qm-parser.php';
+include_once dirname( __FILE__ ) . '/part-param.php';
+include_once dirname( __FILE__ ) . '/part-courses.php';
+include_once dirname( __FILE__ ) . '/part-matrix.php';
+include_once dirname( __FILE__ ) . '/part-curriculum.php';
 
 include_once dirname( __FILE__ ) . '/lib-download.php';
 include_once dirname( __FILE__ ) . '/lib-xlsx-core.php';
 include_once dirname( __FILE__ ) . '/lib-docx-core.php';
 
-// include_once dirname( __FILE__ ) . '/quiz-core.php';
-// include_once dirname( __FILE__ ) . '/quiz-screen.php';
+include_once dirname( __FILE__ ) . '/classes/modules-class.php';
+include_once dirname( __FILE__ ) . '/classes/matrix-class.php';
+include_once dirname( __FILE__ ) . '/classes/curriculum-class.php';
 
-// include_once dirname( __FILE__ ) . '/members-core.php';
-// include_once dirname( __FILE__ ) . '/members-screen.php';
 
-// include_once dirname( __FILE__ ) . '/invites-core.php';
-// include_once dirname( __FILE__ ) . '/invites-screen.php';
-
-// include_once dirname( __FILE__ ) . '/xml-core.php';
-// include_once dirname( __FILE__ ) . '/process-process.php';
-
-// include_once dirname( __FILE__ ) . '/process-snapshots.php';
-// include_once dirname( __FILE__ ) . '/process-results.php';
 
 
 
@@ -233,8 +222,178 @@ class mif_mr_init extends mif_mr_functions {
             'has_archive'         => true,
             'rewrite'             => array( 'slug' => 'opop' ),
             'query_var'           => true,
+            
+            ) );    
+            
+            
+
+
+        register_post_type( 'courses', array(
+            'label'  => null,
+            'labels' => array(
+                'name'               => __( 'Список дисциплин', 'mif-mr' ), // основное название для типа записи
+                'singular_name'      => __( 'Список дисциплин', 'mif-mr' ), // название для одной записи этого типа
+                'add_new'            => __( 'Создать cписок дисциплин', 'mif-mr' ), // для добавления новой записи
+                'add_new_item'       => __( 'Создание cписка дисциплин', 'mif-mr' ), // заголовка у вновь создаваемой записи в админ-панели.
+                'edit_item'          => __( 'Редактирование cписок дисциплин', 'mif-mr' ), // для редактирования типа записи
+                'new_item'           => __( 'Новый cписок дисциплин', 'mif-mr' ), // текст новой записи
+                'view_item'          => __( 'Посмотреть cписок дисциплин', 'mif-mr' ), // для просмотра записи этого типа.
+                'search_items'       => __( 'Найти', 'mif-mr' ), // для поиска по этим типам записи
+                'not_found'          => __( 'Список дисциплин не найдена', 'mif-mr' ), // если в результате поиска ничего не было найдено
+                'not_found_in_trash' => __( 'Не найдено в корзине', 'mif-mr' ), // если не было найдено в корзине
+                'parent_item_colon'  => '', // для родителей (у древовидных типов)
+                'menu_name'          => __( 'Список дисциплин', 'mif-mr' ), // название меню
+            ),
+            'description'         => '',
+            'public'              => true,
+            'publicly_queryable'  => null,
+            'exclude_from_search' => null,
+            'show_ui'             => null,
+            'show_in_menu'        => true, // показывать ли в меню адмнки
+            'show_in_admin_bar'   => null, // по умолчанию значение show_in_menu
+            'show_in_nav_menus'   => null,
+            'show_in_rest'        => null, // добавить в REST API. C WP 4.7
+            'rest_base'           => null, // $post_type. C WP 4.7
+            'menu_position'       => 20,
+            'menu_icon'           => 'dashicons-forms', 
+            'capability_type'   => 'post',
+            //'capabilities'      => 'post', // массив дополнительных прав для этого типа записи
+            'map_meta_cap'      => true, // Ставим true чтобы включить дефолтный обработчик специальных прав
+            'hierarchical'        => false,
+            'supports'            => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'custom-fields', 'revisions' ), // 'title','editor','author','thumbnail','excerpt','trackbacks','custom-fields','comments','revisions','page-attributes','post-formats'
+            'taxonomies'          => array(),
+            'has_archive'         => true,
+            'rewrite'             => array( 'slug' => 'courses' ),
+            'query_var'           => true,
 
         ) );
+
+
+        register_post_type( 'matrix', array(
+            'label'  => null,
+            'labels' => array(
+                'name'               => __( 'Матрица компетенций', 'mif-mr' ), // основное название для типа записи
+                'singular_name'      => __( 'Матрица компетенций', 'mif-mr' ), // название для одной записи этого типа
+                'add_new'            => __( 'Создать матрицу компетенций', 'mif-mr' ), // для добавления новой записи
+                'add_new_item'       => __( 'Создание матрицу компетенций', 'mif-mr' ), // заголовка у вновь создаваемой записи в админ-панели.
+                'edit_item'          => __( 'Редактирование матрицы компетенций', 'mif-mr' ), // для редактирования типа записи
+                'new_item'           => __( 'Новая матрица компетенций', 'mif-mr' ), // текст новой записи
+                'view_item'          => __( 'Посмотреть матрицу компетенций', 'mif-mr' ), // для просмотра записи этого типа.
+                'search_items'       => __( 'Найти', 'mif-mr' ), // для поиска по этим типам записи
+                'not_found'          => __( 'Матрица компетенций не найдена', 'mif-mr' ), // если в результате поиска ничего не было найдено
+                'not_found_in_trash' => __( 'Не найдено в корзине', 'mif-mr' ), // если не было найдено в корзине
+                'parent_item_colon'  => '', // для родителей (у древовидных типов)
+                'menu_name'          => __( 'Матрица компетенций', 'mif-mr' ), // название меню
+            ),
+            'description'         => '',
+            'public'              => true,
+            'publicly_queryable'  => null,
+            'exclude_from_search' => null,
+            'show_ui'             => null,
+            'show_in_menu'        => true, // показывать ли в меню адмнки
+            'show_in_admin_bar'   => null, // по умолчанию значение show_in_menu
+            'show_in_nav_menus'   => null,
+            'show_in_rest'        => null, // добавить в REST API. C WP 4.7
+            'rest_base'           => null, // $post_type. C WP 4.7
+            'menu_position'       => 20,
+            'menu_icon'           => 'dashicons-forms', 
+            'capability_type'   => 'post',
+            //'capabilities'      => 'post', // массив дополнительных прав для этого типа записи
+            'map_meta_cap'      => true, // Ставим true чтобы включить дефолтный обработчик специальных прав
+            'hierarchical'        => false,
+            'supports'            => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'custom-fields', 'revisions' ), // 'title','editor','author','thumbnail','excerpt','trackbacks','custom-fields','comments','revisions','page-attributes','post-formats'
+            'taxonomies'          => array(),
+            'has_archive'         => true,
+            'rewrite'             => array( 'slug' => 'matrix' ),
+            'query_var'           => true,
+
+        ) );
+
+
+
+
+        register_post_type( 'curriculum', array(
+            'label'  => null,
+            'labels' => array(
+                'name'               => __( 'Учебный план', 'mif-mr' ), // основное название для типа записи
+                'singular_name'      => __( 'Учебный план', 'mif-mr' ), // название для одной записи этого типа
+                'add_new'            => __( 'Создать учебный план', 'mif-mr' ), // для добавления новой записи
+                'add_new_item'       => __( 'Создание учебный план', 'mif-mr' ), // заголовка у вновь создаваемой записи в админ-панели.
+                'edit_item'          => __( 'Редактирование учебный план', 'mif-mr' ), // для редактирования типа записи
+                'new_item'           => __( 'Новый учебный план', 'mif-mr' ), // текст новой записи
+                'view_item'          => __( 'Посмотреть учебный план', 'mif-mr' ), // для просмотра записи этого типа.
+                'search_items'       => __( 'Найти', 'mif-mr' ), // для поиска по этим типам записи
+                'not_found'          => __( 'Учебный план не найдена', 'mif-mr' ), // если в результате поиска ничего не было найдено
+                'not_found_in_trash' => __( 'Не найдено в корзине', 'mif-mr' ), // если не было найдено в корзине
+                'parent_item_colon'  => '', // для родителей (у древовидных типов)
+                'menu_name'          => __( 'Учебный план', 'mif-mr' ), // название меню
+            ),    
+            'description'         => '',
+            'public'              => true,
+            'publicly_queryable'  => null,
+            'exclude_from_search' => null,
+            'show_ui'             => null,
+            'show_in_menu'        => true, // показывать ли в меню адмнки
+            'show_in_admin_bar'   => null, // по умолчанию значение show_in_menu
+            'show_in_nav_menus'   => null,
+            'show_in_rest'        => null, // добавить в REST API. C WP 4.7
+            'rest_base'           => null, // $post_type. C WP 4.7
+            'menu_position'       => 20,
+            'menu_icon'           => 'dashicons-forms', 
+            'capability_type'   => 'post',
+            //'capabilities'      => 'post', // массив дополнительных прав для этого типа записи
+            'map_meta_cap'      => true, // Ставим true чтобы включить дефолтный обработчик специальных прав
+            'hierarchical'        => false,
+            'supports'            => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'custom-fields', 'revisions' ), // 'title','editor','author','thumbnail','excerpt','trackbacks','custom-fields','comments','revisions','page-attributes','post-formats'
+            'taxonomies'          => array(),
+            'has_archive'         => true,
+            'rewrite'             => array( 'slug' => 'curriculum' ),
+            'query_var'           => true,
+
+        ) );    
+        
+
+
+
+        // register_post_type( 'courses', array(
+        //     'label'  => null,
+        //     'labels' => array(
+        //         'name'               => __( 'Дисциплина', 'mif-mr' ), // основное название для типа записи
+        //         'singular_name'      => __( 'Дисциплина', 'mif-mr' ), // название для одной записи этого типа
+        //         'add_new'            => __( 'Создать дисциплину', 'mif-mr' ), // для добавления новой записи
+        //         'add_new_item'       => __( 'Создание дисциплину', 'mif-mr' ), // заголовка у вновь создаваемой записи в админ-панели.
+        //         'edit_item'          => __( 'Редактирование дисциплину', 'mif-mr' ), // для редактирования типа записи
+        //         'new_item'           => __( 'Новая дисциплина', 'mif-mr' ), // текст новой записи
+        //         'view_item'          => __( 'Посмотреть дисциплину', 'mif-mr' ), // для просмотра записи этого типа.
+        //         'search_items'       => __( 'Найти дисциплину', 'mif-mr' ), // для поиска по этим типам записи
+        //         'not_found'          => __( 'Дисциплина не найдена', 'mif-mr' ), // если в результате поиска ничего не было найдено
+        //         'not_found_in_trash' => __( 'Не найдено в корзине', 'mif-mr' ), // если не было найдено в корзине
+        //         'parent_item_colon'  => '', // для родителей (у древовидных типов)
+        //         'menu_name'          => __( 'Дисциплина', 'mif-mr' ), // название меню
+        //     ),
+        //     'description'         => '',
+        //     'public'              => true,
+        //     'publicly_queryable'  => null,
+        //     'exclude_from_search' => null,
+        //     'show_ui'             => null,
+        //     'show_in_menu'        => true, // показывать ли в меню адмнки
+        //     'show_in_admin_bar'   => null, // по умолчанию значение show_in_menu
+        //     'show_in_nav_menus'   => null,
+        //     'show_in_rest'        => null, // добавить в REST API. C WP 4.7
+        //     'rest_base'           => null, // $post_type. C WP 4.7
+        //     'menu_position'       => 20,
+        //     'menu_icon'           => 'dashicons-forms', 
+        //     'capability_type'   => 'post',
+        //     //'capabilities'      => 'post', // массив дополнительных прав для этого типа записи
+        //     'map_meta_cap'      => true, // Ставим true чтобы включить дефолтный обработчик специальных прав
+        //     'hierarchical'        => false,
+        //     'supports'            => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'custom-fields', 'revisions' ), // 'title','editor','author','thumbnail','excerpt','trackbacks','custom-fields','comments','revisions','page-attributes','post-formats'
+        //     'taxonomies'          => array(),
+        //     'has_archive'         => true,
+        //     'rewrite'             => array( 'slug' => 'courses' ),
+        //     'query_var'           => true,
+
+        // ) );
 
 
     }

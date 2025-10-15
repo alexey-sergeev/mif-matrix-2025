@@ -28,7 +28,7 @@ class mif_mr_opop_core {
         global $tree;
         
         $messages = array();
-        $this->get_save_to_opop();
+        // $this->save();
         
         $this->param_map = apply_filters( 'mif-mr-param', array(
             
@@ -62,6 +62,7 @@ class mif_mr_opop_core {
         $tree = $this->get_tree(); 
 
         // p($tree);
+        // p($tree['courses']);
                                     
     }
     
@@ -70,7 +71,8 @@ class mif_mr_opop_core {
     // Tree
     // 
     
-    private function get_tree()
+    // private function get_tree()
+    public function get_tree()
     {
         global $post;
         // global $tree;
@@ -102,7 +104,11 @@ class mif_mr_opop_core {
             
             // p($item);
             // p($this->get_param_and_meta( $item ));
+            // p($this->get_courses( $item ));
             $t = array_replace_recursive( $t, $this->get_param_and_meta( $item ) ); 
+            $t = array_replace_recursive( $t, $this->get_companion( 'courses' ) ); 
+            $t = array_replace_recursive( $t, $this->get_companion( 'matrix' ) ); 
+            $t = array_replace_recursive( $t, $this->get_companion( 'curriculum' ) ); 
             // 
             
         }
@@ -149,6 +155,7 @@ class mif_mr_opop_core {
     // 
     // 
     
+    // public function get_param_and_meta( $opop_id = NULL )
     private function get_param_and_meta( $opop_id = NULL )
     {
         // global $post;
@@ -269,8 +276,77 @@ class mif_mr_opop_core {
     
     
     
+   
+    // // 
+    // // 
+    // // 
     
+    // private function get_courses( $opop_id = NULL )
+    // {
+    //     if ( $opop_id === NULL ) $opop_id = get_the_ID();
+        
+    //     $c = new mif_mr_companion();
+    //     $m = new modules( $c->get_companion_content( 'courses', $opop_id ) );
+       
+    //     $t['courses'] = array(
+    //                         'from_id' => $opop_id,
+    //                         'data' => $m->get_arr() 
+    //                     );
+
+    //     return apply_filters( 'mif_mr_core_opop_get_courses', $t, $opop_id );
+    // }
     
+
+
+
+    
+    // 
+    // 
+    // 
+    
+    private function get_companion( $part = 'courses', $opop_id = NULL )
+    {
+        if ( $opop_id === NULL ) $opop_id = get_the_ID();
+        
+        $c = new mif_mr_companion();
+
+        switch ( $part ) {
+                
+                case 'courses':
+                    $m = new modules( $c->get_companion_content( 'courses', $opop_id ) );
+                    // $data = $m->get_arr();
+                    $data = $m->get_courses();
+                break;
+                    
+                case 'matrix':
+                    $m = new matrix( $c->get_companion_content( 'matrix', $opop_id ) );
+                    $data = $m->get_arr();
+                break;
+                        
+                case 'curriculum':
+                    $m = new curriculum( $c->get_companion_content( 'curriculum', $opop_id ) );
+                    $data = $m->get_arr();
+                break;
+                
+                default:
+                    $data = 'none';
+                break;
+            
+            }
+       
+        $t[$part] = array(
+                            'from_id' => $opop_id,
+                            'data' => $data 
+                        );
+
+        return apply_filters( 'mif_mr_core_opop_get_companion', $t, $part, $opop_id );
+    }
+    
+
+    
+
+
+
 
     private function param_map_index()
     {
@@ -289,136 +365,62 @@ class mif_mr_opop_core {
     }
 
 
-    //
-    //  
-    //
-    
-    private function get_save_to_opop()
-    {
-        if ( ! isset( $_REQUEST['save'] )) return false;
-        
-        global $post;
-        
-        $t = $this->get_param_and_meta();
-        // global $mif_mr_opop;
-
-        // p($tree);
-        // p($_REQUEST);
-        // $mif_mr_opop->get_tree_to_text();
-        
-        $arr = array();
-
-        foreach ( $t as $main_key => $item ) {
-            
-            if ( ! in_array( $main_key, array( 'param', 'meta' ) ) ) continue;
-            if ( isset( $item['from_id'] ) && $item['from_id'] != $post->ID ) continue;
-
-            foreach ( $item as $key => $item2 )
-                if ( isset( $item2['data'] ) ) $arr[$main_key][$key] = implode( "\n", (array) $item2['data'] );
-
-        }
-        
-        // p($arr);
-        
-        foreach ( $_REQUEST as $main_key => $item ) {
-            
-            if ( ! in_array( $main_key, array( 'param', 'meta' ) ) ) continue;
-
-            foreach ( $item as $key => $item2 ) $arr[$main_key][$key] = sanitize_textarea_field( $this->remove_at( $item2 ) );
-            
-        }
-        
-        // p($arr);
-
-        $out = '';
-
-        foreach ( $arr as $main_key => $item ) {
-            
-            $out .= '@@' . $main_key . "\n";
-            $out .= "\n";
-
-            foreach ( $item as $key => $item2 ) {
-
-                // if ( ! isset( $item2['data'] ) ) continue;
-                // p($item2['data']);
-
-                $out .= '@' . $key . "\n";
-                $out .= "\n";
-                $out .= $item2;
-                $out .= "\n\n";
-
-                // $out .= $key . ' ' . $item2['data'] . "\n";
-
-            }
-
-
-        }
-
-        $res = wp_update_post( array(
-
-                                    'ID' => $post->ID,
-                                    'post_content' => $out,
-
-                                ) );
-
-
-        global $messages;
-
-        $messages[] = ( $res ) ? array( 'Сохранено', 'success' ) : array( 'Какая-то ошибка. Код ошибки: 101', 'danger' );
-
-        wp_cache_delete( 'get_param_and_meta', $post->ID );
-
-        // p($out);
-
-        return $res;
-        // return apply_filters( 'mif_mr_core_get_save_to_opop', $out );
-    }
-
-
-
-
-    //
-    //  
-    //
-    
-    private function remove_at( $s )
-    {
-        return preg_replace( '/@/', '', $s );
-    }
-
-
-
-
-
     // //
-    // // 
+    // //  
     // //
-
-    // public function get_tree_to_text()
+    
+    // private function save()
     // {
-    //     global $tree;
+    //     if ( ! isset( $_REQUEST['save'] )) return false;
+        
+    //     global $post;
+        
+    //     $t = $this->get_param_and_meta();
+    //     // global $mif_mr_opop;
 
-    //     // $arr = array();
-    //     $out = '';
+    //     // p($tree);
+    //     // p($_REQUEST);
+    //     // $mif_mr_opop->get_tree_to_text();
+        
+    //     $arr = array();
 
-    //     foreach ( $tree as $main_key => $item ) {
+    //     foreach ( $t as $main_key => $item ) {
             
     //         if ( ! in_array( $main_key, array( 'param', 'meta' ) ) ) continue;
-    //         // p($main_key);
-    //         // p($item);
+    //         if ( isset( $item['from_id'] ) && $item['from_id'] != $post->ID ) continue;
+
+    //         foreach ( $item as $key => $item2 )
+    //             if ( isset( $item2['data'] ) ) $arr[$main_key][$key] = implode( "\n", (array) $item2['data'] );
+
+    //     }
+        
+    //     // p($arr);
+        
+    //     foreach ( $_REQUEST as $main_key => $item ) {
+            
+    //         if ( ! in_array( $main_key, array( 'param', 'meta' ) ) ) continue;
+
+    //         foreach ( $item as $key => $item2 ) $arr[$main_key][$key] = sanitize_textarea_field( $this->remove_at( $item2 ) );
+            
+    //     }
+        
+    //     // p($arr);
+
+    //     $out = '';
+
+    //     foreach ( $arr as $main_key => $item ) {
             
     //         $out .= '@@' . $main_key . "\n";
     //         $out .= "\n";
 
-    //         foreach ( (array) $item as $key => $item2 ) {
+    //         foreach ( $item as $key => $item2 ) {
 
-    //             if ( $item2['from_id'] != $tree['main']['id'] ) continue;
-    //             if ( ! isset( $item2['data'] ) ) continue;
+    //             // if ( ! isset( $item2['data'] ) ) continue;
     //             // p($item2['data']);
 
     //             $out .= '@' . $key . "\n";
     //             $out .= "\n";
-    //             $out .= implode( "\n", (array) $item2['data'] );
+    //             $out .= $item2;
     //             $out .= "\n\n";
 
     //             // $out .= $key . ' ' . $item2['data'] . "\n";
@@ -427,13 +429,100 @@ class mif_mr_opop_core {
 
 
     //     }
+
+    //     $res = wp_update_post( array(
+
+    //                                 'ID' => $post->ID,
+    //                                 'post_content' => $out,
+
+    //                             ) );
+
+
+    //     global $messages;
+
+    //     $messages[] = ( $res ) ? array( 'Сохранено', 'success' ) : array( 'Какая-то ошибка. Код ошибки: 101', 'danger' );
+
+    //     wp_cache_delete( 'get_param_and_meta', $post->ID );
+
+    //     // p($out);
+
+    //     return $res;
+    //     // return apply_filters( 'mif_mr_core_get_save_to_opop', $out );
+    // }
+
+
+
+
+
+
+
+    
+
+    // //
+    // //  
+    // //
+    
+    // private function add( $args = array() )
+    // {
+
+    //     // if ( empty( $args['post_type'] ) ) return false;
+    //     // if ( empty( $args['post_content'] ) ) return false;
+
+    //     global $post;
         
+    //     // if ( empty( $args['quiz'] ) ) $args['quiz'] = $post->ID;
+    //     if ( empty( $args['post_status'] ) ) $args['post_status'] = 'publish';
 
-    //     p($out);
+    //     // В параметрах можно указать 'user' => false, тогда пользователь упоминаться не будет
+
+    //     // if ( ! isset( $args['user'] ) ) $args['user'] = get_current_user_id();
+        
+    //     // Узнать имя и автора записи для будущей связанной записи
+        
+    //     // $quiz_post = get_post( $args['quiz'] );
+    //     // $prefix = ( ! empty( $args['user'] ) ) ? $this->get_user_token( $args['user'] ) . ' — ' : '';
+    //     $title = ( isset( $args['post_title'] ) ) ? $args['post_title'] : $post->post_title . ' ('. $post->ID . ')';
+    //     $content = ( isset( $args['post_content'] ) ) ? $args['post_content'] : '';
+    //     $author = $post->post_author;
+        
+    //     // Сохраняем в виде новой связанной записи
+        
+    //     $companion_args = array(
+    //         'post_title'    => $title,
+    //         'post_content'  => $content,
+    //         'post_type'     => $args['post_type'],
+    //         'post_status'   => $args['post_status'],
+    //         'post_author'   => $author,
+    //         'post_parent'   => $post->ID,
+    //         'comment_status' => 'closed',
+    //         'ping_status'   => 'closed', 
+    //         // 'meta_input'    => array( 'owner' => $this->get_user_token( $args['user'] ) ),
+    //     );
+
+    //     // if ( ! empty ( $args['user'] ) ) $companion_args['meta_input'] = array( 'owner' => $this->get_user_token( $args['user'] ) );
+    //     // if ( ! empty ( $args['post_name'] ) ) $companion_args['post_name'] = $args['post_name'];
+
+    //     // p( esc_html( $companion_args['post_content'] ) );
+    //     // remove_filter( 'content_save_pre', 'wp_filter_post_kses' ); 
+
+    //     $companion_id = wp_insert_post( $companion_args );
+    //     // $companion_id = wp_insert_post( wp_slash( $companion_args ) );
+    //     // $companion_id = wp_insert_post( $companion_args );
+
+    //     return $companion_id;
+    // }
 
 
 
-    //     return apply_filters( 'mif_mr_opop_core_get_tree_to_text', $out );
+
+
+    // //
+    // //  
+    // //
+    
+    // private function remove_at( $s )
+    // {
+    //     return preg_replace( '/@/', '', $s );
     // }
 
 
@@ -446,6 +535,17 @@ class mif_mr_opop_core {
     {
         global $tree;
         return $tree['main']['id'];
+    }
+
+
+    //
+    // Получить название ОПОП
+    //
+
+    public function get_opop_title()
+    {
+        global $tree;
+        return $tree['main']['title'];
     }
 
 

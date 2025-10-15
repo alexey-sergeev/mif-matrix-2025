@@ -33,9 +33,12 @@ class mif_mr_catalog_shortcode extends mif_mr_catalog_core {
         
         if ( $mr->level_access() == 0 ) {
             
-            return '<div class="alert alert-warning" role="alert">
-                    Доступ ограничен. Возможно, надо просто <a href="' . get_site_url() . '/wp-login.php?redirect_to=' . get_permalink() . '">войти на сайт</a>.
-                    </div>';
+            // return '<div class="alert alert-warning" role="alert">
+            //         Доступ ограничен. Возможно, надо просто <a href="' . get_site_url() . '/wp-login.php?redirect_to=' . get_permalink() . '">войти на сайт</a>.
+            //         </div>';
+
+            return $mr->access_denied();
+        
         }
 
         $must_level_access = 4;
