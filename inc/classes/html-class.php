@@ -5,6 +5,8 @@
 // А. Н. Сергеев, Волгоград
 // Август 2019
 // 
+// v. 1.1 октябрь 2025
+// 
 
 class html {
 
@@ -29,6 +31,7 @@ class html {
         if ( $colspan ) $colspan = " colspan=\"$colspan\"";
 
         $html .= "<tr>\n";
+        // $html .= "<tr class=\"chapter\">\n";
         $html .= "<th>$n</th>\n";
         $html .= "<th$colspan>$name</th>\n";
         $html .= "</tr>\n";

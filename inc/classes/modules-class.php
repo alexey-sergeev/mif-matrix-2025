@@ -5,6 +5,8 @@
 // А. Н. Сергеев, Волгоград
 // Август 2019
 // 
+// v. 1.1, октябрь 2025
+// 
 
 include_once dirname( __FILE__ ) . '/functions.php';
 include_once dirname( __FILE__ ) . '/parser-class.php';
@@ -17,8 +19,10 @@ class modules {
     // На входе - массив или текстовое описание модулей и их дисциплин
     // 
 
-    function __construct( $data = '==' )
+    function __construct( $data = NULL )
     {
+        // p($data);
+        if ( empty( $data ) ) return;
 
         $p = new parser();
         $this->default_name = $p->default_name;
@@ -31,7 +35,7 @@ class modules {
     
         // Построить массив модулей
 
-        foreach ( $data as $item ) {
+        foreach ( (array) $data as $item ) {
 
             $arr = array();
 
@@ -77,37 +81,96 @@ class modules {
             }
         }
 
+
+
         // Построить массив дисциплин
 
-        foreach ( $this->modules_arr as $module => $data ) {
+        $this->courses_arr = $this->get_courses_arr( $this->modules_arr );
+        
+        // foreach ( $this->modules_arr as $module => $data ) {
+
+        //     if ( ! isset( $data['courses'] ) ) continue;
+        
+        //     foreach ( $data['courses'] as $course => $item ) {
+            
+        //         $this->courses_arr[$course] = $item;
+        //         if ( $module != $this->default_name ) $this->courses_arr[$course]['module'] = $module;
+        
+        //     }
+        
+        // }
+        
+        // $this->courses_arr = $this->sort_courses( $this->courses_arr );
+        
+        
+        // p($this->courses_arr);
+        // Построить дерево дисциплин
+        
+        $this->courses_tree = $this->get_courses_tree( $this->modules_arr );
+        // $this->courses_tree = $this->get_courses_tree( $this->courses_arr );
+        
+        // p($this->courses_tree);
+
+        // foreach ( $this->courses_arr as $course => $data ) {
+
+        //     $key = ( isset( $data['unit'] ) ) ? $data['unit'] : 'other';
+
+        //     if ( isset( $this->items_name[$key] ) ) $this->courses_tree[$key]['att'] = $this->items_name[$key];
+        //     $this->courses_tree[$key]['courses'][$course] = $data;
+     
+        // }
+
+    }
+
+  
+    
+
+    public function get_courses_arr( $arr )
+    {
+        $arr2 = array();
+
+        foreach ( $arr as $module => $data ) {
 
             if ( ! isset( $data['courses'] ) ) continue;
 
             foreach ( $data['courses'] as $course => $item ) {
 
-                $this->courses_arr[$course] = $item;
-                if ( $module != $this->default_name ) $this->courses_arr[$course]['module'] = $module;
+                $arr2[$course] = $item;
+                if ( $module != $this->default_name ) $arr2[$course]['module'] = $module;
 
             }
 
         }
 
-        $this->courses_arr = $this->sort_courses( $this->courses_arr );
+        $arr2 = $this->sort_courses( $arr2 );
 
-        // Построить дерево дисциплин
+        return $arr2;
+    }
 
-        foreach ( $this->courses_arr as $course => $data ) {
+
+
+
+    public function get_courses_tree( $arr )
+    {
+        $arr2 = $this->get_courses_arr( $arr );
+        $arr3 = array();
+        // p($arr);
+
+        foreach ( $arr2 as $course => $data ) {
 
             $key = ( isset( $data['unit'] ) ) ? $data['unit'] : 'other';
 
-            if ( isset( $this->items_name[$key] ) ) $this->courses_tree[$key]['att'] = $this->items_name[$key];
-            $this->courses_tree[$key]['courses'][$course] = $data;
+            if ( isset( $this->items_name[$key] ) ) $arr3[$key]['att'] = $this->items_name[$key];
+            $arr3[$key]['courses'][$course] = $data;
      
         }
 
+        return $arr3;
     }
 
-    
+
+
+
 
     //
     // Построить список курсов для модуля
@@ -357,11 +420,11 @@ class modules {
             // Вывести название модуля или блока дисциплин
 
             if ( $mode == 'modules' ) {
-                
+              
                 $code = ( isset( $module['att']['code'] ) ) ? $module['att']['code'] : '';
                 $title = ( $key == $this->default_name ) ? 'Дисциплины и практики вне модулей' : $key;
-                $title .= "</th><th>";
-                $html .= $h->course_name_tr( $title, $code );
+                // $title .= "</th><th>";
+                $html .= $h->course_name_tr( $title, $code, 2 );
                 
             } 
             
@@ -415,7 +478,7 @@ class modules {
     private $courses_arr = array();
     private $courses_tree = array();
 
-    private $default_name = '';
+    private $default_name = '__default__';
     
     public $items_name = array( 
         'ОД' => array( 'singular' => 'Обязательная дисциплина', 'plural' => 'Обязательные дисциплины' ), 

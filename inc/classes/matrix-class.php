@@ -36,7 +36,7 @@ class matrix {
 
         $c = new cmp( $this->acceptable_cmp );
     
-        foreach ( $data as $item ) {
+        foreach ( (array) $data as $item ) {
     
             if ( empty( $item['competence']['att'] ) ) continue;
             $this->matrix_arr[$item['competence']['name']] = $c->get_cmp( $item['competence']['att'][0], 'arr' );

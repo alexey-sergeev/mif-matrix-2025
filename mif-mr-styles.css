@@ -1,5 +1,26 @@
 /* Body */
 
+
+/* courses, matrix, ... */
+
+.part th {
+    background-color: #f4f4f4;
+}
+
+.part tr:hover td {
+  transition-duration: 100ms;
+  background-color: #ffb;
+}
+
+.part td, .part th {
+    border: 1px solid #dbdbdb !important;
+    /* border-width: 0 0 1px !important; */
+    padding: .3em  !important;
+    vertical-align: top !important;
+}
+
+
+
 /* a, .content a {
     text-decoration: none !important;
 } */

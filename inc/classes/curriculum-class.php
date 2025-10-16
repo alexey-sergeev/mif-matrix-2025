@@ -31,7 +31,7 @@ class curriculum {
         $sem_data = array();
         $course = '';
 
-        foreach ( $data as $item ) {
+        foreach ( (array) $data as $item ) {
     
             if ( empty( $item['curriculum']['att'][0] ) ) continue;
             

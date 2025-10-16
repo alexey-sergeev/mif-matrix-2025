@@ -59,6 +59,24 @@ function mif_mr_show_explanation( $key = NULL )
 
 
 
+// 
+// 
+// 
+
+function mif_mr_the_tab( $text, $slug, $flag = false )
+{
+    $s = '';
+    
+    $f = ( isset( $_REQUEST[$slug] ) ) || ( empty( $_REQUEST ) && $flag );
+
+    if ( ! $f ) $s .= '<a href="?' . $slug . '">';
+    $s .= $text;
+    if ( ! $f ) $s .= '</a>';
+
+    echo $s;
+}
+
+
 
 
 ?>

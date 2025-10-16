@@ -61,16 +61,22 @@ class mif_mr_courses extends mif_mr_companion {
         global $tree;
         
         // $m = new modules( $this->get_companion_content( 'courses' ) );
+        // $html = $m->get_html();
         $m = new modules();
-        $html = $m->get_html( $tree['courses']['data'] );
+        
+        $arr = $tree['content']['courses']['data'];
+        if ( isset( $_REQUEST['courses'] ) ) $arr = $m->get_courses_tree( $arr );
+
+        $html = $m->get_html( $arr );
 
         // p($m->get_arr() );
 
 
         $out = '';
-        $out .= '<div class="col-12 mt-2">';
+        $out .= '<div class="col-12 p-0">';
         
         // $out .= $this->get_companion_content( 'courses' );
+        // $out .= '$html';
         $out .= $html;
                
         $out .= '</div>';

@@ -22,8 +22,21 @@
     </div> -->
 
     
+
+    
+    
+    
+    
     <?php mif_mr_show_explanation('courses'); ?>
-    <div class="row"><?php mif_mr_the_courses(); ?></div>
+    <div class="row">
+        
+        <div class="col text-end p-0 mb-3">
+            <?php mif_mr_the_tab( 'модули', 'modules', true ); ?> | 
+            <?php mif_mr_the_tab( 'дисциплины', 'courses' ); ?>
+        </div>
+    
+        <?php mif_mr_the_courses(); ?>
+    </div>
 
 
 

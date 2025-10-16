@@ -43,36 +43,46 @@ class mif_mr_companion extends mif_mr_part_core {
     // ID связанной записи 
     //
 
+    // public function get_companion_id( $type = 'courses', $opop_id )
     public function get_companion_id( $type = 'courses', $opop_id = NULL )
     {
-        global $mif_mr_opop;
+        // p($opop_id);
+        // global $mif_mr_opop;
         // if ( $opop_id === NULL ) $opop_id = $mif_mr_opop->get_opop_id();
-        if ( isset( $mif_mr_opop ) && $opop_id === NULL ) $opop_id = $mif_mr_opop->get_opop_id();
+        // if ( isset( $mif_mr_opop ) && $opop_id === NULL ) $opop_id = $mif_mr_opop->get_opop_id();
+        // if ( isset( $mif_mr_opop ) && $opop_id === NULL ) $opop_id = $mif_mr_opop->get_opop_id();
+        if ( $opop_id === NULL ) $opop_id = get_the_ID();
+        // if ( $opop_id === NULL ) return;
         
         $posts = get_posts( array(
             'post_type'     => $type,
             'post_status'   => 'publish',
             'post_parent'   => $opop_id,
-        ) );
-
+            ) );
+            
         $companion_id = ( isset( $posts[0]->ID ) ) ? $posts[0]->ID : NULL;
+        
+        // p($posts);
 
         return apply_filters( 'mif_mr_core_get_companion_id', $companion_id, $type, $opop_id );
     }
-        
-
-
+    
+    
+    
     //
     // Содержание связанной записи
     //
-
-    public function get_companion_content( $type = 'courses' )
+    
+    public function get_companion_content( $type = 'courses', $opop_id = NULL )
     {
-        $content = NULL;
+        // global $mif_mr_opop;
+        $content = '';
         
-        if ( $this->get_companion_id( $type ) !== NULL ) {
+        if ( $opop_id === NULL ) $opop_id = get_the_ID();
+                
+        if ( $this->get_companion_id( $type, $opop_id ) !== NULL ) {
             
-            $post = get_post( $this->get_companion_id( $type ) );
+            $post = get_post( $this->get_companion_id( $type, $opop_id ) );
             $content = $post->post_content;
 
         }
@@ -93,7 +103,7 @@ class mif_mr_companion extends mif_mr_part_core {
 
         if ( ! isset( $_REQUEST['save'] )) return false;
         
-        if ( $this->get_companion_id( $type ) === NULL) {
+        if ( $this->get_companion_id( $type, $mif_mr_opop->get_opop_id() ) === NULL) {
             
             $res = wp_insert_post( array(
                 'post_title'    => $mif_mr_opop->get_opop_title() . ' (' . $mif_mr_opop->get_opop_id() . ')',
@@ -106,7 +116,7 @@ class mif_mr_companion extends mif_mr_part_core {
         } else {
                 
             $res = wp_update_post( array(
-                                        'ID' => $this->get_companion_id(  $type ),
+                                        'ID' => $this->get_companion_id( $type, $mif_mr_opop->get_opop_id() ),
                                         'post_content' => sanitize_textarea_field( $_REQUEST['content'] ),
                                     ) );
 

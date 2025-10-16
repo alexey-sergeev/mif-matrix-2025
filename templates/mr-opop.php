@@ -44,14 +44,18 @@
                 <?php mif_mr_the_menu_item( 'Методические указания', '', 1 ); ?>
                 <?php mif_mr_the_menu_item( 'Организация СРС', '', 1 ); ?>
                 <?php mif_mr_the_menu_item(); ?>
-                <?php mif_mr_the_menu_item( 'Статистика ОПОП', '', 1 ); ?>
+                <?php mif_mr_the_menu_item( 'Статистика ОПОП', 'stat', 1 ); ?>
                 
             </div>
         </div>
         
     </div>    
     
-    <?php mif_mr_the_part(); ?>
+    <div class="part">
+        
+        <?php mif_mr_the_part(); ?>
+
+    </div>    
 
 </div>    
 

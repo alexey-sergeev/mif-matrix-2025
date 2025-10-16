@@ -9,9 +9,10 @@
 defined( 'ABSPATH' ) || exit;
 
 include_once dirname( __FILE__ ) . '/opop-core.php';
+include_once dirname( __FILE__ ) . '/opop-tree-raw.php';
 include_once dirname( __FILE__ ) . '/opop-templates.php';
 
-class mif_mr_opop extends mif_mr_opop_core {
+class mif_mr_opop extends mif_mr_opop_tree_raw {
     
 
     function __construct()
@@ -104,6 +105,11 @@ class mif_mr_opop extends mif_mr_opop_core {
                 global $mif_mr_curriculum;
                 $mif_mr_curriculum = new mif_mr_curriculum();
                 $mif_mr_curriculum->the_show();
+            break;
+            
+            case 'stat':
+                global $tree;
+                p($tree);
             break;
             
             default:

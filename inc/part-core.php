@@ -262,6 +262,19 @@ class mif_mr_part_core {
 
         return apply_filters( 'mif_mr_part_get_item_text', $out, $key );
     }
+    
+    
+    
+    // // 
+    // // 
+    // // 
+    
+    // public function get_item_tab( $text, $slug, $flag = true )
+    // {
+
+
+    //     return apply_filters( 'mif_mr_part_get_item_text', $out, $key );
+    // }
 
 
 
@@ -372,6 +385,8 @@ class mif_mr_part_core {
 
         return apply_filters( 'mif_mr_core_get_form_end', $out );
     }
+    
+
     
     
    
