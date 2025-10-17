@@ -52,9 +52,11 @@
     </div>    
     
     <div class="part">
-        
-        <?php mif_mr_the_part(); ?>
+        <div class="content">
+            
+            <?php mif_mr_the_part(); ?>
 
+        </div>    
     </div>    
 
 </div>    

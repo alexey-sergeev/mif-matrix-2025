@@ -9,7 +9,7 @@
 defined( 'ABSPATH' ) || exit;
 
 
-class mif_mr_opop_tree_raw extends  mif_mr_opop_core {
+class mif_mr_opop_tree_raw extends mif_mr_opop_core {
         
     // // Количество элементов на одной странице каталога
     

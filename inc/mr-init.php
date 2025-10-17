@@ -38,26 +38,30 @@ include_once dirname( __FILE__ ) . '/classes/curriculum-class.php';
 class mif_mr_init extends mif_mr_functions { 
 // class mif_mr_init { 
     
-    
-    // Названия домашней старницы, профиля и др.
+
+// Названия домашней старницы, профиля и др.
 
     protected $post_name_catalog = 'home';
     // protected $post_name_help = 'help';
-
-
-
+    
+    
+    
     function __construct()
     {
         parent::__construct();
-
+        
         $this->rewrite_rule();
         $this->post_types_init();
-
+        
         // add_action('init', array( $this, 'rewrite_rule' ) );
+        add_action( 'wp_head', array( $this, 'ajaxurl' ) );
         add_filter( 'the_content', array( $this, 'content' ) );
         
-        add_action( 'wp_ajax_catalog', array( $this, 'ajax_catalog_submit' ) );
-        add_action( 'wp_ajax_nopriv_catalog', array( $this, 'ajax_catalog_submit' ) );
+        add_action( 'wp_ajax_catalog', array( $this, 'ajax' ) );
+        add_action( 'wp_ajax_nopriv_catalog', array( $this, 'ajax' ) );
+
+        add_action( 'wp_ajax_courses', array( $this, 'ajax' ) );
+        add_action( 'wp_ajax_nopriv_courses', array( $this, 'ajax' ) );
         
         // global $mif_mr_catalog_shortcode;
         // $mif_mr_catalog_shortcode = new mif_mr_catalog_shortcode();
@@ -111,22 +115,34 @@ class mif_mr_init extends mif_mr_functions {
 
 
     // 
-    // Точка входа для AJAX-запросов (каталог главной страницы)
+    // Точка входа для AJAX-запросов 
     // 
 
-    public function ajax_catalog_submit()
+    public function ajax()
+    // public function ajax_catalog_submit()
     {
         // f($_REQUEST);
         check_ajax_referer( 'mif-mr' );
 
-        if ( isset( $_REQUEST['mode'] ) && $_REQUEST['mode'] == 'stat' ) {
+        if ( isset( $_REQUEST['action'] ) ) {
+            
+            if ( $_REQUEST['action'] == 'catalog' ) {
 
-            // echo $this->get_catalog_stat();
+                $mif_mr_catalog = new mif_mr_catalog();
+                echo  $mif_mr_catalog->get_catalog();
 
-        } else {
+            } elseif ( $_REQUEST['action'] == 'courses' ) {
 
-            $mif_mr_catalog = new mif_mr_catalog();
-            echo  $mif_mr_catalog->get_catalog();
+                echo $_REQUEST['key'];
+                // new mif_mr_opop();
+                // new mif_mr_opop_tree_raw();
+                // $mif_mr_courses = new mif_mr_courses();
+                // echo $mif_mr_courses->get_courses();
+                
+            } else {
+
+
+            }
 
         }
 
@@ -135,6 +151,17 @@ class mif_mr_init extends mif_mr_functions {
 
 
 
+    function ajaxurl()
+    {   
+        // $data = array(
+        //     'url' => admin_url( 'admin-ajax.php' ),
+        // );
+        ?>
+        <script>
+            ajaxurl = '<?php echo admin_url( 'admin-ajax.php' ); ?>';
+        </script>
+        <?php
+    }
 
 
     // 

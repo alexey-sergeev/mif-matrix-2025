@@ -30,11 +30,30 @@
     <?php mif_mr_show_explanation('courses'); ?>
     <div class="row">
         
-        <div class="col text-end p-0 mb-3">
-            <?php mif_mr_the_tab( 'модули', 'modules', true ); ?> | 
-            <?php mif_mr_the_tab( 'дисциплины', 'courses' ); ?>
+        <!-- <div class="col text-end p-0 mb-3">
+            <?php // mif_mr_the_tab( 'модули', 'modules', true ); ?> | 
+            <?php // mif_mr_the_tab( 'дисциплины', 'courses' ); ?>
+        </div> -->
+        
+        
+        <div class="col-auto text-end p-0 mb-3">
+            <!-- <div class="col-auto"> -->
+                <form>
+        
+                    <ul class="nav nav-tabs pb-0 nav-tabs-0">
+                        <li class="nav-item"><label class="nav-link mb-0 active"><input type="radio" class="d-none" name="key" value="modules" checked="" />Модули</label></li>
+                        <li class="nav-item"><label class="nav-link mb-0"><input type="radio" class="d-none" name="key" value="courses" />Дисциплины</label></li>
+                        <!-- <li class="nav-item"><a class="nav-link active" data-key="modules" href="#">Модули</a></li>
+                        <li class="nav-item"><a class="nav-link" data-key="courses" href="#">Дисциплины</a></li> -->
+                    </ul>
+            
+                    <input type="hidden" name="action" value="courses" />
+                    <input type="hidden" name="_wpnonce" value="<?php echo wp_create_nonce( 'mif-mr' ); ?>" />     
+        
+                </form>
+            <!-- </div> -->
         </div>
-    
+
         <?php mif_mr_the_courses(); ?>
     </div>
 

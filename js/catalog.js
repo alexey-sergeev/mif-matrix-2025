@@ -463,7 +463,7 @@ jQuery( document ).ready( function( jq ) {
     jq( 'body' ).on( 'submit', '.catalog form', function() {
         
         // console.log( '@@@' );
-        const ajaxurl = 'wp-admin/admin-ajax.php'; //!!!!
+        // const ajaxurl = 'wp-admin/admin-ajax.php'; //!!!!
         var data = new FormData( this );
         // console.log  ( data );
         

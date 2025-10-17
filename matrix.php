@@ -55,6 +55,7 @@ function mif_mr_customizer_scripts()
 
    // JS-методы каталога
    wp_enqueue_script( 'mif_mr_js_catalog', plugins_url( 'js/catalog.js', __FILE__ ), '', '1.0.0' );
+   wp_enqueue_script( 'mif_mr_js_opop', plugins_url( 'js/opop.js', __FILE__ ), '', '1.0.0' );
 
 }
 
