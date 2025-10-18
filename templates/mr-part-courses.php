@@ -35,8 +35,7 @@
             <?php // mif_mr_the_tab( 'дисциплины', 'courses' ); ?>
         </div> -->
         
-        
-        <div class="col-auto text-end p-0 mb-3">
+        <div class="col-auto p-0 mb-3">
             <!-- <div class="col-auto"> -->
                 <form>
         
@@ -48,13 +47,17 @@
                     </ul>
             
                     <input type="hidden" name="action" value="courses" />
+                    <input type="hidden" name="opop" value="<?php echo mif_mr_the_opop_id(); ?>" />
                     <input type="hidden" name="_wpnonce" value="<?php echo wp_create_nonce( 'mif-mr' ); ?>" />     
         
                 </form>
             <!-- </div> -->
         </div>
-
-        <?php mif_mr_the_courses(); ?>
+        
+        <!-- <div class="content-part p-0"> -->
+            <?php mif_mr_the_courses(); ?>
+        <!-- </div> -->
+    
     </div>
 
 

@@ -11,12 +11,16 @@ defined( 'ABSPATH' ) || exit;
 
 class mif_mr_opop_tree_raw extends mif_mr_opop_core {
         
-    // // Количество элементов на одной странице каталога
     
+    protected $parents_arr = array();
+
+
     
     function __construct()
     {
         parent::__construct();
+
+        // echo $_REQUEST['opop'];
 
         global $tree;
         $tree = $this->get_tree_raw(); 
@@ -42,9 +46,11 @@ class mif_mr_opop_tree_raw extends mif_mr_opop_core {
     
     public function get_tree_raw()
     {
-        global $post;
+        // global $post;
         // global $tree;
         // p($post);
+        $post = get_post( $this->current_opop_id ); 
+        
         if ( $post->post_type != 'opop' ) return;
         
         // global $t;
@@ -60,7 +66,7 @@ class mif_mr_opop_tree_raw extends mif_mr_opop_core {
         // p( $post );
         // p( WP_Post::get_instance( 176 ) );
         // p( $tree );
-        $this->get_parents_arr( $post->ID );
+        $this->get_parents_arr( $this->current_opop_id );
         
         
         // p( $this->parents_arr );

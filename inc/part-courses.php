@@ -59,13 +59,13 @@ class mif_mr_courses extends mif_mr_companion {
         if ( isset( $_REQUEST['edit'] ) ) return $this->companion_edit( 'courses' );
 
         global $tree;
-        
         // $m = new modules( $this->get_companion_content( 'courses' ) );
         // $html = $m->get_html();
         $m = new modules();
         
         $arr = $tree['content']['courses']['data'];
-        if ( isset( $_REQUEST['courses'] ) ) $arr = $m->get_courses_tree( $arr );
+        // if ( isset( $_REQUEST['courses'] ) ) $arr = $m->get_courses_tree( $arr );
+        if ( isset( $_REQUEST['key'] ) && $_REQUEST['key'] == 'courses' ) $arr = $m->get_courses_tree( $arr );
 
         $html = $m->get_html( $arr );
 
@@ -73,7 +73,7 @@ class mif_mr_courses extends mif_mr_companion {
 
 
         $out = '';
-        $out .= '<div class="col-12 p-0">';
+        $out .= '<div class="content-ajax col-12 p-0">';
         
         // $out .= $this->get_companion_content( 'courses' );
         // $out .= '$html';

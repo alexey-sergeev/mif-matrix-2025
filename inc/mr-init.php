@@ -131,18 +131,20 @@ class mif_mr_init extends mif_mr_functions {
                 $mif_mr_catalog = new mif_mr_catalog();
                 echo  $mif_mr_catalog->get_catalog();
 
-            } elseif ( $_REQUEST['action'] == 'courses' ) {
-
-                echo $_REQUEST['key'];
-                // new mif_mr_opop();
-                // new mif_mr_opop_tree_raw();
-                // $mif_mr_courses = new mif_mr_courses();
-                // echo $mif_mr_courses->get_courses();
-                
             } else {
-
-
+                
+                global $mif_mr_opop;
+                $mif_mr_opop = new mif_mr_opop();
+    
+                if ( $_REQUEST['action'] == 'courses' ) {
+                    
+                    $mif_mr_courses = new mif_mr_courses();
+                    echo $mif_mr_courses->get_courses();
+                
+                } 
+    
             }
+            
 
         }
 

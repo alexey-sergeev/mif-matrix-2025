@@ -62,9 +62,14 @@ html {
 }
 
 .callout pre {
-
     background-color: inherit;
 }
+
+.fullsize {
+    max-width: 100% !important;
+}
+
+
 
 /* Редактирование */
 

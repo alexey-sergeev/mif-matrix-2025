@@ -1,6 +1,6 @@
 <div class="opop">
     
-    <div class="container no-gutters bg-light pt-5 pb-5 mt-6 mb-6">
+    <div class="container no-gutters bg-light pt-5 pb-5 mt-5 mb-5">
 
         <div class="row ">
             <div class="col-sm">
@@ -18,7 +18,7 @@
 
         <div class="row">
             <div class="col-sm">
-
+                
                 <?php mif_mr_the_menu_item( 'Дисциплины', 'courses', 1 ); ?>
                 <?php mif_mr_the_menu_item( 'Матрица компетенций', 'matrix', 1 ); ?>
                 <?php mif_mr_the_menu_item( 'Учебный план', 'curriculum', 1 ); ?>
@@ -33,7 +33,7 @@
                 
             </div>
             <div class="col-sm">
-
+                
                 <?php mif_mr_the_menu_item( 'Параметры ОПОП', 'param', 1 ); ?>
                 <?php mif_mr_the_menu_item( 'ФГОС ВО', '', 1 ); ?>
                 <?php mif_mr_the_menu_item( 'Уровни компетенций', '', 1 ); ?>
@@ -51,12 +51,22 @@
         
     </div>    
     
-    <div class="part">
-        <div class="content">
-            
-            <?php mif_mr_the_part(); ?>
 
-        </div>    
+    <div class="row justify-content-end">
+        <div class="col-auto d-none d-sm-block">
+            <a href="#" class="text-secondary" id="fullsize">
+                <i class="fa-solid fa-expand fa-2x"></i><i class="d-none fa-solid fa-compress fa-2x"></i>
+            </a>
+        </div>
+    </div>
+    
+    
+    <div class="part">
+        <!-- <div class="content"> -->
+            
+        <?php mif_mr_the_part(); ?>
+
+        <!-- </div>     -->
     </div>    
 
 </div>    

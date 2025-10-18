@@ -57,24 +57,39 @@ function mif_mr_show_explanation( $key = NULL )
 }
 
 
+//
+// Выводит ОПОП ID
+//
 
-
-// 
-// 
-// 
-
-function mif_mr_the_tab( $text, $slug, $flag = false )
+function mif_mr_the_opop_id()
 {
-    $s = '';
-    
-    $f = ( isset( $_REQUEST[$slug] ) ) || ( empty( $_REQUEST ) && $flag );
-
-    if ( ! $f ) $s .= '<a href="?' . $slug . '">';
-    $s .= $text;
-    if ( ! $f ) $s .= '</a>';
-
-    echo $s;
+    global $mif_mr_opop;
+    echo $mif_mr_opop->get_opop_id();
 }
+
+
+
+
+
+
+
+
+// // 
+// // 
+// // 
+
+// function mif_mr_the_tab( $text, $slug, $flag = false )
+// {
+//     $s = '';
+    
+//     $f = ( isset( $_REQUEST[$slug] ) ) || ( empty( $_REQUEST ) && $flag );
+
+//     if ( ! $f ) $s .= '<a href="?' . $slug . '">';
+//     $s .= $text;
+//     if ( ! $f ) $s .= '</a>';
+
+//     echo $s;
+// }
 
 
 

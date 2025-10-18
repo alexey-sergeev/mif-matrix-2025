@@ -18,8 +18,9 @@ jQuery( document ).ready( function( jq ) {
         var data = new FormData( jq(this).closest('form').get(0) );
         // console.log( data );
         
-        // // var div = jq( this ).closest( 'div.next-page' );
-        // var div = jq( 'div.next-page', this );
+        // var div = jq( this ).closest( 'div.content-part' );
+        // var div = jq( 'div.content-part', this );
+        var div = jq( 'div.content-ajax' );
 
         // var button = jq( 'button', div );
         // var loading = jq( '.loading', div );
@@ -39,8 +40,8 @@ jQuery( document ).ready( function( jq ) {
 
                 if ( response ) {
 
-                    // div.replaceWith( response )
-                    console.log( response );
+                    div.replaceWith( response )
+                    // console.log( response );
                     
                 } else {
                     
@@ -57,20 +58,30 @@ jQuery( document ).ready( function( jq ) {
 
         } );
 
+
         
         jq( 'body .nav-tabs label' ).each( function ( index, elem ) { jq(elem).removeClass('active'); });
         jq(this).closest('label').addClass('active');
         
-
-
-
-
         return false;
         
     } );    
     
     
-    
+    // #fullsize
+
+    jq( 'body' ).on( 'click', '#fullsize', function() {
+
+        // console.log('asd');
+
+        jq( 'i', this ).toggleClass( 'd-none' );
+        jq( 'div.container' ).toggleClass( 'fullsize' );
+        jq( '#primary div.column' ).toggleClass( 'is-11-desktop is-12-desktop' );
+
+        return false;
+
+    })
+
 
 
 });

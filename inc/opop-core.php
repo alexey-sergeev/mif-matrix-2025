@@ -14,23 +14,23 @@ class mif_mr_opop_core {
 
     
     private $param_map = array();
-    protected $parents_arr = array();
-    
+    // protected $parents_arr = array();
+    public $current_opop_id;
     
     
     function __construct()
     {
         global $messages;
-        // global $tree;
-        
         $messages = array();
+        
+        // global $tree;
         // $this->save();
         
         $this->param_map = apply_filters( 'mif-mr-param', array(
             
             // array(
                 //     'key' => array( 'description', 'd' ),
-                                        //     'description' => __( 'Description', 'mif-mr' )
+                //     'description' => __( 'Description', 'mif-mr' )
                                         // ),
                                         array(
                                             'key' => array( 'admins', 'a' ),
@@ -55,7 +55,9 @@ class mif_mr_opop_core {
                                         
                                         ) );
                                         
-
+        $this->current_opop_id = ( isset( $_REQUEST['opop'] ) ) ? (int) $_REQUEST['opop'] : get_the_ID();
+                                        
+        // p('$tree');
         // p($tree);
         // p($tree['courses']);
                                     
@@ -72,7 +74,9 @@ class mif_mr_opop_core {
     {
         // global $post;
         // p($opop_id);        
-        if ( $opop_id === NULL ) $opop_id = get_the_ID();
+        // if ( $opop_id === NULL ) $opop_id = get_the_ID();
+        if ( $opop_id === NULL ) $opop_id = $this->current_opop_id;
+            // $opop_id = ( isset( $_REQUEST['opop'] ) ) ? (int) $_REQUEST['opop'] : get_the_ID();
 
         $t = wp_cache_get( 'get_param_and_meta', $opop_id );
         
