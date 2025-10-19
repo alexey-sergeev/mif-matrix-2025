@@ -62,6 +62,8 @@ class mif_mr_init extends mif_mr_functions {
 
         add_action( 'wp_ajax_courses', array( $this, 'ajax' ) );
         add_action( 'wp_ajax_nopriv_courses', array( $this, 'ajax' ) );
+        add_action( 'wp_ajax_matrix', array( $this, 'ajax' ) );
+        add_action( 'wp_ajax_nopriv_matrix', array( $this, 'ajax' ) );
         
         // global $mif_mr_catalog_shortcode;
         // $mif_mr_catalog_shortcode = new mif_mr_catalog_shortcode();
@@ -120,16 +122,16 @@ class mif_mr_init extends mif_mr_functions {
 
     public function ajax()
     // public function ajax_catalog_submit()
-    {
-        // f($_REQUEST);
+    {   
+        // echo H// f($_REQUEST);
         check_ajax_referer( 'mif-mr' );
 
         if ( isset( $_REQUEST['action'] ) ) {
             
             if ( $_REQUEST['action'] == 'catalog' ) {
 
-                $mif_mr_catalog = new mif_mr_catalog();
-                echo  $mif_mr_catalog->get_catalog();
+                $m = new mif_mr_catalog();
+                echo $m->get_catalog();
 
             } else {
                 
@@ -138,8 +140,15 @@ class mif_mr_init extends mif_mr_functions {
     
                 if ( $_REQUEST['action'] == 'courses' ) {
                     
-                    $mif_mr_courses = new mif_mr_courses();
-                    echo $mif_mr_courses->get_courses();
+                    $m = new mif_mr_courses();
+                    echo $m->get_courses();
+                
+                } 
+    
+                if ( $_REQUEST['action'] == 'matrix' ) {
+                    
+                    $m = new mif_mr_matrix();
+                    echo $m->get_matrix();
                 
                 } 
     

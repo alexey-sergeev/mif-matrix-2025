@@ -62,7 +62,7 @@ class mif_mr_curriculum extends mif_mr_companion {
         $html = $m->get_html();
 
         $out = '';
-        $out .= '<div class="col-12 p-0">';
+        $out .= '<div class="content-ajax col-12 p-0">';
         
         $out .= $html;
 

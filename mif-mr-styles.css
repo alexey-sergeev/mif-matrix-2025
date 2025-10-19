@@ -1,6 +1,35 @@
 /* Body */
 
 
+/* Matrix */
+
+.matrix td.cmp {
+    width: 1.8em;
+    text-align: center;
+    vertical-align: middle;
+    cursor: default;
+    /* background-color: #ffa; */
+}
+
+.matrix td.on {
+    background-color: #bfb;
+}
+
+.matrix tr:hover td.on {
+    background-color: #9f9;
+}
+
+
+.matrix th.selectable {
+    background-color: #ffb;
+    cursor: pointer;
+}
+
+.matrix thead th {
+    text-align: center !important;
+}
+
+
 /* courses, matrix, ... */
 
 .part th {
@@ -16,7 +45,7 @@
     border: 1px solid #dbdbdb !important;
     /* border-width: 0 0 1px !important; */
     padding: .3em  !important;
-    vertical-align: top !important;
+    /* vertical-align: top !important; */
 }
 
 .content .part ul {

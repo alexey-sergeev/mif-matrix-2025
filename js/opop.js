@@ -7,7 +7,7 @@ jQuery( document ).ready( function( jq ) {
     
     // Показать контент
     
-    jq( 'body' ).on( 'click', 'input', function() {
+    jq( 'body' ).on( 'click', 'input[type="radio"]', function() {
         
         // console.log( '@@@' );
         // console.log( ajaxurl );
@@ -82,6 +82,20 @@ jQuery( document ).ready( function( jq ) {
 
     })
 
+    
+    // Selectable cmp
+
+    jq( 'body' ).on( 'click', '.matrix .selectable', function() {
+
+        // console.log('asd');
+        
+        var cmp = jq( this ).attr( 'data-cmp' );
+        console.log(cmp);
+        
+        return false;
+
+    })
+    
 
 
 });

@@ -35,26 +35,25 @@
             <?php // mif_mr_the_tab( 'дисциплины', 'courses' ); ?>
         </div> -->
         
-        <div class="col-auto p-0 mb-3">
-            <!-- <div class="col-auto"> -->
+        <!-- <div class="col-auto p-0 mb-3">
                 <form>
         
                     <ul class="nav nav-tabs pb-0 nav-tabs-0">
                         <li class="nav-item"><label class="nav-link mb-0 active"><input type="radio" class="d-none" name="key" value="modules" checked="" />Модули</label></li>
                         <li class="nav-item"><label class="nav-link mb-0"><input type="radio" class="d-none" name="key" value="courses" />Дисциплины</label></li>
-                        <!-- <li class="nav-item"><a class="nav-link active" data-key="modules" href="#">Модули</a></li>
-                        <li class="nav-item"><a class="nav-link" data-key="courses" href="#">Дисциплины</a></li> -->
                     </ul>
             
                     <input type="hidden" name="action" value="courses" />
-                    <input type="hidden" name="opop" value="<?php echo mif_mr_the_opop_id(); ?>" />
-                    <input type="hidden" name="_wpnonce" value="<?php echo wp_create_nonce( 'mif-mr' ); ?>" />     
+                    <input type="hidden" name="opop" value="<?php // echo mif_mr_the_opop_id(); ?>" />
+                    <input type="hidden" name="_wpnonce" value="<?php // echo wp_create_nonce( 'mif-mr' ); ?>" />     
         
                 </form>
-            <!-- </div> -->
         </div>
-        
+         -->
+
+
         <!-- <div class="content-part p-0"> -->
+            <?php mif_mr_show_panel( 'courses' ); ?>
             <?php mif_mr_the_courses(); ?>
         <!-- </div> -->
     

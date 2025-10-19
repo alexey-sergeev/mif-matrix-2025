@@ -9,7 +9,10 @@
 
     <?php mif_mr_show_explanation('matrix'); ?>
 
-    <div class="row"><?php mif_mr_the_matrix(); ?></div>
+    <div class="row">
+        <?php mif_mr_show_panel( 'matrix' ); ?>
+        <?php mif_mr_the_matrix(); ?>
+    </div>
   
 </div>
 

@@ -52,13 +52,13 @@
     </div>    
     
 
-    <div class="row justify-content-end">
+    <!-- <div class="row justify-content-end">
         <div class="col-auto d-none d-sm-block">
             <a href="#" class="text-secondary" id="fullsize">
                 <i class="fa-solid fa-expand fa-2x"></i><i class="d-none fa-solid fa-compress fa-2x"></i>
             </a>
         </div>
-    </div>
+    </div> -->
     
     
     <div class="part">

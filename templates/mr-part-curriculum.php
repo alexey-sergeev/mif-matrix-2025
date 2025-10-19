@@ -9,7 +9,10 @@
 
     <?php mif_mr_show_explanation('curriculum'); ?>
 
-    <div class="row"><?php mif_mr_the_curriculum(); ?></div>
+    <div class="row">
+        <?php mif_mr_show_panel( 'curriculum' ); ?>    
+        <?php mif_mr_the_curriculum(); ?>
+    </div>
  
 </div>
 

@@ -56,13 +56,26 @@ class mif_mr_matrix extends mif_mr_companion {
     
     public function get_matrix()
     {
+        global $tree;
         if ( isset( $_REQUEST['edit'] ) ) return $this->companion_edit( 'matrix' );
 
-        $m = new matrix( $this->get_companion_content( 'matrix' ) );
-        $html = $m->get_html();
+        
+        $arr = $tree['content']['matrix']['data'];
+        $arr2 = $tree['content']['courses']['data'];
+        
+        if ( isset( $_REQUEST['key'] ) && $_REQUEST['key'] == 'courses' ) {
+            
+            $m2 = new modules();
+            $arr2 = $m2->get_courses_tree( $arr2 );
+        
+        }
+        
+        $m = new matrix();
+        // $html = $m->get_html( $arr );
+        $html = $m->get_html( $arr, $arr2 );
 
         $out = '';
-        $out .= '<div class="col-12 p-0">';
+        $out .= '<div class="content-ajax col-12 p-0">';
         
         $out .= $html;
                

@@ -17,13 +17,15 @@ class matrix {
     // Параметр $cmp - перечень в принципе допустимых компетенций
     //
 
-    function __construct( $data, $cmp = '' )
+    function __construct( $data = NULL, $cmp = '' )
     {
         // Запомнить перечень допустимых компетенеций
 
         $this->acceptable_cmp = $cmp;
 
         // Если данные - в виде текстового описания, то оформить в виде массива
+
+        if ( empty( $data ) ) return;
 
         if ( is_string( $data ) ) {
     
@@ -36,7 +38,7 @@ class matrix {
 
         $c = new cmp( $this->acceptable_cmp );
     
-        foreach ( (array) $data as $item ) {
+        foreach ( $data as $item ) {
     
             if ( empty( $item['competence']['att'] ) ) continue;
             $this->matrix_arr[$item['competence']['name']] = $c->get_cmp( $item['competence']['att'][0], 'arr' );
@@ -95,51 +97,148 @@ class matrix {
     // Функция возвращает матрицу компетенций в виде HTML-таблицы
     // 
 
-    function get_html( $full = true )
+
+    function get_html( $matrix_arr = NULL, $arr = NULL )
     {
+        if ( ! empty( $matrix_arr ) ) $this->matrix_arr = $matrix_arr;
+
         $html = '';
         
-        // Если полный формат - добавляем заголовок таблицы
-
-        if ( $full ) {
-
-            $html .= "<table border='1'>\n";
-            $html .= $this->get_html_header();
-            
-        }
+        $h = new html();
+        $html .= $h->table_header();
         
-        $n = 1;
-        $cmp = $this->get_cmp();
+        // Определить данные для отображения и режим просмотра
+        
+        $mode = 'courses';
+        $first = current( $arr );
+        if ( isset( $first['att'] ) ) $mode = 'modules';
+        if ( isset( $first['att']['singular'] ) ) $mode = 'tree';
 
-        foreach ( $this->matrix_arr as $name => $row ) {
-            
-            $html .= "<tr>\n";
-            $html .= "<td>$n</td>\n";
-            $html .= "<td>$name</td>\n";
-            
-            foreach ( $cmp as $item ) {
+        // Если просто дисциплины, то привести массив к виду модулей или дерева
+
+        if ( $mode == 'courses' ) $arr = array( 'courses' => array( 'courses' => $arr ) );
+
+        // Строим таблицу
+
+        $n = 1;
+        $m = 1;
+
+        $cmp = $this->get_cmp();
+        $cmp_count = count( $cmp ) + 1;
+
+        $code = ( $mode == 'modules' ) ? 'Код' : '№';
+        $title = ( $mode == 'modules' ) ? 'Модули' : 'Дисциплины и практики';
+
+        $html .= $this->get_html_header();
+
+        foreach ( $arr as $key => $module ) {
+
+            // Вывести название модуля или блока дисциплин
+
+            if ( $mode == 'modules' ) {
+              
+                $code = ( isset( $module['att']['code'] ) ) ? $module['att']['code'] : '';
+                $title = ( $key == $this->default_name ) ? 'Дисциплины и практики вне модулей' : $key;
+                $html .= $h->course_name_tr( $title, $code, $cmp_count );
                 
-                $marker = ( in_array( $item, $row ) ) ? '1': '';
-                $marker_class = ( in_array( $item, $row ) ) ? 'yes': 'no';
-                $html .= "<td class=\"$marker_class\">$marker</td>\n";
+            } 
+            
+            if ( $mode == 'tree' ) {
+                
+                $title = ( isset( $module['att']['plural'] ) ) ? $module['att']['plural'] : $key;
+                $html .= $h->part_tr( $title, $cmp_count + 1 );
+
+            }
+
+            // Вывести дисциплины
+
+            if ( isset( $module['courses'] ) ) {
+
+                foreach ( $module['courses'] as $course => $data ) {
+                    
+                    $row = '';
+                    $row .= $course . "</td>\n";
+                    
+                    foreach ( $cmp as $item ) {
+                        
+                        $arr2 = ( isset( $this->matrix_arr[$course] ) ) ? $this->matrix_arr[$course] : array();
+                        $marker = ( in_array( $item, $arr2 ) ) ? '1': '';
+                        // $marker_class = ( in_array( $item, $arr2 ) ) ? 'yes': 'no';
+                        $marker_class = ( ! empty( $marker ) ) ? ' on': '';
+                        $alt = ( ! empty( $marker ) ) ? " title=\"$item\"" : '';
+                        $row .= "<td class=\"cmp$marker_class\"$alt>$marker</td>\n";
+                        
+                    }
+                    
+                    $code = ( $mode == 'modules' && isset( $data['code'] ) ) ? $data['code'] : $m;
+                    $html .= $h->course_data_tr( $row, '', '', $code );
+                    $m++;
+                    
+                }
                 
             }
             
-            $html .= "</tr>\n";
             $n++;
+
         }
         
-        // Если полный формат - добавляем низ таблицы
-
-        if ( $full ) {
-            
-            $html .= $this->get_html_stat();            
-            $html .= "</table>";
-            
-        }
+        $html .= $this->get_html_stat();   
+        $html .= $h->table_footer();
         
         return $html;
     }
+
+
+
+
+    
+    // function get_html3( $arr = NULL, $full = true )
+    // {
+    //     if ( ! empty( $arr ) ) $this->matrix_arr = $arr;
+    //     // p($arr);
+    //     $html = '';
+        
+    //     // Если полный формат - добавляем заголовок таблицы
+
+    //     if ( $full ) {
+
+    //         $html .= "<table border='1'>\n";
+    //         $html .= $this->get_html_header();
+            
+    //     }
+        
+    //     $n = 1;
+    //     $cmp = $this->get_cmp();
+
+    //     foreach ( $this->matrix_arr as $name => $row ) {
+            
+    //         $html .= "<tr>\n";
+    //         $html .= "<td>$n</td>\n";
+    //         $html .= "<td>$name</td>\n";
+            
+    //         foreach ( $cmp as $item ) {
+                
+    //             $marker = ( in_array( $item, $row ) ) ? '1': '';
+    //             $marker_class = ( in_array( $item, $row ) ) ? 'yes': 'no';
+    //             $html .= "<td class=\"$marker_class\">$marker</td>\n";
+                
+    //         }
+            
+    //         $html .= "</tr>\n";
+    //         $n++;
+    //     }
+        
+    //     // Если полный формат - добавляем низ таблицы
+
+    //     if ( $full ) {
+            
+    //         $html .= $this->get_html_stat();            
+    //         $html .= "</table>";
+            
+    //     }
+        
+    //     return $html;
+    // }
     
     
     
@@ -181,26 +280,30 @@ class matrix {
 
         }
 
+        $html .= "<thead>\n";
         $html .= "<tr>\n";
         $html .= "<th rowspan=\"2\"></th>\n";
         $html .= "<th rowspan=\"2\"></th>\n";
-
+        
         $row2 = '';
-
+        
         foreach ( $index as $key => $numerics ) {
             
+            // p($key);
             $c = count( $numerics );
             $html .= "<th colspan=\"$c\">$key</th>\n";
-            foreach ( $numerics as $item ) $row2 .= "<th>$item</th>\n";
+            foreach ( $numerics as $item ) $row2 .= "<th class=\"selectable\">$item</th>\n";
+            // foreach ( $numerics as $item ) $row2 .= "<th class=\"selectable\" data-cmp=\"ttt\">$item</th>\n";
             
         }
         
         $html .= "</tr>\n";
- 
+        
         $html .= "<tr>\n";
         $html .= $row2;
         $html .= "</tr>\n";
-
+        $html .= "</thead>\n";
+        
         return $html;
     }
 
@@ -208,6 +311,7 @@ class matrix {
 
     private $acceptable_cmp = '';
     private $matrix_arr = array();
+    private $default_name = '__default__';
 
 }
     

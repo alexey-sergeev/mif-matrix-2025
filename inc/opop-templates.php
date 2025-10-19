@@ -58,6 +58,21 @@ function mif_mr_show_explanation( $key = NULL )
 
 
 //
+// Выводит панель (Модули/Дисциплины)
+//
+
+function mif_mr_show_panel( $type = 'courses' )
+{
+    global $mif_mr_opop;
+    echo $mif_mr_opop->show_panel( $type );
+}
+
+
+
+
+
+
+//
 // Выводит ОПОП ID
 //
 

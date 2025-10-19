@@ -162,7 +162,7 @@ class mif_mr_opop extends mif_mr_opop_tree_raw {
         global $explanation;
 
         if ( ! isset( $_REQUEST['edit'] ) ) return;
-
+        
         $out = '';
         
         if ( isset( $key ) && isset( $explanation[$key] ) ) {
@@ -170,10 +170,46 @@ class mif_mr_opop extends mif_mr_opop_tree_raw {
             $out .= '<div class="col pt-2 pb-2 mt-3">';
             $out .= $explanation[$key];
             $out .= '</div>';
-
+            
         }
-
+        
         return apply_filters( 'mif_mr_opop_explanation', $out );
+    }
+    
+    
+    
+    //
+    // 
+    //
+    
+    public function show_panel( $type = 'courses' )
+    {
+        if ( isset( $_REQUEST['edit'] ) ) return;
+
+        $out = '';
+
+        $out .= '<div class="col-auto p-0 mb-3">';
+        $out .= '<form>';
+        
+        $out .= '<ul class="nav nav-tabs pb-0 nav-tabs-0">';
+        $out .= '<li class="nav-item"><label class="nav-link mb-0 active"><input type="radio" class="d-none" name="key" value="modules" checked="" />Модули</label></li>';
+        $out .= '<li class="nav-item"><label class="nav-link mb-0"><input type="radio" class="d-none" name="key" value="courses" />Дисциплины</label></li>';
+        $out .= '</ul>';
+            
+        $out .= '<input type="hidden" name="action" value="' . $type . '" />';
+        $out .= '<input type="hidden" name="opop" value="' . $this->get_opop_id() . '" />';
+        $out .= '<input type="hidden" name="_wpnonce" value="' . wp_create_nonce( 'mif-mr' ) . '" />';     
+        
+        $out .= '</form>';
+        $out .= '</div>';
+        
+        $out .= '<div class="col d-none d-sm-block mt-5 pr-0 text-end">';
+        $out .= '<a href="#" class="text-secondary" id="fullsize">';
+        $out .= '<i class="fa-solid fa-expand fa-2x"></i><i class="d-none fa-solid fa-compress fa-2x"></i>';
+        $out .= '</a>';
+        $out .= '</div>';
+    
+        return apply_filters( 'mif_mr_opop_panel', $out, $type );
     }
 
 
