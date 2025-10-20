@@ -25,6 +25,7 @@ include_once dirname( __FILE__ ) . '/part-curriculum.php';
 include_once dirname( __FILE__ ) . '/lib-download.php';
 include_once dirname( __FILE__ ) . '/lib-xlsx-core.php';
 include_once dirname( __FILE__ ) . '/lib-docx-core.php';
+include_once dirname( __FILE__ ) . '/lib-html.php';
 
 include_once dirname( __FILE__ ) . '/classes/modules-class.php';
 include_once dirname( __FILE__ ) . '/classes/matrix-class.php';

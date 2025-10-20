@@ -62,14 +62,16 @@ class html {
     // Вывод содержимого дисциплины
     // 
 
-    function course_data_tr( $data, $class = '', $colspan = '', $n = '' )
+                        
+    function course_data_tr( $data, $class = '', $colspan = '', $n = '', $class_tr = '' )
     {
         $html = '';
 
         if ( $class ) $class = " class=\"$class\"";
+        if ( $class_tr ) $class_tr = " class=\"$class_tr\"";
         if ( $colspan ) $colspan = " colspan=\"$colspan\"";
 
-        $html .= "<tr>\n";
+        $html .= "<tr$class_tr>\n";
         $html .= "<td$class>$n</td>\n";
         $html .= "<td$class$colspan>\n";
         $html .= $data;

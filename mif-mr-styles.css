@@ -25,6 +25,10 @@
     cursor: pointer;
 }
 
+.matrix th.active {
+    background-color: #ff5400;
+}
+
 .matrix thead th {
     text-align: center !important;
 }

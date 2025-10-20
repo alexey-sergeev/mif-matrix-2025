@@ -69,33 +69,84 @@ jQuery( document ).ready( function( jq ) {
     
     
     // #fullsize
-
+    
     jq( 'body' ).on( 'click', '#fullsize', function() {
-
+        
         // console.log('asd');
-
+        
         jq( 'i', this ).toggleClass( 'd-none' );
         jq( 'div.container' ).toggleClass( 'fullsize' );
         jq( '#primary div.column' ).toggleClass( 'is-11-desktop is-12-desktop' );
-
+        
         return false;
-
+        
     })
-
+    
     
     // Selectable cmp
-
+    
     jq( 'body' ).on( 'click', '.matrix .selectable', function() {
-
+        
         // console.log('asd');
         
-        var cmp = jq( this ).attr( 'data-cmp' );
-        console.log(cmp);
+        // console.log(jq(this).parent().html());
+        f = ( jq(this).hasClass('active') ) ? false : true;
+        
+        jq('th', jq(this).parent()).each( function ( index, elem ) { jq(elem).removeClass('active'); });
+        
+        let tbody = jq('tbody', jq(this).closest('table'));
+        jq( 'tr', tbody ).each( function ( index, elem ) { jq(elem).removeClass('d-none'); });
+
+
+
+        if ( f ) {
+            
+            jq(this).addClass('active');
+
+            let cmp = jq(this).attr( 'data-cmp' );
+            jq( 'tr:not(.' + cmp + ')', tbody ).each( function ( index, elem ) { jq(elem).addClass('d-none'); });
+                        
+        }
+
+        // jq('th', jq(this).parent()).each( function ( index, elem ) { 
+        //     console.log(elem); 
+        //     jq(elem).removeClass('active');
+        // });
+        
+        // let cmp = jq(this).attr( 'data-cmp' );
+        // console.log(cmp);
+        
+        // let table = jq(this).closest('table');
+        // let tbody = jq('tbody', 'table');
+        
+        // jq(this).addClass('active');
+        // let table = jq(this).closest('table tbody');
+        // console.log(table.html());
+        
+        // let tr = jq( 'tr', table );
+        // console.log(tr.html());
+        
+        // jq( 'tr', table ).each( function ( index, elem ) { console.log(elem.html()); });
+        // jq('tr', tbody).each( function ( index, elem ) { 
+            
+        //     console.log(elem); 
+        
+        // });
+        
+        
+        // jq( 'tr', tbody ).each( function ( index, elem ) { 
+        //     jq(elem).removeClass('d-none');
+        // });
+
+        // jq( 'tr:not(.' + cmp + ')', tbody ).each( function ( index, elem ) { 
+        //     // console.log(elem); 
+        //     jq(elem).addClass('d-none');
+        // });
         
         return false;
-
+        
     })
     
-
-
+    
+    
 });
