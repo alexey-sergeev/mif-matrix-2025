@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit;
 
 // include_once dirname( __FILE__ ) . '/part-core.php';
 
-class mif_mr_matrix extends mif_mr_companion {
+class mif_mr_matrix extends mif_mr_table {
     
     // private $explanation = array();
 
@@ -25,7 +25,7 @@ class mif_mr_matrix extends mif_mr_companion {
         add_filter( 'mif-mr-tbody-colspan', array( $this, 'filter_tbody_colspan'), 10 );
         
         add_filter( 'mif-mr-thead-row', array( $this, 'filter_thead_row'), 10, 2 );
-        // add_filter( 'mif-mr-thead-colspan', array( $this, 'filter_tbody_colspan'), 10 );
+        // // add_filter( 'mif-mr-thead-colspan', array( $this, 'filter_tbody_colspan'), 10 );
 
         $this->save( 'matrix' );
 
@@ -63,24 +63,27 @@ class mif_mr_matrix extends mif_mr_companion {
     
     public function get_matrix()
     {
-        global $tree;
+        // global $tree;
         if ( isset( $_REQUEST['edit'] ) ) return $this->companion_edit( 'matrix' );
         
         
-        $arr = $tree['content']['matrix']['data'];
-        $arr2 = $tree['content']['courses']['data'];
+        // $arr = $tree['content']['matrix']['data'];
+        // $arr = $tree['content']['courses']['data'];
         
-        if ( isset( $_REQUEST['key'] ) && $_REQUEST['key'] == 'courses' ) {
+        // if ( isset( $_REQUEST['key'] ) && $_REQUEST['key'] == 'courses' ) $arr = $this->get_courses_tree( $arr );
             
-            $m2 = new modules();
-            $arr2 = $m2->get_courses_tree( $arr2 );
+        $arr = $this->get_courses_arr();    
+        //     {
             
-        }
+        //     // $m2 = new modules();
+        //     // $arr = $m2->get_courses_tree( $arr );
+            
+        // }
         
-        $html = '';
+        // $html = '';
         
-        $h = new mif_mr_html();
-        $html .= $h->get_html( $arr2 );
+        // $h = new mif_mr_html();
+        // $html .= $this->get_table_html( $arr2 );
         
         // $m = new matrix();
         // $html = $m->get_html( $arr );
@@ -89,9 +92,7 @@ class mif_mr_matrix extends mif_mr_companion {
         
         $out = '';
         $out .= '<div class="content-ajax col-12 p-0">';
-        
-        $out .= $html;
-        
+        $out .= $this->get_table_html( $arr );
         $out .= '</div>';
         
         return apply_filters( 'mif_mr_part_get_matrix', $out );
@@ -99,6 +100,12 @@ class mif_mr_matrix extends mif_mr_companion {
     
     
     
+    // public function filter( $arr )
+    // {
+    //     $arr = array_merge( $arr, $arr, $arr );
+
+    //     return $arr;
+    // }
 
 
     public function filter_tbody_class_tr( $class, $key2 )
@@ -137,8 +144,9 @@ class mif_mr_matrix extends mif_mr_companion {
         global $tree;
         $matrix_arr = $tree['content']['matrix']['data'];
         $cmp = $this->get_cmp( $matrix_arr );
+        $nn = ( ! empty( $cmp ) ) ? count($cmp) : 10;
 
-        return $n + count($cmp);
+        return $n + $nn;
     }
 
 
@@ -151,18 +159,26 @@ class mif_mr_matrix extends mif_mr_companion {
         global $tree;
         $matrix_arr = $tree['content']['matrix']['data'];
         $cmp = $this->get_cmp( $matrix_arr );
+        
+        if ( ! empty( $cmp ) ) {
 
-        foreach ( $cmp as $c ) {
+            foreach ( $cmp as $c ) {
 
-            $arr2 = ( isset( $matrix_arr[$key2] ) ) ? $matrix_arr[$key2] : array();
-            $text = ( in_array( $c, $arr2 ) ) ? '1': '';
-            $class = ( ! empty( $text ) ) ? 'cmp on': 'cmp';
-            $title = ( ! empty( $text ) ) ? $c : '';
+                $arr2 = ( isset( $matrix_arr[$key2] ) ) ? $matrix_arr[$key2] : array();
+                $text = ( in_array( $c, $arr2 ) ) ? '1': '';
+                $class = ( ! empty( $text ) ) ? 'cmp on': 'cmp';
+                $title = ( ! empty( $text ) ) ? $c : '';
 
-            $arr[] = mif_mr_html::add_to_col( $text, array('elem' => 'td', 'class' => $class, 'title' => $title) );
+                $arr[] = $this->add_to_col( $text, array('elem' => 'td', 'class' => $class, 'title' => $title) );
+                // $arr[] = mif_mr_html::add_to_col( $text, array('elem' => 'td', 'class' => $class, 'title' => $title) );
+
+            }
+        
+        } else {
+
+           for ( $i = 0; $i < 10; $i++ ) $arr[] = $this->add_to_col( '', array( 'elem' => 'td', 'class' => 'cmp' ) );  
 
         }
-
 
         return $arr;
     }
@@ -178,36 +194,59 @@ class mif_mr_matrix extends mif_mr_companion {
         $matrix_arr = $tree['content']['matrix']['data'];
         $cmp = $this->get_cmp( $matrix_arr );
 
-        foreach ( $cmp as $item ) {
+        $index = array();
+        
+        if ( ! empty( $cmp ) ) {
 
-            $data = explode( '-', $item );
-            $index[$data[0]][] = $data[1];
-            $data_cmp[$data[0]][] = $item;
+            foreach ( $cmp as $item ) {
 
-        }
+                $data = explode( '-', $item );
+                $index[$data[0]][] = $data[1];
+                $data_cmp[$data[0]][] = $item;
+
+            }
+
+            $arr2 = array();
+            $arr2[] = $this->add_to_col( '', array( 'elem' => 'th', 'rowspan' => '2' ) ); 
+            $arr2[] = $this->add_to_col( '', array( 'elem' => 'th', 'rowspan' => '2' ) ); 
+            
+            foreach ( $index as $key => $numerics ) {
+                $c = count( $numerics );
+                $arr2[] = $this->add_to_col( $key, array( 'elem' => 'th', 'colspan' => $c ) ); 
+            }
+            
+            $arr[] = $this->add_to_row( $arr2, array( 'elem' => 'tr' ) );
+            
+            $arr2 = array();
+            
+            foreach ( $index as $key => $numerics )
+                foreach ( $numerics as $key2 => $item ) 
+            $arr2[] = $this->add_to_col( $item, array( 'elem' => 'th', 'class' => 'selectable', 'data-cmp' => $data_cmp[$key][$key2] ) ); 
+        // $arr2[] = mif_mr_html::add_to_col( $item, array( 'elem' => 'th', 'class' => 'selectable', 'data-cmp' => $data_cmp[$key][$key2] ) ); 
+        
+        $arr[] = $this->add_to_row( $arr2, array( 'elem' => 'tr' ) );
+        
+    } else {
 
         $arr2 = array();
-        $arr2[] = mif_mr_html::add_to_col( '', array( 'elem' => 'th', 'rowspan' => '2' ) ); 
-        $arr2[] = mif_mr_html::add_to_col( '', array( 'elem' => 'th', 'rowspan' => '2' ) ); 
-        
-        foreach ( $index as $key => $numerics ) {
-            $c = count( $numerics );
-            $arr2[] = mif_mr_html::add_to_col( $key, array( 'elem' => 'th', 'colspan' => $c ) ); 
-        }
-        // $row2 .= "<th class=\"selectable\" =\"" . $data_cmp[$key][$key2] . "\">$item</th>\n";
-        
-        $arr[] = mif_mr_html::add_to_row( $arr2, array( 'elem' => 'tr' ) );
 
+        $arr2[] = $this->add_to_col( '', array( 'elem' => 'th', 'rowspan' => '2' ) ); 
+        $arr2[] = $this->add_to_col( '', array( 'elem' => 'th', 'rowspan' => '2' ) ); 
+        $arr2[] = $this->add_to_col( 'Компетенции не определены', array( 'elem' => 'th', 'colspan' => 10 ) ); 
+        
+        $arr[] = $this->add_to_row( $arr2, array( 'elem' => 'tr' ) );
+        
+        
         $arr2 = array();
 
-        foreach ( $index as $key => $numerics )
-            foreach ( $numerics as $key2 => $item ) 
-                $arr2[] = mif_mr_html::add_to_col( $item, array( 'elem' => 'th', 'class' => 'selectable', 'data-cmp' => $data_cmp[$key][$key2] ) ); 
+        for ( $i = 1; $i <= 10; $i++ ) $arr2[] = $this->add_to_col( $i, array( 'elem' => 'th' ) ); 
         
-        $arr[] = mif_mr_html::add_to_row( $arr2, array( 'elem' => 'tr' ) );
-    
-        return $arr;
+        $arr[] = $this->add_to_row( $arr2, array( 'elem' => 'tr' ) );
+        
     }
+    
+    return $arr;
+}
     
     
     // 

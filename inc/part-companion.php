@@ -100,7 +100,7 @@ class mif_mr_companion extends mif_mr_part_core {
     public function save( $type = 'courses' )
     {
         global $mif_mr_opop;
-
+        
         if ( ! isset( $_REQUEST['save'] )) return false;
         
         if ( $this->get_companion_id( $type, $mif_mr_opop->get_opop_id() ) === NULL) {
@@ -114,32 +114,40 @@ class mif_mr_companion extends mif_mr_part_core {
                 ) );
                 
         } else {
-                
+            
             $res = wp_update_post( array(
-                                        'ID' => $this->get_companion_id( $type, $mif_mr_opop->get_opop_id() ),
-                                        'post_content' => sanitize_textarea_field( $_REQUEST['content'] ),
-                                    ) );
-
+                'ID' => $this->get_companion_id( $type, $mif_mr_opop->get_opop_id() ),
+                'post_content' => sanitize_textarea_field( $_REQUEST['content'] ),
+                ) );
+                
         }
-
+        
         global $messages;
-
+        
         $messages[] = ( $res ) ? array( 'Сохранено', 'success' ) : array( 'Какая-то ошибка. Код ошибки: 102 (' . $type . ')', 'danger' );
-
+        
         if ( $res ) {
-
+            
             $tree = array();
             $tree = $mif_mr_opop->get_tree();
-
+            
         }
-
+        
         return $res;
     }
-
-
-
-
-
+    
+    
+    
+    
+    
+    public function get_courses_tree( $arr )
+    {
+        $m = new modules();
+        $arr = $m->get_courses_tree( $arr );
+        return $arr;
+    }
+    
 }
+
 
 ?>

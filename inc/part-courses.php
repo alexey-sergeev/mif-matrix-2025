@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit;
 
 // include_once dirname( __FILE__ ) . '/part-core.php';
 
-class mif_mr_courses extends mif_mr_companion {
+class mif_mr_courses extends mif_mr_table {
     
     // private $explanation = array();
 
@@ -20,6 +20,12 @@ class mif_mr_courses extends mif_mr_companion {
 
         parent::__construct();
         
+
+        add_filter( 'mif-mr-tbody-col', array( $this, 'filter_tbody_col'), 10, 4 );
+        add_filter( 'mif-mr-thead-col', array( $this, 'filter_thead_col'), 10 );
+        add_filter( 'mif-mr-tbody-colspan', array( $this, 'filter_tbody_colspan'), 10 );
+       
+
         $this->save( 'courses' );
 
     }
@@ -58,16 +64,18 @@ class mif_mr_courses extends mif_mr_companion {
     {
         if ( isset( $_REQUEST['edit'] ) ) return $this->companion_edit( 'courses' );
 
-        global $tree;
-        // $m = new modules( $this->get_companion_content( 'courses' ) );
-        // $html = $m->get_html();
-        $m = new modules();
+        // global $tree;
+        // // $m = new modules( $this->get_companion_content( 'courses' ) );
+        // // $html = $m->get_html();
+        // // $m = new modules();
         
-        $arr = $tree['content']['courses']['data'];
-        // if ( isset( $_REQUEST['courses'] ) ) $arr = $m->get_courses_tree( $arr );
-        if ( isset( $_REQUEST['key'] ) && $_REQUEST['key'] == 'courses' ) $arr = $m->get_courses_tree( $arr );
+        // $arr = $tree['content']['courses']['data'];
+        // // if ( isset( $_REQUEST['courses'] ) ) $arr = $m->get_courses_tree( $arr );
+        // if ( isset( $_REQUEST['key'] ) && $_REQUEST['key'] == 'courses' ) $arr = $this->get_courses_tree( $arr );
 
-        $html = $m->get_html( $arr );
+        $arr = $this->get_courses_arr(); 
+
+        // $html = $m->get_html( $arr );
 
         // p($m->get_arr() );
 
@@ -77,99 +85,56 @@ class mif_mr_courses extends mif_mr_companion {
         
         // $out .= $this->get_companion_content( 'courses' );
         // $out .= '$html';
-        $out .= $html;
-               
+        // $out .= $html;
+        $out .= $this->get_table_html( $arr );       
         $out .= '</div>';
         
         return apply_filters( 'mif_mr_part_get_courses', $out );
     }
     
     
+
+
+
   
-
-    // // 
-    // //  
-    // //
-    
-    // private function save()
-    // {
-    //     if ( ! isset( $_REQUEST['save'] )) return false;
+    public function filter_tbody_col( $arr, $key, $key2, $courses_arr )
+    {
+        // p($key);
+        // p($key2);
+        global $tree;
+        // p( $matrix_arr = $tree['content']['matrix']['data'][$key2]);        
+        // $text = implode( ', ', $tree['content']['matrix']['data'][$key2] );   
         
-    //     // global $post;
-    //     global $tree;
-    //     global $mif_mr_opop;
+        $text = '';
+
+        $c = new cmp();
+        if ( isset( $tree['content']['matrix']['data'][$key2] ) ) $text = $c->get_cmp( $tree['content']['matrix']['data'][$key2] );
 
 
-
-    //     // p('@@');
-    //     // p($_REQUEST);
+        $arr[] = $this->add_to_col( $text, array('elem' => 'td', 'class' => '$class', 'title' => '$title') );
 
 
-    //     // $posts = get_posts( array(
-    //     //     'post_type'     => 'courses',
-    //     //     'post_status'   => 'publish',
-    //     //     'post_parent'   => $post->ID,
-    //     // ) );
+        $text = ( isset( $courses_arr[$key]['courses'][$key2]['kaf'] )) ?
+            implode( ', ', (array) $courses_arr[$key]['courses'][$key2]['kaf'] ) :
+            '';
+        $arr[] = $this->add_to_col( $text, array('elem' => 'td', 'class' => '$class', 'title' => '$title') );
 
-    //     // if ( empty($posts) ) {
-    //     if ( $this->get_companion_id('courses') === NULL) {
-            
-    //         $res = wp_insert_post( array(
-    //             'post_title'    => $mif_mr_opop->get_opop_title() . ' (' . $mif_mr_opop->get_opop_id() . ')',
-    //             'post_type'     => 'courses',
-    //             'post_status'   => 'publish',
-    //             'post_parent'   => $mif_mr_opop->get_opop_id(),
-    //             'post_content'  => sanitize_textarea_field( $_REQUEST['content'] ),
-    //             ) );
-                
-    //     } else {
-                
-    //         // if ( isset( $posts[0]->ID ) ) {
-
-    //             $res = wp_update_post( array(
-    //                                         // 'ID' => $posts[0]->ID,
-    //                                         'ID' => $this->get_companion_id('courses'),
-    //                                         'post_content' => sanitize_textarea_field( $_REQUEST['content'] ),
-    //                                     ) );
+        return $arr;
+    }
+    
+    
+    public function filter_thead_col( $arr )
+    {
+        $arr[] = $this->add_to_col( 'Компетенции', array('elem' => 'th' ) );
+        $arr[] = $this->add_to_col( 'Каф.', array('elem' => 'th' ) );
+        return $arr;
+    }
 
 
-    //         // } else {
-
-    //         //     $res = false;
-
-    //         // }
-
-    //     }
-            
-            
-    //         // p('@@@');
-
-    // //         'post_title'    => $title,
-    // //         'post_content'  => $content,
-    // //         'post_type'     => $args['post_type'],
-    // //         'post_status'   => $args['post_status'],
-    // //         'post_author'   => $author,
-    // //         'post_parent'   => $post->ID,
-    // //         'comment_status' => 'closed',
-    // //         'ping_status'   => 'closed', 
-
-
-
-    //     global $messages;
-
-    //     $messages[] = ( $res ) ? array( 'Сохранено', 'success' ) : array( 'Какая-то ошибка. Код ошибки: 102', 'danger' );
-
-    //     if ( $res ) {
-
-    //         $tree = array();
-    //         $tree = $mif_mr_opop->get_tree();
-
-    //     }
-
-    //     return $res;
-    // }
-
-
+    public function filter_tbody_colspan( $n )
+    {
+        return $n + 2;
+    }
 
 
 

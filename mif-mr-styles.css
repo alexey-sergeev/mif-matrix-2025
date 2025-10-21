@@ -20,21 +20,30 @@
 }
 
 
-.matrix th.selectable {
+.part th.selectable {
     background-color: #ffb;
     cursor: pointer;
 }
 
-.matrix th.active {
+.part th.active {
     background-color: #ff5400;
 }
 
-.matrix thead th {
+.part thead th {
+/* .matrix thead th { */
     text-align: center !important;
 }
 
 
 /* courses, matrix, ... */
+.part td.cell, .part th.cell {
+    width: 1.8em;
+    vertical-align: middle;
+}
+
+.part td.long, .part th.long {
+    width: 2.4em;
+}
 
 .part th {
     background-color: #f4f4f4;
@@ -134,6 +143,11 @@ html {
 .mr-gray {
     background-color: #f0f0f0 !important;
 }
+
+.mr-blue {
+    background-color: #ddeeff !important;
+}
+
 
 /* table th {
     /* background: #f4f4f4; */

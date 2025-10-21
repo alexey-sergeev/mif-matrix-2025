@@ -15,6 +15,7 @@ include_once dirname( __FILE__ ) . '/opop-screen.php';
 
 include_once dirname( __FILE__ ) . '/part-core.php';
 include_once dirname( __FILE__ ) . '/part-companion.php';
+include_once dirname( __FILE__ ) . '/part-table.php';
 include_once dirname( __FILE__ ) . '/part-templates.php';
 
 include_once dirname( __FILE__ ) . '/part-param.php';
@@ -25,7 +26,12 @@ include_once dirname( __FILE__ ) . '/part-curriculum.php';
 include_once dirname( __FILE__ ) . '/lib-download.php';
 include_once dirname( __FILE__ ) . '/lib-xlsx-core.php';
 include_once dirname( __FILE__ ) . '/lib-docx-core.php';
-include_once dirname( __FILE__ ) . '/lib-html.php';
+
+
+
+// include_once dirname( __FILE__ ) . '/lib-html.php';
+
+
 
 include_once dirname( __FILE__ ) . '/classes/modules-class.php';
 include_once dirname( __FILE__ ) . '/classes/matrix-class.php';
@@ -65,6 +71,8 @@ class mif_mr_init extends mif_mr_functions {
         add_action( 'wp_ajax_nopriv_courses', array( $this, 'ajax' ) );
         add_action( 'wp_ajax_matrix', array( $this, 'ajax' ) );
         add_action( 'wp_ajax_nopriv_matrix', array( $this, 'ajax' ) );
+        add_action( 'wp_ajax_curriculum', array( $this, 'ajax' ) );
+        add_action( 'wp_ajax_nopriv_curriculum', array( $this, 'ajax' ) );
         
         // global $mif_mr_catalog_shortcode;
         // $mif_mr_catalog_shortcode = new mif_mr_catalog_shortcode();
@@ -150,6 +158,13 @@ class mif_mr_init extends mif_mr_functions {
                     
                     $m = new mif_mr_matrix();
                     echo $m->get_matrix();
+                
+                } 
+    
+                if ( $_REQUEST['action'] == 'curriculum' ) {
+                    
+                    $m = new mif_mr_curriculum();
+                    echo $m->get_curriculum();
                 
                 } 
     

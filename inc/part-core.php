@@ -16,7 +16,22 @@ class mif_mr_part_core {
     {
 
     }
+   
     
+        
+    // // 
+    // // Получить courses
+    // // 
+
+    // public function get_courses_arr()
+    // {
+    //     global $tree;
+    //     $arr = $tree['content']['courses']['data'];
+    //     if ( isset( $_REQUEST['key'] ) && $_REQUEST['key'] == 'courses' ) $arr = $this->get_courses_tree( $arr );
+    //     return $arr;
+    // }
+
+
 
     // 
     // Выноска
