@@ -22,6 +22,7 @@ class mif_mr_curriculum extends mif_mr_table {
         
         add_filter( 'mif-mr-tbody-col', array( $this, 'filter_tbody_col'), 10, 4 );
         // add_filter( 'mif-mr-thead-col', array( $this, 'filter_thead_col'), 10 );
+        add_filter( 'mif-mr-tbody-class-tr', array( $this, 'filter_tbody_class_tr'), 10, 2 );
         add_filter( 'mif-mr-tbody-colspan', array( $this, 'filter_tbody_colspan'), 10 );
 
         add_filter( 'mif-mr-thead-row', array( $this, 'filter_thead_row'), 10, 2 );
@@ -94,7 +95,25 @@ class mif_mr_curriculum extends mif_mr_table {
     }
     
 
+  
     
+    public function filter_tbody_class_tr( $class, $key2 )
+    {
+        $curriculum_arr = $this->get_curriculum_arr();
+        
+        $arr = array();
+        if ( ! empty($class) ) $arr[] = $class;
+
+        if ( isset( $curriculum_arr[$key2] ) ) {
+
+            foreach ( $curriculum_arr[$key2]['semesters'] as $key3 => $item ) $arr[] = 'sm' . $key3;
+        
+        }
+
+        return implode( ' ', $arr );
+    }
+
+
 
 
     public function filter_tbody_col( $arr, $key, $key2, $courses_arr )
@@ -152,6 +171,8 @@ class mif_mr_curriculum extends mif_mr_table {
                 $exam = '';
                 $exam_att = '';
                 
+                $f = false;
+
                 if ( isset( $curriculum_arr[$key2]['semesters'][$i] ) ) {
                     
                     $item = $curriculum_arr[$key2]['semesters'][$i];
@@ -162,10 +183,16 @@ class mif_mr_curriculum extends mif_mr_table {
                     $srs = ( ! empty( $item['srs'] ) ) ? (int) $item['srs'] : '';
                     $exam = ( ! empty( $item['exam'] ) ) ? (int) $item['exam'] : '';
                     $exam_att = ( ! empty( $item['att'] ) ) ? implode( ', ', $item['att'] ) : '';
+
+                    $f = ! empty ( $lec . $lab . $prac . $srs . $exam ) || ! empty( $exam_att );
+                    // p( $lec . $lab . $prac . $srs . $exam );
+
+                    // p($f);
                     // p($item);
                 }
                 
                 $class = ( $i % 2 == 0 ) ? 'cell' : 'cell mr-blue';
+                if ( $f ) $class = 'cell mr-green';
 
                 $arr[] = $this->add_to_col( $lec, array('elem' => 'td', 'class' => $class) );
                 $arr[] = $this->add_to_col( $lab, array('elem' => 'td', 'class' => $class) );
@@ -254,8 +281,9 @@ class mif_mr_curriculum extends mif_mr_table {
                 
                 // $class = ( $i % 2 == 0 ) ? 'cell' : 'cell mr-blue';
                 $text = 'Семестр ' . $i;
-                
-                $arr2[] = $this->add_to_col( $text, array('elem' => 'th', 'class' => 'selectable', 'colspan' => 6) );
+                $sm = 'sm' . $i;
+
+                $arr2[] = $this->add_to_col( $text, array('elem' => 'th', 'class' => 'selectable', 'colspan' => 6, 'data-cmp' => $sm) );
                 
                 // $arr2[] = $this->add_to_col( 'л', array('elem' => 'td', 'class' => $class) );
                 // $arr2[] = $this->add_to_col( 'л', array('elem' => 'td', 'class' => $class) );
@@ -282,7 +310,7 @@ class mif_mr_curriculum extends mif_mr_table {
                 $arr2[] = $this->add_to_col( 'л', array('elem' => 'th', 'class' => $class) );
                 $arr2[] = $this->add_to_col( 'л', array('elem' => 'th', 'class' => $class) );
                 $arr2[] = $this->add_to_col( 'п', array('elem' => 'th', 'class' => $class) );
-                $arr2[] = $this->add_to_col( 'с', array('elem' => 'th', 'class' => $class . ' long') );
+                $arr2[] = $this->add_to_col( 'с', array('elem' => 'th', 'class' => $class) );
                 $arr2[] = $this->add_to_col( 'к', array('elem' => 'th', 'class' => $class) );
                 $arr2[] = $this->add_to_col( 'к', array('elem' => 'th', 'class' => $class) );
                 

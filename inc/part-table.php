@@ -32,6 +32,7 @@ class mif_mr_table extends mif_mr_companion {
         // p($arr);
         
         $html .= '<table border="1">';
+        // $html .= '<table border="1" class="overflow-auto">';
         
 
         $arr = $this->get_thead_arr($courses_arr);
@@ -198,7 +199,7 @@ class mif_mr_table extends mif_mr_companion {
 
                 $arr2 = apply_filters( 'mif-mr-tbody-col', $arr2, $key, $key2, $courses_arr ); 
 
-                $arr[] = $this->add_to_row( $arr2, array('elem' => 'tr', 'class' => apply_filters( 'mif-mr-tbody-class-tr', '', $key2 ) ) );
+                $arr[] = $this->add_to_row( $arr2, array('elem' => 'tr', 'class' => apply_filters( 'mif-mr-tbody-class-tr', 'can-select', $key2 ) ) );
 
             }
 
@@ -244,6 +245,17 @@ class mif_mr_table extends mif_mr_companion {
         return $mode;
     }
 
+
+    // 
+    // Получить matrix
+    // 
+
+    public function get_matrix_arr()
+    {
+        global $tree;
+        $arr = $tree['content']['matrix']['data'];
+        return $arr;
+    }
 
     // 
     // Получить curriculum

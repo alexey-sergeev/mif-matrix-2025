@@ -3,7 +3,7 @@
 <?php mif_mr_the_form_begin(); ?>
 <?php mif_mr_show_messages() ?>
 
-<div class="courses container mt-3">
+<div class="courses container mt-3 overflow-auto">
 
     <!-- <div class="row mt-5 mb-5">
         <div class="col-12 p-0"><a href="?edit">Редактировать</a></div>

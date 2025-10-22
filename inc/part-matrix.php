@@ -110,9 +110,12 @@ class mif_mr_matrix extends mif_mr_table {
 
     public function filter_tbody_class_tr( $class, $key2 )
     {
-        global $tree;
-        $matrix_arr = $tree['content']['matrix']['data'];
+        // global $tree;
+        // $matrix_arr = $tree['content']['matrix']['data'];
+        $matrix_arr = $this->get_matrix_arr();    
         $cmp = $this->get_cmp( $matrix_arr );
+
+        // $cmp = $this->get_matrix_arr();    
 
         $arr = array();
         if ( ! empty($class) ) $arr[] = $class;
@@ -141,9 +144,14 @@ class mif_mr_matrix extends mif_mr_table {
 
     public function filter_tbody_colspan( $n )
     {
-        global $tree;
-        $matrix_arr = $tree['content']['matrix']['data'];
+        // global $tree;
+        // $matrix_arr = $tree['content']['matrix']['data'];
+        $matrix_arr = $this->get_matrix_arr();    
         $cmp = $this->get_cmp( $matrix_arr );
+        
+        // $cmp = $this->get_matrix_arr();    
+
+        
         $nn = ( ! empty( $cmp ) ) ? count($cmp) : 10;
 
         return $n + $nn;
@@ -156,10 +164,13 @@ class mif_mr_matrix extends mif_mr_table {
     {
         // p($key);
         // p($key2);
-        global $tree;
-        $matrix_arr = $tree['content']['matrix']['data'];
+        // global $tree;
+        // $matrix_arr = $tree['content']['matrix']['data'];
+        $matrix_arr = $this->get_matrix_arr();    
         $cmp = $this->get_cmp( $matrix_arr );
         
+
+        // p($cmp);
         if ( ! empty( $cmp ) ) {
 
             foreach ( $cmp as $c ) {

@@ -85,7 +85,7 @@ jQuery( document ).ready( function( jq ) {
     
     // Selectable cmp
     
-    jq( 'body' ).on( 'click', '.matrix .selectable', function() {
+    jq( 'body' ).on( 'click', '.part .selectable', function() {
         
         // console.log('asd');
         
@@ -104,44 +104,9 @@ jQuery( document ).ready( function( jq ) {
             jq(this).addClass('active');
 
             let cmp = jq(this).attr( 'data-cmp' );
-            jq( 'tr:not(.' + cmp + ')', tbody ).each( function ( index, elem ) { jq(elem).addClass('d-none'); });
+            jq( 'tr.can-select:not(.' + cmp + ')', tbody ).each( function ( index, elem ) { jq(elem).addClass('d-none'); });
                         
         }
-
-        // jq('th', jq(this).parent()).each( function ( index, elem ) { 
-        //     console.log(elem); 
-        //     jq(elem).removeClass('active');
-        // });
-        
-        // let cmp = jq(this).attr( 'data-cmp' );
-        // console.log(cmp);
-        
-        // let table = jq(this).closest('table');
-        // let tbody = jq('tbody', 'table');
-        
-        // jq(this).addClass('active');
-        // let table = jq(this).closest('table tbody');
-        // console.log(table.html());
-        
-        // let tr = jq( 'tr', table );
-        // console.log(tr.html());
-        
-        // jq( 'tr', table ).each( function ( index, elem ) { console.log(elem.html()); });
-        // jq('tr', tbody).each( function ( index, elem ) { 
-            
-        //     console.log(elem); 
-        
-        // });
-        
-        
-        // jq( 'tr', tbody ).each( function ( index, elem ) { 
-        //     jq(elem).removeClass('d-none');
-        // });
-
-        // jq( 'tr:not(.' + cmp + ')', tbody ).each( function ( index, elem ) { 
-        //     // console.log(elem); 
-        //     jq(elem).addClass('d-none');
-        // });
         
         return false;
         

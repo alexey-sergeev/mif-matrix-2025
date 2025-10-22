@@ -37,21 +37,32 @@
 
 /* courses, matrix, ... */
 .part td.cell, .part th.cell {
-    width: 1.8em;
+    width: 2.2em;
     vertical-align: middle;
 }
 
 .part td.long, .part th.long {
-    width: 2.4em;
+    width: 3em;
 }
 
 .part th {
     background-color: #f4f4f4;
 }
 
-.part tr:hover td {
+.part tr:hover {
   transition-duration: 100ms;
+}
+
+.part tr:hover td, .part tbody tr:hover th {
   background-color: #ffb;
+}
+
+.part tr:hover td.mr-green {
+  background-color: #9f9 !important;
+}
+
+.part tr:hover td.mr-blue {
+  background-color: #deb !important;
 }
 
 .part td, .part th {

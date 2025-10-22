@@ -3,7 +3,7 @@
 <?php mif_mr_the_form_begin(); ?>
 <?php mif_mr_show_messages() ?>
 
-<div class="curriculum container mt-3">
+<div class="curriculum container mt-3 overflow-auto">
     
     <?php mif_mr_the_link_edit(); ?>
 
