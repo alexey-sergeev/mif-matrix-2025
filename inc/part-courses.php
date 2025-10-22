@@ -12,9 +12,6 @@ defined( 'ABSPATH' ) || exit;
 
 class mif_mr_courses extends mif_mr_table {
     
-    // private $explanation = array();
-
-
     function __construct()
     {
 
@@ -32,7 +29,6 @@ class mif_mr_courses extends mif_mr_table {
     
 
     
-
     // 
     // Показывает часть 
     // 
@@ -50,10 +46,6 @@ class mif_mr_courses extends mif_mr_table {
         }
     }
     
-
-
-
-    
     
     
     // 
@@ -64,28 +56,11 @@ class mif_mr_courses extends mif_mr_table {
     {
         if ( isset( $_REQUEST['edit'] ) ) return $this->companion_edit( 'courses' );
 
-        // global $tree;
-        // // $m = new modules( $this->get_companion_content( 'courses' ) );
-        // // $html = $m->get_html();
-        // // $m = new modules();
-        
-        // $arr = $tree['content']['courses']['data'];
-        // // if ( isset( $_REQUEST['courses'] ) ) $arr = $m->get_courses_tree( $arr );
-        // if ( isset( $_REQUEST['key'] ) && $_REQUEST['key'] == 'courses' ) $arr = $this->get_courses_tree( $arr );
-
         $arr = $this->get_courses_arr(); 
-
-        // $html = $m->get_html( $arr );
-
-        // p($m->get_arr() );
-
 
         $out = '';
         $out .= '<div class="content-ajax col-12 p-0">';
         
-        // $out .= $this->get_companion_content( 'courses' );
-        // $out .= '$html';
-        // $out .= $html;
         $out .= $this->get_table_html( $arr );       
         $out .= '</div>';
         
@@ -99,17 +74,12 @@ class mif_mr_courses extends mif_mr_table {
   
     public function filter_tbody_col( $arr, $key, $key2, $courses_arr )
     {
-        // p($key);
-        // p($key2);
         global $tree;
-        // p( $matrix_arr = $tree['content']['matrix']['data'][$key2]);        
-        // $text = implode( ', ', $tree['content']['matrix']['data'][$key2] );   
         
         $text = '';
 
         $c = new cmp();
         if ( isset( $tree['content']['matrix']['data'][$key2] ) ) $text = $c->get_cmp( $tree['content']['matrix']['data'][$key2] );
-
 
         $arr[] = $this->add_to_col( $text, array('elem' => 'td', 'class' => '$class', 'title' => '$title') );
 
@@ -135,7 +105,6 @@ class mif_mr_courses extends mif_mr_table {
     {
         return $n + 2;
     }
-
 
 
 }

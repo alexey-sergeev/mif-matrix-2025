@@ -19,20 +19,6 @@ class mif_mr_part_core {
    
     
         
-    // // 
-    // // Получить courses
-    // // 
-
-    // public function get_courses_arr()
-    // {
-    //     global $tree;
-    //     $arr = $tree['content']['courses']['data'];
-    //     if ( isset( $_REQUEST['key'] ) && $_REQUEST['key'] == 'courses' ) $arr = $this->get_courses_tree( $arr );
-    //     return $arr;
-    // }
-
-
-
     // 
     // Выноска
     // 
@@ -100,18 +86,6 @@ class mif_mr_part_core {
     }
 
     
-        
-    // //
-    // // Получить URL ОПОП
-    // //
-
-    // public function get_opop_url()
-    // {
-    //     global $tree;
-    //     return get_permalink( $tree['main']['id'] );
-    // }
-
-
 
     //
     // Получить ссылку поста
@@ -120,11 +94,6 @@ class mif_mr_part_core {
     public function get_link_post( $id, $type = '' )
     {
         if ( (int) $id === 0 ) return $id;
-
-        // $post = get_post( $id );
-        
-        // if ( empty( $post ) ) return $id;
-        // if ( ! empty( $type ) && $post->post_type != $type ) return $id;
         
         if ( ! get_post_type( $id ) && get_post_type( $id ) != $type ) return $id;
 
@@ -145,14 +114,6 @@ class mif_mr_part_core {
         $user = get_user_by( 'login', $login );
         
         if ( empty( $user ) ) return $login;
-        
-        // p($user);
-        
-        // if ( function_exists( 'bp_core_get_user_domain' ) ) {
-            //     $user_url = bp_core_get_user_domain( $user_id );
-            // } else {
-        //     $user_url = get_the_author_link( $user_id );
-        // }
         
         $out = $user->display_name . ' (' . $user->user_login . ')';
         
@@ -195,16 +156,7 @@ class mif_mr_part_core {
 
             $out .= $this->get_callout( 
                 
-                // 'Наследство от страницы ' . get_the_title($from_id) . ': <pre>' . $text . '</pre>'
-                'Данные от страницы «<a href="' . get_the_permalink($from_id) . '">' . get_the_title($from_id) . '</a>»: <pre>' . $text . '</pre>'
-            
-            
-            
-            , 'warning-subtle' );
-
-            // $out .= '<div class="mt-3 mb-3">';
-            // $out .= $text;
-            // $out .= '</div>';
+                'Данные от страницы «<a href="' . get_the_permalink($from_id) . '">' . get_the_title($from_id) . '</a>»: <pre>' . $text . '</pre>', 'warning-subtle' );
 
         }
 
@@ -212,31 +164,8 @@ class mif_mr_part_core {
         $out .= $this->get_tree_to_text($key, $main_key);
         $out .= '</textarea>';
 
-
-        // p($key);
-        // p($main_key);
-
         return apply_filters( 'mif_mr_core_get_edit_textarea', $out, $key, $main_key );
     }
-
-
-
-
-    // //
-    // // Форма редактирования связанной записи (список дисциплин, матрица компетенций, учебный план или др.) 
-    // //
-
-    // public function get_companion_edit()
-    // {
-    //     $out = '';
-
-    //     $out .= '<textarea name="content" class="edit textarea mt-4" autofocus>';
-    //     // $out .= $this->get_tree_to_text($key, $main_key);
-    //     $out .= '</textarea>';
-
-    //     return apply_filters( 'mif_mr_core_get_companion_edit', $out );
-    // }
-
 
 
 
@@ -260,8 +189,6 @@ class mif_mr_part_core {
 
                 if ( preg_match( '/^#.*/', $item ) ) continue; 
             
-                // $out .= '<div class="col-12 p-2 mt-3">' . $mr->get_link_post( (int) $item, $key ) . '</div>';
-                // $out .= '<div class="col-12 p-2">' . $this->get_link_post( (int) $item, '' ) . '</div>'; // ###!!!
                 $out .= $this->get_link_post( (int) $item, '' ); // ###!!!
                 
             } 
@@ -273,25 +200,11 @@ class mif_mr_part_core {
         }
         
         $out .= '</div>'; 
-        // p($tree);
 
         return apply_filters( 'mif_mr_part_get_item_text', $out, $key );
     }
     
     
-    
-    // // 
-    // // 
-    // // 
-    
-    // public function get_item_tab( $text, $slug, $flag = true )
-    // {
-
-
-    //     return apply_filters( 'mif_mr_part_get_item_text', $out, $key );
-    // }
-
-
 
 
 
@@ -304,7 +217,6 @@ class mif_mr_part_core {
         global $tree;
 
         $out = '';
-        // p($tree[$main_key][$key]['from_id']);
         if ( isset( $tree[$main_key][$key]['from_id'] ) ) $out .= $tree[$main_key][$key]['from_id'];
         
         return apply_filters( 'mif_mr_core_get_tree_to_from_id', $out, $key, $main_key );
@@ -323,13 +235,6 @@ class mif_mr_part_core {
       
         $out = '';
         
-        // if ( isset( $tree[$main_key][$key]['from_id'] ) &&
-        //     ( $own && $tree[$main_key][$key]['from_id'] === $mif_mr_opop->get_opop_id() ) ) 
-        //         if ( isset( $tree[$main_key][$key]['data'] ) )    
-        //             $out .= implode( "\n", $tree[$main_key][$key]['data'] );
-        
-        
-        
         if ( isset( $tree[$main_key][$key]['from_id'] ) && isset( $tree[$main_key][$key]['data'] ) ) {
             
             if ( $own && $tree[$main_key][$key]['from_id'] == $mif_mr_opop->get_opop_id() ||
@@ -337,14 +242,7 @@ class mif_mr_part_core {
                         $out .= implode( "\n", $tree[$main_key][$key]['data'] );
 
         }
-
-
-        
-        // p( $tree[$main_key][$key]['data'] );
-        // p($out);
-        // p($key);
-        // p($main_key);
-        
+  
         return apply_filters( 'mif_mr_core_get_tree_to_text', $out, $key, $main_key, $out );
     }
     
@@ -357,16 +255,8 @@ class mif_mr_part_core {
     
     public function get_form_begin()
     {
-        // global $wp_query;
-
         if ( ! isset( $_REQUEST['edit'] )) return;
-        
-        // $part = ''; 
-        // if ( isset( $wp_query->query_vars["part"] ) ) $part = $wp_query->query_vars["part"];
-        
-        // p($wp_query);
-        
-        // $out = '<form method="POST" action="' . get_permalink() . $part . '">';
+
         $out = '<form method="POST" action="' . $this->get_permalink_part() . '">';
         return apply_filters( 'mif_mr_core_get_form_begin', $out );
     }
@@ -383,31 +273,14 @@ class mif_mr_part_core {
         if ( ! isset( $_REQUEST['edit'] )) return;
         
         $out = '';
-        // $out .= '<input type="hidden" name="quiz_id" value="' . $quiz_id . '">';
-        // $out .= '<input type="hidden" name="action" value="run">';
-        // $out .= '<input type="hidden" name="start" value="yes">';
         $out .= '<input type="hidden" name="_wpnonce" value="' . wp_create_nonce( 'mif-mr' ) . '" />';
-
-        // $out .= '<button class="btn-primary btn-lg">' . $button . '</button>';
-        
         $out .= '<input type="submit" name="save" value="Сохранить" class="btn btn-primary mt-6 mb-6 mr-3" />';
         $out .= '<input type="button" onclick="location.href=\'' . $this->get_permalink_part(). '\';"  value="Отмена" class="btn btn-light mt-6 mb-6 mr-3" />';
-        // $out .= '<input type="submit" name="cancel" value="Отмена" class="btn btn-light mt-6 mb-6 mr-3" />';
-        // $out .= '<a href="' . $this->get_permalink_part() . '" class="btn btn-light mt-6 mb-6 mr-3">Отмена</a>';
-        // $out .= '<button href="' . $this->get_permalink_part() . '" class="btn btn-light mt-6 mb-6 mr-3">Отмена</button>';
-        // $out .= '<button class="btn btn-light mt-6 mb-6 mr-3">Отмена</button>';
         $out .= '</form>';        
 
         return apply_filters( 'mif_mr_core_get_form_end', $out );
     }
     
-
-    
-    
-   
-    
-
-
 
     
     //
@@ -430,15 +303,6 @@ class mif_mr_part_core {
     {
         return preg_replace( '/@/', '', $s );
     }
-
-    
-
-
-
-    
-
-    
-
 
 }
 

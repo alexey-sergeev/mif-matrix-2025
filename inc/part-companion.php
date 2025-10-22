@@ -43,16 +43,9 @@ class mif_mr_companion extends mif_mr_part_core {
     // ID связанной записи 
     //
 
-    // public function get_companion_id( $type = 'courses', $opop_id )
     public function get_companion_id( $type = 'courses', $opop_id = NULL )
     {
-        // p($opop_id);
-        // global $mif_mr_opop;
-        // if ( $opop_id === NULL ) $opop_id = $mif_mr_opop->get_opop_id();
-        // if ( isset( $mif_mr_opop ) && $opop_id === NULL ) $opop_id = $mif_mr_opop->get_opop_id();
-        // if ( isset( $mif_mr_opop ) && $opop_id === NULL ) $opop_id = $mif_mr_opop->get_opop_id();
         if ( $opop_id === NULL ) $opop_id = get_the_ID();
-        // if ( $opop_id === NULL ) return;
         
         $posts = get_posts( array(
             'post_type'     => $type,
@@ -62,8 +55,6 @@ class mif_mr_companion extends mif_mr_part_core {
             
         $companion_id = ( isset( $posts[0]->ID ) ) ? $posts[0]->ID : NULL;
         
-        // p($posts);
-
         return apply_filters( 'mif_mr_core_get_companion_id', $companion_id, $type, $opop_id );
     }
     
@@ -75,7 +66,6 @@ class mif_mr_companion extends mif_mr_part_core {
     
     public function get_companion_content( $type = 'courses', $opop_id = NULL )
     {
-        // global $mif_mr_opop;
         $content = '';
         
         if ( $opop_id === NULL ) $opop_id = get_the_ID();

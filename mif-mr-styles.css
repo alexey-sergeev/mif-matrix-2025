@@ -25,6 +25,10 @@
     cursor: pointer;
 }
 
+.part input[type=checkbox] {
+    cursor: pointer;
+}
+
 .part th.active {
     background-color: #ff5400;
 }
@@ -42,8 +46,17 @@
 }
 
 .part td.long, .part th.long {
-    width: 3em;
+    width: 2.2em;
+    /* width: 3em; */
 }
+
+/* .content .part table {
+    width: auto;
+}
+
+.part th.name-courses {
+    width: 40em;
+} */
 
 .part th {
     background-color: #f4f4f4;

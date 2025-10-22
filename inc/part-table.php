@@ -19,7 +19,6 @@ class mif_mr_table extends mif_mr_companion {
     }
 
 
-
     
     // 
     // Возвращает table
@@ -29,11 +28,7 @@ class mif_mr_table extends mif_mr_companion {
     {
         $html = '';
 
-        // p($arr);
-        
         $html .= '<table border="1">';
-        // $html .= '<table border="1" class="overflow-auto">';
-        
 
         $arr = $this->get_thead_arr($courses_arr);
         
@@ -48,31 +43,7 @@ class mif_mr_table extends mif_mr_companion {
         $html .= $this->get_html_part($arr);
         $html .= '</tbody>';
 
-        // foreach ( $arr as $item ) {
-
-        //     $class = ( isset( $item['att']['class'] ) ) ? ' class="' . $item['att']['class'] . '"' : ''; 
-        //     $html .= '<' . $item['att']['elem'] . $class . '>';
-
-        //     foreach ( (array) $item['col'] as $item2 ) {
-                
-        //         $colspan = ( isset( $item2['att']['colspan'] ) ) ? ' colspan="' . $item2['att']['colspan'] . '"' : ''; 
-        //         $class = ( isset( $item2['att']['class'] ) ) ? ' class="' . $item2['att']['class'] . '"' : ''; 
-        //         $title = ( isset( $item2['att']['title'] ) ) ? ' title="' . $item2['att']['title'] . '"' : ''; 
-
-        //         $html .= '<' . $item2['att']['elem'] . $colspan . $class . $title . '>';
-        //         $html .= $item2['text'];
-
-        //         $html .= '</' . $item2['att']['elem'] . '>';
-                
-        //     }
-            
-        //     $html .= '</' . $item['att']['elem'] . '>';
-            
-        // }
-        
-        
         $html .= '</table>';
-
 
         return $html;
     }
@@ -136,33 +107,16 @@ class mif_mr_table extends mif_mr_companion {
 
         $arr = apply_filters( 'mif-mr-thead-row', $arr, $courses_arr ); 
 
-        // $arr = $this->filter( $arr );
-
         return $arr;
     }
 
-    // public function filter( $arr )
-    // {
-    //     $arr = array_merge( $arr, $arr );
 
-    //     return $arr;
-    // }
     // 
     // Возвращает дисциплины в массиве для HTML-таблицы
     // 
 
     public function get_tbody_arr( $courses_arr = array() )
     {
-        // Определить данные для отображения и режим просмотра
-        
-        // $mode = 'courses';
-        // $first = current( $courses_arr );
-        // if ( isset( $first['att'] ) ) $mode = 'modules';
-        // if ( isset( $first['att']['singular'] ) ) $mode = 'tree';
-        
-        // // Если просто дисциплины, то привести массив к виду модулей или дерева
-        
-        // if ( $mode == 'courses' ) $courses_arr = array( 'courses' => array( 'courses' => $courses_arr ) );
         
         $mode = $this->get_mode($courses_arr);
 
@@ -171,7 +125,6 @@ class mif_mr_table extends mif_mr_companion {
 
         foreach ( $courses_arr as $key => $item ) {
 
-            // p($item);
             $arr2 = array();
             
             $code = ( isset( $item['att']['code'] ) ) ? $item['att']['code'] : '';
@@ -185,8 +138,6 @@ class mif_mr_table extends mif_mr_companion {
             $arr[] = $this->add_to_row( $arr2, array('elem' => 'tr') );
             
             foreach ( (array) $item['courses'] as $key2 => $item2 ) {
-                // p($key2);
-                // p($item2);
                 
                 $arr2 = array();
                 $code = ( isset( $item2['code'] ) ) ? $item2['code'] : '';
@@ -205,7 +156,6 @@ class mif_mr_table extends mif_mr_companion {
 
         }
 
-        // p($arr);
         return $arr;
     }
 
@@ -280,21 +230,6 @@ class mif_mr_table extends mif_mr_companion {
         if ( isset( $_REQUEST['key'] ) && $_REQUEST['key'] == 'courses' ) $arr = $this->get_courses_tree( $arr );
         return $arr;
     }
-
-
-    
-
-    // private function add_to_arr( $col, $att_c = array(), $att_r = array() )
-    // {
-    //     return array(
-    //                 'att' => $att_r,
-    //                 'row' => array(
-    //                             'att' => $att_c,
-    //                             'col' => $col
-    //                             )
-    //                 );
-    // }
-
 
 
 
