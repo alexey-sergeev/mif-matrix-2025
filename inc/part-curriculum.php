@@ -219,7 +219,7 @@ class mif_mr_curriculum extends mif_mr_table {
             $arr2[] = $this->add_to_col( '', array('elem' => 'th', 'rowspan' => 2) );
             $arr2[] = $this->add_to_col( '', array('elem' => 'th', 'rowspan' => 2, 'class' => 'name-courses') );
             
-            $arr2[] = $this->add_to_col( 'ЗЕ', array('elem' => 'th', 'class' => 'mr-blue align-middle', 'rowspan' => 2) );
+            $arr2[] = $this->add_to_col( 'ЗЕ', array('elem' => 'th', 'class' => 'mr-blue align-middle', 'rowspan' => 2, 'title' => 'Зачетных единиц') );
             $arr2[] = $this->add_to_col( 'Всего', array('elem' => 'th', 'colspan' => 4) );
             
             for ( $i = 1; $i <= $n; $i++ ) {
@@ -238,23 +238,23 @@ class mif_mr_curriculum extends mif_mr_table {
             
             $arr2 = array();
             
-            $arr2[] = $this->add_to_col( 'в', array('elem' => 'th') );
-            $arr2[] = $this->add_to_col( 'л', array('elem' => 'th') );
-            $arr2[] = $this->add_to_col( 'с', array('elem' => 'th') );
-            $arr2[] = $this->add_to_col( 'к', array('elem' => 'th') );
-            
+            $arr2[] = $this->add_to_col( 'в', array('elem' => 'th', 'title' => 'Всего часов') );
+            $arr2[] = $this->add_to_col( 'л', array('elem' => 'th', 'title' => 'Аудиторных часов') );
+            $arr2[] = $this->add_to_col( 'с', array('elem' => 'th', 'title' => 'Часов СРС') );
+            $arr2[] = $this->add_to_col( 'к', array('elem' => 'th', 'title' => 'Часов контроля') );
+
             for ( $i = 1; $i <= $n; $i++ ) {
                 
                 $class = ( $i % 2 == 0 ) ? 'cell' : 'cell mr-blue';
                 $class .= ' rsm-' . $i;
 
-                $arr2[] = $this->add_to_col( 'л', array('elem' => 'th', 'class' => $class) );
-                $arr2[] = $this->add_to_col( 'л', array('elem' => 'th', 'class' => $class) );
-                $arr2[] = $this->add_to_col( 'п', array('elem' => 'th', 'class' => $class) );
-                $arr2[] = $this->add_to_col( 'с', array('elem' => 'th', 'class' => $class) );
-                $arr2[] = $this->add_to_col( 'к', array('elem' => 'th', 'class' => $class) );
-                $arr2[] = $this->add_to_col( 'к', array('elem' => 'th', 'class' => $class) );
-                $arr2[] = $this->add_to_col( 'в', array('elem' => 'th', 'class' => $class . ' d-none') );
+                $arr2[] = $this->add_to_col( 'л', array('elem' => 'th', 'class' => $class, 'title' => 'Лекции') );
+                $arr2[] = $this->add_to_col( 'л', array('elem' => 'th', 'class' => $class, 'title' => 'Лабораторные работы') );
+                $arr2[] = $this->add_to_col( 'п', array('elem' => 'th', 'class' => $class, 'title' => 'Практики') );
+                $arr2[] = $this->add_to_col( 'с', array('elem' => 'th', 'class' => $class, 'title' => 'Самостоятельная работа') );
+                $arr2[] = $this->add_to_col( 'к', array('elem' => 'th', 'class' => $class, 'title' => 'Контроль') );
+                $arr2[] = $this->add_to_col( 'к', array('elem' => 'th', 'class' => $class, 'title' => 'Тип контроля') );
+                $arr2[] = $this->add_to_col( 'в', array('elem' => 'th', 'class' => $class . ' d-none', 'title' => 'Всего часов') );
                 
             }
             

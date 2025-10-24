@@ -131,8 +131,9 @@ class mif_mr_table extends mif_mr_companion {
 
             if ( $mode == 'modules' ) $arr2[] = $this->add_to_col( $code, array('elem' => 'th') );
 
+            $text = ( $key == '__default__' ) ? 'Дисциплины и практики вне модулей' : $key;
             $arr2[] = ( $mode == 'modules' ) ? 
-                $this->add_to_col( $key, array( 'elem' => 'th', 'colspan' => apply_filters( 'mif-mr-tbody-colspan', 1 ) ) ) :
+                $this->add_to_col( $text, array( 'elem' => 'th', 'colspan' => apply_filters( 'mif-mr-tbody-colspan', 1 ) ) ) :
                 $this->add_to_col( $item['att']['plural'], array( 'elem' => 'th', 'colspan' => apply_filters( 'mif-mr-tbody-colspan', 2 ) ) ) ;
                 
             $arr[] = $this->add_to_row( $arr2, array('elem' => 'tr') );
@@ -154,7 +155,11 @@ class mif_mr_table extends mif_mr_companion {
 
             }
 
+            $arr = apply_filters( 'mif-mr-tbody-section-row', $arr, $key, $courses_arr ); 
+            
         }
+        
+        $arr = apply_filters( 'mif-mr-tbody-end-row', $arr, $courses_arr ); 
 
         return $arr;
     }

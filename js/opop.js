@@ -77,8 +77,9 @@ jQuery( document ).ready( function( jq ) {
         if ( f ) {
             
             let cmp = jq(this).attr( 'data-cmp' );
+            // console.log( cmp );
             
-            // jq(this).addClass('active');
+            jq(this).addClass('active');
             
             jq('th.selectable.' + cmp, jq(this).closest('table')).each( function ( index, elem ) { 
                 

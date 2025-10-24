@@ -46,9 +46,26 @@ class modules {
 
         }
 
+        // p($this->modules_arr);
         // Сортировать дисциплины и практики вне модулей
 
         // if ( isset( $this->modules_arr[$this->default_name] ) ) $this->modules_arr[$this->default_name]['courses'] = $this->sort_courses( $this->modules_arr[$this->default_name]['courses'] );
+
+        // p($this->modules_arr[$this->default_name]);
+
+        if ( isset( $this->modules_arr[$this->default_name]['courses'] ) )
+        
+            foreach ( $this->modules_arr[$this->default_name]['courses'] as $key => $item ) {
+
+                if ( in_array( $item['unit'], array( 'ГИА', 'ФТД' ) ) ) {
+                    
+                    $this->modules_arr[$this->items_name[$item['unit']]['plural']]['courses'][$key] = $item;
+                    unset( $this->modules_arr[$this->default_name]['courses'][$key] );
+                    
+                }
+
+            }
+
 
         // Найти вариативные модули
 
@@ -81,8 +98,7 @@ class modules {
             }
         }
 
-
-
+        // p($this->modules_arr);
         // Построить массив дисциплин
 
         $this->courses_arr = $this->get_courses_arr( $this->modules_arr );
@@ -183,7 +199,7 @@ class modules {
 
         $p = new parser();
         $data = $p->get_arr( $data, array( 'section' => 'courses', 'att_name' => true, 'nomarker' => true ) );
-
+        
         foreach ( $data as $item ) {
 
             $att = ( isset( $item['courses']['att'] ) ) ? $item['courses']['att'] : array();
@@ -205,7 +221,7 @@ class modules {
     private function get_att( $data, $default_item = false )
     {
         $arr = array();
-
+        
         $data = array_map( 'trim', (array) $data );
 
         foreach ( $data as $item ) {
@@ -241,7 +257,7 @@ class modules {
         }
 
         if ( $default_item && empty( $arr['unit'] ) ) $arr['unit'] = $default_item;
-
+        
         return $arr;
     }
 

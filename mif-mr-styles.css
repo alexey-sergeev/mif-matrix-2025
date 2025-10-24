@@ -67,10 +67,11 @@
 }
 
 .part tr:hover td, .part tbody tr:hover th {
+/* .part tr:hover td { */
   background-color: #ffb;
 }
 
-.part tr:hover td.mr-green {
+.part tr:hover td.mr-green, .part tr:hover th.mr-green {
   background-color: #9f9 !important;
 }
 
@@ -135,7 +136,9 @@ html {
     max-width: 100% !important;
 }
 
-
+.hint {
+  border-bottom: 1px dotted #aaa !important;
+}
 
 /* Редактирование */
 

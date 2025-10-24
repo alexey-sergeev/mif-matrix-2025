@@ -15,11 +15,13 @@ class mif_mr_matrix extends mif_mr_table {
 
         parent::__construct();
         
-        add_filter( 'mif-mr-tbody-col', array( $this, 'filter_tbody_col'), 10, 4 );
-        add_filter( 'mif-mr-tbody-class-tr', array( $this, 'filter_tbody_class_tr'), 10, 2 );
-        add_filter( 'mif-mr-tbody-colspan', array( $this, 'filter_tbody_colspan'), 10 );
+        add_filter( 'mif-mr-tbody-col', array( $this, 'filter_tbody_col' ), 10, 4 );
+        add_filter( 'mif-mr-tbody-class-tr', array( $this, 'filter_tbody_class_tr' ), 10, 2 );
+        add_filter( 'mif-mr-tbody-colspan', array( $this, 'filter_tbody_colspan' ), 10 );
+        add_filter( 'mif-mr-tbody-section-row', array( $this, 'filter_tbody_section_row' ), 10, 3 );
+        add_filter( 'mif-mr-tbody-end-row', array( $this, 'filter_tbody_end_row' ), 10, 2 );
         
-        add_filter( 'mif-mr-thead-row', array( $this, 'filter_thead_row'), 10, 2 );
+        add_filter( 'mif-mr-thead-row', array( $this, 'filter_thead_row' ), 10, 2 );
 
         $this->save( 'matrix' );
 
@@ -67,7 +69,122 @@ class mif_mr_matrix extends mif_mr_table {
     }
     
     
+   
     
+    //
+    //
+    //
+
+    public function filter_tbody_end_row( $arr, $courses_arr )
+    {
+        $matrix_arr = $this->get_matrix_arr();
+        $cmp = $this->get_cmp( $matrix_arr );
+
+        $arr2 = array();
+
+        $arr2[] = $this->add_to_col( '', array( 'elem' => 'th' ) );
+        $arr2[] = $this->add_to_col( 'ИТОГО:', array( 'elem' => 'th' ) );
+        
+        $count_arr = array();
+
+        // p($key);
+        // p( $courses_arr[$key]['courses'] );
+        foreach ( (array) $courses_arr as $key => $item )
+            foreach ( (array) $item['courses'] as $key2 => $item2 ) {
+
+                foreach ( $cmp as $c ) 
+                    if ( in_array( $c, $matrix_arr[$key2] ) ) {
+                        
+                        if ( ! isset( $count_arr[$c] ) ) $count_arr[$c] = 0;
+                        $count_arr[$c]++;
+                        
+                        // p('@');
+                        // p($key2);
+                        // p($matrix_arr[$key2]);
+                        // p($c);
+                        
+                        // break;
+                    }
+                    
+            }
+                
+            // p($count_arr);        
+            
+        foreach ( $cmp as $c ) {
+
+            $text = ( isset( $count_arr[$c] ) ) ? $count_arr[$c] : ''; 
+            $class = ( ! empty( $text ) ) ? 'text-center mr-green': '';
+
+            $arr2[] = $this->add_to_col( $text, array( 'elem' => 'th', 'class' => $class ) );
+
+        } 
+        
+        
+        $arr[] = $this->add_to_row( $arr2, array( 'elem' => 'tr' ) );
+
+        return $arr;
+    }
+
+    
+    
+   
+    
+    //
+    //
+    //
+
+    public function filter_tbody_section_row( $arr, $key, $courses_arr )
+    {
+        $matrix_arr = $this->get_matrix_arr();
+        $cmp = $this->get_cmp( $matrix_arr );
+
+        $arr2 = array();
+
+        $arr2[] = $this->add_to_col( '', array( 'elem' => 'th' ) );
+        $arr2[] = $this->add_to_col( 'итого по разделу:', array( 'elem' => 'th' ) );
+        
+        $count_arr = array();
+
+        // p($key);
+        // p( $courses_arr[$key]['courses'] );
+        foreach ( (array) $courses_arr[$key]['courses'] as $key2 => $item2 ) {
+
+            foreach ( $cmp as $c ) 
+                if ( in_array( $c, $matrix_arr[$key2] ) ) {
+                    
+                    if ( ! isset( $count_arr[$c] ) ) $count_arr[$c] = 0;
+                    $count_arr[$c]++;
+                    
+                    // p('@');
+                    // p($key2);
+                    // p($matrix_arr[$key2]);
+                    // p($c);
+                    
+                    // break;
+                }
+                
+        }
+            
+            // p($count_arr);        
+            
+        foreach ( $cmp as $c ) {
+
+            $text = ( isset( $count_arr[$c] ) ) ? $count_arr[$c] : ''; 
+            $class = ( ! empty( $text ) ) ? 'text-center mr-green': '';
+
+            $arr2[] = $this->add_to_col( $text, array( 'elem' => 'th', 'class' => $class ) );
+
+        } 
+        
+        
+        $arr[] = $this->add_to_row( $arr2, array( 'elem' => 'tr' ) );
+
+        return $arr;
+    }
+
+
+
+
 
     public function filter_tbody_class_tr( $class, $key2 )
     {
@@ -75,7 +192,7 @@ class mif_mr_matrix extends mif_mr_table {
         $cmp = $this->get_cmp( $matrix_arr );
 
         $arr = array();
-        if ( ! empty($class) ) $arr[] = $class;
+        if ( ! empty( $class ) ) $arr[] = $class;
 
         foreach ( $cmp as $c ) {
 
@@ -136,8 +253,9 @@ class mif_mr_matrix extends mif_mr_table {
     {
         $arr = array();
 
-        global $tree;
-        $matrix_arr = $tree['content']['matrix']['data'];
+        // global $tree;
+        // $matrix_arr = $tree['content']['matrix']['data'];
+        $matrix_arr = $this->get_matrix_arr();    
         $cmp = $this->get_cmp( $matrix_arr );
 
         $index = array();

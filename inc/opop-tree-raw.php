@@ -24,18 +24,19 @@ class mif_mr_opop_tree_raw extends mif_mr_opop_core {
 
         global $tree;
         $tree = $this->get_tree_raw(); 
+
         // p($tree);
     }
     
-    
+
     // 
     // Tree
     // 
     
     public function get_tree()
     {
-       $t = $this->get_tree_raw(); 
-       return apply_filters( 'mif_mr_core_opop_get_tree', $t );
+        $t = $this->get_tree_raw(); 
+        return apply_filters( 'mif_mr_core_opop_get_tree', $t );
     }
     
 
