@@ -23,6 +23,10 @@ include_once dirname( __FILE__ ) . '/part-courses.php';
 include_once dirname( __FILE__ ) . '/part-matrix.php';
 include_once dirname( __FILE__ ) . '/part-curriculum.php';
 
+include_once dirname( __FILE__ ) . '/companion-core.php';
+include_once dirname( __FILE__ ) . '/companion-competencies.php';
+include_once dirname( __FILE__ ) . '/companion-templates.php';
+
 include_once dirname( __FILE__ ) . '/lib-download.php';
 include_once dirname( __FILE__ ) . '/lib-xlsx-core.php';
 include_once dirname( __FILE__ ) . '/lib-docx-core.php';
@@ -168,6 +172,13 @@ class mif_mr_init extends mif_mr_functions {
                 
                 } 
     
+                if ( $_REQUEST['action'] == 'competencies' ) {
+                    
+                    // $m = new mif_mr_curriculum();
+                    // echo $m->get_curriculum();
+                
+                } 
+    
             }
             
 
@@ -198,9 +209,11 @@ class mif_mr_init extends mif_mr_functions {
     private function rewrite_rule()
     {
         add_rewrite_tag('%part%', '([^&]+)');
-        add_rewrite_tag('%course%', '([^&]+)');
+        // add_rewrite_tag('%course%', '([^&]+)');
+        add_rewrite_tag('%id%', '([^&]+)');
         add_rewrite_rule('^opop/([^/]*)/([^/]*)/?$','index.php?opop=$matches[1]&part=$matches[2]','top');
-        add_rewrite_rule('^opop/([^/]*)/([^/]*)/([^/]*)/?$','index.php?opop=$matches[1]&part=$matches[2]&course=$matches[3]','top');
+        // add_rewrite_rule('^opop/([^/]*)/([^/]*)/([^/]*)/?$','index.php?opop=$matches[1]&part=$matches[2]&course=$matches[3]','top');
+        add_rewrite_rule('^opop/([^/]*)/([^/]*)/([^/]*)/?$','index.php?opop=$matches[1]&part=$matches[2]&id=$matches[3]','top');
     }
 
 
@@ -407,6 +420,46 @@ class mif_mr_init extends mif_mr_functions {
         ) );    
         
 
+
+        
+        register_post_type( 'competencies', array(
+            'label'  => null,
+            'labels' => array(
+                'name'               => __( 'Список компетенций', 'mif-mr' ), // основное название для типа записи
+                'singular_name'      => __( 'Список компетенций', 'mif-mr' ), // название для одной записи этого типа
+                'add_new'            => __( 'Создать список компетенций', 'mif-mr' ), // для добавления новой записи
+                'add_new_item'       => __( 'Создание список компетенций', 'mif-mr' ), // заголовка у вновь создаваемой записи в админ-панели.
+                'edit_item'          => __( 'Редактирование список компетенций', 'mif-mr' ), // для редактирования типа записи
+                'new_item'           => __( 'Новая список компетенций', 'mif-mr' ), // текст новой записи
+                'view_item'          => __( 'Посмотреть список компетенций', 'mif-mr' ), // для просмотра записи этого типа.
+                'search_items'       => __( 'Найти', 'mif-mr' ), // для поиска по этим типам записи
+                'not_found'          => __( 'Список компетенций не найдена', 'mif-mr' ), // если в результате поиска ничего не было найдено
+                'not_found_in_trash' => __( 'Не найдено в корзине', 'mif-mr' ), // если не было найдено в корзине
+                'parent_item_colon'  => '', // для родителей (у древовидных типов)
+            ),
+            'description'         => '',
+            'public'              => true,
+            'publicly_queryable'  => null,
+            'exclude_from_search' => null,
+            'show_ui'             => null,
+            'show_in_menu'        => true, // показывать ли в меню адмнки
+            'show_in_admin_bar'   => null, // по умолчанию значение show_in_menu
+            'show_in_nav_menus'   => null,
+            'show_in_rest'        => null, // добавить в REST API. C WP 4.7
+            'rest_base'           => null, // $post_type. C WP 4.7
+            'menu_position'       => 20,
+            'menu_icon'           => 'dashicons-forms', 
+            'capability_type'   => 'post',
+            //'capabilities'      => 'post', // массив дополнительных прав для этого типа записи
+            'map_meta_cap'      => true, // Ставим true чтобы включить дефолтный обработчик специальных прав
+            'hierarchical'        => false,
+            'supports'            => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'custom-fields', 'revisions' ), // 'title','editor','author','thumbnail','excerpt','trackbacks','custom-fields','comments','revisions','page-attributes','post-formats'
+            'taxonomies'          => array(),
+            'has_archive'         => true,
+            'rewrite'             => array( 'slug' => 'competencies' ),
+            'query_var'           => true,
+
+        ) );
 
 
         // register_post_type( 'courses', array(

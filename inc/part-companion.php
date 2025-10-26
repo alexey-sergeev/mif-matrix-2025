@@ -9,7 +9,7 @@
 defined( 'ABSPATH' ) || exit;
 
 
-class mif_mr_companion extends mif_mr_part_core {
+class mif_mr_part_companion extends mif_mr_part_core {
     
 
     function __construct()
@@ -45,7 +45,8 @@ class mif_mr_companion extends mif_mr_part_core {
 
     public function get_companion_id( $type = 'courses', $opop_id = NULL )
     {
-        if ( $opop_id === NULL ) $opop_id = get_the_ID();
+        // if ( $opop_id === NULL ) $opop_id = get_the_ID();
+        if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();;
         
         $posts = get_posts( array(
             'post_type'     => $type,
@@ -68,7 +69,8 @@ class mif_mr_companion extends mif_mr_part_core {
     {
         $content = '';
         
-        if ( $opop_id === NULL ) $opop_id = get_the_ID();
+        // if ( $opop_id === NULL ) $opop_id = get_the_ID();
+        if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();;
                 
         if ( $this->get_companion_id( $type, $opop_id ) !== NULL ) {
             
@@ -130,12 +132,12 @@ class mif_mr_companion extends mif_mr_part_core {
     
     
     
-    public function get_courses_tree( $arr )
-    {
-        $m = new modules();
-        $arr = $m->get_courses_tree( $arr );
-        return $arr;
-    }
+    // public function get_courses_tree( $arr )
+    // {
+    //     $m = new modules();
+    //     $arr = $m->get_courses_tree( $arr );
+    //     return $arr;
+    // }
     
 }
 

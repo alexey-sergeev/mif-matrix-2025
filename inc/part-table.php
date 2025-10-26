@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit;
 
 
 
-class mif_mr_table extends mif_mr_companion {
+class mif_mr_table extends mif_mr_part_companion {
 
     function __construct()
     {

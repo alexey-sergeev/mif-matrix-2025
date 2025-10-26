@@ -107,6 +107,17 @@ class mif_mr_opop extends mif_mr_opop_tree_raw {
                 $mif_mr_curriculum->the_show();
             break;
             
+            case 'competencies':
+                global $mif_mr_competencies;
+                $mif_mr_competencies = new mif_mr_competencies();
+                $mif_mr_competencies->the_show();
+
+                // p('Competencies');
+                // global $mif_mr_curriculum;
+                // $mif_mr_curriculum = new mif_mr_curriculum();
+                // $mif_mr_curriculum->the_show();
+            break;
+            
             case 'stat':
                 global $tree;
                 p($tree);

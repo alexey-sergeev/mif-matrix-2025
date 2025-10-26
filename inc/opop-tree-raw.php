@@ -84,13 +84,16 @@ class mif_mr_opop_tree_raw extends mif_mr_opop_core {
             // $t = array_replace_recursive( $t, $this->get_companion( 'courses', $item ) ); 
             // $t = array_replace_recursive( $t, $this->get_companion( 'matrix', $item ) ); 
             // $t = array_replace_recursive( $t, $this->get_companion( 'curriculum', $item ) ); 
-
+            
             $t = $this->arr_replace( $t, $this->get_param_and_meta( $item ) ); 
             $t = $this->arr_replace( $t, $this->get_companion( 'courses', $item ) ); 
             $t = $this->arr_replace( $t, $this->get_companion( 'matrix', $item ) ); 
             $t = $this->arr_replace( $t, $this->get_companion( 'curriculum', $item ) ); 
+            $t = array_replace_recursive( $t, $this->get_companion( 'competencies', $item ) ); 
             // 
             
+            // p($this->get_companion( 'competencies', $item ));
+
         }
 
 
@@ -161,7 +164,7 @@ class mif_mr_opop_tree_raw extends mif_mr_opop_core {
     {
         if ( $opop_id === NULL ) $opop_id = get_the_ID();
         // p($opop_id);
-        $c = new mif_mr_companion();
+        $c = new mif_mr_part_companion();
 
         switch ( $part ) {
                 
@@ -183,6 +186,15 @@ class mif_mr_opop_tree_raw extends mif_mr_opop_core {
                     $data = $m->get_arr();
                 break;
                 
+                case 'competencies':
+                    // $m = new curriculum( $c->get_companion_content( 'curriculum', $opop_id ) );
+                    // $data = $m->get_arr();
+                    $m = new mif_mr_competencies();
+                    $data = $m->get_all_arr( $opop_id );
+                break;
+                
+
+
                 default:
                     $data = 'none';
                 break;

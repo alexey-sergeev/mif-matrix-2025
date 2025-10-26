@@ -89,7 +89,7 @@ class parser {
             // Взять название и атрибуты
 
             if ( preg_match( '/^=/', $item ) ) {
-
+                
                 $name_data = $this->parse_name( $item, $att_parts );
                 $subkey = mb_strtoupper( $name_data['name'] );
                 $out[$key][$section]['parts'][$subkey] = $name_data;

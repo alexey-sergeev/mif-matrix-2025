@@ -259,7 +259,7 @@ class mif_mr_opop_core {
     // Получить id ОПОП
     //
 
-    public function get_opop_id()
+    public static function get_opop_id()
     {
         global $tree;
         return $tree['main']['id'];
@@ -270,7 +270,7 @@ class mif_mr_opop_core {
     // Получить название ОПОП
     //
 
-    public function get_opop_title()
+    public static function get_opop_title()
     {
         global $tree;
         return $tree['main']['title'];
@@ -281,7 +281,7 @@ class mif_mr_opop_core {
     // Получить URL ОПОП
     //
 
-    public function get_opop_url()
+    public static function get_opop_url()
     {
         global $tree;
         return get_permalink( $tree['main']['id'] );
