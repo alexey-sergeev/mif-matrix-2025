@@ -55,9 +55,10 @@ class mif_mr_courses extends mif_mr_table {
     public function get_courses()
     {
         if ( isset( $_REQUEST['edit'] ) ) return $this->companion_edit( 'courses' );
-
+        
         $arr = $this->get_courses_arr(); 
-
+        // return '@2';
+        
         $out = '';
         $out .= '<div class="content-ajax col-12 p-0">';
         

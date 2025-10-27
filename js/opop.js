@@ -40,16 +40,160 @@ jQuery( document ).ready( function( jq ) {
             
         } );
         
-        
-        
         jq( 'body .nav-tabs label' ).each( function ( index, elem ) { jq(elem).removeClass('active'); });
         jq(this).closest('label').addClass('active');
         
         return false;
         
     } );    
+
+
+
+
+    // // Показать окно редактирования
+    
+    // jq( 'body' ).on( 'click', 'a.edit', function() {
+        
+    //     let opop_id = jq( 'input[name=opop]' ).val();
+    //     let comp_id = jq( 'input[name=comp]' ).val();
+    //     let sub_id = jq(this).attr( 'data-sub' );
+    //     let nonce = jq( 'input[name=_wpnonce]' ).val();
+
+    //     let div = jq( 'div.content-ajax', jq(this).closest('span') );
+    //     jq( 'i.fa-spinner', jq(this).closest('div') ).removeClass('d-none');
+
+    //     jq.ajax( {
+    //         url: ajaxurl,
+    //         type: 'POST',
+    //         data: {
+    //                 action: 'edit',
+    //                 opop: opop_id,
+    //                 comp: comp_id,
+    //                 sub: sub_id,
+    //                 _wpnonce: nonce,
+    //         },
+    //         success: function( response ) {
+
+    //             if ( response ) {
+
+    //                 div.replaceWith( response )
+    //                 // console.log( response );
+                    
+    //             } else {
+                    
+    //                 console.log( 'error 5' );
+                    
+    //             }
+                
+    //         },
+    //         error: function( response ) {
+                
+    //             console.log( 'error 6' );
+                
+    //         },
+            
+    //     } );
+
+    //     jq( 'i.fa-spinner', jq(this).closest('div') ).addClass('d-none');
+
+    //     return false;
+        
+    // } );    
     
     
+    
+    // Показать окно редактирования
+    
+    jq( 'body' ).on( 'click', 'a.edit', function() {
+        sub_do( this, 'edit' );
+        return false;
+    } );    
+
+
+
+    // Отмена
+    
+    jq( 'body' ).on( 'click', 'button.cancel', function() {
+        sub_do( this, 'cancel' );
+        return false;
+    } );    
+
+
+
+    // save
+    
+    jq( 'body' ).on( 'click', 'button.save', function() {
+        sub_do( this, 'save' );
+        return false;
+    } );    
+
+
+
+
+
+    function sub_do( elem, action ) {
+        
+        let sub_id = jq(elem).attr( 'data-sub' );
+        
+        let opop_id = jq( 'input[name=opop]' ).val();
+        let comp_id = jq( 'input[name=comp]' ).val();
+        let nonce = jq( 'input[name=_wpnonce]' ).val();
+        let content = jq( 'textarea.content', jq(elem).closest('span') ).val();
+        
+        let div = jq( 'div.content-ajax', jq(elem).closest('span') );
+        jq( 'i.fa-spinner', jq(elem).closest('div') ).removeClass('d-none');
+
+        jq.ajax( {
+            url: ajaxurl,
+            type: 'POST',
+            data: {
+                    action: action,
+                    opop: opop_id,
+                    comp: comp_id,
+                    sub: sub_id,
+                    content: content,
+                    _wpnonce: nonce,
+            },
+            success: function( response ) {
+
+                if ( response ) {
+
+                    div.replaceWith( response )
+                    // console.log( response );
+                    // jq(div).fadeOut('fast', function() {
+                    //     jq(div).replaceWith(response);
+                    //     $(this).fadeIn('fast');
+                    // });
+
+
+                } else {
+                    
+                    console.log( 'error 5' );
+                    
+                }
+                
+            },
+            error: function( response ) {
+                
+                console.log( 'error 6' );
+                
+            },
+            
+        } );
+
+        jq( 'i.fa-spinner', jq(elem).closest('div') ).addClass('d-none');
+        // jq( 'div.row', jq(elem).closest('span') ).removeClass('display');
+        // jq( 'div.row', jq(elem).closest('span') ).each( function ( index, elem2 ) { jq(elem2).css('display', 'flex'); });
+        // jq( 'div.row', jq(elem).closest('span') ).each( function ( index, elem2 ) { jq(elem2).removeAttr('display'); });
+        
+        
+        // return false;
+        
+    }
+
+
+
+
     // #fullsize
     
     jq( 'body' ).on( 'click', '#fullsize', function() {
@@ -58,6 +202,26 @@ jQuery( document ).ready( function( jq ) {
         jq( 'div.container' ).toggleClass( 'fullsize' );
         jq( '#primary div.column' ).toggleClass( 'is-11-desktop is-12-desktop' );
         
+        return false;
+        
+    })
+    
+    
+    // 
+    
+    jq( 'body' ).on( 'click', '#bnt-roll-up', function() {
+        
+        jq( '.coll', jq(this).closest('.part') ).slideUp();
+        return false;
+        
+    })
+    
+    
+    // 
+    
+    jq( 'body' ).on( 'click', '#bnt-show', function() {
+        
+        jq( '.coll', jq(this).closest('.part') ).slideDown();
         return false;
         
     })
@@ -151,5 +315,9 @@ jQuery( document ).ready( function( jq ) {
     })
     
     
+
+
+
+
     
 });

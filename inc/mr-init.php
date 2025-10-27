@@ -78,6 +78,11 @@ class mif_mr_init extends mif_mr_functions {
         add_action( 'wp_ajax_curriculum', array( $this, 'ajax' ) );
         add_action( 'wp_ajax_nopriv_curriculum', array( $this, 'ajax' ) );
         
+        add_action( 'wp_ajax_edit', array( $this, 'ajax' ) );
+        add_action( 'wp_ajax_cancel', array( $this, 'ajax' ) );
+        add_action( 'wp_ajax_save', array( $this, 'ajax' ) );
+        // add_action( 'wp_ajax_nopriv_edit', array( $this, 'ajax' ) );
+      
         // global $mif_mr_catalog_shortcode;
         // $mif_mr_catalog_shortcode = new mif_mr_catalog_shortcode();
         new mif_mr_catalog_shortcode();
@@ -137,7 +142,11 @@ class mif_mr_init extends mif_mr_functions {
     // public function ajax_catalog_submit()
     {   
         // echo H// f($_REQUEST);
+        // p($_REQUEST);
+        
         check_ajax_referer( 'mif-mr' );
+        
+        // p($_REQUEST);
 
         if ( isset( $_REQUEST['action'] ) ) {
             
@@ -150,7 +159,11 @@ class mif_mr_init extends mif_mr_functions {
                 
                 global $mif_mr_opop;
                 $mif_mr_opop = new mif_mr_opop();
-    
+                
+                // global $tree;
+                // p( $tree['main'] );
+
+                
                 if ( $_REQUEST['action'] == 'courses' ) {
                     
                     $m = new mif_mr_courses();
@@ -172,12 +185,30 @@ class mif_mr_init extends mif_mr_functions {
                 
                 } 
     
-                if ( $_REQUEST['action'] == 'competencies' ) {
+                // if ( $_REQUEST['action'] == 'competencies' ) {
                     
-                    // $m = new mif_mr_curriculum();
-                    // echo $m->get_curriculum();
+                //     // $m = new mif_mr_curriculum();
+                //     // echo $m->get_curriculum();
+                
+                // } 
+                
+                
+                if ( in_array( $_REQUEST['action'], array( 'edit', 'cancel', 'save' ) ) ) {
+                    
+                    $m = new mif_mr_competencies();
+                    echo $m->show_competencies_sub( (int) $_REQUEST['sub'], (int) $_REQUEST['comp'], (int) $_REQUEST['opop'] );
                 
                 } 
+                
+                
+                // if ( $_REQUEST['action'] == 'cancel' ) {
+                    
+                  
+                //     p($_REQUEST);
+                //     // $m = new mif_mr_competencies();
+                //     // echo $m->show_competencies_sub( (int) $_REQUEST['sub'], (int) $_REQUEST['comp'], (int) $_REQUEST['opop'] );
+                
+                // } 
     
             }
             

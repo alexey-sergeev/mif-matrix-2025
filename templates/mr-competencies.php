@@ -4,12 +4,15 @@
 <?php // mif_mr_show_messages() ?>
 
 
-<?php mif_mr_show_list_competencies(); ?>
-<?php mif_mr_show_competencies(); ?>
 
 
 <!-- <div class="courses container mt-3 overflow-auto"> -->
-
+<div class="competencies container mt-3">
+    
+    <?php mif_mr_show_list_competencies(); ?>
+    <?php mif_mr_show_competencies(); ?>
+    
+    
     <?php // mif_mr_the_link_edit(); ?>
 
     <?php // mif_mr_show_explanation('courses'); ?>
@@ -20,7 +23,7 @@
     
     <!-- </div> -->
   
-<!-- </div> -->
+</div>
 
 <?php // mif_mr_the_form_end(); ?>
 

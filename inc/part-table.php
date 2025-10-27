@@ -232,7 +232,14 @@ class mif_mr_table extends mif_mr_part_companion {
     {
         global $tree;
         $arr = $tree['content']['courses']['data'];
-        if ( isset( $_REQUEST['key'] ) && $_REQUEST['key'] == 'courses' ) $arr = $this->get_courses_tree( $arr );
+        
+        if ( isset( $_REQUEST['key'] ) && $_REQUEST['key'] == 'courses' ) {
+            
+            $m = new modules();
+            $arr = $m->get_courses_tree( $arr );
+       
+        }
+        
         return $arr;
     }
 

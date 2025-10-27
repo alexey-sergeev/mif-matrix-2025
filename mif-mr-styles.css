@@ -140,6 +140,11 @@ html {
   border-bottom: 1px dotted #aaa !important;
 }
 
+/* .coll { */
+    /* display: none; */
+    /* display: flex; */
+/* } */
+
 /* Редактирование */
 
 .edit.textarea {
@@ -150,6 +155,10 @@ html {
 .matrix .edit.textarea,
 .curriculum .edit.textarea {
     height: 48em;
+}
+
+.competencies .edit.textarea {
+    height: 32em;
 }
 
 

@@ -59,7 +59,8 @@ class parser {
         $key = NULL;
         $subkey = NULL;
         $param = '';
-
+        $n = 0;
+        
         foreach ( $arr as $item ) {
 
             // Началось описание новой дисциплины (раздела)
@@ -92,7 +93,11 @@ class parser {
                 
                 $name_data = $this->parse_name( $item, $att_parts );
                 $subkey = mb_strtoupper( $name_data['name'] );
-                $out[$key][$section]['parts'][$subkey] = $name_data;
+                $out[$key][$section]['parts'][$subkey]['sub_id'] = $n++;
+                $out[$key][$section]['parts'][$subkey]['name'] = $name_data['name'];
+                $out[$key][$section]['parts'][$subkey]['data'] = '';
+                // $out[$key][$section]['parts'][$subkey] = $name_data;
+                // p($n);
                 continue;
 
             }

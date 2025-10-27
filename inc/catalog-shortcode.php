@@ -139,7 +139,8 @@ class mif_mr_catalog_shortcode extends mif_mr_catalog_core {
                 $out .= '<td class="mr-' . $a['URL_edit_color'] . '">';
                 $out .= '<a href="' . $a['URL_edit'] . '" target="_blank">';
                 // $out .= '<i class="fa fa-pencil-square fa-1x"></i>';
-                $out .= '<i class="fa fa-pencil-square-o fa-1x"></i>';
+                // $out .= '<i class="fa fa-pencil-square-o fa-1x"></i>';
+                $out .= '<i class="fa-regular fa-pen-to-square"></i>';
                 // $out .= '<i class="fa fa-pencil fa-1x"></i>';
                 $out .= '</a>';
                 $out .= '</td>';
