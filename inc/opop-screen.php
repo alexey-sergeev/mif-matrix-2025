@@ -150,10 +150,12 @@ class mif_mr_opop extends mif_mr_opop_tree_raw {
             $class = 'primary';
             if ( isset( $item[1] ) ) $class = $item[1];
 
-            $out .= '<div class="alert alert-' . $class . '" role="alert">';
-            // $out .= '<div class="bd-callout bd-callout-warning">';
-            $out .= $item[0];
-            $out .= '</div>';
+            $out .= mif_mr_functions::get_callout( $item[0], $class );
+
+
+            // $out .= '<div class="alert alert-' . $class . '" role="alert">';
+            // $out .= $item[0];
+            // $out .= '</div>';
             
         }
 

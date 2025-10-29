@@ -90,6 +90,9 @@ class mif_mr_competencies extends mif_mr_companion_core {
         
         $comp_id = $wp_query->query_vars['id'];
         $opop_id = mif_mr_opop_core::get_opop_id();
+        
+                
+        // p( $this->comp_to_text($comp_id) );
 
         global $tree;
         
@@ -118,83 +121,52 @@ class mif_mr_competencies extends mif_mr_companion_core {
             foreach ( $item['data'] as $item2 ) {
                 
                 if ( $f ) $out .= '<span>';
+                // if ( $f ) $out .= '<span class="content-ajax">';
                 
-                $out .= '<div class="row mb-3 mt-3">';
-                $out .= '<div class="col-11 mr-gray p-3 fw-bolder">';
-                $out .= $item2['name'];
-                $out .= '</div>';
-
-                if ( $f ) $out .= '<div class="col mr-gray p-3 text-end">';
-                if ( $f ) $out .= '<i class="fas fa-spinner fa-spin d-none"></i> ';
-                if ( $f ) $out .= '<a href="#" class="edit" data-sub="' . $item2['sub_id'] . '"><i class="fa-regular fa-pen-to-square"></i></a>';
-                if ( $f ) $out .= '</div>';
-                $out .= '</div>';
+                // $out .= '<div class="row mb-3 mt-3">';
+                // $out .= '<div class="col-11 mr-gray p-3 fw-bolder">';
+                // $out .= $item2['name'];
+                // $out .= '</div>';
+                
+                // if ( $f ) $out .= '<div class="col mr-gray p-3 text-end">';
+                // if ( $f ) $out .= '<i class="fas fa-spinner fa-spin d-none"></i> ';
+                // if ( $f ) $out .= '<a href="#" class="edit" data-sub="' . $item2['sub_id'] . '"><i class="fa-regular fa-pen-to-square"></i></a>';
+                // if ( $f ) $out .= '</div>';
+                // $out .= '</div>';
                 
                 $out .= $this->show_competencies_sub( $item2['sub_id'], $comp_id, $opop_id );
                 
                 if ( $f ) $out .= '</span>';
                 
-                // foreach ( $item2['data'] as $item3 ) {
-                    
-                //     $out .= '<div class="row">';
-                    
-                //     $out .= '<div class="col col-2 col-md-1 fw-bolder">';
-                //     // $out .= '@';
-                //     $out .= $item3['name'];
-                //     $out .= '</div>';
-                    
-                //     $out .= '<div class="col mb-3">';
-                //     $out .= $item3['descr'];
-                //     $out .= '</div>';
-                    
-                //     $out .= '</div>';
-                    
-                //     foreach ( $item3['indicators'] as $key4 => $item4 ) {
-                        
-                //         $out .= '<div class="row coll" style="display: none;">';
-                        
-                //         $out .= '<div class="col col-2 col-md-1">';
-                //         // $out .= '@';
-                //         $out .= '</div>';
-                        
-                //         $out .= '<div class="col p-1 pl-3 m-3 mr-gray fst-italic">';
-                //         $out .= ( isset( $this->name_indicators[$key4] ) ) ? $this->name_indicators[$key4] : 'default';
-                //         $out .= '</div>';
-                        
-                //         $out .= '</div>';
-                        
-                //         $out .= '<div class="row coll" style="display: none;">';
-                //         $out .= '<div class="col col-2 col-md-1">';
-                //         $out .= '</div>';
-                        
-                //         $out .= '<div class="col">';
-                //         foreach ( $item4 as $item5 ) $out .= '<p class="m-2">' . $item5 . '</p>';
-                //         $out .= '</div>';
-                //         $out .= '</div>';
-                        
-                //     }
-                    
-                // }
-                
-                // p($item2);
-                
             }
+        
+            if ( $f ) $out .= '<div class="row mb-3 mt-3">';
+            if ( $f ) $out .= '<div class="mr-gray p-4 fw-bolder text-center">';
+            if ( $f ) $out .= '<a href="#" class="new d-block"><i class="fa-solid fa-plus fa-xl"></i></a>';
+            if ( $f ) $out .= '</div>';
+            if ( $f ) $out .= '</div>';
             
             $out .= '</div>';
             
         }
+        
+        // if ( $f ) $out .= '<span>';
+        // if ( $f ) $out .= '<span class="content-ajax">';
+        // if ( $f ) $out .= '<a href="#" class="edit d-none" id="new" data-sub="-1">#</a>';
+        // if ( $f ) $out .= '</span>';
+        // if ( $f ) $out .= '</span>';
         
         if ( $f ) $out .= '<input type="hidden" name="opop" value="' . $opop_id . '">';
         if ( $f ) $out .= '<input type="hidden" name="comp" value="' . $comp_id . '">';
         if ( $f ) $out .= '<input type="hidden" name="_wpnonce" value="' . wp_create_nonce( 'mif-mr' ) . '">';
         
         
-
-
+        
+        
         // $arr = $this->get_arr( $wp_query->query_vars['id'] );
-
-
-
+        
+        
+        
         // $out .= '<textarea name="content" class="edit textarea mt-4" autofocus>';
         // $out .= $this->get_companion_content( $type );
         // $out .= '</textarea>';
@@ -202,19 +174,19 @@ class mif_mr_competencies extends mif_mr_companion_core {
         // $arr = $this->get_list_companions( 'competencies' );
         
         // p($arr);
-
+        
         // foreach ( $arr as $item ) {
-
+            
         //     $out .= '<div class="col pt-2 pb-2 mt-3">';
         //     // $out .= '<a href="' . get_permalink($item['id']) . '">' . $item['title'] . '</a>';
         //     $out .= '<a href="' . $item['id'] . '">' . $item['title'] . '</a>';
         //     $out .= '</div>';
-
+        
         // }
-
+        
         // p($arr);
-
-
+        
+        
         return apply_filters( 'mif_mr_show_competencies', $out );
     }
     
@@ -228,68 +200,98 @@ class mif_mr_competencies extends mif_mr_companion_core {
     public function show_competencies_sub( $sub_id, $comp_id, $opop_id = NULL )
     {
         global $tree;
-
-        $out = '';        
+        
+        $out = '';   
+        $f = true;
+        
         if ( empty( $opop_id ) ) $opop_id = mif_mr_opop_core::get_opop_id();
         
-        if ( empty( $tree['content']['competencies']['data'][$comp_id]['data'][$sub_id] ) ) return;
-        if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'edit' ) return $this->get_edit( $sub_id, $comp_id, $opop_id );
+        // if ( empty( $tree['content']['competencies']['data'][$comp_id]['data'][$sub_id] ) && $sub_id !== 'new' ) return;
+        // if ( ! ( isset( $tree['content']['competencies']['data'][$comp_id]['data'][$sub_id] ) || $sub_id == '-1' ) ) return 'wp: error 1';
+        if ( ! ( isset( $tree['content']['competencies']['data'][$comp_id] ) || $sub_id == '-1' ) ) return 'wp: error 1';
         
-        if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'save' ) $this->get_save( $sub_id, $comp_id, $opop_id );
-
+        if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'save' ) $sub_id = $this->get_save( $sub_id, $comp_id, $opop_id );
+        
         $item2 = $tree['content']['competencies']['data'][$comp_id]['data'][$sub_id];
         $style = ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'save' ) ? '' : 'style="display: none;"';
-
-
-        $out .= '<div class="content-ajax">';
-
-        foreach ( $item2['data'] as $item3 ) {
+        
+        $out .= '<span class="content-ajax">';
+        
+        $out .= '<div class="row mb-3 mt-3">';
+        $out .= '<div class="col-11 mr-gray p-3 fw-bolder">';
+        $out .= $item2['name'];
+        $out .= '</div>';
+        
+        if ( $f ) $out .= '<div class="col-1 mr-gray p-3 text-end">';
+        if ( $f ) $out .= '<i class="fas fa-spinner fa-spin d-none"></i> ';
+        if ( $f ) $out .= '<a href="#" class="edit" data-sub="' . $sub_id . '"><i class="fa-regular fa-pen-to-square"></i></a>';
+        if ( $f ) $out .= '</div>';
+        $out .= '</div>';
+        
+        
+        if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'edit' ) {
             
-            $out .= '<div class="row">';
+            if ( $f ) $out .= $this->get_edit( $sub_id, $comp_id, $opop_id );
             
-            $out .= '<div class="col col-2 col-md-1 fw-bolder">';
-            // $out .= '@';
-            $out .= $item3['name'];
-            $out .= '</div>';
+        } else {
             
-            $out .= '<div class="col mb-3">';
-            $out .= $item3['descr'];
-            $out .= '</div>';
             
-            $out .= '</div>';
+            // $out .= '<div class="content-ajax">';
+            // $out .= '<span class="content-ajax">';
             
-            foreach ( $item3['indicators'] as $key4 => $item4 ) {
+            foreach ( $item2['data'] as $item3 ) {
                 
-                $out .= '<div class="row coll"' . $style . '>';
+                $out .= '<div class="row">';
                 
-                $out .= '<div class="col col-2 col-md-1">';
+                $out .= '<div class="col col-2 col-md-1 fw-bolder">';
                 // $out .= '@';
+                $out .= $item3['name'];
                 $out .= '</div>';
                 
-                $out .= '<div class="col p-1 pl-3 m-3 mr-gray fst-italic">';
-                $out .= ( isset( $this->name_indicators[$key4] ) ) ? $this->name_indicators[$key4] : 'default';
+                $out .= '<div class="col mb-3">';
+                $out .= $item3['descr'];
                 $out .= '</div>';
                 
                 $out .= '</div>';
+
+                if ( isset( $item3['indicators'] ) ) {
+
+                    foreach ( (array) $item3['indicators'] as $key4 => $item4 ) {
+                        
+                        $out .= '<div class="row coll"' . $style . '>';
+                        
+                        $out .= '<div class="col col-2 col-md-1">';
+                        // $out .= '@';
+                        $out .= '</div>';
+                        
+                        $out .= '<div class="col p-1 pl-3 m-3 mr-gray fst-italic">';
+                        $out .= ( isset( $this->name_indicators[$key4] ) ) ? $this->name_indicators[$key4] : 'default';
+                        $out .= '</div>';
+                        
+                        $out .= '</div>';
+                        
+                        $out .= '<div class="row coll"' . $style . '">';
+                        $out .= '<div class="col col-2 col-md-1">';
+                        $out .= '</div>';
+                        
+                        $out .= '<div class="col">';
+                        foreach ( $item4 as $item5 ) $out .= '<p class="m-2">' . $item5 . '</p>';
+                        $out .= '</div>';
+                        $out .= '</div>';
+                        
+                    }
                 
-                $out .= '<div class="row coll"' . $style . '">';
-                $out .= '<div class="col col-2 col-md-1">';
-                $out .= '</div>';
-                
-                $out .= '<div class="col">';
-                foreach ( $item4 as $item5 ) $out .= '<p class="m-2">' . $item5 . '</p>';
-                $out .= '</div>';
-                $out .= '</div>';
+                }
                 
             }
             
+            // $out .= '</div>';
+            // $out .= '</span>';
+            // p($item2);
         }
         
-        $out .= '</div>';
-        // p($item2);
-        
-        
-        
+        $out .= '</span>';
+   
         return apply_filters( 'mif_mr_show_competencies_sub', $out, $sub_id, $comp_id, $opop_id );
     }
     
@@ -298,24 +300,30 @@ class mif_mr_competencies extends mif_mr_companion_core {
     public function get_edit( $sub_id, $comp_id, $opop_id )
     {
         // ####!!!!!
-
+        // p($_REQUEST);
         $arr = $this->get_sub_arr( $comp_id );
 
-        if ( isset( $arr[$sub_id] ) ) {
+        if ( isset( $arr[$sub_id] ) || $sub_id == '-1' ) {
 
             $out = '';
 
             $out .= '<div class="content-ajax">';
             $out .= '<div class="row">';
             $out .= '<div class="col p-0">';
-            $out .= '@';
+            
+            $out .= mif_mr_functions::get_callout( '<a href="' . '123' . '">Помощь</a>', 'warning' );
+            
+            // $out .= '@';
             $out .= '</div>';
             $out .= '</div>';
             
             $out .= '<div class="row">';
             $out .= '<div class="col p-0">';
+            
             $out .= '<textarea name="content[' . $sub_id . ']" class="edit textarea content" autofocus>';
-            $out .= $arr[$sub_id];
+            
+            if ( isset( $arr[$sub_id] ) ) $out .= $arr[$sub_id];
+            
             $out .= '</textarea>';
             $out .= '</div>';
             $out .= '</div>';
@@ -349,6 +357,8 @@ class mif_mr_competencies extends mif_mr_companion_core {
 
         $arr = $this->get_sub_arr( $comp_id );
 
+        if ( $sub_id == -1 ) $sub_id = (int) array_key_last( $arr ) + 1; 
+
         $arr[$sub_id] = sanitize_textarea_field( $_REQUEST['content'] );
         // p($_REQUEST);
             
@@ -378,29 +388,76 @@ class mif_mr_competencies extends mif_mr_companion_core {
         
 
 
-
-
-
-
-
-
-
-
-
-        return $res;
+        return $sub_id;
     }
 
 
 
+
+
+
+
+
     public function get_sub_arr( $comp_id )
+    {
+        global $tree;
+        
+        $arr = array();
+        if ( isset( $tree['content']['competencies']['data'][$comp_id] ) ) $arr = $tree['content']['competencies']['data'][$comp_id];
+        
+        $out = array();
+        
+        foreach ( $arr['data'] as $item ) {
+            
+            $s = '';
+            $s .= '= ' . $item['name'] . "\n\n";
+            
+            if ( empty( $item['data'] ) ) continue;
+            
+            foreach ( $item['data'] as $item2 ) {
+                
+                $s .= $item2['name'] . '. ';
+                $s .= $item2['descr'] . "\n\n";
+                
+                if ( empty( $item2['indicators'] ) ) continue;
+                
+                foreach ( $item2['indicators'] as $item3 ) {
+                    
+                    $s .= implode( "\n", $item3 );
+                    $s .= "\n\n";
+                    
+                }
+                
+                $s .= "\n";
+                
+            }
+            
+            // p($item);
+            
+            // $s .= "\n";
+
+            $out[$item['sub_id']] = $s;
+
+        }
+
+        // p($arr);
+
+        return apply_filters( 'mif_mr_companion_get_sub_arr', $out, $comp_id );
+    }
+
+
+
+
+    public function get_sub_arr2( $comp_id )
     {
         $arr = array();
 
         $post = get_post( $comp_id );
         $data = $this->get_begin_data( $post );
         
-        $n = 0;
+        // $n = 0;
 
+        $data = preg_replace( '/\n\n\n+/', "\n\n\n", $data );
         $arr2 = preg_split( '/\\r\\n?|\\n/', $data );
         $arr2 = array_map( 'strim', $arr2 );
 
@@ -667,6 +724,7 @@ class mif_mr_competencies extends mif_mr_companion_core {
             foreach ( $arr2 as $item3 ) $arr4[$item3['sub_id']] = $item3;
             // $arr['competencies'] = $arr4;
             $arr['data'] = $arr4;
+
         }
 
         // p($arr);

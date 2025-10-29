@@ -19,20 +19,20 @@ class mif_mr_part_core {
    
     
         
-    // 
-    // Выноска
-    // 
+    // // 
+    // // Выноска
+    // // 
     
-    public function get_callout( $text, $class = 'body' )
-    {
-        $out = '';
+    // public function get_callout( $text, $class = 'body' )
+    // {
+    //     $out = '';
 
-        $out .= '<div class="callout mt-4 mb-4 pt-2 pb-2 bg-' . $class . ' border-start border-5 border-' . $class . '">';
-        $out .= $text;
-        $out .= '</div>';
+    //     $out .= '<div class="callout mt-4 mb-4 pt-2 pb-2 bg-' . $class . ' border-start border-5 border-' . $class . '">';
+    //     $out .= $text;
+    //     $out .= '</div>';
 
-        return apply_filters( 'mif_mr_part_core_get_callout', $out, $text, $class );
-    }
+    //     return apply_filters( 'mif_mr_part_core_get_callout', $out, $text, $class );
+    // }
     
     
     
@@ -154,10 +154,10 @@ class mif_mr_part_core {
             
             $from_id = $this->get_tree_to_from_id($key, $main_key);
 
-            $out .= $this->get_callout( 
-                
-                'Данные от страницы «<a href="' . get_the_permalink($from_id) . '">' . get_the_title($from_id) . '</a>»: <pre>' . $text . '</pre>', 'warning-subtle' );
-
+            // $out .= $this->get_callout( 
+            $out .= mif_mr_functions::get_callout( 
+                'Данные от страницы «<a href="' . get_the_permalink($from_id) . '">' . get_the_title($from_id) . '</a>»: <pre>' . $text . '</pre>', 
+                'warning' );
         }
 
         $out .= '<textarea name="' . $main_key . '[' . $key . ']" class="edit textarea mt-4">';

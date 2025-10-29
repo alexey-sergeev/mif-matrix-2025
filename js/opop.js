@@ -47,59 +47,7 @@ jQuery( document ).ready( function( jq ) {
         
     } );    
 
-
-
-
-    // // Показать окно редактирования
-    
-    // jq( 'body' ).on( 'click', 'a.edit', function() {
-        
-    //     let opop_id = jq( 'input[name=opop]' ).val();
-    //     let comp_id = jq( 'input[name=comp]' ).val();
-    //     let sub_id = jq(this).attr( 'data-sub' );
-    //     let nonce = jq( 'input[name=_wpnonce]' ).val();
-
-    //     let div = jq( 'div.content-ajax', jq(this).closest('span') );
-    //     jq( 'i.fa-spinner', jq(this).closest('div') ).removeClass('d-none');
-
-    //     jq.ajax( {
-    //         url: ajaxurl,
-    //         type: 'POST',
-    //         data: {
-    //                 action: 'edit',
-    //                 opop: opop_id,
-    //                 comp: comp_id,
-    //                 sub: sub_id,
-    //                 _wpnonce: nonce,
-    //         },
-    //         success: function( response ) {
-
-    //             if ( response ) {
-
-    //                 div.replaceWith( response )
-    //                 // console.log( response );
-                    
-    //             } else {
-                    
-    //                 console.log( 'error 5' );
-                    
-    //             }
-                
-    //         },
-    //         error: function( response ) {
-                
-    //             console.log( 'error 6' );
-                
-    //         },
-            
-    //     } );
-
-    //     jq( 'i.fa-spinner', jq(this).closest('div') ).addClass('d-none');
-
-    //     return false;
-        
-    // } );    
-    
+   
     
     
     // Показать окно редактирования
@@ -119,11 +67,29 @@ jQuery( document ).ready( function( jq ) {
     } );    
 
 
-
+    
     // save
     
     jq( 'body' ).on( 'click', 'button.save', function() {
         sub_do( this, 'save' );
+        return false;
+    } );    
+    
+    
+    
+    // new
+    
+    jq( 'body' ).on( 'click', 'a.new', function() {
+        
+        jq(this).closest('div.row').before('<span><span class="content-ajax"><a href="#" class="edit d-none" id="new" data-sub="-1">#</a></span></span>');
+        // jq(this).closest('div.row').before('<span><a href="#" class="edit d-none" id="new" data-sub="-1">#</a></span>');
+        // jq(this).closest('div.row').insertBefore('i');
+        // console.log( jq(this).closest('div.row').html());
+        
+        
+        
+        jq( '#new' ).trigger('click');
+        // console.log( 'response' );
         return false;
     } );    
 
@@ -140,7 +106,9 @@ jQuery( document ).ready( function( jq ) {
         let nonce = jq( 'input[name=_wpnonce]' ).val();
         let content = jq( 'textarea.content', jq(elem).closest('span') ).val();
         
-        let div = jq( 'div.content-ajax', jq(elem).closest('span') );
+        // let div = jq( 'div.content-ajax', jq(elem).closest('span') );
+        // let div = jq( '.content-ajax', jq(elem).closest('span') );
+        let div = jq(elem).closest('span.content-ajax');
         jq( 'i.fa-spinner', jq(elem).closest('div') ).removeClass('d-none');
 
         jq.ajax( {
@@ -159,12 +127,7 @@ jQuery( document ).ready( function( jq ) {
                 if ( response ) {
 
                     div.replaceWith( response )
-                    // console.log( response );
-                    // jq(div).fadeOut('fast', function() {
-                    //     jq(div).replaceWith(response);
-                    //     $(this).fadeIn('fast');
-                    // });
-
+                    console.log( response );
 
                 } else {
                     
@@ -182,10 +145,6 @@ jQuery( document ).ready( function( jq ) {
         } );
 
         jq( 'i.fa-spinner', jq(elem).closest('div') ).addClass('d-none');
-        // jq( 'div.row', jq(elem).closest('span') ).removeClass('display');
-        // jq( 'div.row', jq(elem).closest('span') ).each( function ( index, elem2 ) { jq(elem2).css('display', 'flex'); });
-        // jq( 'div.row', jq(elem).closest('span') ).each( function ( index, elem2 ) { jq(elem2).removeAttr('display'); });
-        
         
         // return false;
         

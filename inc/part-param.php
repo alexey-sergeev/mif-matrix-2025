@@ -72,7 +72,7 @@ class mif_mr_param  extends mif_mr_part_core {
     {
         global $tree;
         
-        if ( isset( $_REQUEST['edit'] ) ) return $this->edit_textarea( 'parents', 'param' );
+        if ( isset( $_REQUEST['edit'] ) ) return $this->get_edit_textarea( 'parents', 'param' );
 
         $out = '';
         

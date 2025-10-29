@@ -82,6 +82,24 @@ class mif_mr_functions {
     
 
 
+            
+    // 
+    // Выноска
+    // 
+    
+    public static function get_callout( $text, $class = 'body' )
+    {
+        $out = '';
+
+        // $out .= '<div class="callout mt-4 mb-4 pt-2 pb-2 bg-' . $class . '-subtle border-start border-5 border-' . $class . '-subtle">';
+        $out .= '<div class="callout mt-4 mb-4 p-3 bg-' . $class . '-subtle border-start border-5 border-' . $class . '-subtle">';
+        $out .= $text;
+        $out .= '</div>';
+
+        return apply_filters( 'mif_mr_part_core_get_callout', $out, $text, $class );
+    }
+    
+
 
     // //
     // // Получить URL ОПОП

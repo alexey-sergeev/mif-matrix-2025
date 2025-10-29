@@ -195,6 +195,7 @@ class mif_mr_init extends mif_mr_functions {
                 
                 if ( in_array( $_REQUEST['action'], array( 'edit', 'cancel', 'save' ) ) ) {
                     
+                    // p($_REQUEST);
                     $m = new mif_mr_competencies();
                     echo $m->show_competencies_sub( (int) $_REQUEST['sub'], (int) $_REQUEST['comp'], (int) $_REQUEST['opop'] );
                 
