@@ -193,11 +193,19 @@ class mif_mr_init extends mif_mr_functions {
                 // } 
                 
                 
-                if ( in_array( $_REQUEST['action'], array( 'edit', 'cancel', 'save' ) ) ) {
+                if ( in_array( $_REQUEST['action'], array( 'edit', 'cancel' ) ) ) {
                     
                     // p($_REQUEST);
                     $m = new mif_mr_competencies();
                     echo $m->show_competencies_sub( (int) $_REQUEST['sub'], (int) $_REQUEST['comp'], (int) $_REQUEST['opop'] );
+                
+                } 
+                
+                if ( in_array( $_REQUEST['action'], array( 'save' ) ) ) {
+                    
+                    // p($_REQUEST);
+                    $m = new mif_mr_competencies();
+                    echo $m->show_competencies( (int) $_REQUEST['comp'], (int) $_REQUEST['opop'] );
                 
                 } 
                 
@@ -457,7 +465,7 @@ class mif_mr_init extends mif_mr_functions {
         register_post_type( 'competencies', array(
             'label'  => null,
             'labels' => array(
-                'name'               => __( 'Список компетенций', 'mif-mr' ), // основное название для типа записи
+                'name'               => __( 'Библиотека компетенций', 'mif-mr' ), // основное название для типа записи
                 'singular_name'      => __( 'Список компетенций', 'mif-mr' ), // название для одной записи этого типа
                 'add_new'            => __( 'Создать список компетенций', 'mif-mr' ), // для добавления новой записи
                 'add_new_item'       => __( 'Создание список компетенций', 'mif-mr' ), // заголовка у вновь создаваемой записи в админ-панели.

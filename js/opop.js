@@ -53,7 +53,7 @@ jQuery( document ).ready( function( jq ) {
     // Показать окно редактирования
     
     jq( 'body' ).on( 'click', 'a.edit', function() {
-        sub_do( this, 'edit' );
+        sub_do( this, 'edit', jq(this).closest('span.content-ajax') );
         return false;
     } );    
 
@@ -62,7 +62,8 @@ jQuery( document ).ready( function( jq ) {
     // Отмена
     
     jq( 'body' ).on( 'click', 'button.cancel', function() {
-        sub_do( this, 'cancel' );
+        sub_do( this, 'cancel', jq(this).closest('span.content-ajax') );
+        jq(this).closest('span.new').remove();
         return false;
     } );    
 
@@ -71,7 +72,7 @@ jQuery( document ).ready( function( jq ) {
     // save
     
     jq( 'body' ).on( 'click', 'button.save', function() {
-        sub_do( this, 'save' );
+        sub_do( this, 'save', jq(this).closest('div.content-ajax') );
         return false;
     } );    
     
@@ -80,16 +81,8 @@ jQuery( document ).ready( function( jq ) {
     // new
     
     jq( 'body' ).on( 'click', 'a.new', function() {
-        
-        jq(this).closest('div.row').before('<span><span class="content-ajax"><a href="#" class="edit d-none" id="new" data-sub="-1">#</a></span></span>');
-        // jq(this).closest('div.row').before('<span><a href="#" class="edit d-none" id="new" data-sub="-1">#</a></span>');
-        // jq(this).closest('div.row').insertBefore('i');
-        // console.log( jq(this).closest('div.row').html());
-        
-        
-        
+        jq(this).closest('div.row').before('<span class="new"><span class="content-ajax"><a href="#" class="edit d-none" id="new" data-sub="-1">#</a></span></span>');
         jq( '#new' ).trigger('click');
-        // console.log( 'response' );
         return false;
     } );    
 
@@ -97,7 +90,7 @@ jQuery( document ).ready( function( jq ) {
 
 
 
-    function sub_do( elem, action ) {
+    function sub_do( elem, action, div ) {
         
         let sub_id = jq(elem).attr( 'data-sub' );
         
@@ -106,9 +99,7 @@ jQuery( document ).ready( function( jq ) {
         let nonce = jq( 'input[name=_wpnonce]' ).val();
         let content = jq( 'textarea.content', jq(elem).closest('span') ).val();
         
-        // let div = jq( 'div.content-ajax', jq(elem).closest('span') );
-        // let div = jq( '.content-ajax', jq(elem).closest('span') );
-        let div = jq(elem).closest('span.content-ajax');
+        // let div = jq(elem).closest('span.content-ajax');
         jq( 'i.fa-spinner', jq(elem).closest('div') ).removeClass('d-none');
 
         jq.ajax( {
@@ -127,7 +118,7 @@ jQuery( document ).ready( function( jq ) {
                 if ( response ) {
 
                     div.replaceWith( response )
-                    console.log( response );
+                    // console.log( response );
 
                 } else {
                     
@@ -168,8 +159,9 @@ jQuery( document ).ready( function( jq ) {
     
     // 
     
-    jq( 'body' ).on( 'click', '#bnt-roll-up', function() {
-        
+    jq( 'body' ).on( 'click', '#roll-up-all', function() {
+        jq( 'a.roll-up', jq(this).closest('.part') ).each( function ( index, elem ) { jq(elem).addClass('d-none'); });
+        jq( 'a.roll-down', jq(this).closest('.part') ).each( function ( index, elem ) { jq(elem).removeClass('d-none'); });
         jq( '.coll', jq(this).closest('.part') ).slideUp();
         return false;
         
@@ -178,9 +170,32 @@ jQuery( document ).ready( function( jq ) {
     
     // 
     
-    jq( 'body' ).on( 'click', '#bnt-show', function() {
-        
+    jq( 'body' ).on( 'click', '#roll-down-all', function() {
+        jq( 'a.roll-down', jq(this).closest('.part') ).each( function ( index, elem ) { jq(elem).addClass('d-none'); });
+        jq( 'a.roll-up', jq(this).closest('.part') ).each( function ( index, elem ) { jq(elem).removeClass('d-none'); });
         jq( '.coll', jq(this).closest('.part') ).slideDown();
+        return false;
+        
+    })
+    
+    
+    // 
+    
+    jq( 'body' ).on( 'click', 'a.roll-up', function() {
+        jq( '.coll', jq(this).closest('span') ).slideUp();
+        jq( 'a.roll-up', jq(this).closest('span') ).toggleClass('d-none');
+        jq( 'a.roll-down', jq(this).closest('span') ).toggleClass('d-none');
+        return false;
+        
+    })
+    
+    
+    // 
+    
+    jq( 'body' ).on( 'click', 'a.roll-down', function() {
+        jq( '.coll', jq(this).closest('span') ).slideDown();
+        jq( 'a.roll-up', jq(this).closest('span') ).toggleClass('d-none');
+        jq( 'a.roll-down', jq(this).closest('span') ).toggleClass('d-none');
         return false;
         
     })
@@ -206,7 +221,7 @@ jQuery( document ).ready( function( jq ) {
             
             jq('th.selectable.' + cmp, jq(this).closest('table')).each( function ( index, elem ) { 
                 
-                console.log( elem );
+                // console.log( elem );
                 jq(elem).addClass('active'); 
             
             });

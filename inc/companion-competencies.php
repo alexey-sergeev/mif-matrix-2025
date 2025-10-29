@@ -80,59 +80,58 @@ class mif_mr_competencies extends mif_mr_companion_core {
     
     
     //
-    // 
+    // Показать cписок компетенций
     //
     
-    public function show_competencies()
+    public function show_competencies( $comp_id = NULL, $opop_id = NULL )
     {
-        global $wp_query;
-        if ( ! isset( $wp_query->query_vars['id'] ) ) return;
+        // Init $comp_id, $opop_id
         
-        $comp_id = $wp_query->query_vars['id'];
-        $opop_id = mif_mr_opop_core::get_opop_id();
+        if ( empty( $comp_id ) ) {
+            
+            global $wp_query;
+            if ( ! isset( $wp_query->query_vars['id'] ) ) return 'wp: error 1';
+            $comp_id = $wp_query->query_vars['id'];
+
+        }
+
+        if ( empty( $opop_id ) ) $opop_id = mif_mr_opop_core::get_opop_id();
+           
         
-                
-        // p( $this->comp_to_text($comp_id) );
+        // Save
+
+        if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'save' ) {
+            
+            if ( isset( $_REQUEST['sub'] ) ) $this->get_save( (int) $_REQUEST['sub'], $comp_id, $opop_id );
+
+        }
+
+
+        // HTML
 
         global $tree;
         
         $out = '';
         $f = true;
 
-        // p($tree['content']['competencies']['data']);
-
-        // foreach ( $tree['content']['competencies']['data'] as $item ) {
-
+        $out .= '<div class="content-ajax">';
+        
         if ( isset( $tree['content']['competencies']['data'][$comp_id] ) ) {
 
             $item = $tree['content']['competencies']['data'][$comp_id];
 
-            // if ( $item['comp_id'] != $comp_id ) continue;
-            
+
             $out .= '<h4 class="mb-6 mt-5">' . $item['name'] . '</h4>';
 
             $out .= '<div class="text-end">';
-            $out .= '<small><a href="#" id="bnt-show">Показать всё</a> | <a href="#" id="bnt-roll-up">Свернуть</a></small>';
+            $out .= '<small><a href="#" id="roll-down-all">Показать всё</a> | <a href="#" id="roll-up-all">Свернуть</a></small>';
             $out .= '</div>';
 
             $out .= '<div class="container no-gutters">';
-            // $out .= '<div class="container no-gutters bg-light pt-5 pb-5 mt-5 mb-5">';
 
             foreach ( $item['data'] as $item2 ) {
                 
                 if ( $f ) $out .= '<span>';
-                // if ( $f ) $out .= '<span class="content-ajax">';
-                
-                // $out .= '<div class="row mb-3 mt-3">';
-                // $out .= '<div class="col-11 mr-gray p-3 fw-bolder">';
-                // $out .= $item2['name'];
-                // $out .= '</div>';
-                
-                // if ( $f ) $out .= '<div class="col mr-gray p-3 text-end">';
-                // if ( $f ) $out .= '<i class="fas fa-spinner fa-spin d-none"></i> ';
-                // if ( $f ) $out .= '<a href="#" class="edit" data-sub="' . $item2['sub_id'] . '"><i class="fa-regular fa-pen-to-square"></i></a>';
-                // if ( $f ) $out .= '</div>';
-                // $out .= '</div>';
                 
                 $out .= $this->show_competencies_sub( $item2['sub_id'], $comp_id, $opop_id );
                 
@@ -140,8 +139,10 @@ class mif_mr_competencies extends mif_mr_companion_core {
                 
             }
         
-            if ( $f ) $out .= '<div class="row mb-3 mt-3">';
-            if ( $f ) $out .= '<div class="mr-gray p-4 fw-bolder text-center">';
+            // New
+
+            if ( $f ) $out .= '<div class="row mb-3 mt-6">';
+            if ( $f ) $out .= '<div class="mr-gray p-3 fw-bolder text-center">';
             if ( $f ) $out .= '<a href="#" class="new d-block"><i class="fa-solid fa-plus fa-xl"></i></a>';
             if ( $f ) $out .= '</div>';
             if ( $f ) $out .= '</div>';
@@ -150,42 +151,13 @@ class mif_mr_competencies extends mif_mr_companion_core {
             
         }
         
-        // if ( $f ) $out .= '<span>';
-        // if ( $f ) $out .= '<span class="content-ajax">';
-        // if ( $f ) $out .= '<a href="#" class="edit d-none" id="new" data-sub="-1">#</a>';
-        // if ( $f ) $out .= '</span>';
-        // if ( $f ) $out .= '</span>';
+        // Hidden
         
         if ( $f ) $out .= '<input type="hidden" name="opop" value="' . $opop_id . '">';
         if ( $f ) $out .= '<input type="hidden" name="comp" value="' . $comp_id . '">';
         if ( $f ) $out .= '<input type="hidden" name="_wpnonce" value="' . wp_create_nonce( 'mif-mr' ) . '">';
         
-        
-        
-        
-        // $arr = $this->get_arr( $wp_query->query_vars['id'] );
-        
-        
-        
-        // $out .= '<textarea name="content" class="edit textarea mt-4" autofocus>';
-        // $out .= $this->get_companion_content( $type );
-        // $out .= '</textarea>';
-        
-        // $arr = $this->get_list_companions( 'competencies' );
-        
-        // p($arr);
-        
-        // foreach ( $arr as $item ) {
-            
-        //     $out .= '<div class="col pt-2 pb-2 mt-3">';
-        //     // $out .= '<a href="' . get_permalink($item['id']) . '">' . $item['title'] . '</a>';
-        //     $out .= '<a href="' . $item['id'] . '">' . $item['title'] . '</a>';
-        //     $out .= '</div>';
-        
-        // }
-        
-        // p($arr);
-        
+        $out .= '</div>';
         
         return apply_filters( 'mif_mr_show_competencies', $out );
     }
@@ -194,57 +166,64 @@ class mif_mr_competencies extends mif_mr_companion_core {
     
     
     //
-    // 
+    // Показать cписок компетенций - часть
     //
     
     public function show_competencies_sub( $sub_id, $comp_id, $opop_id = NULL )
     {
         global $tree;
         
-        $out = '';   
         $f = true;
         
         if ( empty( $opop_id ) ) $opop_id = mif_mr_opop_core::get_opop_id();
         
-        // if ( empty( $tree['content']['competencies']['data'][$comp_id]['data'][$sub_id] ) && $sub_id !== 'new' ) return;
-        // if ( ! ( isset( $tree['content']['competencies']['data'][$comp_id]['data'][$sub_id] ) || $sub_id == '-1' ) ) return 'wp: error 1';
-        if ( ! ( isset( $tree['content']['competencies']['data'][$comp_id] ) || $sub_id == '-1' ) ) return 'wp: error 1';
-        
-        if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'save' ) $sub_id = $this->get_save( $sub_id, $comp_id, $opop_id );
+        if ( ! ( isset( $tree['content']['competencies']['data'][$comp_id] ) || $sub_id == '-1' ) ) return 'wp: error 2';
         
         $item2 = $tree['content']['competencies']['data'][$comp_id]['data'][$sub_id];
-        $style = ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'save' ) ? '' : 'style="display: none;"';
+        // $style = ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'save' ) ? '' : 'style="display: none;"';
         
+        // HTML
+        
+        $out = '';   
         $out .= '<span class="content-ajax">';
         
         $out .= '<div class="row mb-3 mt-3">';
+        
+        // Наименование категории
+
         $out .= '<div class="col-11 mr-gray p-3 fw-bolder">';
         $out .= $item2['name'];
         $out .= '</div>';
         
-        if ( $f ) $out .= '<div class="col-1 mr-gray p-3 text-end">';
+        // Кнопка edit
+
+        $out .= '<div class="col-1 mr-gray p-3 text-end">';
         if ( $f ) $out .= '<i class="fas fa-spinner fa-spin d-none"></i> ';
-        if ( $f ) $out .= '<a href="#" class="edit" data-sub="' . $sub_id . '"><i class="fa-regular fa-pen-to-square"></i></a>';
-        if ( $f ) $out .= '</div>';
+        if ( $f ) $out .= '<a href="#" class="edit pr-1" data-sub="' . $sub_id . '"><i class="fa-regular fa-pen-to-square"></i></a>';
+        $out .= '<a href="#" class="roll-up d-none"><i class="fa-solid fa-angle-up"></i></a>';
+        $out .= '<a href="#" class="roll-down"><i class="fa-solid fa-chevron-down"></i></a>';
         $out .= '</div>';
+        
+        $out .= '</div>';
+
+
         
         
         if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'edit' ) {
             
+            // Режим edit
+
             if ( $f ) $out .= $this->get_edit( $sub_id, $comp_id, $opop_id );
             
         } else {
             
-            
-            // $out .= '<div class="content-ajax">';
-            // $out .= '<span class="content-ajax">';
+            // Режим отображения
             
             foreach ( $item2['data'] as $item3 ) {
                 
                 $out .= '<div class="row">';
                 
                 $out .= '<div class="col col-2 col-md-1 fw-bolder">';
-                // $out .= '@';
                 $out .= $item3['name'];
                 $out .= '</div>';
                 
@@ -254,18 +233,21 @@ class mif_mr_competencies extends mif_mr_companion_core {
                 
                 $out .= '</div>';
 
+                // Индикаторы
+
                 if ( isset( $item3['indicators'] ) ) {
 
                     foreach ( (array) $item3['indicators'] as $key4 => $item4 ) {
                         
+                        $style = ' style="display: none;"';
+
                         $out .= '<div class="row coll"' . $style . '>';
                         
                         $out .= '<div class="col col-2 col-md-1">';
-                        // $out .= '@';
                         $out .= '</div>';
                         
                         $out .= '<div class="col p-1 pl-3 m-3 mr-gray fst-italic">';
-                        $out .= ( isset( $this->name_indicators[$key4] ) ) ? $this->name_indicators[$key4] : 'default';
+                        $out .= ( isset( $this->name_indicators[$key4] ) ) ? $this->name_indicators[$key4] : 'индикатор ' . $key4;
                         $out .= '</div>';
                         
                         $out .= '</div>';
@@ -284,10 +266,7 @@ class mif_mr_competencies extends mif_mr_companion_core {
                 }
                 
             }
-            
-            // $out .= '</div>';
-            // $out .= '</span>';
-            // p($item2);
+
         }
         
         $out .= '</span>';
@@ -295,25 +274,29 @@ class mif_mr_competencies extends mif_mr_companion_core {
         return apply_filters( 'mif_mr_show_competencies_sub', $out, $sub_id, $comp_id, $opop_id );
     }
     
+
     
     
+    //
+    // Режим edit
+    //
+
     public function get_edit( $sub_id, $comp_id, $opop_id )
     {
         // ####!!!!!
-        // p($_REQUEST);
+
         $arr = $this->get_sub_arr( $comp_id );
 
         if ( isset( $arr[$sub_id] ) || $sub_id == '-1' ) {
 
             $out = '';
 
-            $out .= '<div class="content-ajax">';
+            // $out .= '<div class="content-ajax">';
             $out .= '<div class="row">';
             $out .= '<div class="col p-0">';
             
             $out .= mif_mr_functions::get_callout( '<a href="' . '123' . '">Помощь</a>', 'warning' );
             
-            // $out .= '@';
             $out .= '</div>';
             $out .= '</div>';
             
@@ -334,12 +317,9 @@ class mif_mr_competencies extends mif_mr_companion_core {
             $out .= '<button type="button" class="btn btn-primary mt-4 mb-4 mr-3 save" data-sub="' . $sub_id . '">Сохранить <i class="fas fa-spinner fa-spin d-none"></i></button>';
             $out .= '<button type="button" class="btn btn-light mt-4 mb-4 mr-3 cancel" data-sub="' . $sub_id . '">Отмена <i class="fas fa-spinner fa-spin d-none"></i></button>';
 
-            // $out .= '<input type="submit" name="save" value="Сохранить" class="btn btn-primary mt-4 mb-4 mr-3" />';
-            // $out .= '<input type="button" onclick="location.href=\'' . '2' . '\';"  value="Отмена" class="btn btn-light mt-4 mb-4 mr-3" />';
-
             $out .= '</div>';
             $out .= '</div>';
-            $out .= '</div>';
+            // $out .= '</div>';
             
         }
 
@@ -390,7 +370,6 @@ class mif_mr_competencies extends mif_mr_companion_core {
 
         return $sub_id;
     }
-
 
 
 
