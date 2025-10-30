@@ -86,6 +86,20 @@ function mif_mr_the_opop_id()
 
 
 
+//
+// Выводит ОПОП URL
+//
+
+function mif_mr_the_opop_url()
+{
+    global $mif_mr_opop;
+    echo $mif_mr_opop->get_opop_url();
+}
+
+
+
+
+
 
 
 

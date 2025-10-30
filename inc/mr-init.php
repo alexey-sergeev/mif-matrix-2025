@@ -81,6 +81,7 @@ class mif_mr_init extends mif_mr_functions {
         add_action( 'wp_ajax_edit', array( $this, 'ajax' ) );
         add_action( 'wp_ajax_cancel', array( $this, 'ajax' ) );
         add_action( 'wp_ajax_save', array( $this, 'ajax' ) );
+        add_action( 'wp_ajax_remove', array( $this, 'ajax' ) );
         // add_action( 'wp_ajax_nopriv_edit', array( $this, 'ajax' ) );
       
         // global $mif_mr_catalog_shortcode;
@@ -207,6 +208,15 @@ class mif_mr_init extends mif_mr_functions {
                     $m = new mif_mr_competencies();
                     echo $m->show_competencies( (int) $_REQUEST['comp'], (int) $_REQUEST['opop'] );
                 
+                } 
+                
+                if ( in_array( $_REQUEST['action'], array( 'remove' ) ) ) {
+                    
+                    // p($_REQUEST);
+                    $m = new mif_mr_competencies();
+                    $m->remove( (int) $_REQUEST['comp'], (int) $_REQUEST['opop'], 'competencies' );
+                    echo $mif_mr_opop->show_messages();
+
                 } 
                 
                 

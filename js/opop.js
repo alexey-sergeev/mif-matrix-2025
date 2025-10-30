@@ -85,6 +85,30 @@ jQuery( document ).ready( function( jq ) {
         jq( '#new' ).trigger('click');
         return false;
     } );    
+    
+    
+    // remove
+    
+    jq( 'body' ).on( 'click', 'a.remove', function() {
+        // console.log( 'response' );
+        // jq(this).closest('div.row').after('<div class="col">Вы уверены? <a href="#" class="ok">Да</a> / <a href="#" class="cancel">отмена</a></div>');
+        // jq( '#new' ).trigger('click');
+        jq( 'div.alert', jq(this).closest('div.row') ).slideToggle();
+        // console.log( jq(this).closest('div.row').html() );
+        // console.log( jq( 'div.col', jq(this).closest('div.row') ).html() );
+        
+        return false;
+    } );    
+    
+    jq( 'body' ).on( 'click', '.cancel', function() {
+        jq( 'div.alert', jq(this).closest('div.row') ).slideToggle();
+        return false;
+    } );    
+    
+    jq( 'body' ).on( 'click', '.ok', function() {
+        sub_do( this, 'remove', jq(this).closest('div.content-ajax') );
+        return false;
+    } );    
 
 
 

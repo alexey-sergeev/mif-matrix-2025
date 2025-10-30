@@ -102,7 +102,7 @@ class mif_mr_competencies extends mif_mr_companion_core {
 
         if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'save' ) {
             
-            if ( isset( $_REQUEST['sub'] ) ) $this->get_save( (int) $_REQUEST['sub'], $comp_id, $opop_id );
+            if ( isset( $_REQUEST['sub'] ) ) $this->save( (int) $_REQUEST['sub'], $comp_id, $opop_id );
 
         }
 
@@ -115,6 +115,9 @@ class mif_mr_competencies extends mif_mr_companion_core {
         $f = true;
 
         $out .= '<div class="content-ajax">';
+
+        $out .= '<div class="pb-4"><a href="' . get_permalink( $opop_id ) .'competencies/">← Вернуться к странице раздела</a></div>';
+        if ( $f ) $out .= '<div><a href="' . get_edit_post_link( $comp_id ) . '">Расширенный редактор</a></div>';
         
         if ( isset( $tree['content']['competencies']['data'][$comp_id] ) ) {
 
@@ -122,7 +125,6 @@ class mif_mr_competencies extends mif_mr_companion_core {
 
 
             $out .= '<h4 class="mb-6 mt-5">' . $item['name'] . '</h4>';
-
             $out .= '<div class="text-end">';
             $out .= '<small><a href="#" id="roll-down-all">Показать всё</a> | <a href="#" id="roll-up-all">Свернуть</a></small>';
             $out .= '</div>';
@@ -142,8 +144,8 @@ class mif_mr_competencies extends mif_mr_companion_core {
             // New
 
             if ( $f ) $out .= '<div class="row mb-3 mt-6">';
-            if ( $f ) $out .= '<div class="mr-gray p-3 fw-bolder text-center">';
-            if ( $f ) $out .= '<a href="#" class="new d-block"><i class="fa-solid fa-plus fa-xl"></i></a>';
+            if ( $f ) $out .= '<div class="col mr-gray p-3 fw-bolder text-center">';
+            if ( $f ) $out .= '<a href="#" class="new"><i class="fa-solid fa-plus fa-xl"></i></a>';
             if ( $f ) $out .= '</div>';
             if ( $f ) $out .= '</div>';
             
@@ -151,6 +153,15 @@ class mif_mr_competencies extends mif_mr_companion_core {
             
         }
         
+        if ( $f ) $out .= '<div class="row mt-3">';
+        if ( $f ) $out .= '<div class="col">';
+        if ( $f ) $out .= '<small><a href="#" class="remove">Удалить</a></small>';
+        // if ( $f ) $out .= '<div class="alert" style="display: none;">Вы уверены? <a href="#" class="ok">Да</a> / <a href="#" class="cancel">отмена</a></div>';
+        if ( $f ) $out .= '<div class="alert pl-0 pr-0" style="display: none;">' . 
+                            mif_mr_functions::get_callout( 'Вы уверены? <a href="#" class="ok">Да</a> / <a href="#" class="cancel">отмена</a>', 'warning' ) . '</div>';
+        if ( $f ) $out .= '</div>';
+        if ( $f ) $out .= '</div>';
+
         // Hidden
         
         if ( $f ) $out .= '<input type="hidden" name="opop" value="' . $opop_id . '">';
@@ -329,7 +340,7 @@ class mif_mr_competencies extends mif_mr_companion_core {
    
    
    
-    public function get_save( $sub_id, $comp_id, $opop_id )
+    public function save( $sub_id, $comp_id, $opop_id )
     {
         // ####!!!!!
 
@@ -368,7 +379,35 @@ class mif_mr_competencies extends mif_mr_companion_core {
         
 
 
-        return $sub_id;
+        return $res;
+    }
+   
+
+
+    public function remove( $comp_id, $opop_id, $type = 'competencies' )
+    {
+        // ####!!!!!
+
+        $res = false;
+
+        $post = get_post( $comp_id );
+
+        if ( $post->post_type == $type ) $res = wp_delete_post($comp_id);
+       
+        global $messages;
+        $messages[] = ( $res ) ? array( 'Данные были удалены', 'success' ) : array( 'Какая-то ошибка. Код ошибки: 102 (' . $type . ')', 'danger' );
+        
+        if ( $res ) {
+            
+            global $tree;
+            global $mif_mr_opop;
+            
+            $tree = array();
+            $tree = $mif_mr_opop->get_tree();
+            
+        }
+
+        return $res;
     }
 
 
