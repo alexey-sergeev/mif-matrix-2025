@@ -13,10 +13,10 @@ defined( 'ABSPATH' ) || exit;
 // Выводит 
 //
 
-function mif_mr_show_list_competencies()
+function mif_mr_show_list_comp()
 {
-    global $mif_mr_competencies;
-    echo $mif_mr_competencies->show_list_competencies();
+    global $mif_mr_list_comp;
+    echo $mif_mr_list_comp->show_list_comp();
 }
 
 
@@ -25,10 +25,10 @@ function mif_mr_show_list_competencies()
 // Выводит 
 //
 
-function mif_mr_show_competencies()
+function mif_mr_show_comp()
 {
-    global $mif_mr_competencies;
-    echo $mif_mr_competencies->show_competencies();
+    global $mif_mr_comp;
+    echo $mif_mr_comp->show_comp();
 }
 
 

@@ -189,7 +189,7 @@ class mif_mr_opop_tree_raw extends mif_mr_opop_core {
                 case 'competencies':
                     // $m = new curriculum( $c->get_companion_content( 'curriculum', $opop_id ) );
                     // $data = $m->get_arr();
-                    $m = new mif_mr_competencies();
+                    $m = new mif_mr_comp();
                     $data = $m->get_all_arr( $opop_id );
                 break;
                 

@@ -108,14 +108,23 @@ class mif_mr_opop extends mif_mr_opop_tree_raw {
             break;
             
             case 'competencies':
-                global $mif_mr_competencies;
-                $mif_mr_competencies = new mif_mr_competencies();
-                $mif_mr_competencies->the_show();
 
-                // p('Competencies');
-                // global $mif_mr_curriculum;
-                // $mif_mr_curriculum = new mif_mr_curriculum();
-                // $mif_mr_curriculum->the_show();
+                global $wp_query;
+                
+                if ( isset( $wp_query->query_vars['id'] ) ) {
+
+                    global $mif_mr_comp;
+                    $mif_mr_comp = new mif_mr_comp();
+                    $mif_mr_comp->the_show();
+
+                } else {
+
+                    global $mif_mr_list_comp;
+                    $mif_mr_list_comp = new mif_mr_list_comp();
+                    $mif_mr_list_comp->the_show();
+
+                }
+
             break;
             
             case 'stat':

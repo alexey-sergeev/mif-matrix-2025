@@ -24,7 +24,8 @@ include_once dirname( __FILE__ ) . '/part-matrix.php';
 include_once dirname( __FILE__ ) . '/part-curriculum.php';
 
 include_once dirname( __FILE__ ) . '/companion-core.php';
-include_once dirname( __FILE__ ) . '/companion-competencies.php';
+include_once dirname( __FILE__ ) . '/companion-comp.php';
+include_once dirname( __FILE__ ) . '/companion-list-comp.php';
 include_once dirname( __FILE__ ) . '/companion-templates.php';
 
 include_once dirname( __FILE__ ) . '/lib-download.php';
@@ -197,23 +198,23 @@ class mif_mr_init extends mif_mr_functions {
                 if ( in_array( $_REQUEST['action'], array( 'edit', 'cancel' ) ) ) {
                     
                     // p($_REQUEST);
-                    $m = new mif_mr_competencies();
-                    echo $m->show_competencies_sub( (int) $_REQUEST['sub'], (int) $_REQUEST['comp'], (int) $_REQUEST['opop'] );
+                    $m = new mif_mr_comp();
+                    echo $m->show_comp_sub( (int) $_REQUEST['sub'], (int) $_REQUEST['comp'], (int) $_REQUEST['opop'] );
                 
                 } 
                 
                 if ( in_array( $_REQUEST['action'], array( 'save' ) ) ) {
                     
                     // p($_REQUEST);
-                    $m = new mif_mr_competencies();
-                    echo $m->show_competencies( (int) $_REQUEST['comp'], (int) $_REQUEST['opop'] );
+                    $m = new mif_mr_comp();
+                    echo $m->show_comp( (int) $_REQUEST['comp'], (int) $_REQUEST['opop'] );
                 
                 } 
                 
                 if ( in_array( $_REQUEST['action'], array( 'remove' ) ) ) {
                     
                     // p($_REQUEST);
-                    $m = new mif_mr_competencies();
+                    $m = new mif_mr_comp();
                     $m->remove( (int) $_REQUEST['comp'], (int) $_REQUEST['opop'], 'competencies' );
                     echo $mif_mr_opop->show_messages();
 
