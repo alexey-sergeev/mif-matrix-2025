@@ -175,6 +175,17 @@ class mif_mr_functions {
 
 
 
+    //
+    //  
+    //
+    
+    public static function mb_substr( $s, $length )
+    {
+        $out = mb_substr( $s, 0, $length - 3 );
+        if ( mb_strlen( $s ) >= $length ) $out .= '...';
+        return apply_filters( 'mif_mr_functions_mb_substr', $out );
+    }
+    
 
 
 

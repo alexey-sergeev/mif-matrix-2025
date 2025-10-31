@@ -52,7 +52,7 @@ jQuery( document ).ready( function( jq ) {
     
     // Показать окно редактирования
     
-    jq( 'body' ).on( 'click', 'a.edit', function() {
+    jq( 'body' ).on( 'click', '.comp a.edit', function() {
         sub_do( this, 'edit', jq(this).closest('span.content-ajax') );
         return false;
     } );    
@@ -61,7 +61,7 @@ jQuery( document ).ready( function( jq ) {
 
     // Отмена
     
-    jq( 'body' ).on( 'click', 'button.cancel', function() {
+    jq( 'body' ).on( 'click', '.comp button.cancel', function() {
         sub_do( this, 'cancel', jq(this).closest('span.content-ajax') );
         jq(this).closest('span.new').remove();
         return false;
@@ -71,7 +71,7 @@ jQuery( document ).ready( function( jq ) {
     
     // save
     
-    jq( 'body' ).on( 'click', 'button.save', function() {
+    jq( 'body' ).on( 'click', '.comp button.save', function() {
         sub_do( this, 'save', jq(this).closest('div.content-ajax') );
         return false;
     } );    
@@ -80,7 +80,7 @@ jQuery( document ).ready( function( jq ) {
     
     // new
     
-    jq( 'body' ).on( 'click', 'a.new', function() {
+    jq( 'body' ).on( 'click', '.comp a.new', function() {
         jq(this).closest('div.row').before('<span class="new"><span class="content-ajax"><a href="#" class="edit d-none" id="new" data-sub="-1">#</a></span></span>');
         jq( '#new' ).trigger('click');
         return false;
@@ -100,12 +100,12 @@ jQuery( document ).ready( function( jq ) {
         return false;
     } );    
     
-    jq( 'body' ).on( 'click', '.cancel', function() {
+    jq( 'body' ).on( 'click', '.comp .cancel', function() {
         jq( 'div.alert', jq(this).closest('div.row') ).slideToggle();
         return false;
     } );    
     
-    jq( 'body' ).on( 'click', '.ok', function() {
+    jq( 'body' ).on( 'click', '.comp .ok', function() {
         sub_do( this, 'remove', jq(this).closest('div.content-ajax') );
         return false;
     } );    
@@ -122,9 +122,11 @@ jQuery( document ).ready( function( jq ) {
         let comp_id = jq( 'input[name=comp]' ).val();
         let nonce = jq( 'input[name=_wpnonce]' ).val();
         let content = jq( 'textarea.content', jq(elem).closest('span') ).val();
-        
+        let title = jq( 'input[name=title]' ).val();
+        let data = jq( 'textarea[name=data]' ).val();
+
         // let div = jq(elem).closest('span.content-ajax');
-        jq( 'i.fa-spinner', jq(elem).closest('div') ).removeClass('d-none');
+        jq( 'i.fa-spinner', jq(elem).closest('button') ).removeClass('d-none');
 
         jq.ajax( {
             url: ajaxurl,
@@ -135,6 +137,8 @@ jQuery( document ).ready( function( jq ) {
                     comp: comp_id,
                     sub: sub_id,
                     content: content,
+                    title: title,
+                    data: data,
                     _wpnonce: nonce,
             },
             success: function( response ) {
@@ -142,7 +146,7 @@ jQuery( document ).ready( function( jq ) {
                 if ( response ) {
 
                     div.replaceWith( response )
-                    // console.log( response );
+                    console.log( response );
 
                 } else {
                     
@@ -158,14 +162,51 @@ jQuery( document ).ready( function( jq ) {
             },
             
         } );
-
+        
         jq( 'i.fa-spinner', jq(elem).closest('div') ).addClass('d-none');
         
         // return false;
         
     }
+    
+    
+    
+    
+    // list-comp
+    
+    jq( 'body' ).on( 'click', '.list-comp button.new', function() {
+        jq( 'div.new', jq(this).closest('div.container') ).slideToggle();
+        return false;
+    })
+    
+    // 
+    
+    jq( 'body' ).on( 'click', '.list-comp button.cancel', function() {
+        jq( 'input[name=title]', jq(this).closest('div.container') ).val('');
+        jq( 'textarea[name=data]', jq(this).closest('div.container') ).val('');
+        jq( 'div.new', jq(this).closest('div.container') ).slideToggle();
+        return false;
+    })
+    
+    // 
+    
+    jq( 'body' ).on( 'click', '.list-comp button.create', function() {
+        
+        if ( jq( 'input[name=title]', jq(this).closest('div.container') ).val() == false ) {
 
+            jq( 'input[name=title]', jq(this).closest('div.container') ).addClass('is-invalid');
+            jq( 'input[name=title]', jq(this).closest('div.container') ).focus();
 
+        } else {
+
+            sub_do( this, 'create', jq(this).closest('div.content-ajax') );
+        
+        }
+        return false;
+    })
+    
+    
+    
 
 
     // #fullsize

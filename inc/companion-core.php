@@ -218,7 +218,18 @@ class mif_mr_companion_core {
     }
 
    
-
+    //
+    //  
+    //
+    
+    public function mb_substr( $s, $length )
+    {
+        // $out = mb_substr( $s, 0, $length - 3 );
+        // if ( mb_strlen( $s ) >= $length ) $out .= '...';
+        // return apply_filters( 'mif_mr_part_core_mb_substr', $out );
+        return mif_mr_functions::mb_substr( $s, $length );
+    }
+    
 
 }
 

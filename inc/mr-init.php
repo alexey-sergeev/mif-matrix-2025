@@ -83,6 +83,7 @@ class mif_mr_init extends mif_mr_functions {
         add_action( 'wp_ajax_cancel', array( $this, 'ajax' ) );
         add_action( 'wp_ajax_save', array( $this, 'ajax' ) );
         add_action( 'wp_ajax_remove', array( $this, 'ajax' ) );
+        add_action( 'wp_ajax_create', array( $this, 'ajax' ) );
         // add_action( 'wp_ajax_nopriv_edit', array( $this, 'ajax' ) );
       
         // global $mif_mr_catalog_shortcode;
@@ -208,7 +209,7 @@ class mif_mr_init extends mif_mr_functions {
                     // p($_REQUEST);
                     $m = new mif_mr_comp();
                     echo $m->show_comp( (int) $_REQUEST['comp'], (int) $_REQUEST['opop'] );
-                
+                    
                 } 
                 
                 if ( in_array( $_REQUEST['action'], array( 'remove' ) ) ) {
@@ -217,6 +218,18 @@ class mif_mr_init extends mif_mr_functions {
                     $m = new mif_mr_comp();
                     $m->remove( (int) $_REQUEST['comp'], (int) $_REQUEST['opop'], 'competencies' );
                     echo $mif_mr_opop->show_messages();
+                    
+                } 
+                
+                
+                if ( in_array( $_REQUEST['action'], array( 'create' ) ) ) {
+                    
+                    $m = new mif_mr_list_comp();
+                    echo $m->show_list_comp( (int) $_REQUEST['opop'] );
+                    // p($_REQUEST);
+                    // $m = new mif_mr_comp();
+                    // $m->remove( (int) $_REQUEST['comp'], (int) $_REQUEST['opop'], 'competencies' );
+                    // echo $mif_mr_opop->show_messages();
 
                 } 
                 

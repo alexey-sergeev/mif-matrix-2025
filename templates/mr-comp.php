@@ -5,7 +5,7 @@
 
 
 <!-- <div class="courses container mt-3 overflow-auto"> -->
-<div class="competencies container mt-3 p-0">
+<div class="comp container mt-3 p-0">
     
     <?php mif_mr_show_comp(); ?>
     
