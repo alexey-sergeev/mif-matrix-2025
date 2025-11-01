@@ -35,9 +35,11 @@ class mif_mr_companion_core {
         // p($type);
         // p($opop_id);
         $post = get_posts( array(
-            'post_type'     => $type,
-            'post_status'   => 'publish',
-            // 'post_parent'   => $opop_id,
+            'post_type' => $type,
+            'post_status' => 'publish',
+            'post_parent' => $opop_id,
+            'posts_per_page' => -1,
+            'order' => 'ASC',
             ) );
         
         $arr = array();
@@ -76,8 +78,6 @@ class mif_mr_companion_core {
 
         $arr[$sub_id] = sanitize_textarea_field( $_REQUEST['content'] );
         // p($_REQUEST);
-            
-
 
 
         $res = wp_update_post( array(
@@ -85,11 +85,9 @@ class mif_mr_companion_core {
             'post_content' => implode( "\n", $arr ),
             ) );
                 
-
        
-        // global $messages;
-        
-        // $messages[] = ( $res ) ? array( 'Сохранено', 'success' ) : array( 'Какая-то ошибка. Код ошибки: 102 (' . $type . ')', 'danger' );
+        global $messages;
+        $messages[] = ( $res ) ? array( 'Сохранено', 'success' ) : array( 'Какая-то ошибка. Код ошибки: 103 (' . $type . ')', 'danger' );
         
         if ( $res ) {
             
@@ -119,13 +117,48 @@ class mif_mr_companion_core {
         if ( $post->post_type == $type ) $res = wp_delete_post($comp_id);
        
         global $messages;
-        $messages[] = ( $res ) ? array( 'Данные были удалены', 'success' ) : array( 'Какая-то ошибка. Код ошибки: 102 (' . $type . ')', 'danger' );
+        $messages[] = ( $res ) ? array( 'Данные были удалены ', 'success' ) : array( 'Какая-то ошибка. Код ошибки: 104 (' . $type . ')', 'danger' );
         
         if ( $res ) {
             
             global $tree;
             global $mif_mr_opop;
             
+            $tree = array();
+            $tree = $mif_mr_opop->get_tree();
+            
+        }
+
+        return $res;
+    }
+   
+
+
+    public function create( $opop_id, $type = 'competencies' )
+    {
+        // ####!!!!!
+
+        $res = false;
+        
+        if ( empty( $_REQUEST['title'] ) ) return;
+
+        $res = wp_insert_post( array(
+            'post_title'    => sanitize_textarea_field( $_REQUEST['title'] ),
+            'post_content'  => ( isset( $_REQUEST['data'] ) ) ? sanitize_textarea_field( $_REQUEST['data'] ) : '',
+            'post_type'     => $type,
+            'post_status'   => 'publish',
+            'post_parent'   => $opop_id,
+            ) );
+
+
+        // global $messages;
+        // $messages[] = ( $res ) ? array( 'Данные были удалены', 'success' ) : array( 'Какая-то ошибка. Код ошибки: 105 (' . $type . ')', 'danger' );
+        
+        if ( $res ) {
+            
+            global $tree;
+            global $mif_mr_opop;
+
             $tree = array();
             $tree = $mif_mr_opop->get_tree();
             

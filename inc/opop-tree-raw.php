@@ -67,10 +67,8 @@ class mif_mr_opop_tree_raw extends mif_mr_opop_core {
         // p( $post );
         // p( WP_Post::get_instance( 176 ) );
         // p( $tree );
+        $this->parents_arr = array();
         $this->get_parents_arr( $this->current_opop_id );
-        
-        
-        // p( $this->parents_arr );
         $this->parents_arr = array_reverse( $this->parents_arr );
         // p( $this->parents_arr );
         
@@ -141,7 +139,7 @@ class mif_mr_opop_tree_raw extends mif_mr_opop_core {
         
         $this->parents_arr[] = $t['main']['id'];
         
-        if ( ! isset( $t['param']['parents']['data'] ) ) return;
+        if ( ! isset( $t['param']['parents']['data'] ) ) return; 
         
         foreach ( $t['param']['parents']['data'] as $item ) {
             

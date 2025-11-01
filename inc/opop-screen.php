@@ -235,6 +235,17 @@ class mif_mr_opop extends mif_mr_opop_tree_raw {
     }
 
 
+    //
+    // 
+    //
+    
+    public function show_back( $type = 'courses' )
+    {
+        $out = '<div class="pb-4"><a href="' . get_permalink( $this->get_opop_id() ) . $type . '/">← Вернуться к странице раздела</a></div>';
+        return apply_filters( 'mif_mr_opop_show_back', $out, $type );
+    }
+
+
 
 
 

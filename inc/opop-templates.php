@@ -69,6 +69,18 @@ function mif_mr_show_panel( $type = 'courses' )
 
 
 
+//
+// Вернуться к странице раздела
+//
+
+function mif_mr_show_back( $type = 'courses' )
+{
+    global $mif_mr_opop;
+    echo $mif_mr_opop->show_back( $type );
+}
+
+
+
 
 
 

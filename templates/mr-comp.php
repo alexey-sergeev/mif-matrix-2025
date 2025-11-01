@@ -7,6 +7,9 @@
 <!-- <div class="courses container mt-3 overflow-auto"> -->
 <div class="comp container mt-3 p-0">
     
+    
+
+    <?php mif_mr_show_back( 'competencies' ); ?>
     <?php mif_mr_show_comp(); ?>
     
     <?php // mif_mr_the_link_edit(); ?>

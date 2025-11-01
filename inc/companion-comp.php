@@ -117,7 +117,7 @@ class mif_mr_comp extends mif_mr_companion_core {
 
         $out .= '<div class="content-ajax">';
 
-        $out .= '<div class="pb-4"><a href="' . get_permalink( $opop_id ) .'competencies/">← Вернуться к странице раздела</a></div>';
+        // $out .= '<div class="pb-4"><a href="' . get_permalink( $opop_id ) .'competencies/">← Вернуться к странице раздела</a></div>';
         if ( $f ) $out .= '<div><a href="' . get_edit_post_link( $comp_id ) . '">Расширенный редактор</a></div>';
         
         if ( isset( $tree['content']['competencies']['data'][$comp_id] ) ) {
@@ -156,10 +156,22 @@ class mif_mr_comp extends mif_mr_companion_core {
         
         if ( $f ) $out .= '<div class="row mt-3">';
         if ( $f ) $out .= '<div class="col">';
-        if ( $f ) $out .= '<small><a href="#" class="remove">Удалить</a></small>';
+        if ( $f ) $out .= '<small><a href="#" class="msg-remove">Удалить</a></small>';
         // if ( $f ) $out .= '<div class="alert" style="display: none;">Вы уверены? <a href="#" class="ok">Да</a> / <a href="#" class="cancel">отмена</a></div>';
-        if ( $f ) $out .= '<div class="alert pl-0 pr-0" style="display: none;">' . 
-                            mif_mr_functions::get_callout( 'Вы уверены? <a href="#" class="ok">Да</a> / <a href="#" class="cancel">отмена</a>', 'warning' ) . '</div>';
+        // if ( $f ) $out .= '<div class="alert pl-0 pr-0" style="display: none;">' . 
+        //                     mif_mr_functions::get_callout( 'Вы уверены? <a href="#" class="ok">Да</a> / <a href="#" class="cancel">отмена</a>', 'warning' ) . '</div>';
+        
+        $msg = '<div>Вы уверены?</div>';
+
+        $msg .= '<div><label class="form-label mt-4"><input type="checkbox" name="yes" value="on" class="form-check-input"> Да</label></div>';
+        $msg .= '<button type="button" class="btn btn-primary mr-3 remove">Удалить <i class="fas fa-spinner fa-spin d-none"></i></button>';
+        $msg .= '<button type="button" class="btn btn-light border mr-3 cancel">Отмена <i class="fas fa-spinner fa-spin d-none"></i></button>';
+      
+      
+        if ( $f ) $out .= '<div class="alert pl-0 pr-0" style="display: none;">' . mif_mr_functions::get_callout( $msg, 'warning' ) . '</div>';
+        
+        
+        
         if ( $f ) $out .= '</div>';
         if ( $f ) $out .= '</div>';
 
@@ -345,7 +357,7 @@ class mif_mr_comp extends mif_mr_companion_core {
         $arr = array();
         $arr_raw = array();
        
-        $post = get_post($id);
+        $post = get_post( $id );
 
         // p($post->post_title);
         // p($post->post_content);
@@ -364,12 +376,13 @@ class mif_mr_comp extends mif_mr_companion_core {
         // p($arr_raw);
 
         $arr['comp_id'] = $id;
+        $arr['parent'] = $post->post_parent;
         $arr['name'] = $arr_raw['name'];
         // $arr['competencies'] = '';
 
         // p($arr);
 
-        if ( isset( $arr_raw['parts']) ) {
+        if ( isset( $arr_raw['parts'] ) ) {
             
             $arr2 = array();
             

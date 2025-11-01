@@ -89,24 +89,32 @@ jQuery( document ).ready( function( jq ) {
     
     // remove
     
-    jq( 'body' ).on( 'click', 'a.remove', function() {
-        // console.log( 'response' );
-        // jq(this).closest('div.row').after('<div class="col">Вы уверены? <a href="#" class="ok">Да</a> / <a href="#" class="cancel">отмена</a></div>');
-        // jq( '#new' ).trigger('click');
+    jq( 'body' ).on( 'click', 'a.msg-remove', function() {
+        jq( 'input[name=yes]', jq(this).closest('div.row') ).removeClass('is-invalid');
         jq( 'div.alert', jq(this).closest('div.row') ).slideToggle();
-        // console.log( jq(this).closest('div.row').html() );
-        // console.log( jq( 'div.col', jq(this).closest('div.row') ).html() );
-        
         return false;
     } );    
     
     jq( 'body' ).on( 'click', '.comp .cancel', function() {
+        jq( 'input[name=yes]', jq(this).closest('div.alert') ).removeClass('is-invalid');
         jq( 'div.alert', jq(this).closest('div.row') ).slideToggle();
         return false;
     } );    
     
-    jq( 'body' ).on( 'click', '.comp .ok', function() {
-        sub_do( this, 'remove', jq(this).closest('div.content-ajax') );
+    jq( 'body' ).on( 'click', '.comp .remove', function() {
+        
+        if ( jq( 'input[name=yes]', jq(this).closest('div.alert') ).is(':checked') ) {
+            
+            sub_do( this, 'remove', jq(this).closest('div.content-ajax') );
+            // console.log( '@' );
+            
+        } else {
+            
+            jq( 'input[name=yes]', jq(this).closest('div.alert') ).addClass('is-invalid');
+            jq( 'input[name=yes]', jq(this).closest('div.alert') ).focus();
+            
+        }
+
         return false;
     } );    
 

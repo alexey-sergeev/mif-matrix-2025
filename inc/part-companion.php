@@ -115,10 +115,11 @@ class mif_mr_part_companion extends mif_mr_part_core {
         }
         
         global $messages;
-        
         $messages[] = ( $res ) ? array( 'Сохранено', 'success' ) : array( 'Какая-то ошибка. Код ошибки: 102 (' . $type . ')', 'danger' );
         
         if ( $res ) {
+
+            global $tree;
             
             $tree = array();
             $tree = $mif_mr_opop->get_tree();
