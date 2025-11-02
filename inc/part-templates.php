@@ -121,6 +121,17 @@ function mif_mr_the_curriculum()
 }
 
 
+//
+// Выводит 
+//
+
+function mif_mr_the_set_comp()
+{
+    global $mif_mr_set_comp;
+    echo $mif_mr_set_comp->show_set_comp();
+}
+
+
 
 
  

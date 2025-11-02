@@ -70,7 +70,7 @@ class mif_mr_part_companion extends mif_mr_part_core {
         $content = '';
         
         // if ( $opop_id === NULL ) $opop_id = get_the_ID();
-        if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();;
+        if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
                 
         if ( $this->get_companion_id( $type, $opop_id ) !== NULL ) {
             
@@ -94,8 +94,9 @@ class mif_mr_part_companion extends mif_mr_part_core {
         global $mif_mr_opop;
         
         if ( ! isset( $_REQUEST['save'] )) return false;
-        
+
         if ( $this->get_companion_id( $type, $mif_mr_opop->get_opop_id() ) === NULL) {
+        // if ( $this->get_companion_id( $type, mif_mr_opop_core::get_opop_id() ) === NULL) {
             
             $res = wp_insert_post( array(
                 'post_title'    => $mif_mr_opop->get_opop_title() . ' (' . $mif_mr_opop->get_opop_id() . ')',

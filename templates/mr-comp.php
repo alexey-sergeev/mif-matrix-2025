@@ -5,7 +5,8 @@
 
 
 <!-- <div class="courses container mt-3 overflow-auto"> -->
-<div class="comp container mt-3 p-0">
+<!-- <div class="comp container mt-3 p-0"> -->
+<div class="comp">
     
     
 

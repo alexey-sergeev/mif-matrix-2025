@@ -9,7 +9,7 @@
 defined( 'ABSPATH' ) || exit;
 
 
-class mif_mr_list_comp extends mif_mr_companion_core {
+class mif_mr_lib_comp extends mif_mr_companion_core {
     
 
     function __construct()
@@ -44,7 +44,7 @@ class mif_mr_list_comp extends mif_mr_companion_core {
     // Показать cписок компетенций
     //
 
-    public function show_list_comp( $opop_id = NULL )
+    public function show_lib_comp( $opop_id = NULL )
     {
         if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
         
@@ -101,7 +101,7 @@ class mif_mr_list_comp extends mif_mr_companion_core {
             
         }
         
-        if ( $f ) $out .= $this->show_list_comp_create();
+        if ( $f ) $out .= $this->show_lib_comp_create();
     
         $out .= '</div>';
         
@@ -119,7 +119,7 @@ class mif_mr_list_comp extends mif_mr_companion_core {
     // Форму создания 
     //
     
-    private  function show_list_comp_create()
+    private  function show_lib_comp_create()
     {
         $out = '';
         

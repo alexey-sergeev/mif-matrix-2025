@@ -13,10 +13,10 @@ defined( 'ABSPATH' ) || exit;
 // Выводит 
 //
 
-function mif_mr_show_list_comp()
+function mif_mr_show_lib_comp()
 {
-    global $mif_mr_list_comp;
-    echo $mif_mr_list_comp->show_list_comp();
+    global $mif_mr_lib_comp;
+    echo $mif_mr_lib_comp->show_lib_comp();
 }
 
 

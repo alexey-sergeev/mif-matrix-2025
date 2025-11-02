@@ -182,14 +182,14 @@ jQuery( document ).ready( function( jq ) {
     
     // list-comp
     
-    jq( 'body' ).on( 'click', '.list-comp button.new', function() {
+    jq( 'body' ).on( 'click', '.set-comp button.new', function() {
         jq( 'div.new', jq(this).closest('div.container') ).slideToggle();
         return false;
     })
     
     // 
     
-    jq( 'body' ).on( 'click', '.list-comp button.cancel', function() {
+    jq( 'body' ).on( 'click', '.set-comp button.cancel', function() {
         jq( 'input[name=title]', jq(this).closest('div.container') ).val('');
         jq( 'textarea[name=data]', jq(this).closest('div.container') ).val('');
         jq( 'div.new', jq(this).closest('div.container') ).slideToggle();
@@ -198,7 +198,7 @@ jQuery( document ).ready( function( jq ) {
     
     // 
     
-    jq( 'body' ).on( 'click', '.list-comp button.create', function() {
+    jq( 'body' ).on( 'click', '.set-comp button.create', function() {
         
         if ( jq( 'input[name=title]', jq(this).closest('div.container') ).val() == false ) {
 

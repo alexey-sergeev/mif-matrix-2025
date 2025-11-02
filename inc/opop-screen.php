@@ -119,9 +119,14 @@ class mif_mr_opop extends mif_mr_opop_tree_raw {
 
                 } else {
 
-                    global $mif_mr_list_comp;
-                    $mif_mr_list_comp = new mif_mr_list_comp();
-                    $mif_mr_list_comp->the_show();
+                    global $mif_mr_lib_comp;
+                    $mif_mr_lib_comp = new mif_mr_lib_comp();
+                    
+                    global $mif_mr_set_comp;
+                    $mif_mr_set_comp = new mif_mr_set_comp();
+                    
+                    // $mif_mr_list_comp->the_show();
+                    $mif_mr_set_comp->the_show();
 
                 }
 
