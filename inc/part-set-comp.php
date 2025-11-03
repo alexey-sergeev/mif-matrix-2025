@@ -57,11 +57,38 @@ class mif_mr_set_comp extends mif_mr_part_companion {
         
         $out = '';
         
-        $data = $this->get_companion_content( 'set-comp' );
+        $out .= '<h4>Компетенции в ОПОП:</h4>';
         
-        $out .= $data;
+        // $data = $this->get_companion_content( 'set-comp' );
+        
+        // $out .= $data;
+        global $tree;
+        
+        foreach ( $tree['content']['competencies']['data'] as $key => $item ) {
+            
+            // p( $key );
+            // p( $item );
+
+
+            $out .= '<div class="row">';
+            
+            $out .= '<div class="col col-2 col-md-1 fw-bolder">';
+            $out .= $key;
+            $out .= '</div>';
+            
+            $out .= '<div class="col mb-3">';
+            $out .= $item['descr'];
+            $out .= '</div>';
+            
+            $out .= '</div>';
+            
+            
+        }
         
         
+        // $out .= '</div>';
+        
+        // $this->set_comp_to_tree( $tree);
         
         return apply_filters( 'mif_mr_show_set_comp', $out );
     }
@@ -84,7 +111,7 @@ class mif_mr_set_comp extends mif_mr_part_companion {
     {
         if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
         
-        $this->get_index_comp( $opop_id );
+        // $this->get_index_comp( $opop_id );
 
 
         $arr = array();
@@ -149,7 +176,41 @@ class mif_mr_set_comp extends mif_mr_part_companion {
         return apply_filters( 'mif_mr_comp_set_arr', $arr );
     }
     
+    
+    
+    
+    //
+    // 
+    //
+    
+    public static function set_comp_to_tree( $t = array() )
+    {
+        $arr = array();
 
+        foreach ( $t['content']['set-competencies']['data'] as $item ) {
+
+            if ( is_numeric( $item[2] ) ) {
+
+                if ( isset( $t['content']['lib-competencies']['data'][$item[2]] ) )
+                    foreach ( $t['content']['lib-competencies']['data'][$item[2]]['data'] as $item2 ) 
+                        foreach ( $item2['data'] as $item3 ) 
+                            if ( $item3['name'] == $item[1] ) $arr[$item[0]] = $item3;
+                
+            } else {
+                
+                foreach ( $t['content']['lib-competencies']['data'] as $item2 ) 
+                    foreach ( $item2['data'] as $item3 ) 
+                        foreach ( $item3['data'] as $item4 ) 
+                            if ( $item4['name'] == $item[1] ) $arr[$item[0]] = $item4;
+
+            }
+
+        }
+
+        // p($arr);
+
+        return apply_filters( 'mif_mr_comp_set_comp_to_tree', $arr, $t );
+    }
 
 
 

@@ -77,7 +77,7 @@ class mif_mr_lib_comp extends mif_mr_companion_core {
         global $tree;
 
         $arr = array();
-        if ( isset( $tree['content']['competencies']['data'] ) ) $arr = $tree['content']['competencies']['data'];
+        if ( isset( $tree['content']['lib-competencies']['data'] ) ) $arr = $tree['content']['lib-competencies']['data'];
     
         foreach ( $arr as $item ) {
      
@@ -107,7 +107,7 @@ class mif_mr_lib_comp extends mif_mr_companion_core {
         
         $out .= '</div>';
         
-        // $out .= '</div>';
+        $out .= '</div>';
         
         
         return apply_filters( 'mif_mr_show_list_competencies', $out );

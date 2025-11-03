@@ -120,12 +120,13 @@ class mif_mr_comp extends mif_mr_companion_core {
         // $out .= '<div class="pb-4"><a href="' . get_permalink( $opop_id ) .'competencies/">← Вернуться к странице раздела</a></div>';
         if ( $f ) $out .= '<div><a href="' . get_edit_post_link( $comp_id ) . '">Расширенный редактор</a></div>';
         
-        if ( isset( $tree['content']['competencies']['data'][$comp_id] ) ) {
+        if ( isset( $tree['content']['lib-competencies']['data'][$comp_id] ) ) {
 
-            $item = $tree['content']['competencies']['data'][$comp_id];
+            $item = $tree['content']['lib-competencies']['data'][$comp_id];
 
 
             $out .= '<h4 class="mb-6 mt-5">' . $item['name'] . '</h4>';
+            $out .= 'id: ' . $comp_id;
             $out .= '<div class="text-end">';
             $out .= '<small><a href="#" id="roll-down-all">Показать всё</a> | <a href="#" id="roll-up-all">Свернуть</a></small>';
             $out .= '</div>';
@@ -201,9 +202,9 @@ class mif_mr_comp extends mif_mr_companion_core {
         
         if ( empty( $opop_id ) ) $opop_id = mif_mr_opop_core::get_opop_id();
         
-        if ( ! ( isset( $tree['content']['competencies']['data'][$comp_id] ) || $sub_id == '-1' ) ) return 'wp: error 2';
+        if ( ! ( isset( $tree['content']['lib-competencies']['data'][$comp_id] ) || $sub_id == '-1' ) ) return 'wp: error 2';
         
-        $item2 = $tree['content']['competencies']['data'][$comp_id]['data'][$sub_id];
+        $item2 = $tree['content']['lib-competencies']['data'][$comp_id]['data'][$sub_id];
         // $style = ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'save' ) ? '' : 'style="display: none;"';
         
         // HTML
@@ -407,6 +408,7 @@ class mif_mr_comp extends mif_mr_companion_core {
                         $arr3[] = array(
                                         'name' => $m[1],
                                         'descr' => $m[3],
+                                        'category' => $item['name'],
                                     );
                         
                         $n = 0;

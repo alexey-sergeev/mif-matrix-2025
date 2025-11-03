@@ -23,7 +23,7 @@ class mif_mr_opop_tree_raw extends mif_mr_opop_core {
         // echo $_REQUEST['opop'];
 
         global $tree;
-        $tree = $this->get_tree_raw(); 
+        $tree = $this->get_tree(); 
 
         // p($tree);
     }
@@ -35,10 +35,27 @@ class mif_mr_opop_tree_raw extends mif_mr_opop_core {
     
     public function get_tree()
     {
-        $t = $this->get_tree_raw(); 
+        $t = $this->get_tree_clean(); 
         return apply_filters( 'mif_mr_core_opop_get_tree', $t );
     }
     
+    
+    
+    // 
+    // Tree clean
+    // 
+    
+    public function get_tree_clean()
+    {
+        
+        $t = $this->get_tree_raw(); 
+        
+        // $t['content']['competencies']['from_id'] = $this->get_opop_id();
+        $t['content']['competencies']['data'] = mif_mr_set_comp::set_comp_to_tree( $t );
+        
+        return apply_filters( 'mif_mr_core_opop_get_tree_clean', $t );
+    }
+
 
 
     // 
@@ -167,45 +184,45 @@ class mif_mr_opop_tree_raw extends mif_mr_opop_core {
 
         switch ( $part ) {
                 
-                case 'courses':
-                    // p('@ '.$opop_id);
-                    $m = new modules( $c->get_companion_content( 'courses', $opop_id ) );
-                    $data = $m->get_arr();
-                    // $data = $m->get_courses();
-                    // $data = $m->get_tree();
-                break;
-                    
-                case 'matrix':
-                    $m = new matrix( $c->get_companion_content( 'matrix', $opop_id ) );
-                    $data = $m->get_arr();
-                break;
-                        
-                case 'curriculum':
-                    $m = new curriculum( $c->get_companion_content( 'curriculum', $opop_id ) );
-                    $data = $m->get_arr();
-                break;
+            case 'courses':
+                // p('@ '.$opop_id);
+                $m = new modules( $c->get_companion_content( 'courses', $opop_id ) );
+                $data = $m->get_arr();
+                // $data = $m->get_courses();
+                // $data = $m->get_tree();
+            break;
                 
-                case 'lib-competencies':
-                    // $m = new curriculum( $c->get_companion_content( 'curriculum', $opop_id ) );
-                    // $data = $m->get_arr();
-                    $m = new mif_mr_comp();
-                    $data = $m->get_all_arr( $opop_id );
-                    break;
+            case 'matrix':
+                $m = new matrix( $c->get_companion_content( 'matrix', $opop_id ) );
+                $data = $m->get_arr();
+            break;
                     
-                case 'set-competencies':
-                    // p('@');
-                    $m = new mif_mr_set_comp();
-                    $data = $m->get_arr( $opop_id );
-                break;
-                
-
-
-                default:
-                    $data = 'none';
-                break;
+            case 'curriculum':
+                $m = new curriculum( $c->get_companion_content( 'curriculum', $opop_id ) );
+                $data = $m->get_arr();
+            break;
             
-            }
-       
+            case 'lib-competencies':
+                // $m = new curriculum( $c->get_companion_content( 'curriculum', $opop_id ) );
+                // $data = $m->get_arr();
+                $m = new mif_mr_comp();
+                $data = $m->get_all_arr( $opop_id );
+                break;
+                
+            case 'set-competencies':
+                // p('@');
+                $m = new mif_mr_set_comp();
+                $data = $m->get_arr( $opop_id );
+            break;
+            
+
+
+            default:
+                $data = 'none';
+            break;
+        
+        }
+    
         // $t['content'][$part] = array(
         $t['content'][$part] = array(
                             'from_id' => $opop_id,

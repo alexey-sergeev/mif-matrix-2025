@@ -5,14 +5,14 @@
 <?php mif_mr_the_form_begin(); ?>
 <?php mif_mr_show_messages() ?>
 
-<div class="set-comp container mt-3 overflow-auto">
+<div class="set-comp container mt-3">
 <!-- <div class="set-comp"> -->
 
     
     
     <?php mif_mr_the_link_edit(); ?>
       
-    <?php mif_mr_show_explanation('set_comp'); ?>
+    <?php //mif_mr_show_explanation('set_comp'); ?>
     
     
     <div class="row">
