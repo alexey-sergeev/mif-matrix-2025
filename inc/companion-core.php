@@ -205,7 +205,7 @@ class mif_mr_companion_core {
     // Режим edit
     //
 
-    public function get_edit( $sub_id, $comp_id, $opop_id )
+    public function get_sub_edit( $sub_id, $comp_id, $opop_id )
     {
         // ####!!!!!
 

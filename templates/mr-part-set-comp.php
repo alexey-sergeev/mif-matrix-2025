@@ -5,7 +5,7 @@
 <?php mif_mr_the_form_begin(); ?>
 <?php mif_mr_show_messages() ?>
 
-<div class="set-comp container mt-3">
+<div class="comp container mt-3">
 <!-- <div class="set-comp"> -->
 
     
@@ -15,11 +15,11 @@
     <?php //mif_mr_show_explanation('set_comp'); ?>
     
     
-    <div class="row">
+    <!-- <div class="row"> -->
         <?php mif_mr_the_set_comp(); ?>
         <?php // mif_mr_show_panel( 'matrix' ); ?>
         <?php // mif_mr_the_matrix(); ?>
-    </div>
+    <!-- </div> -->
   
 </div>
 

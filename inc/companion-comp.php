@@ -17,7 +17,7 @@ class mif_mr_comp extends mif_mr_companion_core {
     {
         parent::__construct();
 
-        $this->name_indicators = apply_filters( 'mif-mr-name-indicators', array( 'знать', 'уметь' ) );
+        // $this->name_indicators = apply_filters( 'mif-mr-name-indicators', array( 'знать', 'уметь' ) );
         $this->sub_default = apply_filters( 'mif-mr-sub_default', 'default' );
 
 
@@ -127,19 +127,22 @@ class mif_mr_comp extends mif_mr_companion_core {
 
             $out .= '<h4 class="mb-6 mt-5">' . $item['name'] . '</h4>';
             $out .= 'id: ' . $comp_id;
-            $out .= '<div class="text-end">';
-            $out .= '<small><a href="#" id="roll-down-all">Показать всё</a> | <a href="#" id="roll-up-all">Свернуть</a></small>';
-            $out .= '</div>';
+            $out .= $this->get_show_all();
+            // $out .= '<div class="text-end">';
+            // $out .= '<small><a href="#" id="roll-down-all">Показать всё</a> | <a href="#" id="roll-up-all">Свернуть</a></small>';
+            // $out .= '</div>';
 
             $out .= '<div class="container no-gutters">';
 
             foreach ( $item['data'] as $item2 ) {
                 
-                if ( $f ) $out .= '<span>';
+                // if ( $f ) $out .= '<span>';
+                $out .= '<span>';
                 
                 $out .= $this->show_comp_sub( $item2['sub_id'], $comp_id, $opop_id );
                 
-                if ( $f ) $out .= '</span>';
+                $out .= '</span>';
+                // if ( $f ) $out .= '</span>';
                 
             }
         
@@ -191,6 +194,23 @@ class mif_mr_comp extends mif_mr_companion_core {
     
     
     //
+    // Показать всё
+    //
+    
+    public static function get_show_all()
+    {
+        $out = '';
+        
+        $out .= '<div class="text-end">';
+        $out .= '<small><a href="#" id="roll-down-all">Показать всё</a> | <a href="#" id="roll-up-all">Свернуть</a></small>';
+        $out .= '</div>';
+
+        return apply_filters( 'mif_mr_get_show_all', $out );
+    }
+
+
+
+    //
     // Показать cписок компетенций - часть
     //
     
@@ -204,7 +224,7 @@ class mif_mr_comp extends mif_mr_companion_core {
         
         if ( ! ( isset( $tree['content']['lib-competencies']['data'][$comp_id] ) || $sub_id == '-1' ) ) return 'wp: error 2';
         
-        $item2 = $tree['content']['lib-competencies']['data'][$comp_id]['data'][$sub_id];
+        $item = $tree['content']['lib-competencies']['data'][$comp_id]['data'][$sub_id];
         // $style = ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'save' ) ? '' : 'style="display: none;"';
         
         // HTML
@@ -212,92 +232,156 @@ class mif_mr_comp extends mif_mr_companion_core {
         $out = '';   
         $out .= '<span class="content-ajax">';
         
+        $out .= $this->get_sub_head( array(
+                                            'name' => $item['name'],
+                                            'sub_id' => $sub_id,
+                                            'f' => $f            
+                                            ) );
+
+        // $out .= '<div class="row mb-3 mt-3">';
+        
+        // // Наименование категории
+
+        // $out .= '<div class="col-11 mr-gray p-3 fw-bolder">';
+        // $out .= $item2['name'];
+        // $out .= '</div>';
+        
+        // // Кнопка edit
+
+        // $out .= '<div class="col-1 mr-gray p-3 text-end">';
+        // if ( $f ) $out .= '<i class="fas fa-spinner fa-spin d-none"></i> ';
+        // if ( $f ) $out .= '<a href="#" class="edit pr-1" data-sub="' . $sub_id . '"><i class="fa-regular fa-pen-to-square"></i></a>';
+        // $out .= '<a href="#" class="roll-up d-none"><i class="fa-solid fa-angle-up"></i></a>';
+        // $out .= '<a href="#" class="roll-down"><i class="fa-solid fa-chevron-down"></i></a>';
+        // $out .= '</div>';
+        
+        // $out .= '</div>';
+
+        if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'edit' ) {
+            
+            // Режим edit
+
+            if ( $f ) $out .= $this->get_sub_edit( $sub_id, $comp_id, $opop_id );
+            
+        } else {
+            
+            // Режим отображения
+            
+            foreach ( $item['data'] as $item2 ) $out .= $this->get_item_body( $item2 );
+
+        }
+        
+        $out .= '</span>';
+   
+        return apply_filters( ' mif_mr_show_competencies_sub', $out, $sub_id, $comp_id, $opop_id );
+    }
+    
+    
+    
+
+
+
+
+
+    
+    //
+    // Показать cписок компетенций - компетенция, head
+    //
+    
+    public static function get_sub_head( $item )
+    {
+        if ( ! isset( $item['sub_id'] ) ) $item['sub_id'] = 0;
+        if ( ! isset( $item['f'] ) ) $item['f'] = false;
+        
+        $out = '';
+        
         $out .= '<div class="row mb-3 mt-3">';
         
         // Наименование категории
 
         $out .= '<div class="col-11 mr-gray p-3 fw-bolder">';
-        $out .= $item2['name'];
+        $out .= $item['name'];
         $out .= '</div>';
         
         // Кнопка edit
 
         $out .= '<div class="col-1 mr-gray p-3 text-end">';
-        if ( $f ) $out .= '<i class="fas fa-spinner fa-spin d-none"></i> ';
-        if ( $f ) $out .= '<a href="#" class="edit pr-1" data-sub="' . $sub_id . '"><i class="fa-regular fa-pen-to-square"></i></a>';
+        if ( $item['f'] ) $out .= '<i class="fas fa-spinner fa-spin d-none"></i> ';
+        if ( $item['f'] ) $out .= '<a href="#" class="edit pr-1" data-sub="' . $item['sub_id'] . '"><i class="fa-regular fa-pen-to-square"></i></a>';
         $out .= '<a href="#" class="roll-up d-none"><i class="fa-solid fa-angle-up"></i></a>';
         $out .= '<a href="#" class="roll-down"><i class="fa-solid fa-chevron-down"></i></a>';
         $out .= '</div>';
         
         $out .= '</div>';
 
-        if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'edit' ) {
-            
-            // Режим edit
+        return apply_filters( ' mif_mr_get_item_head', $out, $item );
+    }
 
-            if ( $f ) $out .= $this->get_edit( $sub_id, $comp_id, $opop_id );
-            
-        } else {
-            
-            // Режим отображения
-            
-            foreach ( $item2['data'] as $item3 ) {
+
+
+
+
+    
+    //
+    // Показать cписок компетенций - компетенция, body
+    //
+    
+    public static function get_item_body( $item )
+    {
+        $name_indicators = apply_filters( 'mif-mr-name-indicators', array( 'знать', 'уметь' ) );
+        
+        $out = '';
+
+        $out .= '<div class="row">';
+        
+        $out .= '<div class="col col-2 col-md-1 fw-bolder">';
+        $out .= $item['name'];
+        $out .= '</div>';
+        
+        $out .= '<div class="col mb-3">';
+        $out .= $item['descr'];
+        $out .= '</div>';
+        
+        $out .= '</div>';
+
+        // Индикаторы
+
+        if ( isset( $item['indicators'] ) ) {
+
+            foreach ( (array) $item['indicators'] as $key4 => $item4 ) {
                 
-                $out .= '<div class="row">';
+                $style = ' style="display: none;"';
+
+                $out .= '<div class="row coll"' . $style . '>';
                 
-                $out .= '<div class="col col-2 col-md-1 fw-bolder">';
-                $out .= $item3['name'];
+                $out .= '<div class="col col-2 col-md-1">';
                 $out .= '</div>';
                 
-                $out .= '<div class="col mb-3">';
-                $out .= $item3['descr'];
+                $out .= '<div class="col p-1 pl-3 m-3 mr-gray fst-italic">';
+                $out .= ( isset( $name_indicators[$key4] ) ) ? $name_indicators[$key4] : 'индикатор ' . $key4;
                 $out .= '</div>';
                 
                 $out .= '</div>';
-
-                // Индикаторы
-
-                if ( isset( $item3['indicators'] ) ) {
-
-                    foreach ( (array) $item3['indicators'] as $key4 => $item4 ) {
-                        
-                        $style = ' style="display: none;"';
-
-                        $out .= '<div class="row coll"' . $style . '>';
-                        
-                        $out .= '<div class="col col-2 col-md-1">';
-                        $out .= '</div>';
-                        
-                        $out .= '<div class="col p-1 pl-3 m-3 mr-gray fst-italic">';
-                        $out .= ( isset( $this->name_indicators[$key4] ) ) ? $this->name_indicators[$key4] : 'индикатор ' . $key4;
-                        $out .= '</div>';
-                        
-                        $out .= '</div>';
-                        
-                        $out .= '<div class="row coll"' . $style . '">';
-                        $out .= '<div class="col col-2 col-md-1">';
-                        $out .= '</div>';
-                        
-                        $out .= '<div class="col">';
-                        foreach ( $item4 as $item5 ) $out .= '<p class="m-2">' . $item5 . '</p>';
-                        $out .= '</div>';
-                        $out .= '</div>';
-                        
-                    }
                 
-                }
+                $out .= '<div class="row coll"' . $style . '">';
+                $out .= '<div class="col col-2 col-md-1">';
+                $out .= '</div>';
+                
+                $out .= '<div class="col">';
+                foreach ( $item4 as $item5 ) $out .= '<p class="m-2">' . $item5 . '</p>';
+                $out .= '</div>';
+                $out .= '</div>';
                 
             }
-
+        
         }
         
-        $out .= '</span>';
-   
-        return apply_filters( 'mif_mr_show_competencies_sub', $out, $sub_id, $comp_id, $opop_id );
+        return apply_filters( ' mif_mr_get_item_body', $out, $item );
     }
-    
 
-   
+
+
+
    
     //
     // Возвращает текст компетенции из дерева
@@ -308,7 +392,7 @@ class mif_mr_comp extends mif_mr_companion_core {
         global $tree;
         
         $arr = array();
-        if ( isset( $tree['content']['competencies']['data'][$comp_id] ) ) $arr = $tree['content']['competencies']['data'][$comp_id];
+        if ( isset( $tree['content']['lib-competencies']['data'][$comp_id] ) ) $arr = $tree['content']['lib-competencies']['data'][$comp_id];
         
         $out = array();
         
@@ -456,7 +540,7 @@ class mif_mr_comp extends mif_mr_companion_core {
 
 
     
-    private $name_indicators = array();
+    // private $name_indicators = array();
     private $sub_default = '';
    
 }

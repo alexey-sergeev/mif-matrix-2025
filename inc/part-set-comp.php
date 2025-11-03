@@ -50,6 +50,7 @@ class mif_mr_set_comp extends mif_mr_part_companion {
     // public function get_set_comp( $opop_id = NULL )
     public function show_set_comp()
     {
+        global $tree;
         // if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
         $this->save( 'set-comp' );
         
@@ -58,31 +59,38 @@ class mif_mr_set_comp extends mif_mr_part_companion {
         $out = '';
         
         $out .= '<h4>Компетенции в ОПОП:</h4>';
-        
+        $out .= mif_mr_comp::get_show_all();
+
         // $data = $this->get_companion_content( 'set-comp' );
         
         // $out .= $data;
-        global $tree;
         
         foreach ( $tree['content']['competencies']['data'] as $key => $item ) {
             
             // p( $key );
             // p( $item );
 
+            $out .= '<span>';
+            $out .= mif_mr_comp::get_sub_head( array( 'name' => $item['category'] ) );
+            $out .= mif_mr_comp::get_item_body( $item );
+            $out .= '</span>';
+            
+            // $out .= '<div class="row">';
+            
+            // $out .= '<div class="col col-2 col-md-1 fw-bolder">';
+            // $out .= $key;
+            // $out .= '</div>';
+            
+            // $out .= '<div class="col mb-3">';
+            // $out .= $item['descr'];
+            // $out .= '</div>';
+            
+            // $out .= '</div>';
+            
+            
 
-            $out .= '<div class="row">';
-            
-            $out .= '<div class="col col-2 col-md-1 fw-bolder">';
-            $out .= $key;
-            $out .= '</div>';
-            
-            $out .= '<div class="col mb-3">';
-            $out .= $item['descr'];
-            $out .= '</div>';
-            
-            $out .= '</div>';
-            
-            
+
+
         }
         
         
