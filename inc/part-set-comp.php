@@ -58,45 +58,36 @@ class mif_mr_set_comp extends mif_mr_part_companion {
         
         $out = '';
         
+        $out .= '<div class="row">';
+        $out .= '<div class="col p-0">';
         $out .= '<h4>Компетенции в ОПОП:</h4>';
+        $out .= '</div>';
+        $out .= '</div>';
+
         $out .= mif_mr_comp::get_show_all();
 
-        // $data = $this->get_companion_content( 'set-comp' );
-        
-        // $out .= $data;
-        
-        foreach ( $tree['content']['competencies']['data'] as $key => $item ) {
-            
-            // p( $key );
-            // p( $item );
+        $data = $tree['content']['competencies']['data'];
+        $old = '';
+        $n = 0;
+        $index = array( array() );
 
-            $out .= '<span>';
-            $out .= mif_mr_comp::get_sub_head( array( 'name' => $item['category'] ) );
-            $out .= mif_mr_comp::get_item_body( $item );
-            $out .= '</span>';
+        foreach ( $data as $key => $item ) {
             
-            // $out .= '<div class="row">';
+            if ( $old == $item['category'] ) $n--;
+            $index[$n][] = $key;
+            $old = $item['category'];
+            $n++;
             
-            // $out .= '<div class="col col-2 col-md-1 fw-bolder">';
-            // $out .= $key;
-            // $out .= '</div>';
-            
-            // $out .= '<div class="col mb-3">';
-            // $out .= $item['descr'];
-            // $out .= '</div>';
-            
-            // $out .= '</div>';
-            
-            
-
-
-
         }
         
-        
-        // $out .= '</div>';
-        
-        // $this->set_comp_to_tree( $tree);
+        foreach ( $index as $item ) {
+            
+            $out .= '<span>';
+            $out .= mif_mr_comp::get_sub_head( array( 'name' => $data[$item[0]]['category'] ) );
+            foreach ( $item as $item2 ) $out .= mif_mr_comp::get_item_body( $data[$item2] );
+            $out .= '</span>';
+            
+        }
         
         return apply_filters( 'mif_mr_show_set_comp', $out );
     }
@@ -187,38 +178,38 @@ class mif_mr_set_comp extends mif_mr_part_companion {
     
     
     
-    //
-    // 
-    //
+    // //
+    // // 
+    // //
     
-    public static function set_comp_to_tree( $t = array() )
-    {
-        $arr = array();
+    // public static function set_comp_to_tree( $t = array() )
+    // {
+    //     $arr = array();
 
-        foreach ( $t['content']['set-competencies']['data'] as $item ) {
+    //     foreach ( $t['content']['set-competencies']['data'] as $item ) {
 
-            if ( is_numeric( $item[2] ) ) {
+    //         if ( is_numeric( $item[2] ) ) {
 
-                if ( isset( $t['content']['lib-competencies']['data'][$item[2]] ) )
-                    foreach ( $t['content']['lib-competencies']['data'][$item[2]]['data'] as $item2 ) 
-                        foreach ( $item2['data'] as $item3 ) 
-                            if ( $item3['name'] == $item[1] ) $arr[$item[0]] = $item3;
+    //             if ( isset( $t['content']['lib-competencies']['data'][$item[2]] ) )
+    //                 foreach ( $t['content']['lib-competencies']['data'][$item[2]]['data'] as $item2 ) 
+    //                     foreach ( $item2['data'] as $item3 ) 
+    //                         if ( $item3['name'] == $item[1] ) $arr[$item[0]] = $item3;
                 
-            } else {
+    //         } else {
                 
-                foreach ( $t['content']['lib-competencies']['data'] as $item2 ) 
-                    foreach ( $item2['data'] as $item3 ) 
-                        foreach ( $item3['data'] as $item4 ) 
-                            if ( $item4['name'] == $item[1] ) $arr[$item[0]] = $item4;
+    //             foreach ( $t['content']['lib-competencies']['data'] as $item2 ) 
+    //                 foreach ( $item2['data'] as $item3 ) 
+    //                     foreach ( $item3['data'] as $item4 ) 
+    //                         if ( $item4['name'] == $item[1] ) $arr[$item[0]] = $item4;
 
-            }
+    //         }
 
-        }
+    //     }
 
-        // p($arr);
+    //     // p($arr);
 
-        return apply_filters( 'mif_mr_comp_set_comp_to_tree', $arr, $t );
-    }
+    //     return apply_filters( 'mif_mr_comp_set_comp_to_tree', $arr, $t );
+    // }
 
 
 

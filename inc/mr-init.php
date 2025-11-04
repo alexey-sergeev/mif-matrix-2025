@@ -26,7 +26,7 @@ include_once dirname( __FILE__ ) . '/part-set-comp.php';
 
 include_once dirname( __FILE__ ) . '/companion-core.php';
 include_once dirname( __FILE__ ) . '/companion-comp.php';
-include_once dirname( __FILE__ ) . '/companion-list-comp.php';
+// include_once dirname( __FILE__ ) . '/companion-list-comp.php';
 include_once dirname( __FILE__ ) . '/companion-templates.php';
 
 include_once dirname( __FILE__ ) . '/lib-download.php';
@@ -225,7 +225,8 @@ class mif_mr_init extends mif_mr_functions {
                 
                 if ( in_array( $_REQUEST['action'], array( 'create' ) ) ) {
                     
-                    $m = new mif_mr_lib_comp();
+                    // $m = new mif_mr_lib_comp();
+                    $m = new mif_mr_comp();
                     echo $m->show_lib_comp( (int) $_REQUEST['opop'] );
                     // p($_REQUEST);
                     // $m = new mif_mr_comp();

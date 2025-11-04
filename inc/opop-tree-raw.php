@@ -51,7 +51,7 @@ class mif_mr_opop_tree_raw extends mif_mr_opop_core {
         $t = $this->get_tree_raw(); 
         
         // $t['content']['competencies']['from_id'] = $this->get_opop_id();
-        $t['content']['competencies']['data'] = mif_mr_set_comp::set_comp_to_tree( $t );
+        $t['content']['competencies']['data'] = mif_mr_comp::set_comp_to_tree( $t );
         
         return apply_filters( 'mif_mr_core_opop_get_tree_clean', $t );
     }

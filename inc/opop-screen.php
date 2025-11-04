@@ -116,11 +116,13 @@ class mif_mr_opop extends mif_mr_opop_tree_raw {
                     global $mif_mr_comp;
                     $mif_mr_comp = new mif_mr_comp();
                     $mif_mr_comp->the_show();
-
+                    
                 } else {
-
-                    global $mif_mr_lib_comp;
-                    $mif_mr_lib_comp = new mif_mr_lib_comp();
+                    
+                    // global $mif_mr_lib_comp;
+                    // $mif_mr_lib_comp = new mif_mr_lib_comp();
+                    global $mif_mr_comp;
+                    $mif_mr_comp = new mif_mr_comp();
                     
                     global $mif_mr_set_comp;
                     $mif_mr_set_comp = new mif_mr_set_comp();
