@@ -217,6 +217,9 @@ jQuery( document ).ready( function( jq ) {
     
 
 
+
+
+
     // #fullsize
     
     jq( 'body' ).on( 'click', '#fullsize', function() {
@@ -356,6 +359,35 @@ jQuery( document ).ready( function( jq ) {
 
         // let row = jq(this).attr( 'data-row' );
         // jq('.' + row, jq(this).closest('table')).each( function ( index, elem ) { jq(elem).toggleClass('d-none'); });
+
+        // return false;
+        
+    })
+   
+    
+
+    // set comp
+
+
+    jq( 'body' ).on( 'click', '.part .comp input[type=checkbox]', function() {
+        
+        console.log( '@' );
+        
+        let tr = jq(this).closest('tr');
+        
+        // let name = jq( 'input[name=name[]]', tr ).val();
+        let name = jq( 'input.name', tr ).val();
+        // let descr = jq( 'input.descr', tr ).val();
+        let comp_id = jq( 'input.comp_id', tr ).val();
+        
+        if ( jq( 'input.new_name', tr ).val() == '' ) jq( 'input.new_name', tr ).val(name);
+        
+
+
+
+        console.log( name );
+        // console.log( descr );
+        console.log( comp_id );
 
         // return false;
         

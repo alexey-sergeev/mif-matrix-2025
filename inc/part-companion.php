@@ -89,11 +89,14 @@ class mif_mr_part_companion extends mif_mr_part_core {
     //  
     //
     
-    public function save( $type = 'courses' )
+    public function save( $type = 'courses', $content = NULL )
     {
         global $mif_mr_opop;
         
         if ( ! isset( $_REQUEST['save'] )) return false;
+        // if ( $_REQUEST['save'] == 'visual' ) return false;
+
+        if ( $content == NULL ) $content = sanitize_textarea_field( $_REQUEST['content'] );
 
         if ( $this->get_companion_id( $type, $mif_mr_opop->get_opop_id() ) === NULL) {
         // if ( $this->get_companion_id( $type, mif_mr_opop_core::get_opop_id() ) === NULL) {
@@ -103,14 +106,16 @@ class mif_mr_part_companion extends mif_mr_part_core {
                 'post_type'     => $type,
                 'post_status'   => 'publish',
                 'post_parent'   => $mif_mr_opop->get_opop_id(),
-                'post_content'  => sanitize_textarea_field( $_REQUEST['content'] ),
+                // 'post_content'  => sanitize_textarea_field( $_REQUEST['content'] ),
+                'post_content'  => $content,
                 ) );
                 
         } else {
             
             $res = wp_update_post( array(
                 'ID' => $this->get_companion_id( $type, $mif_mr_opop->get_opop_id() ),
-                'post_content' => sanitize_textarea_field( $_REQUEST['content'] ),
+                // 'post_content' => sanitize_textarea_field( $_REQUEST['content'] ),
+                'post_content' => $content,
                 ) );
                 
         }

@@ -9,7 +9,6 @@
 defined( 'ABSPATH' ) || exit;
 
 
-// class mif_mr_companion extends mif_mr_part_core {
 class mif_mr_companion_core {
     
 

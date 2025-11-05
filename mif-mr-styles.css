@@ -50,6 +50,12 @@
     /* width: 3em; */
 }
 
+.part .comp input[type=text] {
+    width: 5em;
+}
+
+
+
 /* .content .part table {
     width: auto;
 }
@@ -63,20 +69,20 @@
 }
 
 .part tr:hover {
-  transition-duration: 100ms;
+    transition-duration: 100ms;
 }
 
 .part tr:hover td, .part tbody tr:hover th {
 /* .part tr:hover td { */
-  background-color: #ffb;
+    background-color: #ffb;
 }
 
 .part tr:hover td.mr-green, .part tr:hover th.mr-green {
-  background-color: #9f9 !important;
+    background-color: #9f9 !important;
 }
 
 .part tr:hover td.mr-blue {
-  background-color: #deb !important;
+    background-color: #deb !important;
 }
 
 .part td, .part th {
@@ -84,6 +90,11 @@
     /* border-width: 0 0 1px !important; */
     padding: .3em  !important;
     /* vertical-align: top !important; */
+}
+
+.part .comp td, .part .comp th {
+    border-right: 0 !important;
+    border-left: 0 !important;
 }
 
 .content .part ul {

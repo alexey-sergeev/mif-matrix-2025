@@ -8,9 +8,6 @@
 
 defined( 'ABSPATH' ) || exit;
 
-// include_once dirname( __FILE__ ) . '/part-core.php';
-
-// class mif_mr_set_comp extends mif_mr_table {
 class mif_mr_set_comp extends mif_mr_part_companion {
     
     function __construct()
@@ -47,47 +44,70 @@ class mif_mr_set_comp extends mif_mr_part_companion {
     // Показать cписок компетенций
     //
     
-    // public function get_set_comp( $opop_id = NULL )
     public function show_set_comp()
     {
         global $tree;
         // if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
-        $this->save( 'set-comp' );
-        
-        if ( isset( $_REQUEST['edit'] ) ) return $this->companion_edit( 'set-comp' );
+        $this->save( 'set-comp', $this->compose_set_comp() );
         
         $out = '';
         
-        $out .= '<div class="row">';
-        $out .= '<div class="col p-0">';
-        $out .= '<h4>Компетенции в ОПОП:</h4>';
-        $out .= '</div>';
-        $out .= '</div>';
-
-        $out .= mif_mr_comp::get_show_all();
-
-        $data = $tree['content']['competencies']['data'];
-        $old = '';
-        $n = 0;
-        $index = array( array() );
-
-        foreach ( $data as $key => $item ) {
+        if ( isset( $_REQUEST['edit'] ) ) {
             
-            if ( $old == $item['category'] ) $n--;
-            $index[$n][] = $key;
-            $old = $item['category'];
-            $n++;
+            $out .= '<div class="row">';
+            $out .= '<div class="col p-0">';
+            
+            if ( $_REQUEST['edit'] == 'visual' ) {
+                
+                $out .= $this->edit_visual();
+                
+            } else {
+                
+                $out .= $this->companion_edit( 'set-comp' );
+                
+            }
+            
+            $out .= '</div>';
+            $out .= '</div>';
+            
+        } else {
+            
+            $out .= '<div class="row">';
+            $out .= '<div class="col p-0">';
+            $out .= '<h4>Компетенции в ОПОП:</h4>';
+            $out .= '</div>';
+            $out .= '</div>';
+            
+            $out .= mif_mr_comp::get_show_all();
+            
+            $data = $tree['content']['competencies']['data'];
+            $old = '';
+            $n = 0;
+            $index = array( array() );
+            
+            foreach ( $data as $key => $item ) {
+                
+                if ( $old == $item['category'] ) $n--;
+                $index[$n][] = $key;
+                $old = $item['category'];
+                $n++;
+                
+            }
+            
+            foreach ( $index as $item ) {
+                
+                if ( empty( $item ) ) continue;
+                
+                $out .= '<span>';
+                $out .= mif_mr_comp::get_sub_head( array( 'name' => $data[$item[0]]['category'] ) );
+                foreach ( $item as $item2 ) $out .= mif_mr_comp::get_item_body( $data[$item2] );
+                $out .= '</span>';
+                
+            }
             
         }
         
-        foreach ( $index as $item ) {
-            
-            $out .= '<span>';
-            $out .= mif_mr_comp::get_sub_head( array( 'name' => $data[$item[0]]['category'] ) );
-            foreach ( $item as $item2 ) $out .= mif_mr_comp::get_item_body( $data[$item2] );
-            $out .= '</span>';
-            
-        }
+        
         
         return apply_filters( 'mif_mr_show_set_comp', $out );
     }
@@ -95,6 +115,195 @@ class mif_mr_set_comp extends mif_mr_part_companion {
     
     
     
+    //
+    //
+    //
+    
+    public function compose_set_comp()
+    {
+        $out = '';        
+        
+        // p( $_REQUEST );
+        
+        if ( isset( $_REQUEST['select'] ) ) {
+
+            foreach ( (array) $_REQUEST['select'] as $key => $item ) {
+
+                $new_name = ( isset( $_REQUEST['new_name'][$key] ) ) ? sanitize_textarea_field( $_REQUEST['new_name'][$key] ) : '';
+                $name = ( isset( $_REQUEST['name'][$key] ) ) ? sanitize_textarea_field( $_REQUEST['name'][$key] ) : '';
+                $comp_id = ( isset( $_REQUEST['comp_id'][$key] ) ) ? sanitize_textarea_field( $_REQUEST['comp_id'][$key] ) : '';
+
+                $out .= $new_name . ':' . $name . ':' . $comp_id . "\n";
+
+            }
+
+        }
+
+        // p($out);
+
+        return apply_filters( 'mif_mr_compose_set_comp', $out );
+    }
+    
+    //
+    //
+    //
+
+    public function edit_visual()
+    {
+        global $tree;
+        $arr = $tree['content']['lib-competencies']['data'];
+        $arr2 = array();
+        $n = 0;
+        // p($arr);
+        
+        foreach ( $arr as $item ) {
+            
+            // p($item['name']); // post 
+            // p($item['comp_id']);  
+            
+            foreach ( $item['data'] as $item2 ) {
+                
+                foreach ( $item2['data'] as $item3 ) {
+                    
+                    // p($item3['name']);
+                    // p($item3['descr']);
+                    
+                    $arr2[] = array(
+                        'comp_id' => $item['comp_id'],
+                        'lib_name' => $item['name'],
+                        'name' => $item3['name'],
+                        'descr' => $item3['descr'],
+                        'old_name' => '',
+                        'sort' => -1,
+                        'n' => $n++,
+                    );
+                    // p($item3);
+                    
+                }
+            }
+        }
+        
+        // p($item);
+        // p($arr2);
+        $arr = $tree['content']['competencies']['data'];
+        // $index = array();
+        // foreach ( $arr as $item ) $index[] = array( $item['old_name'], $item['comp_id'] );
+        $sort = 0;
+
+        foreach ( $arr as $key => $item ) {
+            
+            foreach ( $arr2 as $key2 => $item2 ) {
+                
+                if ( $item['old_name'] == $item2['name'] && $item['comp_id'] == $item2['comp_id'] ) {
+                    
+                    $arr2[$key2]['old_name'] = $item['old_name'];
+                    $arr2[$key2]['sort'] = $sort++;
+                    
+                } 
+                
+                // p('$index');
+                
+            }
+            
+        }
+        // p($arr2);
+
+        $out = '';
+        
+        $out .= '<table>';
+        
+        $out .= '<thead><tr>';
+        
+        $out .= '<th>';
+        $out .= '</th>';
+        
+        $out .= '<th>';
+        $out .= 'Новое имя';
+        $out .= '</th>';
+        
+        $out .= '<th colspan="2">';
+        $out .= 'Компетенция';
+        $out .= '</th>';
+        
+        $out .= '<th>';
+        $out .= 'Библиотека';
+        $out .= '</th>';
+        
+        $out .= '<th>';
+        $out .= 'ID';
+        $out .= '</th>';
+        
+        $out .= '<th>';
+        $out .= '</th>';
+        
+        $out .= '</tr></thead>';
+        
+
+
+        foreach ( $arr2 as $item ) $out .= $this->edit_visual_comp( $item );
+        
+        $out .= '</table>';
+        
+        return apply_filters( 'mif_mr_edit_visual', $out );
+    }
+    
+    
+    
+    
+    //
+    //
+    //
+    
+    public function edit_visual_comp( $item )
+    {
+        $out = '';
+        
+        // p($item);
+        $out .= '<tr>';
+     
+        $out .= '<td>';
+        $checked = ( empty( $item['old_name'] ) ) ? '' : ' checked';
+        $out .= '<input name="select[' . $item['n'] . ']" type="checkbox"' . $checked . ' class="form-check-input mt-1">';
+        $out .= '</td>';
+     
+        $out .= '<td>';
+        // $out .= '<input type="text" class="form-control" style="width: 5em;">';
+        $out .= '<input name="new_name[' . $item['n'] . ']" type="text" value="' . $item['old_name'] . '" class="new_name form-control mt-1">';
+        $out .= '</td>';
+        
+        $out .= '<td class="fw-bolder">';
+        $out .= '<div class="pl-4 pr-2" style="min-height: 3.2em">' . $item['name'] . '</div>';
+        $out .= '<input name="name[' . $item['n'] . ']" type="hidden" value="' . $item['name'] . '" class="name">';
+        $out .= '</td>';
+        
+        $out .= '<td>';
+        $out .= $this->mb_substr( $item['descr'], 100 );
+        // $out .= '<input name="descr[]" type="hidden" value="' . $item['descr'] . '" class="descr">';
+        $out .= '</td>';
+        
+        $out .= '<td>';
+        $out .= $this->mb_substr( $item['lib_name'], 30 );
+        // $out .= $item['lib_name'];
+        $out .= '</td>';
+        
+        $out .= '<td>';
+        $out .= '<div class="bg-secondary text-light rounded pl-2 pr-2 mt-1">' . $item['comp_id'] . '</div>';
+        $out .= '<input name="comp_id[' . $item['n'] . ']" type="hidden" value="' . $item['comp_id'] . '" class="comp_id">';
+        $out .= '</td>';
+        
+        $out .= '<td class="text-center" style="width: 4em">';
+        // $out .= '<td>';
+        $out .= '<i class="fa-solid fa-arrow-up"></i>';
+        $out .= '<i class="fa-solid fa-arrow-down"></i>';
+        $out .= '<input name="sort[' . $item['n'] . ']" type="hidden" value="' . $item['sort'] . '" class="comp_id">';
+        $out .= '</td>';
+
+        $out .= '</tr>';
+
+        return apply_filters( 'mif_mr_edit_visual_comp', $out, $item );
+    }
+
+
     //
     // Возвращает массив из текста (post)
     //
@@ -176,65 +385,6 @@ class mif_mr_set_comp extends mif_mr_part_companion {
     }
     
     
-    
-    
-    // //
-    // // 
-    // //
-    
-    // public static function set_comp_to_tree( $t = array() )
-    // {
-    //     $arr = array();
-
-    //     foreach ( $t['content']['set-competencies']['data'] as $item ) {
-
-    //         if ( is_numeric( $item[2] ) ) {
-
-    //             if ( isset( $t['content']['lib-competencies']['data'][$item[2]] ) )
-    //                 foreach ( $t['content']['lib-competencies']['data'][$item[2]]['data'] as $item2 ) 
-    //                     foreach ( $item2['data'] as $item3 ) 
-    //                         if ( $item3['name'] == $item[1] ) $arr[$item[0]] = $item3;
-                
-    //         } else {
-                
-    //             foreach ( $t['content']['lib-competencies']['data'] as $item2 ) 
-    //                 foreach ( $item2['data'] as $item3 ) 
-    //                     foreach ( $item3['data'] as $item4 ) 
-    //                         if ( $item4['name'] == $item[1] ) $arr[$item[0]] = $item4;
-
-    //         }
-
-    //     }
-
-    //     // p($arr);
-
-    //     return apply_filters( 'mif_mr_comp_set_comp_to_tree', $arr, $t );
-    // }
-
-
-
-    // public function get_index_comp( $opop_id = NULL )
-    // {
-    //     // global $tree;
-    //     // p($tree);
-
-    //     // $m = new mif_mr_comp();
-    //     // $data = $m->get_all_arr( $opop_id );
-
-    //     // $arr = array();
-
-    //     // foreach ( $data as $item )
-    //     // foreach ( $item['data'] as $item2 )
-    //     // foreach ( $item2['data'] as $item3 )  $arr[$item3['name']] = $item['comp_id'];
-
-    //     // p($arr);
-        
-    //     // p($data);
-
-    // }
-
-
-
 }
 
 ?>

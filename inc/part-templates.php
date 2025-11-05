@@ -71,6 +71,17 @@ function mif_mr_the_link_edit()
 // Выводит 
 //
 
+function mif_mr_the_link_edit_visual()
+{
+    global $mif_mr_set_comp;
+    echo $mif_mr_set_comp->get_link_edit_visual();
+}
+
+
+//
+// Выводит 
+//
+
 function mif_mr_the_form_begin()
 {
     global $mif_mr_part;

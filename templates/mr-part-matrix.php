@@ -5,7 +5,12 @@
 
 <div class="matrix container mt-3 overflow-auto">
 
-    <?php mif_mr_the_link_edit(); ?>
+    <div class="mt-5 mb-5">
+    
+        <?php mif_mr_the_link_edit(); ?>
+    
+    </div>  
+
 
     <?php mif_mr_show_explanation('matrix'); ?>
 

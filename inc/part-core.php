@@ -37,7 +37,7 @@ class mif_mr_part_core {
     
     
     // 
-    // Наследование от кого? 
+    // 
     // 
     
     public function get_link_edit()
@@ -48,13 +48,36 @@ class mif_mr_part_core {
     
         if (  $mr->user_can(3) && ! isset( $_REQUEST['edit'] ) ) {
 
-            $out .= '<div class="row mt-5 mb-5">';
+            $out .= '<div class="row mt-1">';
             $out .= '<div class="col-12 p-0"><a href="?edit">Редактировать</a></div>';
             $out .= '</div>';
 
         }
 
         return apply_filters( 'mif_mr_part_core_link_edit', $out );
+    }
+    
+    
+    
+    // 
+    // 
+    // 
+    
+    public function get_link_edit_visual()
+    {
+        global $mr;
+
+        $out = '';
+    
+        if (  $mr->user_can(3) && ! isset( $_REQUEST['edit'] ) ) {
+
+            $out .= '<div class="row mt-1">';
+            $out .= '<div class="col-12 p-0"><a href="?edit=visual">Визуальное редактирование</a></div>';
+            $out .= '</div>';
+
+        }
+
+        return apply_filters( 'mif_mr_part_core_link_edit_visual', $out );
     }
     
     

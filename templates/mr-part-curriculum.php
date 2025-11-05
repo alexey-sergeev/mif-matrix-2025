@@ -5,13 +5,20 @@
 
 <div class="curriculum container mt-3 overflow-auto">
     
-    <?php mif_mr_the_link_edit(); ?>
+    <div class="mt-5 mb-5">
+    
+        <?php mif_mr_the_link_edit(); ?>
+    
+    </div>  
+
 
     <?php mif_mr_show_explanation('curriculum'); ?>
 
     <div class="row">
+
         <?php mif_mr_show_panel( 'curriculum' ); ?>    
         <?php mif_mr_the_curriculum(); ?>
+    
     </div>
  
 </div>

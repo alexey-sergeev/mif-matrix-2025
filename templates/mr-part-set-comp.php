@@ -9,9 +9,13 @@
 <!-- <div class="set-comp"> -->
 
     
+    <div class="mt-5 mb-5">
     
-    <?php mif_mr_the_link_edit(); ?>
-      
+        <?php mif_mr_the_link_edit(); ?>
+        <?php mif_mr_the_link_edit_visual(); ?>
+    
+    </div>  
+
     <?php //mif_mr_show_explanation('set_comp'); ?>
     
     
