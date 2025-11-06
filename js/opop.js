@@ -382,12 +382,96 @@ jQuery( document ).ready( function( jq ) {
         
         if ( jq( 'input.new_name', tr ).val() == '' ) jq( 'input.new_name', tr ).val(name);
         
+        let sorts = []; 
+        jq( 'input.sort', jq(this).closest('tbody') ).each( function ( index, elem ) { sorts.push( jq(elem).val() ) });
+        
+        let max = -1;
+        for ( key in sorts ) {
+            if ( sorts[key] == 65535 ) continue;
+            if ( sorts[key] > max ) max = sorts[key];
+        }
+        
+        // console.log( sorts );
+        
+        jq( 'input.sort', tr ).val( ( jq( 'input.sel', tr ).is(':checked') ) ? ++max : 65535 );
+        
+
+        tr.addClass('mr-yellow flash');
+        // jq( 'td', tr ).each( function ( index, elem ) { jq( elem ).addClass('mr-red flash') });
+        
+        setTimeout( function () {
+
+            if ( jq( 'input.sort', tr ).val() == 65535 ) {
+                
+                let n = 0;
+                while ( jq( 'input.sort', tr.next() ).val() != 65535 && n++ < sorts.length ) jq( tr.next() ).after( tr );
+                
+                jq( 'i.up', tr ).addClass('d-none');
+                jq( 'i.down', tr ).addClass('d-none');
+                
+                
+            } else {
+                
+                while ( jq( 'input.sort', tr.prev() ).val() == 65535 ) jq( tr.prev() ).before( tr );
+                
+                jq( 'i.up', tr ).removeClass('d-none');
+                jq( 'i.down', tr ).removeClass('d-none');
+
+            };
+            
+            setTimeout( function () { tr.removeClass('mr-yellow'); }, 1) ;
+            setTimeout( function () { tr.removeClass('flash'); }, 2000 );
+            // setTimeout( function () { jq( 'td', tr ).each( function ( index, elem ) { jq( elem ).removeClass('mr-red') }); }, 1 );
+            // setTimeout( function () { jq( 'td', tr ).each( function ( index, elem ) { jq( elem ).removeClass('flash') }); }, 5000 );
+            
+        }, 200 );
+
+
+        // sorts = []; 
+        // jq( 'input.sort', jq(this).closest('tbody') ).each( function ( index, elem ) { sorts.push( jq(elem).val() ) });
+        // console.log( sorts );
+        // sorts.sort();
+        // console.log( sorts );
 
 
 
-        console.log( name );
+
+
+        // let tbody = jq( 'tr', jq(this).closest('tbody') );
+
+        // // console.log( tbody.length );
+
+        // for ( let i = 0; i < tbody.length - 1; i++ ) {
+            
+        //     // console.log( '@' );
+        //     for ( let j = 0; j < tbody.length - 1; j++ ) {
+            
+        //     // let ii = jq( 'input.sort', jq( tbody[i] )).val();
+        //     // let jj = jq( 'input.sort', jq( tbody[j] )).val();
+        //         // console.log( jj );
+        //         // console.log( jj );
+        //         let j0 = jq( 'input.sort', jq( tbody[j] )).val();
+        //         let j1 = jq( 'input.sort', jq( tbody[j + 1] )).val();
+                
+        //         if ( j0 > j1 ) jq( tbody[j + 1] ).after(  jq( tbody[j] ) );
+        //             console.log( j0 );
+    
+        //     } 
+        // }
+
+        // for ( key in tbody ) {
+
+        //     console.log( jq(tbody[key]).html() );
+
+        // }
+        
+
+
+        // console.log( max );
+
+        // console.log( name );
         // console.log( descr );
-        console.log( comp_id );
+        // console.log( comp_id );
 
         // return false;
         
@@ -395,7 +479,63 @@ jQuery( document ).ready( function( jq ) {
     
     
 
+    jq( 'body' ).on( 'click', '.part .comp i.up', function() {
+        
+        // console.log( '@' );
+        let sort_1 = jq( 'input.sort', jq(this).closest('tr').prev() ).val();
+        let sort_2 = jq( 'input.sort', jq(this).closest('tr') ).val();
+        let tr = jq(this).closest('tr');
+        
+        if ( sort_1 < 65535 && sort_2 < 65535 ) {
+            
+            tr.addClass('mr-yellow flash');
 
+            jq( 'input.sort', jq(this).closest('tr') ).val( sort_1 );
+            jq( 'input.sort', jq(this).closest('tr').prev() ).val( sort_2 );
+            jq( jq(this).closest('tr').prev() ).before( jq(this).closest('tr') );
+        
+            setTimeout( function () { tr.removeClass('mr-yellow'); }, 1) ;
+            setTimeout( function () { tr.removeClass('flash'); }, 2000 );
+
+        }
+
+        // jq( 'input.sort', jq(this).closest('tr').prev() ).val( jq( 'input.sort', jq(this).closest('tr') ).val() );
+
+        // console.log( sort );
+        
+    })
+    
+    jq( 'body' ).on( 'click', '.part .comp i.down', function() {
+        
+
+        let sort_1 = jq( 'input.sort', jq(this).closest('tr').next() ).val();
+        let sort_2 = jq( 'input.sort', jq(this).closest('tr') ).val();
+        let tr = jq(this).closest('tr');
+        
+        if ( sort_1 < 65535 && sort_2 < 65535 ) {
+            
+            tr.addClass('mr-yellow flash');
+
+            jq( 'input.sort', jq(this).closest('tr') ).val( sort_1 );
+            jq( 'input.sort', jq(this).closest('tr').next() ).val( sort_2 );
+            jq( jq(this).closest('tr').next() ).after( jq(this).closest('tr') );
+            // jq( jq(this).closest('tr').prev() ).before( jq(this).closest('tr') );
+                
+            setTimeout( function () { tr.removeClass('mr-yellow'); }, 1) ;
+            setTimeout( function () { tr.removeClass('flash'); }, 2000 );
+
+        }
+
+
+        // let sort = jq( 'input.sort', jq(this).closest('tr').next() ).val();
+        // jq( 'input.sort', jq(this).closest('tr').next() ).val( jq( 'input.sort', jq(this).closest('tr') ).val() );
+        // jq( 'input.sort', jq(this).closest('tr') ).val( sort );
+
+        // jq( jq(this).closest('tr').next() ).after( jq(this).closest('tr') );
+        // console.log( '@@' );
+      
+        
+    })
 
 
     

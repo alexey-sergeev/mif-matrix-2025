@@ -73,7 +73,6 @@
 }
 
 .part tr:hover td, .part tbody tr:hover th {
-/* .part tr:hover td { */
     background-color: #ffb;
 }
 
@@ -96,6 +95,17 @@
     border-right: 0 !important;
     border-left: 0 !important;
 }
+
+.part .comp .flash {
+    /* opacity: 0.5; */
+    /* transition: all 500ms linear; */
+    transition: all 1000ms ease;
+    /* background-color: #ffc2cc !important; */
+}
+
+/* .part .comp tr.flash:hover {
+    background-color: #ffc2cc !important;
+} */
 
 .content .part ul {
     list-style: none;

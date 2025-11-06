@@ -48,8 +48,10 @@ class mif_mr_set_comp extends mif_mr_part_companion {
     {
         global $tree;
         // if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
-        $this->save( 'set-comp', $this->compose_set_comp() );
+        // $this->save( 'set-comp', $this->compose_set_comp() );
         
+        p($_REQUEST);
+
         $out = '';
         
         if ( isset( $_REQUEST['edit'] ) ) {
@@ -174,7 +176,8 @@ class mif_mr_set_comp extends mif_mr_part_companion {
                         'name' => $item3['name'],
                         'descr' => $item3['descr'],
                         'old_name' => '',
-                        'sort' => -1,
+                        'sort' => 65535,
+                        // 'sort' => -1,
                         'n' => $n++,
                     );
                     // p($item3);
@@ -207,7 +210,10 @@ class mif_mr_set_comp extends mif_mr_part_companion {
             
         }
         // p($arr2);
-
+        
+        uasort( $arr2, function ( $a, $b ) { return ( $a['sort'] > $b['sort'] ) ? 1 : 0; });
+        // p($arr2);
+        
         $out = '';
         
         $out .= '<table>';
@@ -238,9 +244,9 @@ class mif_mr_set_comp extends mif_mr_part_companion {
         
         $out .= '</tr></thead>';
         
-
-
+        $out .= '<tbody>';
         foreach ( $arr2 as $item ) $out .= $this->edit_visual_comp( $item );
+        $out .= '</tbody>';
         
         $out .= '</table>';
         
@@ -263,7 +269,7 @@ class mif_mr_set_comp extends mif_mr_part_companion {
      
         $out .= '<td>';
         $checked = ( empty( $item['old_name'] ) ) ? '' : ' checked';
-        $out .= '<input name="select[' . $item['n'] . ']" type="checkbox"' . $checked . ' class="form-check-input mt-1">';
+        $out .= '<input name="select[' . $item['n'] . ']" type="checkbox"' . $checked . ' class="sel form-check-input mt-1">';
         $out .= '</td>';
      
         $out .= '<td>';
@@ -293,9 +299,11 @@ class mif_mr_set_comp extends mif_mr_part_companion {
         
         $out .= '<td class="text-center" style="width: 4em">';
         // $out .= '<td>';
-        $out .= '<i class="fa-solid fa-arrow-up"></i>';
-        $out .= '<i class="fa-solid fa-arrow-down"></i>';
-        $out .= '<input name="sort[' . $item['n'] . ']" type="hidden" value="' . $item['sort'] . '" class="comp_id">';
+        $none = ( $item['sort'] == 65535 ) ? ' d-none' : '';
+        $out .= '<i class="fa-solid fa-arrow-up up' . $none . '"></i>';
+        $out .= '<i class="fa-solid fa-arrow-down down' . $none . '"></i>';
+        // $out .= '<input name="sort[' . $item['n'] . ']" type="text" value="' . $item['sort'] . '" class="sort">';
+        $out .= '<input name="sort[' . $item['n'] . ']" type="hidden" value="' . $item['sort'] . '" class="sort">';
         $out .= '</td>';
 
         $out .= '</tr>';
@@ -304,6 +312,8 @@ class mif_mr_set_comp extends mif_mr_part_companion {
     }
 
 
+
+    
     //
     // Возвращает массив из текста (post)
     //
