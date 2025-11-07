@@ -10,7 +10,7 @@
     
     
 
-    <?php mif_mr_show_back( 'competencies' ); ?>
+    <?php mif_mr_show_back( 'lib-competencies' ); ?>
     <?php mif_mr_show_comp(); ?>
     
     <?php // mif_mr_the_link_edit(); ?>

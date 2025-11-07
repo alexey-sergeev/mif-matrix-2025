@@ -105,7 +105,7 @@ class mif_mr_companion_core {
    
 
 
-    public function remove( $comp_id, $opop_id, $type = 'competencies' )
+    public function remove( $comp_id, $opop_id, $type = 'lib-competencies' )
     {
         // ####!!!!!
 
@@ -133,13 +133,14 @@ class mif_mr_companion_core {
    
 
 
-    public function create( $opop_id, $type = 'competencies' )
+    public function create( $opop_id, $type = 'lib-competencies' )
     {
         // ####!!!!!
 
         $res = false;
-        
+
         if ( empty( $_REQUEST['title'] ) ) return;
+  
 
         $res = wp_insert_post( array(
             'post_title'    => sanitize_textarea_field( $_REQUEST['title'] ),
@@ -179,8 +180,8 @@ class mif_mr_companion_core {
         if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
         
         $arr = array();
-        $list = $this->get_list_companions( 'competencies', $opop_id );
-       
+        $list = $this->get_list_companions( 'lib-competencies', $opop_id );
+    
         foreach ( $list as $item ) {
 
             $arr2 = $this->get_arr( $item['id'] );

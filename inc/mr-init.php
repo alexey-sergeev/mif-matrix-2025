@@ -211,7 +211,7 @@ class mif_mr_init extends mif_mr_functions {
                     
                     // p($_REQUEST);
                     $m = new mif_mr_comp();
-                    $m->remove( (int) $_REQUEST['comp'], (int) $_REQUEST['opop'], 'competencies' );
+                    $m->remove( (int) $_REQUEST['comp'], (int) $_REQUEST['opop'], 'lib-competencies' );
                     echo $mif_mr_opop->show_messages();
                     
                 } 
@@ -219,6 +219,7 @@ class mif_mr_init extends mif_mr_functions {
                 
                 if ( in_array( $_REQUEST['action'], array( 'create' ) ) ) {
                     
+                    // p($_REQUEST);
                     // $m = new mif_mr_lib_comp();
                     $m = new mif_mr_comp();
                     echo $m->show_lib_comp( (int) $_REQUEST['opop'] );
@@ -482,7 +483,7 @@ class mif_mr_init extends mif_mr_functions {
 
 
         
-        register_post_type( 'competencies', array(
+        register_post_type( 'lib-competencies', array(
             'label'  => null,
             'labels' => array(
                 'name'               => __( 'Библиотека компетенций', 'mif-mr' ), // основное название для типа записи
@@ -516,13 +517,13 @@ class mif_mr_init extends mif_mr_functions {
             'supports'            => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'custom-fields', 'revisions' ), // 'title','editor','author','thumbnail','excerpt','trackbacks','custom-fields','comments','revisions','page-attributes','post-formats'
             'taxonomies'          => array(),
             'has_archive'         => true,
-            'rewrite'             => array( 'slug' => 'competencies' ),
+            'rewrite'             => array( 'slug' => 'lib-competencies' ),
             'query_var'           => true,
 
         ) );
 
         
-        register_post_type( 'set-comp', array(
+        register_post_type( 'set-competencies', array(
             'label'  => null,
             'labels' => array(
                 'name'               => __( 'Настройки компетенций', 'mif-mr' ), // основное название для типа записи
@@ -556,7 +557,7 @@ class mif_mr_init extends mif_mr_functions {
             'supports'            => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'custom-fields', 'revisions' ), // 'title','editor','author','thumbnail','excerpt','trackbacks','custom-fields','comments','revisions','page-attributes','post-formats'
             'taxonomies'          => array(),
             'has_archive'         => true,
-            'rewrite'             => array( 'slug' => 'set-comp' ),
+            'rewrite'             => array( 'slug' => 'set-competencies' ),
             'query_var'           => true,
 
         ) );

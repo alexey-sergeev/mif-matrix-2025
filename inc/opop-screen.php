@@ -107,7 +107,7 @@ class mif_mr_opop extends mif_mr_opop_tree_raw {
                 $mif_mr_curriculum->the_show();
             break;
             
-            case 'competencies':
+            case 'lib-competencies':
 
                 global $wp_query;
                 

@@ -360,7 +360,7 @@ class mif_mr_comp extends mif_mr_companion_core {
     //
     // Показать cписок компетенций
     //
-
+    
     public function show_lib_comp( $opop_id = NULL )
     {
         if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
@@ -368,9 +368,9 @@ class mif_mr_comp extends mif_mr_companion_core {
         ####!!!!!
         
         $f = true;
-        
+       
         $this->create( $opop_id );
-
+        
         $out = '';
         
         // $list = $this->get_list_companions( 'competencies' );
@@ -380,7 +380,7 @@ class mif_mr_comp extends mif_mr_companion_core {
         
         $out .= '<div class="content-ajax">';
         
-        $out .= '<div class="container bg-light pt-5 pb-5 pl-4 pr-4 border rounded">';
+        $out .= '<div class="comp container bg-light pt-5 pb-5 pl-4 pr-4 border rounded">';
         // $out .= '<div class="container no-gutters">';
         
         $out .= '<div class="row">';
@@ -403,14 +403,14 @@ class mif_mr_comp extends mif_mr_companion_core {
             $out .= '<div class="row mt-3 mb-3">';
             
             $out .= '<div class="col-10 col-md-11 pt-1 pb-1">';
-            $out .= '<a href="' . mif_mr_opop_core::get_opop_url() . 'competencies/' . $item['comp_id'] . '">' . $item['name'] . '</a>';
+            $out .= '<a href="' . mif_mr_opop_core::get_opop_url() . 'lib-competencies/' . $item['comp_id'] . '">' . $item['name'] . '</a>';
             $out .= '</div>';
             
             $out .= '<div class="col-2 col-md-1 pt-1 pb-1 text-end">';
             $out .= ( $item['parent'] == mif_mr_opop_core::get_opop_id() ||  $item['parent'] == 0 ) ?
                     // $item['parent'] :
                     '' :
-                    '<a href="' .  get_permalink( $item['parent'] ) . 'competencies/' . $item['comp_id'] . '" title="' . 
+                    '<a href="' .  get_permalink( $item['parent'] ) . 'lib-competencies/' . $item['comp_id'] . '" title="' . 
                     $this->mb_substr( get_the_title( $item['parent'] ), 20 ) . '">' . $item['parent'] . '</a>';
             $out .= '</div>';
             
@@ -474,7 +474,7 @@ class mif_mr_comp extends mif_mr_companion_core {
         
         $out .= '</div>';
         $out .= '</div>';
-        
+       
         return apply_filters( 'mif_mr_show_list_compe_create', $out );
     }
     
@@ -578,17 +578,18 @@ class mif_mr_comp extends mif_mr_companion_core {
             
                 // p($key);
                 // p($item);
-
+                
                 $arr2[$key]['sub_id'] = $item['sub_id'];
                 $arr2[$key]['name'] = $item['name'];
-        
+                
                 $n = 0;
                 $arr3 = array();
-
+                
                 foreach ( $item['data'] as $key2 => $item2 ) {
-            
+                    
                     // if ( preg_match( '/(^.+-\d+.\s+)(.*)/', $item2, $m ) ) {
-                    if ( preg_match( '/(^.+-\d+)(.\s+)(.*)/', $item2, $m ) ) {
+                        if ( preg_match( '/(^.+-\d+)(.\s+)(.*)/', $item2, $m ) ) {
+                        // p($item);
 
                         $arr3[] = array(
                                         'name' => $m[1],
@@ -638,7 +639,7 @@ class mif_mr_comp extends mif_mr_companion_core {
     public static function set_comp_to_tree( $t = array() )
     {
         $arr = array();
-
+        
         foreach ( $t['content']['set-competencies']['data'] as $item ) {
 
             if ( is_numeric( $item[2] ) ) {

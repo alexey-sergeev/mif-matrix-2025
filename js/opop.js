@@ -81,6 +81,7 @@ jQuery( document ).ready( function( jq ) {
     // new
     
     jq( 'body' ).on( 'click', '.comp a.new', function() {
+        console.log( '@' );
         jq(this).closest('div.row').before('<span class="new"><span class="content-ajax"><a href="#" class="edit d-none" id="new" data-sub="-1">#</a></span></span>');
         jq( '#new' ).trigger('click');
         return false;
@@ -154,7 +155,7 @@ jQuery( document ).ready( function( jq ) {
                 if ( response ) {
 
                     div.replaceWith( response )
-                    console.log( response );
+                    // console.log( response );
 
                 } else {
                     
@@ -182,14 +183,14 @@ jQuery( document ).ready( function( jq ) {
     
     // list-comp
     
-    jq( 'body' ).on( 'click', '.set-comp button.new', function() {
+    jq( 'body' ).on( 'click', '.comp button.new', function() {
         jq( 'div.new', jq(this).closest('div.container') ).slideToggle();
         return false;
     })
     
     // 
     
-    jq( 'body' ).on( 'click', '.set-comp button.cancel', function() {
+    jq( 'body' ).on( 'click', '.comp button.cancel', function() {
         jq( 'input[name=title]', jq(this).closest('div.container') ).val('');
         jq( 'textarea[name=data]', jq(this).closest('div.container') ).val('');
         jq( 'div.new', jq(this).closest('div.container') ).slideToggle();
@@ -198,7 +199,7 @@ jQuery( document ).ready( function( jq ) {
     
     // 
     
-    jq( 'body' ).on( 'click', '.set-comp button.create', function() {
+    jq( 'body' ).on( 'click', '.comp button.create', function() {
         
         if ( jq( 'input[name=title]', jq(this).closest('div.container') ).val() == false ) {
 

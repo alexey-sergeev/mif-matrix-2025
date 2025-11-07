@@ -207,7 +207,8 @@ class mif_mr_opop_tree_raw extends mif_mr_opop_core {
                 // $data = $m->get_arr();
                 $m = new mif_mr_comp();
                 $data = $m->get_all_arr( $opop_id );
-                break;
+                // p($data);
+            break;
                 
             case 'set-competencies':
                 // p('@');
@@ -228,7 +229,8 @@ class mif_mr_opop_tree_raw extends mif_mr_opop_core {
                             'from_id' => $opop_id,
                             'data' => $data 
                         );
-
+        // p($part);
+        // p($data);
         return apply_filters( 'mif_mr_core_opop_get_companion', $t, $part, $opop_id );
     }
     

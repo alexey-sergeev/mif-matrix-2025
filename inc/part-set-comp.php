@@ -48,7 +48,7 @@ class mif_mr_set_comp extends mif_mr_part_companion {
     {
         global $tree;
         // if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
-        $this->save( 'set-comp', $this->compose_set_comp() );
+        $this->save( 'set-competencies', $this->compose_set_comp() );
         
         // p($_REQUEST);
 
@@ -65,7 +65,7 @@ class mif_mr_set_comp extends mif_mr_part_companion {
                 
             } else {
                 
-                $out .= $this->companion_edit( 'set-comp' );
+                $out .= $this->companion_edit( 'set-competencies' );
                 
             }
             
@@ -85,10 +85,12 @@ class mif_mr_set_comp extends mif_mr_part_companion {
             $data = $tree['content']['competencies']['data'];
             $old = '';
             $n = 0;
-            $index = array( array() );
-            
+            $index = array();
+            // p($data);
             foreach ( $data as $key => $item ) {
                 
+                // p($item);
+
                 if ( $old == $item['category'] ) $n--;
                 $index[$n][] = $key;
                 $old = $item['category'];
@@ -196,7 +198,7 @@ class mif_mr_set_comp extends mif_mr_part_companion {
         // p($arr);
 
         foreach ( $arr as $key => $item ) {
-            
+            // p($item);
             foreach ( $arr2 as $key2 => $item2 ) {
                 
                 if ( $item['old_name'] == $item2['name'] && $item['comp_id'] == $item2['comp_id'] ) {
@@ -354,7 +356,7 @@ class mif_mr_set_comp extends mif_mr_part_companion {
 
         $arr = array();
         
-        $text = $this->get_companion_content( 'set-comp', $opop_id );
+        $text = $this->get_companion_content( 'set-competencies', $opop_id );
         
         // Разбить текст на массив строк
         $data = preg_split( '/\\r\\n?|\\n/', $text );
