@@ -48,9 +48,9 @@ class mif_mr_set_comp extends mif_mr_part_companion {
     {
         global $tree;
         // if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
-        // $this->save( 'set-comp', $this->compose_set_comp() );
+        $this->save( 'set-comp', $this->compose_set_comp() );
         
-        p($_REQUEST);
+        // p($_REQUEST);
 
         $out = '';
         
@@ -175,7 +175,8 @@ class mif_mr_set_comp extends mif_mr_part_companion {
                         'lib_name' => $item['name'],
                         'name' => $item3['name'],
                         'descr' => $item3['descr'],
-                        'old_name' => '',
+                        'new_name' => '',
+                        // 'old_name' => '',
                         'sort' => 65535,
                         // 'sort' => -1,
                         'n' => $n++,
@@ -192,6 +193,7 @@ class mif_mr_set_comp extends mif_mr_part_companion {
         // $index = array();
         // foreach ( $arr as $item ) $index[] = array( $item['old_name'], $item['comp_id'] );
         $sort = 0;
+        // p($arr);
 
         foreach ( $arr as $key => $item ) {
             
@@ -199,7 +201,8 @@ class mif_mr_set_comp extends mif_mr_part_companion {
                 
                 if ( $item['old_name'] == $item2['name'] && $item['comp_id'] == $item2['comp_id'] ) {
                     
-                    $arr2[$key2]['old_name'] = $item['old_name'];
+                    $arr2[$key2]['new_name'] = $item['name'];
+                    // $arr2[$key2]['old_name'] = $item['old_name'];
                     $arr2[$key2]['sort'] = $sort++;
                     
                 } 
@@ -211,8 +214,25 @@ class mif_mr_set_comp extends mif_mr_part_companion {
         }
         // p($arr2);
         
-        uasort( $arr2, function ( $a, $b ) { return ( $a['sort'] > $b['sort'] ) ? 1 : 0; });
+        // uasort( $arr2, function ( $a, $b ) { return ( $a['sort'] > $b['sort'] ) ? 1 : 0; });
+
+        $index = array();
+        foreach ( $arr2 as $item2  ) $index[] = $item2['sort'];
+        sort( $index );
+        
+        $arr3 = array();
+        foreach ( $index as $i ) 
+            foreach ( $arr2 as $key2 => $item2 ) 
+                if ( $item2['sort'] == $i ) {
+
+                    $arr3[] = $item2;
+                    unset( $arr2[$key2] );
+                    break;
+
+                }
+
         // p($arr2);
+        // p($arr3);
         
         $out = '';
         
@@ -245,7 +265,7 @@ class mif_mr_set_comp extends mif_mr_part_companion {
         $out .= '</tr></thead>';
         
         $out .= '<tbody>';
-        foreach ( $arr2 as $item ) $out .= $this->edit_visual_comp( $item );
+        foreach ( $arr3 as $item ) $out .= $this->edit_visual_comp( $item );
         $out .= '</tbody>';
         
         $out .= '</table>';
@@ -268,13 +288,13 @@ class mif_mr_set_comp extends mif_mr_part_companion {
         $out .= '<tr>';
      
         $out .= '<td>';
-        $checked = ( empty( $item['old_name'] ) ) ? '' : ' checked';
+        $checked = ( empty( $item['new_name'] ) ) ? '' : ' checked';
         $out .= '<input name="select[' . $item['n'] . ']" type="checkbox"' . $checked . ' class="sel form-check-input mt-1">';
         $out .= '</td>';
      
         $out .= '<td>';
         // $out .= '<input type="text" class="form-control" style="width: 5em;">';
-        $out .= '<input name="new_name[' . $item['n'] . ']" type="text" value="' . $item['old_name'] . '" class="new_name form-control mt-1">';
+        $out .= '<input name="new_name[' . $item['n'] . ']" type="text" value="' . $item['new_name'] . '" class="new_name form-control mt-1">';
         $out .= '</td>';
         
         $out .= '<td class="fw-bolder">';
