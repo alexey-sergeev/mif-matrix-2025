@@ -25,7 +25,8 @@ include_once dirname( __FILE__ ) . '/part-curriculum.php';
 include_once dirname( __FILE__ ) . '/part-set-comp.php';
 
 include_once dirname( __FILE__ ) . '/companion-core.php';
-include_once dirname( __FILE__ ) . '/companion-comp.php';
+include_once dirname( __FILE__ ) . '/companion-lib-competencies.php';
+include_once dirname( __FILE__ ) . '/companion-lib-courses.php';
 include_once dirname( __FILE__ ) . '/companion-templates.php';
 
 include_once dirname( __FILE__ ) . '/lib-download.php';
@@ -74,11 +75,14 @@ class mif_mr_init extends mif_mr_functions {
         add_action( 'wp_ajax_curriculum', array( $this, 'ajax' ) );
         add_action( 'wp_ajax_nopriv_curriculum', array( $this, 'ajax' ) );
         
-        add_action( 'wp_ajax_edit', array( $this, 'ajax' ) );
-        add_action( 'wp_ajax_cancel', array( $this, 'ajax' ) );
-        add_action( 'wp_ajax_save', array( $this, 'ajax' ) );
-        add_action( 'wp_ajax_remove', array( $this, 'ajax' ) );
-        add_action( 'wp_ajax_create', array( $this, 'ajax' ) );
+        add_action( 'wp_ajax_lib-competencies', array( $this, 'ajax' ) );
+        add_action( 'wp_ajax_lib-courses', array( $this, 'ajax' ) );
+        // add_action( 'wp_ajax_edit', array( $this, 'ajax' ) );
+        // add_action( 'wp_ajax_cancel', array( $this, 'ajax' ) );
+        // add_action( 'wp_ajax_save', array( $this, 'ajax' ) );
+        // add_action( 'wp_ajax_remove', array( $this, 'ajax' ) );
+        // add_action( 'wp_ajax_create', array( $this, 'ajax' ) );
+
         // add_action( 'wp_ajax_nopriv_edit', array( $this, 'ajax' ) );
       
         // global $mif_mr_catalog_shortcode;
@@ -182,53 +186,78 @@ class mif_mr_init extends mif_mr_functions {
                     echo $m->get_curriculum();
                 
                 } 
-    
-                // if ( $_REQUEST['action'] == 'competencies' ) {
-                    
-                //     // $m = new mif_mr_curriculum();
-                //     // echo $m->get_curriculum();
-                
-                // } 
-                
-                
-                if ( in_array( $_REQUEST['action'], array( 'edit', 'cancel' ) ) ) {
-                    
-                    // p($_REQUEST);
-                    $m = new mif_mr_comp();
-                    echo $m->show_comp_sub( (int) $_REQUEST['sub'], (int) $_REQUEST['comp'], (int) $_REQUEST['opop'] );
-                
-                } 
-                
-                if ( in_array( $_REQUEST['action'], array( 'save' ) ) ) {
-                    
-                    // p($_REQUEST);
-                    $m = new mif_mr_comp();
-                    echo $m->show_comp( (int) $_REQUEST['comp'], (int) $_REQUEST['opop'] );
-                    
-                } 
-                
-                if ( in_array( $_REQUEST['action'], array( 'remove' ) ) ) {
-                    
-                    // p($_REQUEST);
-                    $m = new mif_mr_comp();
-                    $m->remove( (int) $_REQUEST['comp'], (int) $_REQUEST['opop'], 'lib-competencies' );
-                    echo $mif_mr_opop->show_messages();
-                    
-                } 
-                
-                
-                if ( in_array( $_REQUEST['action'], array( 'create' ) ) ) {
-                    
-                    // p($_REQUEST);
-                    // $m = new mif_mr_lib_comp();
-                    $m = new mif_mr_comp();
-                    echo $m->show_lib_comp( (int) $_REQUEST['opop'] );
-                    // p($_REQUEST);
-                    // $m = new mif_mr_comp();
-                    // $m->remove( (int) $_REQUEST['comp'], (int) $_REQUEST['opop'], 'competencies' );
-                    // echo $mif_mr_opop->show_messages();
 
+
+                if ( $_REQUEST['action'] == 'lib-competencies' ) {
+                    
+                
+                    if ( in_array( $_REQUEST['do'], array( 'edit', 'cancel' ) ) ) {
+                        
+                        $m = new mif_mr_comp();
+                        echo $m->show_comp_sub( (int) $_REQUEST['sub'], (int) $_REQUEST['comp'], (int) $_REQUEST['opop'] );
+                    
+                    } 
+                    
+                    if ( in_array( $_REQUEST['do'], array( 'save' ) ) ) {
+                        
+                        $m = new mif_mr_comp();
+                        echo $m->show_comp( (int) $_REQUEST['comp'], (int) $_REQUEST['opop'] );
+                        
+                    } 
+                    
+                    if ( in_array( $_REQUEST['do'], array( 'remove' ) ) ) {
+                        
+                        $m = new mif_mr_comp();
+                        $m->remove( (int) $_REQUEST['comp'], (int) $_REQUEST['opop'], 'lib-competencies' );
+                        echo $mif_mr_opop->show_messages();
+                        
+                    } 
+                    
+                    if ( in_array( $_REQUEST['do'], array( 'create' ) ) ) {
+                       
+                        $m = new mif_mr_comp();
+                        echo $m->show_lib_comp( (int) $_REQUEST['opop'] );
+    
+                    } 
+                    
                 } 
+
+
+                if ( $_REQUEST['action'] == 'lib-courses' ) {
+                    
+                
+                    if ( in_array( $_REQUEST['do'], array( 'edit', 'cancel' ) ) ) {
+                        
+                        $m = new mif_mr_lib_courses();
+                        echo $m->show_comp_sub( (int) $_REQUEST['sub'], (int) $_REQUEST['comp'], (int) $_REQUEST['opop'] );
+                    
+                    } 
+                    
+                    if ( in_array( $_REQUEST['do'], array( 'save' ) ) ) {
+                        
+                        $m = new mif_mr_lib_courses();
+                        echo $m->show_comp( (int) $_REQUEST['comp'], (int) $_REQUEST['opop'] );
+                        
+                    } 
+                    
+                    if ( in_array( $_REQUEST['do'], array( 'remove' ) ) ) {
+                        
+                        $m = new mif_mr_lib_courses();
+                        $m->remove( (int) $_REQUEST['comp'], (int) $_REQUEST['opop'], 'lib-competencies' );
+                        echo $mif_mr_opop->show_messages();
+                        
+                    } 
+                    
+                    if ( in_array( $_REQUEST['do'], array( 'create' ) ) ) {
+                        
+                        $m = new mif_mr_lib_courses();
+                        echo $m->show_lib_courses( (int) $_REQUEST['opop'] );
+    
+                    } 
+                    
+                } 
+    
+                
                 
                 
                 // if ( $_REQUEST['action'] == 'cancel' ) {
@@ -564,6 +593,46 @@ class mif_mr_init extends mif_mr_functions {
 
 
 
+
+        
+        register_post_type( 'lib-courses', array(
+            'label'  => null,
+            'labels' => array(
+                'name'               => __( 'Библиотека дисциплин', 'mif-mr' ), // основное название для типа записи
+                'singular_name'      => __( 'Дисциплина', 'mif-mr' ), // название для одной записи этого типа
+                'add_new'            => __( 'Создать дисциплину', 'mif-mr' ), // для добавления новой записи
+                'add_new_item'       => __( 'Создание дисциплину', 'mif-mr' ), // заголовка у вновь создаваемой записи в админ-панели.
+                'edit_item'          => __( 'Редактирование дисциплину', 'mif-mr' ), // для редактирования типа записи
+                'new_item'           => __( 'Новый дисциплины', 'mif-mr' ), // текст новой записи
+                'view_item'          => __( 'Посмотреть дисциплину', 'mif-mr' ), // для просмотра записи этого типа.
+                'search_items'       => __( 'Найти', 'mif-mr' ), // для поиска по этим типам записи
+                'not_found'          => __( 'Дисциплины не найден', 'mif-mr' ), // если в результате поиска ничего не было найдено
+                'not_found_in_trash' => __( 'Не найдено в корзине', 'mif-mr' ), // если не было найдено в корзине
+                'parent_item_colon'  => '', // для родителей (у древовидных типов)
+            ),
+            'description'         => '',
+            'public'              => true,
+            'publicly_queryable'  => null,
+            'exclude_from_search' => null,
+            'show_ui'             => null,
+            'show_in_menu'        => true, // показывать ли в меню адмнки
+            'show_in_admin_bar'   => null, // по умолчанию значение show_in_menu
+            'show_in_nav_menus'   => null,
+            'show_in_rest'        => null, // добавить в REST API. C WP 4.7
+            'rest_base'           => null, // $post_type. C WP 4.7
+            'menu_position'       => 20,
+            'menu_icon'           => 'dashicons-forms', 
+            'capability_type'   => 'post',
+            //'capabilities'      => 'post', // массив дополнительных прав для этого типа записи
+            'map_meta_cap'      => true, // Ставим true чтобы включить дефолтный обработчик специальных прав
+            'hierarchical'        => false,
+            'supports'            => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'custom-fields', 'revisions' ), // 'title','editor','author','thumbnail','excerpt','trackbacks','custom-fields','comments','revisions','page-attributes','post-formats'
+            'taxonomies'          => array(),
+            'has_archive'         => true,
+            'rewrite'             => array( 'slug' => 'lib-coorses' ),
+            'query_var'           => true,
+
+        ) );
 
 
 

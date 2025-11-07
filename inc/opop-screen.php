@@ -134,6 +134,27 @@ class mif_mr_opop extends mif_mr_opop_tree_raw {
 
             break;
             
+            case 'lib-courses':
+
+                global $wp_query;
+                
+                if ( isset( $wp_query->query_vars['id'] ) ) {
+
+                    // global $mif_mr_comp;
+                    // $mif_mr_comp = new mif_mr_comp();
+                    // $mif_mr_comp->the_show();
+                    
+                } else {
+                    
+                    global $mif_mr_lib_courses;
+                    $mif_mr_lib_courses = new mif_mr_lib_courses();
+                    
+                    $mif_mr_lib_courses->the_show();
+
+                }
+
+            break;
+            
             case 'stat':
                 global $tree;
                 p($tree);

@@ -65,7 +65,7 @@ class mif_mr_comp extends mif_mr_companion_core {
         
         // Save
 
-        if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'save' ) {
+        if ( isset( $_REQUEST['do'] ) && $_REQUEST['do'] == 'save' ) {
             
             if ( isset( $_REQUEST['sub'] ) ) $this->save( (int) $_REQUEST['sub'], $comp_id, $opop_id );
 
@@ -147,6 +147,7 @@ class mif_mr_comp extends mif_mr_companion_core {
         
         if ( $f ) $out .= '<input type="hidden" name="opop" value="' . $opop_id . '">';
         if ( $f ) $out .= '<input type="hidden" name="comp" value="' . $comp_id . '">';
+        if ( $f ) $out .= '<input type="hidden" name="action" value="lib-competencies">';
         if ( $f ) $out .= '<input type="hidden" name="_wpnonce" value="' . wp_create_nonce( 'mif-mr' ) . '">';
         
         $out .= '</div>';
@@ -187,7 +188,7 @@ class mif_mr_comp extends mif_mr_companion_core {
         if ( empty( $opop_id ) ) $opop_id = mif_mr_opop_core::get_opop_id();
         
         if ( ! ( isset( $tree['content']['lib-competencies']['data'][$comp_id] ) || $sub_id == '-1' ) ) return 'wp: error 2';
-        
+              
         $item = $tree['content']['lib-competencies']['data'][$comp_id]['data'][$sub_id];
         // $style = ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'save' ) ? '' : 'style="display: none;"';
         
@@ -221,7 +222,7 @@ class mif_mr_comp extends mif_mr_companion_core {
         
         // $out .= '</div>';
 
-        if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'edit' ) {
+        if ( isset( $_REQUEST['do'] ) && $_REQUEST['do'] == 'edit' ) {
             
             // Режим edit
 
@@ -299,11 +300,11 @@ class mif_mr_comp extends mif_mr_companion_core {
         $out .= '<div class="row">';
         
         $out .= '<div class="col col-2 col-md-1 fw-bolder">';
-        $out .= $item['name'];
+        $out .= ( isset( $item['name'] ) ) ? $item['name'] : '';
         $out .= '</div>';
         
         $out .= '<div class="col mb-3">';
-        $out .= $item['descr'];
+        $out .= ( isset( $item['descr'] ) ) ? $item['descr'] : '';
         $out .= '</div>';
         
         $out .= '</div>';
@@ -470,6 +471,7 @@ class mif_mr_comp extends mif_mr_companion_core {
         $out .= '<button type="button" class="btn btn-light border mt-4 mr-3 cancel">Отмена <i class="fas fa-spinner fa-spin d-none"></i></button>';
         
         $out .= '<input type="hidden" name="opop" value="' . mif_mr_opop_core::get_opop_id() . '">';
+        $out .= '<input type="hidden" name="action" value="lib-competencies">';
         $out .= '<input type="hidden" name="_wpnonce" value="' . wp_create_nonce( 'mif-mr' ) . '">';
         
         $out .= '</div>';
@@ -531,6 +533,29 @@ class mif_mr_comp extends mif_mr_companion_core {
         return apply_filters( 'mif_mr_companion_get_sub_arr', $out, $comp_id );
     }
 
+
+        
+    //
+    // 
+    //
+    
+    public function get_all_arr( $opop_id = NULL )
+    {
+        if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
+        
+        $arr = array();
+        $list = $this->get_list_companions( 'lib-competencies', $opop_id );
+    
+        foreach ( $list as $item ) {
+
+            $arr2 = $this->get_arr( $item['id'] );
+            $arr[$arr2['comp_id']] = $arr2;
+
+        }
+
+        return apply_filters( 'mif_mr_get_all_arr', $arr );
+
+    }
 
 
 

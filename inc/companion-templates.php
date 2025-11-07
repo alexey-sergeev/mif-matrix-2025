@@ -13,6 +13,17 @@ defined( 'ABSPATH' ) || exit;
 // Выводит 
 //
 
+function mif_mr_show_lib_courses()
+{
+    global $mif_mr_lib_courses;
+    echo $mif_mr_lib_courses->show_lib_courses();
+}
+
+
+//
+// Выводит 
+//
+
 function mif_mr_show_lib_comp()
 {
     global $mif_mr_comp;

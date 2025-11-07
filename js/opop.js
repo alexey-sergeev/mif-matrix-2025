@@ -123,10 +123,11 @@ jQuery( document ).ready( function( jq ) {
 
 
 
-    function sub_do( elem, action, div ) {
+    function sub_do( elem, action_do, div ) {
         
         let sub_id = jq(elem).attr( 'data-sub' );
         
+        let action = jq( 'input[name=action]' ).val();
         let opop_id = jq( 'input[name=opop]' ).val();
         let comp_id = jq( 'input[name=comp]' ).val();
         let nonce = jq( 'input[name=_wpnonce]' ).val();
@@ -134,6 +135,8 @@ jQuery( document ).ready( function( jq ) {
         let title = jq( 'input[name=title]' ).val();
         let data = jq( 'textarea[name=data]' ).val();
 
+        console.log( action );
+        console.log( action_do );
         // let div = jq(elem).closest('span.content-ajax');
         jq( 'i.fa-spinner', jq(elem).closest('button') ).removeClass('d-none');
 
@@ -142,6 +145,7 @@ jQuery( document ).ready( function( jq ) {
             type: 'POST',
             data: {
                     action: action,
+                    do: action_do,
                     opop: opop_id,
                     comp: comp_id,
                     sub: sub_id,

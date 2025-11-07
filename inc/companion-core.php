@@ -171,27 +171,27 @@ class mif_mr_companion_core {
 
     
     
-    //
-    // 
-    //
+    // //
+    // // 
+    // //
     
-    public function get_all_arr( $opop_id = NULL )
-    {
-        if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
+    // public function get_all_arr( $opop_id = NULL )
+    // {
+    //     if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
         
-        $arr = array();
-        $list = $this->get_list_companions( 'lib-competencies', $opop_id );
+    //     $arr = array();
+    //     $list = $this->get_list_companions( 'lib-competencies', $opop_id );
     
-        foreach ( $list as $item ) {
+    //     foreach ( $list as $item ) {
 
-            $arr2 = $this->get_arr( $item['id'] );
-            $arr[$arr2['comp_id']] = $arr2;
+    //         $arr2 = $this->get_arr( $item['id'] );
+    //         $arr[$arr2['comp_id']] = $arr2;
 
-        }
+    //     }
 
-        return apply_filters( 'mif_mr_get_all_arr', $arr );
+    //     return apply_filters( 'mif_mr_get_all_arr', $arr );
 
-    }
+    // }
 
     
     
@@ -249,6 +249,55 @@ class mif_mr_companion_core {
 
         return apply_filters( 'mif_mr_companion_get_edit', $out, $sub_id, $comp_id, $opop_id );
     }
+
+
+
+
+    //
+    // Форму создания 
+    //
+    
+    public function get_lib_create( $arr )
+    {
+        $out = '';
+        
+        $out .= '<div class="row mt-5">';
+        $out .= '<div class="col">';
+        // $out .= '<button type="button" class="btn btn-primary new">Создать дисциплин</button>';
+        $out .= '<button type="button" class="btn btn-primary new">' . $arr['button']. '</button>';
+        $out .= '</div>';
+        $out .= '</div>';
+        
+        $out .= '<div class="row new" style="display: none;">';
+        $out .= '<div class="col mt-5">';
+        
+        $out .= '<div class="mb-3">';
+        // $out .= '<label class="form-label">Название cписка компетенций:</label>';
+        $out .= '<label class="form-label">' . $arr['title']. ':</label>';
+        $out .= '<input name="title" class="form-control" autofocus>';
+        // $out .= '<div class="form-text">Например: ФГОС "Информатика и вычислительная техника", ОПОП "Математика", ...</div>';
+        $out .= '<div class="form-text">' . $arr['hint_a']. '</div>';
+        $out .= '</div>';
+        
+        $out .= '<div class="mb-3">';
+        // $out .= '<label class="form-label">Данные:</label>';
+        $out .= '<label class="form-label">' . $arr['date']. ':</label>';
+        $out .= '<textarea name="data" class="form-control" rows="3"></textarea>';
+        // $out .= '<div class="form-text">Например: УК-1. Способен использовать философские знания, ... (<a href="' . '123' . '">помощь</a>)</div>';
+        $out .= '<div class="form-text">' . $arr['hint_b']. '</div>';
+        $out .= '<button type="button" class="btn btn-primary mt-4 mr-3 create">Сохранить <i class="fas fa-spinner fa-spin d-none"></i></button>';
+        $out .= '<button type="button" class="btn btn-light border mt-4 mr-3 cancel">Отмена <i class="fas fa-spinner fa-spin d-none"></i></button>';
+        
+        $out .= '<input type="hidden" name="opop" value="' . mif_mr_opop_core::get_opop_id() . '">';
+        $out .= '<input type="hidden" name="action" value="' . $arr['action'] . '">';
+        $out .= '<input type="hidden" name="_wpnonce" value="' . wp_create_nonce( 'mif-mr' ) . '">';
+        
+        $out .= '</div>';
+        $out .= '</div>';
+       
+        return apply_filters( 'mif_mr_show_list_compe_create', $out );
+    }
+    
 
    
     //
