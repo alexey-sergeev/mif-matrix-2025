@@ -9,14 +9,24 @@
 defined( 'ABSPATH' ) || exit;
 
 
+// //
+// // Выводит 
+// //
+
+// function mif_mr_show_lib_courses()
+// {
+//     global $mif_mr_lib_courses;
+//     echo $mif_mr_lib_courses->show_lib_courses();
+// }
+
 //
 // Выводит 
 //
 
-function mif_mr_show_lib_courses()
+function mif_mr_show_courses()
 {
     global $mif_mr_lib_courses;
-    echo $mif_mr_lib_courses->show_lib_courses();
+    echo $mif_mr_lib_courses->show_courses();
 }
 
 

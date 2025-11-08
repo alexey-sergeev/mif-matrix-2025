@@ -41,14 +41,63 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
     }
     
     
-
-
-
+    
     //
-    // Показать cписок компетенций
+    // Показать 
     //
     
-    public function show_lib_courses( $opop_id = NULL )
+    public function show_courses( $opop_id = NULL )
+    {
+        global $wp_query;
+
+        $out = '';
+
+        if ( isset( $wp_query->query_vars['id'] ) ) {
+
+            $out .= $this->get_course( (int) $wp_query->query_vars['id'] );
+
+        } else {
+
+            $out .= $this->get_lib_courses();
+        
+        }
+
+        return apply_filters( 'mif_mr_show_courses', $out );
+    }    
+ 
+    
+
+    
+    //
+    // Показать дисциплину
+    //
+    
+    public function get_course( $course_id, $opop_id = NULL )
+    {
+        global $tree;
+
+        $out = '';
+
+        $out .= $course_id;
+        
+        $arr = array();
+        if ( isset( $tree['content']['lib-courses']['data'][$course_id] ) ) $arr = $tree['content']['lib-courses']['data'][$course_id];
+
+        p($arr);
+
+
+        return apply_filters( 'mif_mr_get_course', $out, $course_id, $opop_id );
+    }    
+    
+    
+
+
+
+    //
+    // Показать cписок 
+    //
+    
+    public function get_lib_courses( $opop_id = NULL )
     {
         if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
         
@@ -60,7 +109,7 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
         
         $out = '';
         
-        p('@');
+        // p('@');
 
         
         // // p($list);
@@ -68,43 +117,44 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
         
         $out .= '<div class="content-ajax">';
         
-        // $out .= '<div class="comp container bg-light pt-5 pb-5 pl-4 pr-4 border rounded">';
-        $out .= '<div class="comp container no-gutters">';
+        $out .= '<div class="comp container bg-light pt-5 pb-5 pl-4 pr-4 border rounded">';
+        // $out .= '<div class="comp container no-gutters">';
         
-        // $out .= '<div class="row">';
+        $out .= '<div class="row">';
         
-        // $out .= '<div class="col">';
-        // $out .= '<h4 class="border-bottom pb-5"><i class="fa-regular fa-file-lines"></i> Библиотека компетенций</h4>';
-        // // $out .= '<hr class="bg-secondary fs-1">';
-        // $out .= '</div>';
+        $out .= '<div class="col">';
+        $out .= '<h4 class="border-bottom pb-5"><i class="fa-regular fa-file-lines"></i> Библиотека дисциплин</h4>';
+        $out .= '</div>';
         
-        // $out .= '</div>';
-        // global $tree;
+        $out .= '</div>';
+        global $tree;
 
-        // $arr = array();
-        // if ( isset( $tree['content']['lib-competencies']['data'] ) ) $arr = $tree['content']['lib-competencies']['data'];
+        $arr = array();
+        if ( isset( $tree['content']['lib-courses']['data'] ) ) $arr = $tree['content']['lib-courses']['data'];
     
-        // foreach ( $arr as $item ) {
+        // p($arr);
+
+        foreach ( $arr as $item ) {
         
         //     // p($item);
 
-        //     $out .= '<div class="row mt-3 mb-3">';
+            $out .= '<div class="row mt-3 mb-3">';
             
-        //     $out .= '<div class="col-10 col-md-11 pt-1 pb-1">';
-        //     $out .= '<a href="' . mif_mr_opop_core::get_opop_url() . 'lib-competencies/' . $item['comp_id'] . '">' . $item['name'] . '</a>';
-        //     $out .= '</div>';
+            $out .= '<div class="col-10 col-md-11 pt-1 pb-1">';
+            $out .= '<a href="' . mif_mr_opop_core::get_opop_url() . 'lib-courses/' . $item['comp_id'] . '">' . $item['name'] . '</a>';
+            $out .= '</div>';
             
-        //     $out .= '<div class="col-2 col-md-1 pt-1 pb-1 text-end">';
-        //     $out .= ( $item['parent'] == mif_mr_opop_core::get_opop_id() ||  $item['parent'] == 0 ) ?
-        //             // $item['parent'] :
-        //             '' :
-        //             '<a href="' .  get_permalink( $item['parent'] ) . 'lib-competencies/' . $item['comp_id'] . '" title="' . 
-        //             $this->mb_substr( get_the_title( $item['parent'] ), 20 ) . '">' . $item['parent'] . '</a>';
-        //     $out .= '</div>';
+            $out .= '<div class="col-2 col-md-1 pt-1 pb-1 text-end">';
+            $out .= ( $item['parent'] == mif_mr_opop_core::get_opop_id() ||  $item['parent'] == 0 ) ?
+                    // $item['parent'] :
+                    '' :
+                    '<a href="' .  get_permalink( $item['parent'] ) . 'lib-courses/' . $item['comp_id'] . '" title="' . 
+                    $this->mb_substr( get_the_title( $item['parent'] ), 20 ) . '">' . $item['parent'] . '</a>';
+            $out .= '</div>';
             
-        //     $out .= '</div>';
+            $out .= '</div>';
             
-        // }
+        }
         
         if ( $f ) $out .= $this->get_lib_create( array(
                                                     'action' => 'lib-courses',
@@ -122,7 +172,7 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
         $out .= '</div>';
         
         
-        return apply_filters( 'mif_mr_show_lib_courses', $out );
+        return apply_filters( 'mif_mr_show_lib_courses', $out, $opop_id );
     }    
     
     
@@ -161,90 +211,118 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
     public function get_arr( $id )
     {
         $arr = array();
-        $arr_raw = array();
-       
+        // $arr_raw = array();
+        
         $post = get_post( $id );
-
-    //     // p($post->post_title);
-    //     // p($post->post_content);
         
-    //     $data = '== ' . $post->post_title . "\n";
-    //     $data .= $this->get_begin_data( $post );
-
-    //     // $data .= "= " . $this->sub_default . "\n";
-    //     // // $data .= "= default\n";
-    //     // $data .= $post->post_content;
+        $arr2 = explode( "\n", $post->post_content );
+        $arr2 = array_map( 'strim', $arr2 );
         
-    //     $p = new parser();
-    //     $arr_raw = $p->get_arr( $data, array( 'section' => $id, 'att_parts' => false, 'default' => true ) );
-
-    //     $arr_raw = current( current( $arr_raw ) );
-    //     // p($arr_raw);
-
-        $arr['comp_id'] = $id;
-    //     $arr['parent'] = $post->post_parent;
-    //     $arr['name'] = $arr_raw['name'];
-    //     // $arr['competencies'] = '';
-
-    //     // p($arr);
-
-    //     if ( isset( $arr_raw['parts'] ) ) {
+        $data = array();
+        $n = 0;
+        
+        foreach ( $arr2 as $item ) {
             
-    //         $arr2 = array();
+            if ( preg_match( '/^==/', $item ) ) $n++; 
+            if ( ! isset( $data[$n] ) ) $data[$n] = '';
+            $data[$n] .= $item . "\n";
             
-    //         foreach ( (array) $arr_raw['parts'] as $key => $item ) {
-                
-    //             if ( empty( $item['data']) ) continue;
+        }
+        
+        // p($data);
+             
+        $arr3 = array();
+        
+        foreach ( $data as $item ) {
             
-    //             // p($key);
-    //             // p($item);
+            if ( preg_match( '/^==\s*(?<key>\w+)/', $item, $m ) ) {
+
+                // p($item);
+                // p($m['key']);
                 
-    //             $arr2[$key]['sub_id'] = $item['sub_id'];
-    //             $arr2[$key]['name'] = $item['name'];
-                
-    //             $n = 0;
-    //             $arr3 = array();
-                
-    //             foreach ( $item['data'] as $key2 => $item2 ) {
+                switch ( $m['key'] ) {
+                            
+                    case 'content':
+
+                        $c = new content( $item );
+                        $arr3 = array_merge( $c->get_arr(), $arr3 );
+                        // p($c->get_arr());
+                        // p($item);
                     
-    //                 // if ( preg_match( '/(^.+-\d+.\s+)(.*)/', $item2, $m ) ) {
-    //                     if ( preg_match( '/(^.+-\d+)(.\s+)(.*)/', $item2, $m ) ) {
-    //                     // p($item);
-
-    //                     $arr3[] = array(
-    //                                     'name' => $m[1],
-    //                                     'descr' => $m[3],
-    //                                     'category' => $item['name'],
-    //                                 );
+                    break;
+                    
+                    case 'parts':
                         
-    //                     $n = 0;
-    //                     continue;
+                        // $c = new parts( $item );
+                        // $arr3[] = $c->get_arr();
+                        // p($c->get_arr());
+                        // p($item);
+                        
+                    break;
+                            
+                    case 'exam':
+                        
+                        $c = new assessments( $item );
+                        // $arr3[] = $c->get_arr();
+                        $arr3 = array_merge( $c->get_arr(), $arr3 );
+                        // p($c->get_arr());
+                        // p($item);
+                        
+                    break;
+                    
+                    case 'biblio':
+                        
+                        $c = new biblio( $item );
+                        // $arr3[] = $c->get_arr();
+                        $arr3 = array_merge( $c->get_arr(), $arr3 );
+                        // p($c->get_arr());
+                        // p($item);
+                        
+                    break;
+                        
+                    case 'it':
 
-    //                 } 
+                        $c = new it( $item );
+                        // $arr3[] = $c->get_arr();
+                        $arr3 = array_merge( $c->get_arr(), $arr3 );
+                        // p($c->get_arr());
+                        // p($item);
+                        
+                        break;
+                        
+                    case 'mto':
+
+                        $c = new mto( $item );
+                        // $arr3[] = $c->get_arr();
+                        $arr3 = array_merge( $c->get_arr(), $arr3 );
+                        // p($c->get_arr());
+                        // p($item);
+                        
+                    break;
                     
-    //                 $arr3[array_key_last($arr3)]['indicators'][$n++] = array_map( 'trim', explode( "\n", $item2 ) );
-                    
-    //             }
+                    case 'authors':
+                            
+                        $c = new authors( $item );
+                        // $arr3[] = $c->get_arr();
+                        $arr3 = array_merge( $c->get_arr(), $arr3 );
+                        // p($c->get_arr());
+                        // p($item);
+
+                    break;
+                            
+                    // default:
+                    // break;
                 
-                
-    //             $arr2[$key]['data'] = $arr3;
-                
-    //             // p($arr3);
-                
-    //             // // if ( ! empty( $arr2 ) ) $arr[$key][$key2]['parts'][$key3]['data'] = $arr2;
-    //             // // if ( empty( $arr[$key][$key2]['parts'][$key3]['data'] ) ) 
-    //             // // unset( $arr[$key][$key2]['parts'][$key3] );
-                
-    //         }
+                }
+    
+            }; 
             
-    //         $arr4 = array();
-    //         foreach ( $arr2 as $item3 ) $arr4[$item3['sub_id']] = $item3;
-    //         // $arr['competencies'] = $arr4;
-    //         $arr['data'] = $arr4;
-
-    //     }
-
-    //     // p($arr);
+        }
+        
+        $arr['comp_id'] = $id;
+        $arr['parent'] = $post->post_parent;
+        $arr['name'] = $post->post_title;
+        $arr['data'] = $arr3;
 
         return apply_filters( 'mif_mr_get_courses_arr', $arr, $id );
     }

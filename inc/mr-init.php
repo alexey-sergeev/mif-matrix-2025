@@ -37,6 +37,14 @@ include_once dirname( __FILE__ ) . '/lib-docx-core.php';
 include_once dirname( __FILE__ ) . '/classes/modules-class.php';
 include_once dirname( __FILE__ ) . '/classes/matrix-class.php';
 include_once dirname( __FILE__ ) . '/classes/curriculum-class.php';
+include_once dirname( __FILE__ ) . '/classes/assessments-class.php';
+include_once dirname( __FILE__ ) . '/classes/authors-class.php';
+include_once dirname( __FILE__ ) . '/classes/biblio-class.php';
+include_once dirname( __FILE__ ) . '/classes/content-class.php';
+include_once dirname( __FILE__ ) . '/classes/it-class.php';
+include_once dirname( __FILE__ ) . '/classes/mto-class.php';
+include_once dirname( __FILE__ ) . '/classes/parts-class.php';
+// include_once dirname( __FILE__ ) . '/classes/.php';
 
 
 
@@ -251,7 +259,7 @@ class mif_mr_init extends mif_mr_functions {
                     if ( in_array( $_REQUEST['do'], array( 'create' ) ) ) {
                         
                         $m = new mif_mr_lib_courses();
-                        echo $m->show_lib_courses( (int) $_REQUEST['opop'] );
+                        echo $m->get_lib_courses( (int) $_REQUEST['opop'] );
     
                     } 
                     

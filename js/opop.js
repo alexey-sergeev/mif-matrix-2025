@@ -159,7 +159,7 @@ jQuery( document ).ready( function( jq ) {
                 if ( response ) {
 
                     div.replaceWith( response )
-                    // console.log( response );
+                    console.log( response );
 
                 } else {
                     

@@ -136,22 +136,22 @@ class mif_mr_opop extends mif_mr_opop_tree_raw {
             
             case 'lib-courses':
 
-                global $wp_query;
+                // global $wp_query;
                 
-                if ( isset( $wp_query->query_vars['id'] ) ) {
+                // if ( isset( $wp_query->query_vars['id'] ) ) {
 
-                    // global $mif_mr_comp;
-                    // $mif_mr_comp = new mif_mr_comp();
-                    // $mif_mr_comp->the_show();
+                //     // global $mif_mr_comp;
+                //     // $mif_mr_comp = new mif_mr_comp();
+                //     // $mif_mr_comp->the_show();
                     
-                } else {
+                // } else {
                     
                     global $mif_mr_lib_courses;
                     $mif_mr_lib_courses = new mif_mr_lib_courses();
                     
                     $mif_mr_lib_courses->the_show();
 
-                }
+                // }
 
             break;
             
@@ -269,7 +269,16 @@ class mif_mr_opop extends mif_mr_opop_tree_raw {
     
     public function show_back( $type = 'courses' )
     {
-        $out = '<div class="pb-4"><a href="' . get_permalink( $this->get_opop_id() ) . $type . '/">← Вернуться к странице раздела</a></div>';
+        global $wp_query;
+
+        $out = '';
+
+        if ( isset( $wp_query->query_vars['id'] ) ) {
+
+            $out .= '<div class="pb-4"><a href="' . get_permalink( $this->get_opop_id() ) . $type . '/">← Вернуться к странице раздела</a></div>';
+        
+        } 
+        
         return apply_filters( 'mif_mr_opop_show_back', $out, $type );
     }
 
