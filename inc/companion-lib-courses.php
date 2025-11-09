@@ -253,16 +253,16 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
                     
                     case 'parts':
                         
-                        // $c = new parts( $item );
+                        $c = new parts( $item );
                         // $arr3[] = $c->get_arr();
                         // p($c->get_arr());
                         // p($item);
                         
                     break;
                             
-                    case 'exam':
+                    case 'evaluations':
                         
-                        $c = new assessments( $item );
+                        $c = new evaluations( $item );
                         // $arr3[] = $c->get_arr();
                         $arr3 = array_merge( $c->get_arr(), $arr3 );
                         // p($c->get_arr());

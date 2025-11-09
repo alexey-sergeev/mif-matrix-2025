@@ -614,6 +614,7 @@ class mif_mr_comp extends mif_mr_companion_core {
                     
                     // if ( preg_match( '/(^.+-\d+.\s+)(.*)/', $item2, $m ) ) {
                         if ( preg_match( '/(^.+-\d+)(.\s+)(.*)/', $item2, $m ) ) {
+                        // if ( preg_match( '/(^\W+-\d+)(.\s+)(.*)/', $item2, $m ) ) {
                         // p($item);
 
                         $arr3[] = array(

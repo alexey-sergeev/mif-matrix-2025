@@ -22,7 +22,7 @@ class assessments {
 
     function __construct( $data, $curriculum = '', $matrix = '', $acceptable_cmp = '' )
     {
-
+ 
         if ( is_string( $data ) ) {
     
             $p = new parser();
