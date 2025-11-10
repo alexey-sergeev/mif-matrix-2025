@@ -92,10 +92,12 @@ class parser {
             if ( preg_match( '/^=/', $item ) ) {
                 
                 $name_data = $this->parse_name( $item, $att_parts );
+                // p($name_data);
                 $subkey = mb_strtoupper( $name_data['name'] );
                 $out[$key][$section]['parts'][$subkey]['sub_id'] = $n++;
                 $out[$key][$section]['parts'][$subkey]['name'] = $name_data['name'];
                 $out[$key][$section]['parts'][$subkey]['data'] = '';
+                if ( isset( $name_data['att'] ) ) $out[$key][$section]['parts'][$subkey]['att'] = $name_data['att'];      //!!!  11.2025
                 // $out[$key][$section]['parts'][$subkey] = $name_data;
                 // p($n);
                 continue;
@@ -165,25 +167,25 @@ class parser {
     private function parse_name( $name, $att_exist = true, $default = false )
     {
         $att = array();
-
+        
         $name = $this->strim( $name ); 
-
+        
         if ( $att_exist ) {
 
             $s = $name;
             $name_raw = $name;
-
+            
             while ( preg_match( "/\)$/", $s ) ) {
-
+                
                 // Пока строка заканчивается ) справа ...
-
+                
                 // Удалить ) справа
                 $s = preg_replace( "/\)$/", "", $s );
-
+                
                 // Искать парную ей (
-
+                    
                 while ( ! preg_match( "/\($/", $s ) ) {
-
+                    
                     // Удалить справа всякие символы, которые не скобки
                     $s = preg_replace( "/[^()]*$/", "", $s );
                     
@@ -194,15 +196,16 @@ class parser {
                     if ( $s === '' ) break;
                     
                 }
-        
+                
                 if ( $s === '' ) break;
-
+                
                 // Удалить справа ( и пробелы
                 $s = preg_replace( "/\($/", "", $s );
                 $s = trim ( $s );
-
+                
             }
-
+            
+            
             // Если что-то осталось, то это имя
             if ( $s ) $name = $s;
 
@@ -214,15 +217,15 @@ class parser {
 
             // Дополнить до )( скобки в начале и в конце
             $a = ')' . $a . '(';
-
+            
             // Разложить массив по )(
             $att = explode( ")(", $a );
-    
+            
             // Навести порядок в массиве атрибутов
             
             $att = array_map( 'trim', $att );
             $att = array_values( array_diff( $att, array( '' ) ) );
-            
+           
         }
         
         // Навести порядок в имени дисциплины
