@@ -76,14 +76,85 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
     {
         global $tree;
 
-        $out = '';
+        // $out = '';
 
-        $out .= $course_id;
+        // $out .= $course_id;
         
-        $arr = array();
-        if ( isset( $tree['content']['lib-courses']['data'][$course_id] ) ) $arr = $tree['content']['lib-courses']['data'][$course_id];
+        // $arr = array();
+        // if ( isset( $tree['content']['lib-courses']['data'][$course_id] ) ) $arr = $tree['content']['lib-courses']['data'][$course_id];
+        
+        // p($arr);
+        
+        $out = '';
+        $f = true;
+        
+        $out .= '<div class="content-ajax">';
+        
+        if ( $f ) $out .= '<div><a href="' . get_edit_post_link( $course_id ) . '">Расширенный редактор</a></div>';
+        
+        if ( isset( $tree['content']['lib-courses']['data'][$course_id] ) ) {
+            
+            $arr = $tree['content']['lib-courses']['data'][$course_id];
+            p($arr);
+            
+            
+            $out .= '<h4 class="mb-4 mt-5">' . $arr['name'] . '</h4>';
+            $out .= 'id: ' . $course_id;
+            //         $out .= $this->get_show_all();
+            
+            // p($arr['data']);
+            $out .= '<div class="container no-gutters">';
 
-        p($arr);
+    //         foreach ( $item['data'] as $item2 ) {
+                    
+    //             // if ( $f ) $out .= '<span>';
+    //             $out .= '<span>';
+                
+    //             $out .= $this->show_comp_sub( $item2['sub_id'], $comp_id, $opop_id );
+                
+    //             $out .= '</span>';
+    //             // if ( $f ) $out .= '</span>';
+                
+    //         }
+        
+            
+            $out .= '</div>';
+            
+        }
+        
+    //     if ( $f ) $out .= '<div class="row mt-3">';
+    //     if ( $f ) $out .= '<div class="col">';
+    //     if ( $f ) $out .= '<small><a href="#" class="msg-remove">Удалить</a></small>';
+    //     // if ( $f ) $out .= '<div class="alert" style="display: none;">Вы уверены? <a href="#" class="ok">Да</a> / <a href="#" class="cancel">отмена</a></div>';
+    //     // if ( $f ) $out .= '<div class="alert pl-0 pr-0" style="display: none;">' . 
+    //     //                     mif_mr_functions::get_callout( 'Вы уверены? <a href="#" class="ok">Да</a> / <a href="#" class="cancel">отмена</a>', 'warning' ) . '</div>';
+        
+    //     $msg = '<div>Вы уверены?</div>';
+
+    //     $msg .= '<div><label class="form-label mt-4"><input type="checkbox" name="yes" value="on" class="form-check-input"> Да</label></div>';
+    //     $msg .= '<button type="button" class="btn btn-primary mr-3 remove">Удалить <i class="fas fa-spinner fa-spin d-none"></i></button>';
+    //     $msg .= '<button type="button" class="btn btn-light border mr-3 cancel">Отмена <i class="fas fa-spinner fa-spin d-none"></i></button>';
+      
+      
+    //     if ( $f ) $out .= '<div class="alert pl-0 pr-0" style="display: none;">' . mif_mr_functions::get_callout( $msg, 'warning' ) . '</div>';
+        
+        
+        
+    //     if ( $f ) $out .= '</div>';
+    //     if ( $f ) $out .= '</div>';
+
+    //     // Hidden
+        
+    //     if ( $f ) $out .= '<input type="hidden" name="opop" value="' . $opop_id . '">';
+    //     if ( $f ) $out .= '<input type="hidden" name="comp" value="' . $comp_id . '">';
+    //     if ( $f ) $out .= '<input type="hidden" name="_wpnonce" value="' . wp_create_nonce( 'mif-mr' ) . '">';
+        
+        $out .= '</div>';
+
+
+
+
+
 
 
         return apply_filters( 'mif_mr_get_course', $out, $course_id, $opop_id );
@@ -251,14 +322,15 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
                     
                     break;
                     
-                    case 'parts':
+                    // case 'parts':
                         
-                        $c = new parts( $item );
-                        $arr3[] = $c->get_arr();
-                        // p($c->get_arr());
-                        // p($item);
+                    //     $c = new parts( $item );
+                    //     $arr3 = array_merge( $c->get_arr(), $arr3 );
+                    //     // $arr3[] = $c->get_arr();
+                    //     // p($c->get_arr());
+                    //     // p($item);
                         
-                    break;
+                    // break;
                             
                     case 'evaluations':
                         

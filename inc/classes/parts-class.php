@@ -8,8 +8,8 @@
 
 include_once dirname( __FILE__ ) . '/functions.php';
 include_once dirname( __FILE__ ) . '/parser-class.php';
-include_once dirname( __FILE__ ) . '/cmp-class.php';
-include_once dirname( __FILE__ ) . '/matrix-class.php';
+// include_once dirname( __FILE__ ) . '/cmp-class.php';
+// include_once dirname( __FILE__ ) . '/matrix-class.php';
 include_once dirname( __FILE__ ) . '/html-class.php';
 
 class parts {
@@ -23,7 +23,6 @@ class parts {
     function __construct( $data )
     {
 
-        // p($data);
         
         if ( is_string( $data ) ) {
             
@@ -33,69 +32,27 @@ class parts {
         }
         
         // p($data);
-
-
-        // Построить массив матрицы компетенций или взять матрицу, если это уже массив        
-
-        // if ( is_string( $matrix ) ) {
-
-        //     $m = new matrix( $matrix, $acceptable_cmp );
-        //     $this->matrix_arr = $m->get_arr();
-            
-        // } else {
-            
-        //     $this->matrix_arr = $matrix;
-
-        // }
-
-        // $c = new cmp();
-
         foreach ( $data as $item ) {
             
-            // $cmp_stat = array();
-
-            // Планируемые результаты обучения
+            $n = 0;
 
             foreach ( (array) $item['parts']['parts'] as $part ) {
 
-                // Оставить у раздела только допустимые для дисциплины компетенции
-                
-                $course_cmp = ( isset( $this->matrix_arr[$item['parts']['name']] ) ) ? $this->matrix_arr[$item['parts']['name']] : '';
-                
-                // p($part['att'][0]);
+                // $this->parts_arr[$item['parts']['name']]['parts'][$part['name']]['outcomes'] = $this->get_outcomes( $part['data'] );
+                // $this->parts_arr[$item['parts']['name']]['parts'][$part['name']]['cmp'] = $part['att'][0];
+                $this->parts_arr['parts'][$n]['name'] = $part['name'];
+                $this->parts_arr['parts'][$n]['sub_id'] = $n;
+                $this->parts_arr['parts'][$n]['cmp'] = $part['att'][0];
+                $this->parts_arr['parts'][$n]['outcomes'] = $this->get_outcomes( $part['data'] );
 
-                // $cmp = $c->intersection( $c->get_cmp( $part['att'][0] ), $course_cmp, 'arr' );
-                
-                // // Если у дисциплины только одна компетенция, то ее за разделом и закреплять
-                // if ( count( $course_cmp ) == 1 ) $cmp = $course_cmp;
-
-                // Если компетенции не указаны, а у дисциплины только одна или две компетенции, то их за разделом и закрепить
-                // if ( empty( $cmp ) && ( count( $course_cmp ) < 3 ) ) $cmp = $course_cmp;
-
-                
-
-
-                // $this->parts_arr[$item['parts']['name']]['parts'][$part['name']]['cmp'] = $cmp;
-                $this->parts_arr[$item['parts']['name']]['parts'][$part['name']]['outcomes'] = $this->get_outcomes( $part['data'] );
-                $this->parts_arr[$item['parts']['name']]['parts'][$part['name']]['cmp'] = $part['att'][0];
-
-                // $cmp_stat = array_merge( $cmp_stat, $cmp );
+                $n++;
 
             }
 
-            // Статистика по присутствующим компетенциям
-            
-            // $this->parts_arr[$item['parts']['name']]['cmp_stat'] = $c->get_cmp( $cmp_stat, 'arr' );
-            
-            // Статистика отсутсвующим компетенциям
-
-            // $cmp_missing = ( isset( $this->matrix_arr[$item['parts']['name']] ) ) ? $c->difference( $this->matrix_arr[$item['parts']['name']], $cmp_stat, 'arr' ) : array();
-            // if ( ! empty( $cmp_missing ) ) $this->parts_arr[$item['parts']['name']]['cmp_missing'] = $cmp_missing;
-
         }
 
-        // p($this->parts_arr);
 
+        // p($this->parts_arr);
     }
 
 
@@ -223,7 +180,6 @@ class parts {
     }
 
     private $parts_arr = array();
-    private $matrix_arr = array();
 
 }
     

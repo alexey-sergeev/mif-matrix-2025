@@ -62,11 +62,10 @@ class evaluations {
 
             $p = new parser();
             $arr2 = $p->get_arr( $item, array( 'nomarker' => true, 'att_name' => true ) );
-            // p($arr2);
 
             foreach ( $arr2 as $item2 ) {
 
-                // p($item2['default']);
+                // p($item2);
                 $att = array( 'rating' => NULL, 'cmp' => NULL );
 
                 foreach ( $item2['default']['att'] as $item3 ) {
@@ -74,12 +73,12 @@ class evaluations {
                     // p($item3);
 
                     if ( is_numeric( $item3 ) ) $att['rating'] = (int) $item3;
-                    if ( preg_match( "/.+-\d+/", $item3 ) ) $att['cmp'] = $item3;
+                    if ( preg_match( "/^.+-\d+/", $item3 ) ) $att['cmp'] = $item3;
                     if ( preg_match( "/^https?:/", $item3 ) ) $att['url'] = $item3;
 
                 }
                 
-                $arr[$n][] = array(
+                $arr['evaluations'][$n][] = array(
 
                     'name' => $item2['default']['name'],
                     'att' => $att,
