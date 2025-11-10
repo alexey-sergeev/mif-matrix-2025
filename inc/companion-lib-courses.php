@@ -95,15 +95,59 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
         if ( isset( $tree['content']['lib-courses']['data'][$course_id] ) ) {
             
             $arr = $tree['content']['lib-courses']['data'][$course_id];
-            p($arr);
+            // p($arr);
             
             
             $out .= '<h4 class="mb-4 mt-5">' . $arr['name'] . '</h4>';
             $out .= 'id: ' . $course_id;
-            //         $out .= $this->get_show_all();
+            $out .= $this->get_show_all();
             
             // p($arr['data']);
             $out .= '<div class="container no-gutters">';
+            
+            $out .= $this->get_course_part( array(
+                                                'part' => 'content',
+                                                'name' => 'Содержание',
+                                                'data' => $arr['data']['content'],
+                                            ));
+
+            $out .= $this->get_course_part( array(
+                                                'part' => 'biblio',
+                                                'name' => 'Литература',
+                                                'title_sub' => array( 'Основная литература', 'Дополнительная литература' ),
+                                                'index_sub' => array( 'basic', 'additional' ),
+                                                'data' => $arr['data']['biblio'],
+                                            ));
+            
+            $out .= $this->get_course_part( array(
+                                                'part' => 'it',
+                                                'name' => 'Информационные технологии',
+                                                'title_sub' => array( 'Интернет-источники', 'Программное обеспечение' ),
+                                                'index_sub' => array( 'inet', 'app' ),
+                                                'data' => $arr['data']['it'],
+                                            ));
+
+            $out .= $this->get_course_part( array(
+                                                'part' => 'mto',
+                                                'name' => 'Материально-техническое обеспечение',
+                                                // 'title_sub' => array( '' ),
+                                                'index_sub' => array( 'mto' ),
+                                                'data' => $arr['data']['mto'],
+                                            ));
+
+            $out .= $this->get_course_part( array(
+                                                'part' => 'authors',
+                                                'name' => 'Разработчики',
+                                                // 'title_sub' => array( '' ),
+                                                'index_sub' => array( 'authors' ),
+                                                'data' => $arr['data']['authors'],
+                                                'ol' => 'div',
+                                                'li' => 'p',
+                                            ));
+
+
+
+
 
     //         foreach ( $item['data'] as $item2 ) {
                     
@@ -157,7 +201,7 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
 
 
 
-        return apply_filters( 'mif_mr_get_course', $out, $course_id, $opop_id );
+        return apply_filters( 'mif_mr_lib_courses_get_course', $out, $course_id, $opop_id );
     }    
     
     
@@ -165,9 +209,189 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
 
 
     //
-    // Показать cписок 
+    // часть
     //
     
+    public function get_course_part( $d )
+    {
+        // p($d);
+    
+        $out = '';   
+        
+        $f = true;
+        
+        //     if ( empty( $opop_id ) ) $opop_id = mif_mr_opop_core::get_opop_id();
+        
+        $out .= '<span class="content-ajax">';
+  
+        
+        $out .= '&nbsp;';
+        $out .= $this->get_sub_head( array(
+                                            'name' => $d['name'],    
+                                            'sub_id' => $d['part'],
+                                            'f' => $f            
+                                            ) );
+                                            
+        if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'edit' ) {
+            
+            // Режим edit
+
+            // if ( $f ) $out .= $this->get_sub_edit( $sub_id, $comp_id, $opop_id );
+            
+        } else {
+                
+            // Режим отображения
+            
+            switch ( $d['part'] ) {
+                            
+                case 'content':
+
+                    $out .= $this->get_item_body_content( $d );
+                    
+                break;
+                    
+                default:
+                
+                    $out .= $this->get_item_body( $d );
+                
+                break;
+            
+            }
+
+        }
+        
+        $out .= '</span>';
+        
+        return apply_filters( ' mif_mr_lib_courses_get_course_sub', $out, $d );
+    }
+
+
+
+
+
+    //
+    // body
+    //
+
+    public function get_item_body_content( $d )
+    {
+        // p($d); 
+        $t = apply_filters( 'mif-mr-body-content-text', array( 
+                                'target' => 'Цель освоения дисциплины',
+                                'part' => 'Раздел',
+                                'hours' => 'Трудоемкость',
+                                'z' => 'знать', 
+                                'u' => 'уметь', 
+                                'v' => 'владеть', 
+                                'cmp' => ' Компетенции', 
+                            ) );          
+        $out = '';
+        
+        // Цель освоения дисциплины
+
+        $out .= '<div class="row mb-3 mt-3">';
+        $out .= '<div class="col">';
+        $out .= '<p class="fw-bolder">' . $t['target'] . '</p>';
+        $out .= '<p>' . $d['data']['target'] . '</p>';
+        $out .= '</div>';
+        $out .= '</div>';
+        
+        // Разделы
+        
+        foreach ( $d['data']['parts'] as $item ) {
+            
+            // Описание
+            
+            $out .= '<div class="row mb-5 mt-3">';
+            $out .= '<div class="col">';
+            
+            $out .= '<p><strong>' . $t['part'] . ' ' . $item['sub_id'] + 1 . '.</strong> ' . $item['name'] . '</p>';
+            $out .= '<p>' . $item['content'] . '</p>';
+            
+            // Трудоемкость
+            
+            $out .= '<span class="p-1 pl-4 pr-4 rounded mr-green">' . $t['hours'] . ': (';
+            $out .= '<span title="Лек." class="hint">' . $item['hours']['lec'] . '</span>, ';
+            $out .= '<span title="Лаб." class="hint">' . $item['hours']['lab'] . '</span>, ';
+            $out .= '<span title="Прак." class="hint">' . $item['hours']['prac'] . '</span>, ';
+            $out .= '<span title="СРС." class="hint">' . $item['hours']['srs'] . '</span>)';
+            $out .= '</span>';
+            
+            $out .= '</div>';
+            $out .= '</div>';
+            
+            
+            
+            // Результаты
+            
+            $out .= '<div class="row mb-5 mt-3">';
+            $out .= '<div class="col">';
+            
+            $out .= '<p class="mb-1"><em>' . $t['z'] . '</em></p>';
+            foreach ( (array) $item['outcomes']['z'] as $item2 ) $out .= '<p class="mb-1">— ' . $item2 . '</p>';
+            
+            $out .= '<p class="mb-1 mt-3"><em>' . $t['u'] . '</em></p>';
+            foreach ( (array) $item['outcomes']['u'] as $item2 ) $out .= '<p class="mb-1">— ' . $item2 . '</p>';
+            
+            $out .= '<p class="mb-1 mt-3"><em>' . $t['v'] . '</em></p>';
+            foreach ( (array) $item['outcomes']['v'] as $item2 ) $out .= '<p class="mb-3">— ' . $item2 . '</p>';
+            
+            // Компетенции 
+            
+            $out .= '<span class="p-1 pl-4 pr-4 rounded mr-green">' . $t['cmp'] . ': ';
+            $out .= $item['cmp'];
+            $out .= '</span>';
+            
+            $out .= '</div>';
+            $out .= '</div>';
+            
+            // p( $item );
+
+        }
+
+
+        return apply_filters( 'mif_mr_companion_lib_courses_get_item_body_content', $out, $d );
+    }
+
+
+
+    //
+    // body
+    //
+
+    public function get_item_body( $d )
+    {
+        
+        $out = '';
+        
+        $ol = ( isset( $d['ol'] ) ) ? $d['ol'] : 'ol';   
+        $li = ( isset( $d['li'] ) ) ? $d['li'] : 'li'; 
+
+        foreach ( $d['index_sub'] as $key => $item ) {
+            
+            $out .= '<div class="row mb-3 mt-3">';
+            $out .= '<div class="col">';
+            if ( ! empty( $d['title_sub'][$key] ) ) $out .= '<p class="fw-bolder">' . $d['title_sub'][$key] . '</p>';
+
+            $out .= '<' . $ol . '>';
+            foreach ( $d['data'][$item] as $item2 ) $out .= '<' . $li . '>' . $item2 . '</' . $li . '>';
+            $out .= '</' . $ol . '>';
+
+            $out .= '</div>';
+            $out .= '</div>';
+        
+        }
+        
+        return apply_filters( 'mif_mr_companion_lib_courses_get_item_body', $out, $d );
+    }
+
+
+
+
+    //
+    // Показать cписок 
+    //
+
     public function get_lib_courses( $opop_id = NULL )
     {
         if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();

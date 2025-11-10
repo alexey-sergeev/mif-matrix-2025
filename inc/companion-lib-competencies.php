@@ -158,20 +158,20 @@ class mif_mr_comp extends mif_mr_companion_core {
     
     
     
-    //
-    // Показать всё
-    //
+    // //
+    // // Показать всё
+    // //
     
-    public static function get_show_all()
-    {
-        $out = '';
+    // public static function get_show_all()
+    // {
+    //     $out = '';
         
-        $out .= '<div class="text-end">';
-        $out .= '<small><a href="#" id="roll-down-all">Показать всё</a> | <a href="#" id="roll-up-all">Свернуть</a></small>';
-        $out .= '</div>';
+    //     $out .= '<div class="text-end">';
+    //     $out .= '<small><a href="#" id="roll-down-all">Показать всё</a> | <a href="#" id="roll-up-all">Свернуть</a></small>';
+    //     $out .= '</div>';
 
-        return apply_filters( 'mif_mr_get_show_all', $out );
-    }
+    //     return apply_filters( 'mif_mr_get_show_all', $out );
+    // }
 
 
 
@@ -249,38 +249,38 @@ class mif_mr_comp extends mif_mr_companion_core {
 
 
     
-    //
-    // Показать cписок компетенций - компетенция, head
-    //
+    // //
+    // // Показать cписок компетенций - компетенция, head
+    // //
     
-    public static function get_sub_head( $item )
-    {
-        if ( ! isset( $item['sub_id'] ) ) $item['sub_id'] = 0;
-        if ( ! isset( $item['f'] ) ) $item['f'] = false;
+    // public static function get_sub_head( $item )
+    // {
+    //     if ( ! isset( $item['sub_id'] ) ) $item['sub_id'] = 0;
+    //     if ( ! isset( $item['f'] ) ) $item['f'] = false;
         
-        $out = '';
+    //     $out = '';
         
-        $out .= '<div class="row mb-3 mt-3">';
+    //     $out .= '<div class="row mb-3 mt-3">';
         
-        // Наименование категории
+    //     // Наименование категории
 
-        $out .= '<div class="col-11 mr-gray p-3 fw-bolder">';
-        $out .= $item['name'];
-        $out .= '</div>';
+    //     $out .= '<div class="col-11 mr-gray p-3 fw-bolder">';
+    //     $out .= $item['name'];
+    //     $out .= '</div>';
         
-        // Кнопка edit
+    //     // Кнопка edit
 
-        $out .= '<div class="col-1 mr-gray p-3 text-end">';
-        if ( $item['f'] ) $out .= '<i class="fas fa-spinner fa-spin d-none"></i> ';
-        if ( $item['f'] ) $out .= '<a href="#" class="edit pr-1" data-sub="' . $item['sub_id'] . '"><i class="fa-regular fa-pen-to-square"></i></a>';
-        $out .= '<a href="#" class="roll-up d-none"><i class="fa-solid fa-angle-up"></i></a>';
-        $out .= '<a href="#" class="roll-down"><i class="fa-solid fa-chevron-down"></i></a>';
-        $out .= '</div>';
+    //     $out .= '<div class="col-1 mr-gray p-3 text-end">';
+    //     if ( $item['f'] ) $out .= '<i class="fas fa-spinner fa-spin d-none"></i> ';
+    //     if ( $item['f'] ) $out .= '<a href="#" class="edit pr-1" data-sub="' . $item['sub_id'] . '"><i class="fa-regular fa-pen-to-square"></i></a>';
+    //     $out .= '<a href="#" class="roll-up d-none"><i class="fa-solid fa-angle-up"></i></a>';
+    //     $out .= '<a href="#" class="roll-down"><i class="fa-solid fa-chevron-down"></i></a>';
+    //     $out .= '</div>';
         
-        $out .= '</div>';
+    //     $out .= '</div>';
 
-        return apply_filters( ' mif_mr_get_item_head', $out, $item );
-    }
+    //     return apply_filters( ' mif_mr_get_item_head', $out, $item );
+    // }
 
 
 

@@ -159,6 +159,7 @@ html {
 
 .hint {
   border-bottom: 1px dotted #aaa !important;
+  cursor: help;
 }
 
 /* .coll { */
