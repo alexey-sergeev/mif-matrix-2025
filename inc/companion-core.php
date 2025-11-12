@@ -227,6 +227,16 @@ class mif_mr_companion_core {
         if ( ! isset( $item['sub_id'] ) ) $item['sub_id'] = 0;
         if ( ! isset( $item['f'] ) ) $item['f'] = false;
         
+        $up = ' d-none';
+        $down = '';
+        
+        if ( isset( $item['coll'] ) && $item['coll'] ) {
+            
+            $up = '';
+            $down = ' d-none';
+        
+        }        
+        
         $out = '';
         
         $out .= '<div class="row mb-3 mt-3">';
@@ -242,8 +252,8 @@ class mif_mr_companion_core {
         $out .= '<div class="col-1 mr-gray p-3 text-end">';
         if ( $item['f'] ) $out .= '<i class="fas fa-spinner fa-spin d-none"></i> ';
         if ( $item['f'] ) $out .= '<a href="#" class="edit pr-1" data-sub="' . $item['sub_id'] . '"><i class="fa-regular fa-pen-to-square"></i></a>';
-        $out .= '<a href="#" class="roll-up d-none"><i class="fa-solid fa-angle-up"></i></a>';
-        $out .= '<a href="#" class="roll-down"><i class="fa-solid fa-chevron-down"></i></a>';
+        $out .= '<a href="#" class="roll-up' . $up . '"><i class="fa-solid fa-angle-up"></i></a>';
+        $out .= '<a href="#" class="roll-down' . $down . '"><i class="fa-solid fa-chevron-down"></i></a>';
         $out .= '</div>';
         
         $out .= '</div>';
@@ -355,6 +365,62 @@ class mif_mr_companion_core {
         return apply_filters( 'mif_mr_show_list_compe_create', $out );
     }
     
+
+
+    
+    
+    
+    //
+    // Показать id
+    //
+    
+    public static function get_comp_id()
+    {
+        global $wp_query;
+
+        $out = '';
+
+        if ( isset( $wp_query->query_vars['id'] ) ) {
+
+            // $out .= '<span class="p-0 pr-3 pl-3 rounded">ID: '; 
+            $out .= '<div class="mb-4 mt-0 pb-5 pt-5">'; 
+            $out .= '<span class="bg-secondary text-light rounded pl-4 pr-4 p-2">ID: '; 
+            $out .= $wp_query->query_vars['id']; 
+            $out .= '</span>'; 
+            $out .= '</div>'; 
+        
+        }
+
+        return apply_filters( 'mif_mr_get_comp_id', $out );
+    }    
+ 
+
+
+    
+    
+    
+    //
+    // Показать edit link
+    //
+    
+    public static function get_edit_link()
+    {
+        global $wp_query;
+
+        $out = '';
+
+        if ( isset( $wp_query->query_vars['id'] ) ) {
+
+            // $out .= '<div class="mb-4 mt-0 pb-5 pt-5">'; 
+            $out .= '<div><a href="' . get_edit_post_link( $wp_query->query_vars['id'] ) . '">Расширенный редактор</a></div>';
+            // $out .= '</div>'; 
+        
+        }
+
+        return apply_filters( 'mif_mr_get_comp_id', $out );
+    }    
+ 
+
 
    
     //

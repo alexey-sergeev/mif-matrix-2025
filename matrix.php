@@ -103,6 +103,7 @@ function mif_mr_customizer_styles()
 }
 
 
+add_filter( 'show_admin_bar', '__return_false' );
 
 
 if ( ! function_exists( 'p' ) ) {

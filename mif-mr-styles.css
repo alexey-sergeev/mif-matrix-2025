@@ -1,5 +1,11 @@
 /* Body */
 
+.fiksa {
+  position: sticky;
+  top: 0px;
+  /* top: 50px; */
+  z-index: 2;
+}
 
 /* Matrix */
 

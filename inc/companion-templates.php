@@ -53,4 +53,24 @@ function mif_mr_show_comp()
 }
 
 
+//
+// Выводит 
+//
+
+function mif_mr_the_comp_id()
+{
+    echo mif_mr_companion_core::get_comp_id();
+}
+
+
+//
+// Выводит 
+//
+
+function mif_mr_the_edit_link()
+{
+    echo mif_mr_companion_core::get_edit_link();
+}
+
+
 ?>

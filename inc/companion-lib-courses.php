@@ -88,9 +88,10 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
         $out = '';
         $f = true;
         
+        // $out .= '<div class="comp container no-gutters">';
         $out .= '<div class="content-ajax">';
         
-        if ( $f ) $out .= '<div><a href="' . get_edit_post_link( $course_id ) . '">Расширенный редактор</a></div>';
+        // if ( $f ) $out .= '<div><a href="' . get_edit_post_link( $course_id ) . '">Расширенный редактор</a></div>';
         
         if ( isset( $tree['content']['lib-courses']['data'][$course_id] ) ) {
             
@@ -98,8 +99,9 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
             // p($arr);
             
             
-            $out .= '<h4 class="mb-4 mt-5">' . $arr['name'] . '</h4>';
-            $out .= 'id: ' . $course_id;
+            $out .= '<h4 class="mb-4 mt-0 pb-5 pt-5 bg-body fiksa">' . $arr['name'] . '</h4>';
+            $out .= '&nbsp;';
+            // $out .= 'id: ' . $course_id;
             $out .= $this->get_show_all();
             
             // p($arr['data']);
@@ -109,6 +111,7 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
                                                 'part' => 'content',
                                                 'name' => 'Содержание',
                                                 'data' => $arr['data']['content'],
+                                                'coll' => true,
                                             ));
             
             $out .= $this->get_course_part( array(
@@ -116,6 +119,14 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
                                                 'name' => 'Оценочные средства',
                                                 'data' => $arr['data']['evaluations'],
                                             ));
+
+            $out .= $this->get_course_part( array(
+                                                'part' => 'content',
+                                                'name' => 'Индикаторы',
+                                                'data' => $arr['data']['content'],
+                                                'indicator' => true,
+                                            ));
+            
 
             $out .= $this->get_course_part( array(
                                                 'part' => 'biblio',
@@ -200,6 +211,7 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
     //     if ( $f ) $out .= '<input type="hidden" name="_wpnonce" value="' . wp_create_nonce( 'mif-mr' ) . '">';
         
         $out .= '</div>';
+        // $out .= '</div>';
 
 
 
@@ -228,14 +240,18 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
         
         //     if ( empty( $opop_id ) ) $opop_id = mif_mr_opop_core::get_opop_id();
         
-        $out .= '<span class="content-ajax">';
+        // $out .= '<span class="content-ajax">';
+        $out .= '<span>';
   
-        
-        $out .= '&nbsp;';
+        // $out .= '&nbsp;';
+        $coll = false;
+        if ( isset( $d['coll'] ) ) $coll = $d['coll'];
+
         $out .= $this->get_sub_head( array(
                                             'name' => $d['name'],    
                                             'sub_id' => $d['part'],
-                                            'f' => $f            
+                                            'f' => $f, 
+                                            'coll' => $coll,         
                                             ) );
                                             
         if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'edit' ) {
@@ -272,6 +288,8 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
 
         }
         
+        $out .= '&nbsp;';
+
         $out .= '</span>';
         
         return apply_filters( ' mif_mr_lib_courses_get_course_sub', $out, $d );
@@ -298,11 +316,11 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
         
         foreach ( $d['data'] as $item ) {
             
-        //     // Описание
+        // Семестр
             
             if ( isset( $d['data'][1] ) ) {
 
-                $out .= '<div class="row mb-5 mt-3">';
+                $out .= '<div class="row coll" style="display: none;">';
                 $out .= '<div class="col">';
                 
                 $out .= '<p class="mr-gray p-1 pl-3 mt-5"><strong>' . $t['sem'] . ' ' . $item['sem'] + 1 . '</strong></p>';
@@ -313,16 +331,14 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
             }
             
             
-            
-        //     // Результаты
-            
+        // Оценочные средства
         
         foreach ( $item['data'] as $item2 ) {
             
-            $out .= '<div class="row mb-3 mt-3">';
+            $out .= '<div class="row coll" style="display: none;">';
             
             $out .= '<div class="col">';
-            $out .= $item2['name'];
+            $out .= '<p class="pl-3">' . $item2['name'] . '</p>';
             $out .= '</div>';
             
             $out .= '<div class="col-1">';
@@ -336,8 +352,6 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
             $out .= '</div>';
 
         }
-
-            
             
         //     // p( $item );
 
@@ -366,15 +380,20 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
                                 'cmp' => ' Компетенции', 
                             ) );          
         $out = '';
-        
-        // Цель освоения дисциплины
+        $style = ( isset( $d['indicator'] ) ) ? ' style="display: none;"' : '';
 
-        $out .= '<div class="row mb-3 mt-3">';
-        $out .= '<div class="col">';
-        $out .= '<p class="fw-bolder">' . $t['target'] . '</p>';
-        $out .= '<p>' . $d['data']['target'] . '</p>';
-        $out .= '</div>';
-        $out .= '</div>';
+        // Цель освоения дисциплины
+        
+        if ( ! isset( $d['indicator'] ) ) {
+            
+            $out .= '<div class="row coll"' . $style . '>';
+            $out .= '<div class="col">';
+            $out .= '<p class="fw-bolder">' . $t['target'] . '</p>';
+            $out .= '<p>' . $d['data']['target'] . '</p>';
+            $out .= '</div>';
+            $out .= '</div>';
+            
+        } 
         
         // Разделы
         
@@ -382,53 +401,60 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
             
             // Описание
             
-            $out .= '<div class="row mb-5 mt-3">';
+            
+            $out .= '<div class="row coll"' . $style . '>';
             $out .= '<div class="col">';
             
             $out .= '<p class="mr-gray p-1 pl-3 mt-5"><strong>' . $t['part'] . ' ' . $item['sub_id'] + 1 . '.</strong> ' . $item['name'] . '</p>';
-            $out .= '<p class="pl-3">' . $item['content'] . '</p>';
             
-            // Трудоемкость
-            
-            $out .= '<div class="pl-3 mt-5">';
-            $out .= '<span class="p-1 pl-4 pr-4 rounded mr-green">' . $t['hours'] . ': (';
-            $out .= '<span title="Лек." class="hint">' . $item['hours']['lec'] . '</span>, ';
-            $out .= '<span title="Лаб." class="hint">' . $item['hours']['lab'] . '</span>, ';
-            $out .= '<span title="Прак." class="hint">' . $item['hours']['prac'] . '</span>, ';
-            $out .= '<span title="СРС." class="hint">' . $item['hours']['srs'] . '</span>)';
-            $out .= '</span>';
+            if ( ! isset( $d['indicator'] ) ) {
+
+                $out .= '<p class="pl-3">' . $item['content'] . '</p>';
+                
+                // Трудоемкость
+                
+                $out .= '<div class="pl-3 mt-5">';
+                $out .= '<span class="p-1 pl-4 pr-4 rounded mr-green">' . $t['hours'] . ': (';
+                $out .= '<span title="Лек." class="hint">' . $item['hours']['lec'] . '</span>, ';
+                $out .= '<span title="Лаб." class="hint">' . $item['hours']['lab'] . '</span>, ';
+                $out .= '<span title="Прак." class="hint">' . $item['hours']['prac'] . '</span>, ';
+                $out .= '<span title="СРС." class="hint">' . $item['hours']['srs'] . '</span>)';
+                $out .= '</span>';
+                $out .= '</div>';
+                
+            }
+             
             $out .= '</div>';
-            
             $out .= '</div>';
-            $out .= '</div>';
-            
-            
             
             // Результаты
-            
-            $out .= '<div class="row mb-5 mt-3">';
-            $out .= '<div class="col">';
-            
-            if ( ! empty( $item['outcomes']['z'] ) ) $out .= '<p class="mb-1 mt-3 pl-3"><em>' . $t['z'] . ':</em></p>';
-            foreach ( (array) $item['outcomes']['z'] as $item2 ) $out .= '<p class="mb-1 pl-3">— ' . $item2 . '</p>';
-            
-            if ( ! empty( $item['outcomes']['u'] ) ) $out .= '<p class="mb-1 mt-3 pl-3"><em>' . $t['u'] . ':</em></p>';
-            foreach ( (array) $item['outcomes']['u'] as $item2 ) $out .= '<p class="mb-1 pl-3">— ' . $item2 . '</p>';
-            
-            if ( ! empty( $item['outcomes']['v'] ) ) $out .= '<p class="mb-1 mt-3 pl-3"><em>' . $t['v'] . ':</em></p>';
-            foreach ( (array) $item['outcomes']['v'] as $item2 ) $out .= '<p class="mb-3 pl-3">— ' . $item2 . '</p>';
-            
-            // Компетенции 
-            
-            $out .= '<div class="pl-3 mt-5">';
-            $out .= '<span class="p-1 pl-4 pr-4 rounded mr-green">' . $t['cmp'] . ': ';
-            $out .= $item['cmp'];
-            $out .= '</span>';
-            $out .= '</div>';
-            
-            $out .= '</div>';
-            $out .= '</div>';
-            
+
+            if ( isset( $d['indicator'] ) ) {
+                
+                $out .= '<div class="row coll"' . $style . '>';
+                $out .= '<div class="col">';
+                
+                if ( ! empty( $item['outcomes']['z'] ) ) $out .= '<p class="mb-1 mt-0 pl-3"><em>' . $t['z'] . ':</em></p>';
+                foreach ( (array) $item['outcomes']['z'] as $item2 ) $out .= '<p class="mb-1 pl-3">— ' . $item2 . '</p>';
+                
+                if ( ! empty( $item['outcomes']['u'] ) ) $out .= '<p class="mb-1 mt-3 pl-3"><em>' . $t['u'] . ':</em></p>';
+                foreach ( (array) $item['outcomes']['u'] as $item2 ) $out .= '<p class="mb-1 pl-3">— ' . $item2 . '</p>';
+                
+                if ( ! empty( $item['outcomes']['v'] ) ) $out .= '<p class="mb-1 mt-3 pl-3"><em>' . $t['v'] . ':</em></p>';
+                foreach ( (array) $item['outcomes']['v'] as $item2 ) $out .= '<p class="mb-3 pl-3">— ' . $item2 . '</p>';
+                
+                // Компетенции 
+                
+                $out .= '<div class="pl-3 mt-5">';
+                $out .= '<span class="p-1 pl-4 pr-4 rounded mr-green">' . $t['cmp'] . ': ';
+                $out .= $item['cmp'];
+                $out .= '</span>';
+                $out .= '</div>';
+    
+                $out .= '</div>';
+                $out .= '</div>';
+
+            }
             // p( $item );
 
         }
@@ -453,9 +479,10 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
 
         foreach ( $d['index_sub'] as $key => $item ) {
             
-            $out .= '<div class="row mb-3 mt-3">';
+            // $out .= '<div class="row coll mb-3 mt-3">';
+            $out .= '<div class="row coll" style="display: none;">';
             $out .= '<div class="col">';
-            if ( ! empty( $d['title_sub'][$key] ) ) $out .= '<p class="fw-bolder">' . $d['title_sub'][$key] . '</p>';
+            if ( ! empty( $d['title_sub'][$key] ) ) $out .= '<p class="fw-bolder mt-4">' . $d['title_sub'][$key] . '</p>';
 
             $out .= '<' . $ol . '>';
             foreach ( $d['data'][$item] as $item2 ) $out .= '<' . $li . '>' . $item2 . '</' . $li . '>';
@@ -611,6 +638,15 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
         // p($data);
              
         $arr3 = array();
+        // $arr3 = array( 
+        //     'content' => NULL,
+        //     'evaluations' => NULL,
+        //     'biblio' => NULL,
+        //     'it' => NULL,
+        //     'mto' => NULL,
+        //     'authors' => NULL,
+        //     'guidelines' => NULL,
+        // );
         
         foreach ( $data as $item ) {
             
