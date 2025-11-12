@@ -78,7 +78,10 @@ class evaluations {
 
                 }
                 
-                $arr['evaluations'][$n][] = array(
+                
+                $arr['evaluations'][$n]['sem'] = $n;
+                
+                $arr['evaluations'][$n]['data'][] = array(
 
                     'name' => $item2['default']['name'],
                     'att' => $att,

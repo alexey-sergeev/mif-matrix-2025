@@ -110,6 +110,12 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
                                                 'name' => 'Содержание',
                                                 'data' => $arr['data']['content'],
                                             ));
+            
+            $out .= $this->get_course_part( array(
+                                                'part' => 'evaluations',
+                                                'name' => 'Оценочные средства',
+                                                'data' => $arr['data']['evaluations'],
+                                            ));
 
             $out .= $this->get_course_part( array(
                                                 'part' => 'biblio',
@@ -241,12 +247,18 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
         } else {
                 
             // Режим отображения
-            
+
             switch ( $d['part'] ) {
                             
                 case 'content':
 
                     $out .= $this->get_item_body_content( $d );
+                    
+                break;
+                    
+                case 'evaluations':
+
+                    $out .= $this->get_item_body_evaluations( $d );
                     
                 break;
                     
@@ -266,6 +278,74 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
     }
 
 
+
+
+
+    //
+    // body
+    //
+
+    public function get_item_body_evaluations( $d )
+    {
+        // p($d); 
+        $t = apply_filters( 'mif-mr-body-evaluations-text', array( 
+                                'sem' => 'Семестр',
+
+                            ) );          
+        $out = '';
+        
+        // // Разделы
+        
+        foreach ( $d['data'] as $item ) {
+            
+        //     // Описание
+            
+            if ( isset( $d['data'][1] ) ) {
+
+                $out .= '<div class="row mb-5 mt-3">';
+                $out .= '<div class="col">';
+                
+                $out .= '<p class="mr-gray p-1 pl-3 mt-5"><strong>' . $t['sem'] . ' ' . $item['sem'] + 1 . '</strong></p>';
+                
+                $out .= '</div>';
+                $out .= '</div>';
+                
+            }
+            
+            
+            
+        //     // Результаты
+            
+        
+        foreach ( $item['data'] as $item2 ) {
+            
+            $out .= '<div class="row mb-3 mt-3">';
+            
+            $out .= '<div class="col">';
+            $out .= $item2['name'];
+            $out .= '</div>';
+            
+            $out .= '<div class="col-1">';
+            $out .= $item2['att']['rating'];
+            $out .= '</div>';
+            
+            $out .= '<div class="col-3 col-lg-2">';
+            $out .= $item2['att']['cmp'];
+            $out .= '</div>';
+            
+            $out .= '</div>';
+
+        }
+
+            
+            
+        //     // p( $item );
+
+        }
+
+
+        return apply_filters( 'mif_mr_companion_lib_courses_get_item_body_evaluations', $out, $d );
+    }
 
 
 
@@ -305,17 +385,19 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
             $out .= '<div class="row mb-5 mt-3">';
             $out .= '<div class="col">';
             
-            $out .= '<p><strong>' . $t['part'] . ' ' . $item['sub_id'] + 1 . '.</strong> ' . $item['name'] . '</p>';
-            $out .= '<p>' . $item['content'] . '</p>';
+            $out .= '<p class="mr-gray p-1 pl-3 mt-5"><strong>' . $t['part'] . ' ' . $item['sub_id'] + 1 . '.</strong> ' . $item['name'] . '</p>';
+            $out .= '<p class="pl-3">' . $item['content'] . '</p>';
             
             // Трудоемкость
             
+            $out .= '<div class="pl-3 mt-5">';
             $out .= '<span class="p-1 pl-4 pr-4 rounded mr-green">' . $t['hours'] . ': (';
             $out .= '<span title="Лек." class="hint">' . $item['hours']['lec'] . '</span>, ';
             $out .= '<span title="Лаб." class="hint">' . $item['hours']['lab'] . '</span>, ';
             $out .= '<span title="Прак." class="hint">' . $item['hours']['prac'] . '</span>, ';
             $out .= '<span title="СРС." class="hint">' . $item['hours']['srs'] . '</span>)';
             $out .= '</span>';
+            $out .= '</div>';
             
             $out .= '</div>';
             $out .= '</div>';
@@ -327,20 +409,22 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
             $out .= '<div class="row mb-5 mt-3">';
             $out .= '<div class="col">';
             
-            $out .= '<p class="mb-1"><em>' . $t['z'] . '</em></p>';
-            foreach ( (array) $item['outcomes']['z'] as $item2 ) $out .= '<p class="mb-1">— ' . $item2 . '</p>';
+            if ( ! empty( $item['outcomes']['z'] ) ) $out .= '<p class="mb-1 mt-3 pl-3"><em>' . $t['z'] . ':</em></p>';
+            foreach ( (array) $item['outcomes']['z'] as $item2 ) $out .= '<p class="mb-1 pl-3">— ' . $item2 . '</p>';
             
-            $out .= '<p class="mb-1 mt-3"><em>' . $t['u'] . '</em></p>';
-            foreach ( (array) $item['outcomes']['u'] as $item2 ) $out .= '<p class="mb-1">— ' . $item2 . '</p>';
+            if ( ! empty( $item['outcomes']['u'] ) ) $out .= '<p class="mb-1 mt-3 pl-3"><em>' . $t['u'] . ':</em></p>';
+            foreach ( (array) $item['outcomes']['u'] as $item2 ) $out .= '<p class="mb-1 pl-3">— ' . $item2 . '</p>';
             
-            $out .= '<p class="mb-1 mt-3"><em>' . $t['v'] . '</em></p>';
-            foreach ( (array) $item['outcomes']['v'] as $item2 ) $out .= '<p class="mb-3">— ' . $item2 . '</p>';
+            if ( ! empty( $item['outcomes']['v'] ) ) $out .= '<p class="mb-1 mt-3 pl-3"><em>' . $t['v'] . ':</em></p>';
+            foreach ( (array) $item['outcomes']['v'] as $item2 ) $out .= '<p class="mb-3 pl-3">— ' . $item2 . '</p>';
             
             // Компетенции 
             
+            $out .= '<div class="pl-3 mt-5">';
             $out .= '<span class="p-1 pl-4 pr-4 rounded mr-green">' . $t['cmp'] . ': ';
             $out .= $item['cmp'];
             $out .= '</span>';
+            $out .= '</div>';
             
             $out .= '</div>';
             $out .= '</div>';
