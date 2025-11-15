@@ -65,25 +65,28 @@ class mif_mr_companion_core {
     
 
    
-    public function save( $sub_id, $comp_id, $opop_id )
+    public function save( $sub_id, $comp_id, $opop_id, $add_key = false )
     {
         // ####!!!!!
 
         $res = false;
 
         $arr = $this->get_sub_arr( $comp_id );
+        // p($arr);
+        // p($comp_id);
 
         if ( $sub_id == -1 ) $sub_id = (int) array_key_last( $arr ) + 1; 
-
+        
         $arr[$sub_id] = sanitize_textarea_field( $_REQUEST['content'] );
         // p($_REQUEST);
-
+        
+        if ( $add_key ) foreach ( $arr as $key => $item ) $arr[$key] = '== ' . $key . "\n\n" . $arr[$key];
 
         $res = wp_update_post( array(
             'ID' => $comp_id,
             'post_content' => implode( "\n", $arr ),
             ) );
-                
+        // p(implode( "\n", $arr ));        
        
         global $messages;
         $messages[] = ( $res ) ? array( 'Сохранено', 'success' ) : array( 'Какая-то ошибка. Код ошибки: 103 (' . $type . ')', 'danger' );
@@ -243,7 +246,7 @@ class mif_mr_companion_core {
         
         // Наименование категории
 
-        $out .= '<div class="col-11 mr-gray p-3 fw-bolder">';
+        $out .= '<div class="name col-11 mr-gray p-3 fw-bolder">';
         $out .= $item['name'];
         $out .= '</div>';
         
@@ -272,15 +275,15 @@ class mif_mr_companion_core {
     // Режим edit
     //
 
-    public function get_sub_edit( $sub_id, $comp_id, $opop_id )
+    public function get_sub_edit( $sub_id, $comp_id, $opop_id = NULL )
     {
         // ####!!!!!
-
+        // p('@');
         $arr = $this->get_sub_arr( $comp_id );
+        
+        $out = '';
 
         if ( isset( $arr[$sub_id] ) || $sub_id == '-1' ) {
-
-            $out = '';
 
             // $out .= '<div class="content-ajax">';
             $out .= '<div class="row">';

@@ -236,16 +236,21 @@ class mif_mr_init extends mif_mr_functions {
                     
                 
                     if ( in_array( $_REQUEST['do'], array( 'edit', 'cancel' ) ) ) {
-                        
+                        // p($_REQUEST);
                         $m = new mif_mr_lib_courses();
-                        echo $m->show_comp_sub( (int) $_REQUEST['sub'], (int) $_REQUEST['comp'], (int) $_REQUEST['opop'] );
+                        // echo $m->get_course_part( sanitize_key( $_REQUEST['sub'] ), (int) $_REQUEST['comp'], (int) $_REQUEST['opop'] );
+                        echo $m->get_course_part( array(
+                                                'course_id' => (int) $_REQUEST['comp'],
+                                                'part' => sanitize_key( $_REQUEST['sub'] ),
+                                                'name' => sanitize_text_field( $_REQUEST['name'] ),
+                                                ) );
                     
                     } 
                     
                     if ( in_array( $_REQUEST['do'], array( 'save' ) ) ) {
-                        
+                        // p($_REQUEST);
                         $m = new mif_mr_lib_courses();
-                        echo $m->show_comp( (int) $_REQUEST['comp'], (int) $_REQUEST['opop'] );
+                        echo $m->get_course( (int) $_REQUEST['comp'], (int) $_REQUEST['opop'] );
                         
                     } 
                     

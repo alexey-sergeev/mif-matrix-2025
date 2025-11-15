@@ -81,7 +81,7 @@ jQuery( document ).ready( function( jq ) {
     // new
     
     jq( 'body' ).on( 'click', '.comp a.new', function() {
-        console.log( '@' );
+        // console.log( '@' );
         jq(this).closest('div.row').before('<span class="new"><span class="content-ajax"><a href="#" class="edit d-none" id="new" data-sub="-1">#</a></span></span>');
         jq( '#new' ).trigger('click');
         return false;
@@ -134,9 +134,14 @@ jQuery( document ).ready( function( jq ) {
         let content = jq( 'textarea.content', jq(elem).closest('span') ).val();
         let title = jq( 'input[name=title]' ).val();
         let data = jq( 'textarea[name=data]' ).val();
+        let name = jq( 'div.name', jq(elem).closest('span') ).text();
 
-        console.log( action );
-        console.log( action_do );
+        // console.log( action );
+        // console.log( action_do );
+        // console.log( nonce );
+        // console.log( sub_id );
+        // console.log( name );
+
         // let div = jq(elem).closest('span.content-ajax');
         jq( 'i.fa-spinner', jq(elem).closest('button') ).removeClass('d-none');
 
@@ -152,6 +157,7 @@ jQuery( document ).ready( function( jq ) {
                     content: content,
                     title: title,
                     data: data,
+                    name: name,
                     _wpnonce: nonce,
             },
             success: function( response ) {
