@@ -53,12 +53,13 @@ jQuery( document ).ready( function( jq ) {
     // Показать окно редактирования
     
     jq( 'body' ).on( 'click', '.comp a.edit', function() {
+        // jq( 'a.roll-down', jq(this).closest('span') ).trigger('click');
         sub_do( this, 'edit', jq(this).closest('span.content-ajax') );
         return false;
     } );    
-
-
-
+    
+    
+    
     // Отмена
     
     jq( 'body' ).on( 'click', '.comp button.cancel', function() {
@@ -66,8 +67,8 @@ jQuery( document ).ready( function( jq ) {
         jq(this).closest('span.new').remove();
         return false;
     } );    
-
-
+    
+    
     
     // save
     
@@ -83,7 +84,7 @@ jQuery( document ).ready( function( jq ) {
     jq( 'body' ).on( 'click', '.comp a.new', function() {
         // console.log( '@' );
         jq(this).closest('div.row').before('<span class="new"><span class="content-ajax"><a href="#" class="edit d-none" id="new" data-sub="-1">#</a></span></span>');
-        jq( '#new' ).trigger('click');
+        jq('#new').trigger('click');
         return false;
     } );    
     
@@ -115,14 +116,14 @@ jQuery( document ).ready( function( jq ) {
             jq( 'input[name=yes]', jq(this).closest('div.alert') ).focus();
             
         }
-
+        
         return false;
     } );    
-
-
-
-
-
+    
+    
+    
+    
+    
     function sub_do( elem, action_do, div ) {
         
         let sub_id = jq(elem).attr( 'data-sub' );
@@ -136,40 +137,45 @@ jQuery( document ).ready( function( jq ) {
         let title = jq( 'input[name=title]' ).val();
         let data = jq( 'textarea[name=data]' ).val();
         let name = jq( 'div.name', jq(elem).closest('span') ).text();
-
+        
+        let coll = {};
+        jq( 'input.coll' ).each( function() { coll[jq(this).attr( 'data-key' )] = jq(this).attr( 'data-value' ); });
+        
         // console.log( action );
         // console.log( action_do );
         // console.log( nonce );
         // console.log( sub_id );
         // console.log( name );
-        console.log( part );
-
+        // console.log( part );
+        // console.log( coll );
+        
         // let div = jq(elem).closest('span.content-ajax');
         jq( 'i.fa-spinner', jq(elem).closest('button') ).removeClass('d-none');
-
+        
         jq.ajax( {
             url: ajaxurl,
             type: 'POST',
             data: {
-                    action: action,
-                    do: action_do,
-                    opop: opop_id,
-                    comp: comp_id,
-                    sub: sub_id,
-                    part: part,
-                    content: content,
-                    title: title,
-                    data: data,
-                    name: name,
-                    _wpnonce: nonce,
+                action: action,
+                do: action_do,
+                opop: opop_id,
+                comp: comp_id,
+                sub: sub_id,
+                part: part,
+                content: content,
+                title: title,
+                data: data,
+                name: name,
+                _wpnonce: nonce,
+                coll: coll,
             },
             success: function( response ) {
-
+                
                 if ( response ) {
-
+                    
                     div.replaceWith( response )
                     console.log( response );
-
+                    
                 } else {
                     
                     console.log( 'error 5' );
@@ -186,6 +192,7 @@ jQuery( document ).ready( function( jq ) {
         } );
         
         jq( 'i.fa-spinner', jq(elem).closest('div') ).addClass('d-none');
+        // jq( 'input.coll', jq(elem).closest('span') ).attr( 'data-value', 'on' );
         
         // return false;
         
@@ -237,13 +244,10 @@ jQuery( document ).ready( function( jq ) {
     // #fullsize
     
     jq( 'body' ).on( 'click', '#fullsize', function() {
-        
         jq( 'i', this ).toggleClass( 'd-none' );
         jq( 'div.container' ).toggleClass( 'fullsize' );
         jq( '#primary div.column' ).toggleClass( 'is-11-desktop is-12-desktop' );
-        
         return false;
-        
     })
     
     
@@ -252,9 +256,9 @@ jQuery( document ).ready( function( jq ) {
     jq( 'body' ).on( 'click', '#roll-up-all', function() {
         jq( 'a.roll-up', jq(this).closest('.part') ).each( function ( index, elem ) { jq(elem).addClass('d-none'); });
         jq( 'a.roll-down', jq(this).closest('.part') ).each( function ( index, elem ) { jq(elem).removeClass('d-none'); });
-        jq( '.coll', jq(this).closest('.part') ).slideUp();
+        jq( 'div.coll', jq(this).closest('.part') ).slideUp();
+        jq( 'input.coll' ).each( function() { jq(this).attr( 'data-value', 'off' ); });
         return false;
-        
     })
     
     
@@ -263,31 +267,31 @@ jQuery( document ).ready( function( jq ) {
     jq( 'body' ).on( 'click', '#roll-down-all', function() {
         jq( 'a.roll-down', jq(this).closest('.part') ).each( function ( index, elem ) { jq(elem).addClass('d-none'); });
         jq( 'a.roll-up', jq(this).closest('.part') ).each( function ( index, elem ) { jq(elem).removeClass('d-none'); });
-        jq( '.coll', jq(this).closest('.part') ).slideDown();
+        jq( 'div.coll', jq(this).closest('.part') ).slideDown();
+        jq( 'input.coll' ).each( function() { jq(this).attr( 'data-value', 'on' ); });
         return false;
-        
     })
     
     
     // 
     
     jq( 'body' ).on( 'click', 'a.roll-up', function() {
-        jq( '.coll', jq(this).closest('span') ).slideUp();
+        jq( 'div.coll', jq(this).closest('span') ).slideUp();
         jq( 'a.roll-up', jq(this).closest('span') ).toggleClass('d-none');
         jq( 'a.roll-down', jq(this).closest('span') ).toggleClass('d-none');
+        jq( 'input.coll', jq(this).closest('span') ).attr( 'data-value', 'off' );
         return false;
-        
     })
     
     
     // 
     
     jq( 'body' ).on( 'click', 'a.roll-down', function() {
-        jq( '.coll', jq(this).closest('span') ).slideDown();
+        jq( 'div.coll', jq(this).closest('span') ).slideDown();
         jq( 'a.roll-up', jq(this).closest('span') ).toggleClass('d-none');
         jq( 'a.roll-down', jq(this).closest('span') ).toggleClass('d-none');
+        jq( 'input.coll', jq(this).closest('span') ).attr( 'data-value', 'on' );
         return false;
-        
     })
     
     

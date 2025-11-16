@@ -230,16 +230,19 @@ class mif_mr_companion_core {
         if ( ! isset( $item['sub_id'] ) ) $item['sub_id'] = 0;
         if ( ! isset( $item['f'] ) ) $item['f'] = false;
         
-        $up = ' d-none';
-        $down = '';
         $data_sub_id = ' data-sub="' . $item['sub_id'] . '"';
         $data_part = ( isset( $item['part'] ) ) ? ' data-part="' . $item['part'] . '"' : '';
+        $part = ( isset( $item['part'] ) ) ? $item['part'] : $item['sub_id'];
 
-
+        $up = ' d-none';
+        $down = '';
+        $onoff = 'off';
+        
         if ( isset( $item['coll'] ) && $item['coll'] ) {
             
             $up = '';
             $down = ' d-none';
+            $onoff = 'on';
         
         }        
         
@@ -262,6 +265,10 @@ class mif_mr_companion_core {
         $out .= '<a href="#" class="roll-up' . $up . '"><i class="fa-solid fa-angle-up"></i></a>';
         $out .= '<a href="#" class="roll-down' . $down . '"><i class="fa-solid fa-chevron-down"></i></a>';
         $out .= '</div>';
+
+        $out .= '<input type="hidden" class="coll" data-key="' . $part . '" data-value="' . $onoff . '">';
+        // $out .= '<input type="hidden" class="coll-status" name="coll[' . $part . ']" value="' . $onoff . '">';
+        // $out .= '<input type="hidden" name="coll[' . $part . ']" value="' . $onoff . '">';
         
         $out .= '</div>';
 

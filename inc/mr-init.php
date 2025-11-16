@@ -244,6 +244,7 @@ class mif_mr_init extends mif_mr_functions {
                                                 'sub_id' => sanitize_key( $_REQUEST['sub'] ),
                                                 'part' => sanitize_key( $_REQUEST['part'] ),
                                                 'name' => sanitize_text_field( $_REQUEST['name'] ),
+                                                'coll' => true,
                                                 ) );
                     
                     } 

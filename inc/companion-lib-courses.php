@@ -129,7 +129,8 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
                                                 'data' => $arr['data']['content'],
                                                 // 'coll' => true,
                                                 // 'coll' => ( ( $save == NULL ) || ( $save == 'content' && $_REQUEST['name'] == 'Содержание' ) ) ? true : false,
-                                                'coll' => ( $save == NULL || $save == 'content' ) ? true : false,
+                                                // 'coll' => ( $save == NULL || $save == 'content' ) ? true : false,
+                                                'coll' => $this->coll_on_off( 'content', true ),
                                             ));
             
             $out .= $this->get_course_part( array(
@@ -139,7 +140,8 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
                                                 'sub_id' => 'evaluations',
                                                 'data' => $arr['data']['evaluations'],
                                                 // 'coll' => true,
-                                                'coll' => ( $save == 'evaluations' ) ? true : false,
+                                                // 'coll' => ( $save == 'evaluations' ) ? true : false,
+                                                'coll' => $this->coll_on_off( 'evaluations', false ),
                                             ));
 
             $out .= $this->get_course_part( array(
@@ -150,7 +152,8 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
                                                 'data' => $arr['data']['content'],
                                                 // 'indicator' => true,
                                                 // 'coll' => ( $save == 'content' && $_REQUEST['name'] == 'Индикаторы' ) ? true : false,
-                                                'coll' => ( $save == 'indicator' ) ? true : false,
+                                                // 'coll' => ( $save == 'indicator' ) ? true : false,
+                                                'coll' => $this->coll_on_off( 'indicator', false ),
                                             ));
 
             $out .= $this->get_course_part( array(
@@ -161,7 +164,8 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
                                                 'data' => $arr['data']['biblio'],
                                                 'title_sub' => array( 'Основная литература', 'Дополнительная литература' ),
                                                 'index_sub' => array( 'basic', 'additional' ),
-                                                'coll' => ( $save == 'biblio' ) ? true : false,
+                                                // 'coll' => ( $save == 'biblio' ) ? true : false,
+                                                'coll' => $this->coll_on_off( 'biblio', false ),
                                             ));
             
             $out .= $this->get_course_part( array(
@@ -172,7 +176,8 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
                                                 'data' => $arr['data']['it'],
                                                 'title_sub' => array( 'Интернет-источники', 'Программное обеспечение' ),
                                                 'index_sub' => array( 'inet', 'app' ),
-                                                'coll' => ( $save == 'it' ) ? true : false,
+                                                // 'coll' => ( $save == 'it' ) ? true : false,
+                                                'coll' => $this->coll_on_off( 'it', false ),
                                             ));
 
             $out .= $this->get_course_part( array(
@@ -183,7 +188,8 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
                                                 // 'title_sub' => array( '' ),
                                                 'data' => $arr['data']['mto'],
                                                 'index_sub' => array( 'mto' ),
-                                                'coll' => ( $save == 'mto' ) ? true : false,
+                                                // 'coll' => ( $save == 'mto' ) ? true : false,
+                                                'coll' => $this->coll_on_off( 'mto', false ),
                                             ));
 
             $out .= $this->get_course_part( array(
@@ -196,7 +202,8 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
                                                 'index_sub' => array( 'authors' ),
                                                 'ol' => 'div',
                                                 'li' => 'p',
-                                                'coll' => ( $save == 'authors' ) ? true : false,
+                                                // 'coll' => ( $save == 'authors' ) ? true : false,
+                                                'coll' => $this->coll_on_off( 'authors', false ),
                                             ));
 
 
@@ -261,9 +268,15 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
     }    
     
     
-
-
-
+    
+    private function coll_on_off( $part, $f )
+    {
+        if ( isset( $_REQUEST['coll'][$part] ) ) $f = ( $_REQUEST['coll'][$part] == 'on' ) ? true : false;
+        return $f;
+    }
+    
+    
+    
     //
     // часть
     //
@@ -271,7 +284,7 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
     public function get_course_part( $d )
     {
         // p($d);
-        
+        // p($_REQUEST);
         global $tree;
         
         if ( empty( $d['data'] ) ) $d['data'] = $tree['content']['lib-courses']['data'][$d['course_id']]['data'][$d['sub_id']];
