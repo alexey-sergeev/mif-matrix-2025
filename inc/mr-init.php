@@ -24,10 +24,10 @@ include_once dirname( __FILE__ ) . '/part-matrix.php';
 include_once dirname( __FILE__ ) . '/part-curriculum.php';
 include_once dirname( __FILE__ ) . '/part-set-comp.php';
 
-include_once dirname( __FILE__ ) . '/companion-core.php';
+include_once dirname( __FILE__ ) . '/companion-lib-core.php';
 include_once dirname( __FILE__ ) . '/companion-lib-competencies.php';
 include_once dirname( __FILE__ ) . '/companion-lib-courses.php';
-include_once dirname( __FILE__ ) . '/companion-templates.php';
+include_once dirname( __FILE__ ) . '/companion-lib-templates.php';
 
 include_once dirname( __FILE__ ) . '/lib-download.php';
 include_once dirname( __FILE__ ) . '/lib-xlsx-core.php';
@@ -241,7 +241,8 @@ class mif_mr_init extends mif_mr_functions {
                         // echo $m->get_course_part( sanitize_key( $_REQUEST['sub'] ), (int) $_REQUEST['comp'], (int) $_REQUEST['opop'] );
                         echo $m->get_course_part( array(
                                                 'course_id' => (int) $_REQUEST['comp'],
-                                                'part' => sanitize_key( $_REQUEST['sub'] ),
+                                                'sub_id' => sanitize_key( $_REQUEST['sub'] ),
+                                                'part' => sanitize_key( $_REQUEST['part'] ),
                                                 'name' => sanitize_text_field( $_REQUEST['name'] ),
                                                 ) );
                     

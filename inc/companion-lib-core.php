@@ -232,7 +232,10 @@ class mif_mr_companion_core {
         
         $up = ' d-none';
         $down = '';
-        
+        $data_sub_id = ' data-sub="' . $item['sub_id'] . '"';
+        $data_part = ( isset( $item['part'] ) ) ? ' data-part="' . $item['part'] . '"' : '';
+
+
         if ( isset( $item['coll'] ) && $item['coll'] ) {
             
             $up = '';
@@ -254,7 +257,8 @@ class mif_mr_companion_core {
 
         $out .= '<div class="col-1 mr-gray p-3 text-end">';
         if ( $item['f'] ) $out .= '<i class="fas fa-spinner fa-spin d-none"></i> ';
-        if ( $item['f'] ) $out .= '<a href="#" class="edit pr-1" data-sub="' . $item['sub_id'] . '"><i class="fa-regular fa-pen-to-square"></i></a>';
+        if ( $item['f'] ) $out .= '<a href="#" class="edit pr-1"' . $data_sub_id . $data_part . '><i class="fa-regular fa-pen-to-square"></i></a>';
+        // if ( $item['f'] ) $out .= '<a href="#" class="edit pr-1" data-sub="' . $item['sub_id'] . '"><i class="fa-regular fa-pen-to-square"></i></a>';
         $out .= '<a href="#" class="roll-up' . $up . '"><i class="fa-solid fa-angle-up"></i></a>';
         $out .= '<a href="#" class="roll-down' . $down . '"><i class="fa-solid fa-chevron-down"></i></a>';
         $out .= '</div>';
@@ -275,12 +279,16 @@ class mif_mr_companion_core {
     // Режим edit
     //
 
-    public function get_sub_edit( $sub_id, $comp_id, $opop_id = NULL )
+    // public function get_sub_edit( $sub_id, $comp_id, $opop_id = NULL )
+    public function get_sub_edit( $sub_id, $comp_id, $part = NULL )
     {
         // ####!!!!!
         // p('@');
         $arr = $this->get_sub_arr( $comp_id );
         
+        $data_sub_id = ' data-sub="' . $sub_id . '"';
+        $data_part = ( ! empty( $part ) ) ? ' data-part="' . $part . '"' : '';
+
         $out = '';
 
         if ( isset( $arr[$sub_id] ) || $sub_id == '-1' ) {
@@ -308,8 +316,10 @@ class mif_mr_companion_core {
             $out .= '<div class="row">';
             $out .= '<div class="col p-0">';
 
-            $out .= '<button type="button" class="btn btn-primary mt-4 mb-4 mr-3 save" data-sub="' . $sub_id . '">Сохранить <i class="fas fa-spinner fa-spin d-none"></i></button>';
-            $out .= '<button type="button" class="btn btn-light mt-4 mb-4 mr-3 cancel" data-sub="' . $sub_id . '">Отмена <i class="fas fa-spinner fa-spin d-none"></i></button>';
+            // $out .= '<button type="button" class="btn btn-primary mt-4 mb-4 mr-3 save" data-sub="' . $sub_id . '">Сохранить <i class="fas fa-spinner fa-spin d-none"></i></button>';
+            // $out .= '<button type="button" class="btn btn-light mt-4 mb-4 mr-3 cancel" data-sub="' . $sub_id . '">Отмена <i class="fas fa-spinner fa-spin d-none"></i></button>';
+            $out .= '<button type="button" class="btn btn-primary mt-4 mb-4 mr-3 save"' . $data_sub_id . $data_part . '>Сохранить <i class="fas fa-spinner fa-spin d-none"></i></button>';
+            $out .= '<button type="button" class="btn btn-light mt-4 mb-4 mr-3 cancel"' . $data_sub_id . $data_part . '>Отмена <i class="fas fa-spinner fa-spin d-none"></i></button>';
 
             $out .= '</div>';
             $out .= '</div>';

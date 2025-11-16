@@ -126,6 +126,7 @@ jQuery( document ).ready( function( jq ) {
     function sub_do( elem, action_do, div ) {
         
         let sub_id = jq(elem).attr( 'data-sub' );
+        let part = jq(elem).attr( 'data-part' );
         
         let action = jq( 'input[name=action]' ).val();
         let opop_id = jq( 'input[name=opop]' ).val();
@@ -141,6 +142,7 @@ jQuery( document ).ready( function( jq ) {
         // console.log( nonce );
         // console.log( sub_id );
         // console.log( name );
+        console.log( part );
 
         // let div = jq(elem).closest('span.content-ajax');
         jq( 'i.fa-spinner', jq(elem).closest('button') ).removeClass('d-none');
@@ -154,6 +156,7 @@ jQuery( document ).ready( function( jq ) {
                     opop: opop_id,
                     comp: comp_id,
                     sub: sub_id,
+                    part: part,
                     content: content,
                     title: title,
                     data: data,
