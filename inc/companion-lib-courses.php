@@ -162,9 +162,8 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
                                                 'part' => 'biblio',
                                                 'sub_id' => 'biblio',
                                                 'data' => $arr['data']['biblio'],
-                                                'title_sub' => array( 'Основная литература', 'Дополнительная литература' ),
-                                                'index_sub' => array( 'basic', 'additional' ),
-                                                // 'coll' => ( $save == 'biblio' ) ? true : false,
+                                                // 'title_sub' => array( 'Основная литература', 'Дополнительная литература' ),
+                                                // 'index_sub' => array( 'basic', 'additional' ),
                                                 'coll' => $this->coll_on_off( 'biblio', false ),
                                             ));
             
@@ -174,9 +173,8 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
                                                 'part' => 'it',
                                                 'sub_id' => 'it',
                                                 'data' => $arr['data']['it'],
-                                                'title_sub' => array( 'Интернет-источники', 'Программное обеспечение' ),
-                                                'index_sub' => array( 'inet', 'app' ),
-                                                // 'coll' => ( $save == 'it' ) ? true : false,
+                                                // 'title_sub' => array( 'Интернет-источники', 'Программное обеспечение' ),
+                                                // 'index_sub' => array( 'inet', 'app' ),
                                                 'coll' => $this->coll_on_off( 'it', false ),
                                             ));
 
@@ -185,10 +183,8 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
                                                 'name' => 'Материально-техническое обеспечение',
                                                 'part' => 'mto',
                                                 'sub_id' => 'mto',
-                                                // 'title_sub' => array( '' ),
                                                 'data' => $arr['data']['mto'],
-                                                'index_sub' => array( 'mto' ),
-                                                // 'coll' => ( $save == 'mto' ) ? true : false,
+                                                // 'index_sub' => array( 'mto' ),
                                                 'coll' => $this->coll_on_off( 'mto', false ),
                                             ));
 
@@ -197,12 +193,10 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
                                                 'name' => 'Разработчики',
                                                 'part' => 'authors',
                                                 'sub_id' => 'authors',
-                                                // 'title_sub' => array( '' ),
                                                 'data' => $arr['data']['authors'],
-                                                'index_sub' => array( 'authors' ),
-                                                'ol' => 'div',
-                                                'li' => 'p',
-                                                // 'coll' => ( $save == 'authors' ) ? true : false,
+                                                // 'index_sub' => array( 'authors' ),
+                                                // 'ol' => 'div',
+                                                // 'li' => 'p',
                                                 'coll' => $this->coll_on_off( 'authors', false ),
                                             ));
 
@@ -539,23 +533,39 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
     public function get_item_body( $d )
     {
         // p($d);
-        $out = '';
+
+        $t = apply_filters( 'mif-mr-get-item-body', array(
+            'biblio' => array( 'basic' => 'Основная литература', 'additional' => 'Дополнительная литература' ),
+            'it' => array( 'inet' => 'Интернет-источники', 'app' => 'Программное обеспечение' ),
+            'mto' => array( 'mto' => NULL ),
+            'authors' => array( 'authors' => NULL ),
+        ) );
+
         $style = ( isset( $d['coll'] ) && $d['coll'] == false ) ? ' style="display: none;"' : '';
         // $style = ' style="display: none;"';
         // if ( isset( $d['coll'] ) && $d['coll'] == false ) $style = '';        
-
-        $ol = ( isset( $d['ol'] ) ) ? $d['ol'] : 'ol';   
-        $li = ( isset( $d['li'] ) ) ? $d['li'] : 'li'; 
-
-        foreach ( $d['index_sub'] as $key => $item ) {
+        
+        $ol = 'ol';   
+        $li = 'li'; 
+        
+        if ( in_array( $d['part'], array( 'authors' ) ) ) {
             
+            $ol = 'div';   
+            $li = 'p'; 
+
+        }
+
+        $out = '';
+
+        foreach ( $t[$d['part']] as $key => $item ) {
+          
             // $out .= '<div class="row coll mb-3 mt-3">';
             $out .= '<div class="row coll"' . $style . '">';
             $out .= '<div class="col">';
-            if ( ! empty( $d['title_sub'][$key] ) ) $out .= '<p class="fw-bolder mt-4">' . $d['title_sub'][$key] . '</p>';
+            if ( ! empty( $item ) ) $out .= '<p class="fw-bolder mt-4">' . $item . '</p>';
 
             $out .= '<' . $ol . '>';
-            foreach ( $d['data'][$item] as $item2 ) $out .= '<' . $li . '>' . $item2 . '</' . $li . '>';
+            foreach ( $d['data'][$key] as $item2 ) $out .= '<' . $li . '>' . $item2 . '</' . $li . '>';
             $out .= '</' . $ol . '>';
 
             $out .= '</div>';
