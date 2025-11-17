@@ -92,22 +92,27 @@ jQuery( document ).ready( function( jq ) {
     // remove
     
     jq( 'body' ).on( 'click', 'a.msg-remove', function() {
+        // console.log( '@' );
         jq( 'input[name=yes]', jq(this).closest('div.row') ).removeClass('is-invalid');
         jq( 'div.alert', jq(this).closest('div.row') ).slideToggle();
         return false;
     } );    
     
-    jq( 'body' ).on( 'click', '.comp .cancel', function() {
+    // jq( 'body' ).on( 'click', '.comp .cancel', function() {
+    jq( 'body' ).on( 'click', '.sidebar .cancel', function() {
+        // console.log( '@' );
         jq( 'input[name=yes]', jq(this).closest('div.alert') ).removeClass('is-invalid');
         jq( 'div.alert', jq(this).closest('div.row') ).slideToggle();
         return false;
     } );    
     
-    jq( 'body' ).on( 'click', '.comp .remove', function() {
+    // jq( 'body' ).on( 'click', '.comp .remove', function() {
+    jq( 'body' ).on( 'click', '.sidebar .remove', function() {
         
         if ( jq( 'input[name=yes]', jq(this).closest('div.alert') ).is(':checked') ) {
             
-            sub_do( this, 'remove', jq(this).closest('div.content-ajax') );
+            // sub_do( this, 'remove', jq(this).closest('div.content-ajax') );
+            sub_do( this, 'remove', jq( 'div.content-ajax', jq(this).closest('div.container') ) );
             // console.log( '@' );
             
         } else {

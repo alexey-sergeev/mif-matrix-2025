@@ -238,7 +238,6 @@ class mif_mr_init extends mif_mr_functions {
                     if ( in_array( $_REQUEST['do'], array( 'edit', 'cancel' ) ) ) {
                         // p($_REQUEST);
                         $m = new mif_mr_lib_courses();
-                        // echo $m->get_course_part( sanitize_key( $_REQUEST['sub'] ), (int) $_REQUEST['comp'], (int) $_REQUEST['opop'] );
                         echo $m->get_course_part( array(
                                                 'course_id' => (int) $_REQUEST['comp'],
                                                 'sub_id' => sanitize_key( $_REQUEST['sub'] ),
@@ -257,9 +256,9 @@ class mif_mr_init extends mif_mr_functions {
                     } 
                     
                     if ( in_array( $_REQUEST['do'], array( 'remove' ) ) ) {
-                        
+                        // p($_REQUEST);
                         $m = new mif_mr_lib_courses();
-                        $m->remove( (int) $_REQUEST['comp'], (int) $_REQUEST['opop'], 'lib-competencies' );
+                        $m->remove( (int) $_REQUEST['comp'], (int) $_REQUEST['opop'], 'lib-courses' );
                         echo $mif_mr_opop->show_messages();
                         
                     } 
@@ -276,14 +275,6 @@ class mif_mr_init extends mif_mr_functions {
                 
                 
                 
-                // if ( $_REQUEST['action'] == 'cancel' ) {
-                    
-                  
-                //     p($_REQUEST);
-                //     // $m = new mif_mr_competencies();
-                //     // echo $m->show_competencies_sub( (int) $_REQUEST['sub'], (int) $_REQUEST['comp'], (int) $_REQUEST['opop'] );
-                
-                // } 
     
             }
             

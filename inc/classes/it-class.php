@@ -28,11 +28,13 @@ class it {
     
         foreach ( $data as $item ) {
 
-            $this->it_arr[$item['it']['name']]['inet'] = $this->get_inet( $item['it']['data'] );
-            $this->it_arr[$item['it']['name']]['app'] = $this->get_app( $item['it']['data'] );
+            if ( isset( $item['it']['data'] ) ) {
 
+                $this->it_arr[$item['it']['name']]['inet'] = $this->get_inet( $item['it']['data'] );
+                $this->it_arr[$item['it']['name']]['app'] = $this->get_app( $item['it']['data'] );
+            
+            }
         }
-
 
     }
 

@@ -36,36 +36,41 @@ class content {
         foreach ( $data as $item ) {
             // p($item);
             // Цель дисциплины
-            $this->content_arr[$item['content']['name']]['target'] = arr_to_text( $item['content']['data'] );
+            if ( isset( $item['content']['data'] ) ) $this->content_arr[$item['content']['name']]['target'] = arr_to_text( $item['content']['data'] );
 
             // $hours = $this->get_hours( $item['content'] );
 
             // Содержание разделов
-            foreach ( (array) $item['content']['parts'] as $part ) {
-                // p($part['att']);
-                $cmp = NULL;
-                $hours = NULL;
 
-                if ( isset( $part['att'] ) ) foreach ( (array) $part['att'] as $item2 ) {
-
-                    if ( preg_match( "/^\d+/", $item2 ) ) $hours = $item2;
-                    if ( preg_match( "/^.+-\d+/", $item2 ) ) $cmp = $item2;
-
+            if ( isset( $item['content']['parts'] ) ) {
+                
+                foreach ( (array) $item['content']['parts'] as $part ) {
+                    // p($part['att']);
+                    $cmp = NULL;
+                    $hours = NULL;
+                    
+                    if ( isset( $part['att'] ) ) foreach ( (array) $part['att'] as $item2 ) {
+                        
+                        if ( preg_match( "/^\d+/", $item2 ) ) $hours = $item2;
+                        if ( preg_match( "/^.+-\d+/", $item2 ) ) $cmp = $item2;
+                        
+                    }
+                    
+                    $content = ( isset( $part['data'][0] ) ) ? $part['data'][0] : NULL;
+                    $outcomes = ( isset( $part['data'][1] ) ) ? $this->get_outcomes( $part['data'][1] ) : NULL;
+                    
+                    
+                    $this->content_arr[$item['content']['name']]['parts'][$part['sub_id']]['name'] = $part['name'];
+                    $this->content_arr[$item['content']['name']]['parts'][$part['sub_id']]['sub_id'] = $part['sub_id'];
+                    $this->content_arr[$item['content']['name']]['parts'][$part['sub_id']]['cmp'] = $cmp;
+                    $this->content_arr[$item['content']['name']]['parts'][$part['sub_id']]['content'] =  $content;
+                    $this->content_arr[$item['content']['name']]['parts'][$part['sub_id']]['outcomes'] =  $outcomes;
+                    // $this->content_arr[$item['content']['name']]['parts'][$part['sub_id']]['content'] = arr_to_text( $part['data'] );
+                    $this->content_arr[$item['content']['name']]['parts'][$part['sub_id']]['hours'] = $this->get_hours( $hours );
+                    // $this->content_arr[$item['content']['name']]['parts'][$part['name']]['hours'] = $hours[$part['name']]['clean'];
+                    
                 }
-
-                $content = ( isset( $part['data'][0] ) ) ? $part['data'][0] : NULL;
-                $outcomes = ( isset( $part['data'][1] ) ) ? $this->get_outcomes( $part['data'][1] ) : NULL;
-
-
-                $this->content_arr[$item['content']['name']]['parts'][$part['sub_id']]['name'] = $part['name'];
-                $this->content_arr[$item['content']['name']]['parts'][$part['sub_id']]['sub_id'] = $part['sub_id'];
-                $this->content_arr[$item['content']['name']]['parts'][$part['sub_id']]['cmp'] = $cmp;
-                $this->content_arr[$item['content']['name']]['parts'][$part['sub_id']]['content'] =  $content;
-                $this->content_arr[$item['content']['name']]['parts'][$part['sub_id']]['outcomes'] =  $outcomes;
-                // $this->content_arr[$item['content']['name']]['parts'][$part['sub_id']]['content'] = arr_to_text( $part['data'] );
-                $this->content_arr[$item['content']['name']]['parts'][$part['sub_id']]['hours'] = $this->get_hours( $hours );
-                // $this->content_arr[$item['content']['name']]['parts'][$part['name']]['hours'] = $hours[$part['name']]['clean'];
-
+                
             }
 
             // p($item['content']);

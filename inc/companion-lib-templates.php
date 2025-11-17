@@ -67,9 +67,29 @@ function mif_mr_the_comp_id()
 // Выводит 
 //
 
+function mif_mr_the_advanced_edit_link()
+{
+    echo mif_mr_companion_core::get_advanced_edit_link();
+}
+
+
+//
+// Выводит 
+//
+
 function mif_mr_the_edit_link()
 {
     echo mif_mr_companion_core::get_edit_link();
+}
+
+
+//
+// Выводит 
+//
+
+function mif_mr_the_remove_link()
+{
+    echo mif_mr_companion_core::get_remove_link();
 }
 
 

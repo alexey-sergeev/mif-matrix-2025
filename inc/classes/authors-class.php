@@ -28,12 +28,16 @@ class authors {
 
         foreach ( $data as $item ) {
 
-            $authors = implode( "\n", $item['authors']['data'] );
-            $authors = explode( "\n", $authors );
-            $authors = array_map( 'trim', $authors );
-            
-            $this->authors_arr[$item['authors']['name']]['authors'] = $authors;
+            if ( isset( $item['authors']['data'] ) ) {
 
+                $authors = implode( "\n", $item['authors']['data'] );
+                $authors = explode( "\n", $authors );
+                $authors = array_map( 'trim', $authors );
+                
+                $this->authors_arr[$item['authors']['name']]['authors'] = $authors;
+
+            }
+        
         }
 
     }

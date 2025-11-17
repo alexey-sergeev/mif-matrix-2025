@@ -189,6 +189,12 @@ html {
     height: 32em;
 }
 
+.mr-h-48 {
+    height: 48em !important;
+}
+
+
+
 
 /* Цвета */
 

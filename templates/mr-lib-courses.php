@@ -12,13 +12,15 @@
 
         </div>
         
-        <div class="col-2 pl-5">
+        <div class="sidebar col-2 pl-5">
 
             <div class="fiksa">
             
                 <?php mif_mr_the_comp_id(); ?>
                 <?php mif_mr_show_back( 'lib-courses' ); ?>
                 <?php mif_mr_the_edit_link(); ?>
+                <?php mif_mr_the_advanced_edit_link(); ?>
+                <?php mif_mr_the_remove_link(); ?>
             
             </div>
 

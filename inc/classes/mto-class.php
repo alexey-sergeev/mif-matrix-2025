@@ -43,10 +43,12 @@ class mto {
 
         foreach ( $data as $item ) {
 
-            $this->mto_arr[$item['mto']['name']]['mto'] = $this->get_mto( $item['mto'] );
+            if ( isset( $item['mto']['data'] ) ) {
 
+                $this->mto_arr[$item['mto']['name']]['mto'] = $this->get_mto( $item['mto'] );
+
+            }
         }
-
 
     }
  

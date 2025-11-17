@@ -77,7 +77,11 @@ class mif_mr_companion_core {
 
         if ( $sub_id == -1 ) $sub_id = (int) array_key_last( $arr ) + 1; 
         
-        $arr[$sub_id] = sanitize_textarea_field( $_REQUEST['content'] );
+        $content = sanitize_textarea_field( $_REQUEST['content'] );
+        // if ( preg_match( '/^=/', $content ) ) $content = '_' . $content;
+        if ( $add_key ) $content = preg_replace( '/\n==/', '__', $content );
+        $arr[$sub_id] = $content;
+
         // p($_REQUEST);
         
         if ( $add_key ) foreach ( $arr as $key => $item ) $arr[$key] = '== ' . $key . "\n\n" . $arr[$key];
@@ -173,34 +177,6 @@ class mif_mr_companion_core {
 
 
     
-    
-    // //
-    // // 
-    // //
-    
-    // public function get_all_arr( $opop_id = NULL )
-    // {
-    //     if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
-        
-    //     $arr = array();
-    //     $list = $this->get_list_companions( 'lib-competencies', $opop_id );
-    
-    //     foreach ( $list as $item ) {
-
-    //         $arr2 = $this->get_arr( $item['id'] );
-    //         $arr[$arr2['comp_id']] = $arr2;
-
-    //     }
-
-    //     return apply_filters( 'mif_mr_get_all_arr', $arr );
-
-    // }
-
-    
-    
-       
-    
-    
     //
     // Показать всё
     //
@@ -215,8 +191,6 @@ class mif_mr_companion_core {
 
         return apply_filters( 'mif_mr_get_show_all', $out );
     }
-
-
 
 
 
@@ -275,13 +249,43 @@ class mif_mr_companion_core {
         return apply_filters( ' mif_mr_get_item_head', $out, $item );
     }
 
-
-
-
-
-
     
     
+    
+    //
+    // Режим edit
+    //
+    
+    public function get_edit( $comp_id )
+    {
+        $post = get_post( $comp_id );
+        
+        // p($post->post_title);
+        // p($post->post_content);
+        // global $wp_query;
+        // p( $wp_query);
+        
+        $out = '';
+        
+        $out .= '<form method="POST" action="' . $this->get_permalink_comp() . '">';
+
+        $out .= '<textarea name="content" class="edit textarea mt-4 mr-h-48">';
+        $out .= $post->post_content;
+        $out .= '</textarea>';
+
+        $out .= '<input type="hidden" name="_wpnonce" value="' . wp_create_nonce( 'mif-mr' ) . '" />';
+        $out .= '<input type="submit" name="save" value="Сохранить" class="btn btn-primary mt-6 mb-6 mr-3" />';
+        $out .= '<input type="button" onclick="location.href=\'' . $this->get_permalink_comp() . '\';"  value="Отмена" class="btn btn-light mt-6 mb-6 mr-3" />';
+        $out .= '</form>';        
+
+
+        return apply_filters( ' mif_mr_companion_lib_core_get_edit', $out, $comp_id );
+    }
+    
+
+
+
+
     //
     // Режим edit
     //
@@ -423,6 +427,31 @@ class mif_mr_companion_core {
     // Показать edit link
     //
     
+    public static function get_advanced_edit_link()
+    {
+        global $wp_query;
+
+        $out = '';
+
+        if ( isset( $wp_query->query_vars['id'] ) ) {
+
+            $out .= '<div class="mb-4">'; 
+            // $out .= '<div><a href="' . get_edit_post_link( $wp_query->query_vars['id'] ) . '">Расширенный редактор</a></div>';
+            $out .= '<a href="' . get_edit_post_link( $wp_query->query_vars['id'] ) . '">Расширенный редактор</a>';
+            $out .= '</div>'; 
+        
+        }
+
+        return apply_filters( 'mif_mr_get_advanced_edit_link', $out );
+    }    
+ 
+
+    
+
+    //
+    // Показать edit link
+    //
+    
     public static function get_edit_link()
     {
         global $wp_query;
@@ -431,14 +460,72 @@ class mif_mr_companion_core {
 
         if ( isset( $wp_query->query_vars['id'] ) ) {
 
-            // $out .= '<div class="mb-4 mt-0 pb-5 pt-5">'; 
-            $out .= '<div><a href="' . get_edit_post_link( $wp_query->query_vars['id'] ) . '">Расширенный редактор</a></div>';
-            // $out .= '</div>'; 
-        
+            // $out .= '<div class="mb-4 mt-0 pb-3 pt-5">'; 
+            $out .= '<div class="mb-4">'; 
+            // $out .= 'Редактировать';
+            $out .= '<div><a href="?edit">Редактировать</a></div>';
+            $out .= '</div>'; 
+            
         }
-
-        return apply_filters( 'mif_mr_get_comp_id', $out );
+        
+        return apply_filters( 'mif_mr_get_edit_link', $out );
     }    
+    
+    
+    
+    
+    //
+    // Показать edit link
+    //
+    
+    public static function get_remove_link()
+    {
+        global $wp_query;
+        
+        $out = '';
+        
+        if ( isset( $wp_query->query_vars['id'] ) ) {
+            
+            // $out .= '<div class="mb-4 mt-6">'; 
+            // $out .= '<small><a href="#" class="msg-remove">Удалить</a></small>';
+            $out .= '<div class="mb-4">'; 
+            $out .= '<a href="#" class="msg-remove">Удалить</a>';
+            
+            $msg = '<div>Вы уверены?</div>';
+            
+            $msg .= '<div><label class="form-label mt-4"><input type="checkbox" name="yes" value="on" class="form-check-input"> Да</label></div>';
+            $msg .= '<button type="button" class="btn btn-primary mr-3 mb-3 remove">Удалить <i class="fas fa-spinner fa-spin d-none"></i></button>';
+            $msg .= '<button type="button" class="btn btn-light border mr-3 cancel">Отмена <i class="fas fa-spinner fa-spin d-none"></i></button>';
+            $out .= '</div>'; 
+            
+            $out .= '<div class="alert pl-0 pr-0" style="display: none;">' . mif_mr_functions::get_callout( $msg, 'warning' ) . '</div>';
+            
+        }
+        
+        return apply_filters( 'mif_mr_get_remove_link', $out );
+    }    
+    
+    
+    
+    
+    //
+    // Показать permalink companion
+    //
+    
+    public static function get_permalink_comp()
+    {
+        global $wp_query;
+        // p($wp_query);
+        $out = mif_mr_opop_core::get_opop_url() . $wp_query->query['part'] . '/' . $wp_query->query['id'];
+        return apply_filters( 'mif_mr_get_permalink_comp', $out );
+    }    
+    
+    // public static function get_permalink_comp( $comp_id )
+    // {
+    //     // $out = mif_mr_opop_core::get_opop_url() . '/' . $comp_id;
+    //     $out = mif_mr_opop_core::get_opop_url() . $comp_id;
+    //     return apply_filters( 'mif_mr_get_permalink_comp', $out, $comp_id );
+    // }    
  
 
 

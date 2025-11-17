@@ -25,11 +25,15 @@ class biblio {
             $data = $p->get_arr( $data, array( 'section' => 'biblio' ) );
     
         }
-    
+        
         foreach ( $data as $item ) {
 
-            $this->biblio_arr[$item['biblio']['name']]['basic'] = $this->get_basic( $item['biblio']['data'] );
-            $this->biblio_arr[$item['biblio']['name']]['additional'] = $this->get_additional( $item['biblio']['data'] );
+            if ( isset( $item['biblio']['data'] ) ) {
+                
+                $this->biblio_arr[$item['biblio']['name']]['basic'] = $this->get_basic( $item['biblio']['data'] );
+                $this->biblio_arr[$item['biblio']['name']]['additional'] = $this->get_additional( $item['biblio']['data'] );
+
+            }
 
         }
 
