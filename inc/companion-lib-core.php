@@ -58,42 +58,104 @@ class mif_mr_companion_core {
 
         return apply_filters( 'mif_mr_core_get_list_companions', $arr, $type, $opop_id );
     }
-
-   
     
-
     
-
-   
-    public function save( $sub_id, $comp_id, $opop_id, $add_key = false )
+    //
+    // save_all
+    //
+    
+    public function save_all()
     {
+        if ( empty( $_REQUEST['save'] ) ) return;
+        
         // ####!!!!!
+
 
         $res = false;
 
+        $content = sanitize_textarea_field( $_REQUEST['content'] );
+
+        if ( ! empty( $this->get_comp_id() ) ) {
+
+            // p($content);
+            $res = $this->save( $this->get_comp_id(), $content );
+
+        }
+
+        return $res;
+    }
+        
+  
+    
+    //
+    // save_part
+    //
+   
+    public function save_part( $sub_id, $comp_id, $opop_id, $add_key = false )
+    {
+        if ( ! ( isset( $_REQUEST['do'] ) && $_REQUEST['do'] == 'save' ) ) return;
+
+        // ####!!!!!
+
+        // $res = false;
+        
         $arr = $this->get_sub_arr( $comp_id );
         // p($arr);
         // p($comp_id);
-
+        
         if ( $sub_id == -1 ) $sub_id = (int) array_key_last( $arr ) + 1; 
         
         $content = sanitize_textarea_field( $_REQUEST['content'] );
         // if ( preg_match( '/^=/', $content ) ) $content = '_' . $content;
         if ( $add_key ) $content = preg_replace( '/\n==/', '__', $content );
         $arr[$sub_id] = $content;
-
+        
         // p($_REQUEST);
         
         if ( $add_key ) foreach ( $arr as $key => $item ) $arr[$key] = '== ' . $key . "\n\n" . $arr[$key];
+        
+        $res = $this->save( $comp_id, implode( "\n", $arr ) );
+
+
+        // $res = wp_update_post( array(
+        //     'ID' => $comp_id,
+        //     'post_content' => implode( "\n", $arr ),
+        //     ) );
+        // // p(implode( "\n", $arr ));        
+       
+        // global $messages;
+        // $messages[] = ( $res ) ? array( 'Сохранено', 'success' ) : array( 'Какая-то ошибка. Код ошибки: 103 (' . $type . ')', 'danger' );
+        
+        // if ( $res ) {
+            
+        //     global $tree;
+        //     global $mif_mr_opop;
+            
+        //     $tree = array();
+        //     $tree = $mif_mr_opop->get_tree();
+            
+        // }
+        
+        return $res;
+    }
+
+
+
+    //
+    // save
+    //
+
+    public function save( $comp_id, $content )
+    {
+        $res = false;
 
         $res = wp_update_post( array(
             'ID' => $comp_id,
-            'post_content' => implode( "\n", $arr ),
+            'post_content' => $content,
             ) );
-        // p(implode( "\n", $arr ));        
        
         global $messages;
-        $messages[] = ( $res ) ? array( 'Сохранено', 'success' ) : array( 'Какая-то ошибка. Код ошибки: 103 (' . $type . ')', 'danger' );
+        $messages[] = ( $res ) ? array( 'Сохранено', 'success' ) : array( 'Какая-то ошибка. Код ошибки: 103', 'danger' );
         
         if ( $res ) {
             
@@ -105,11 +167,13 @@ class mif_mr_companion_core {
             
         }
         
-
-
         return $res;
     }
-   
+
+    
+
+
+
 
 
     public function remove( $comp_id, $opop_id, $type = 'lib-competencies' )
@@ -395,10 +459,25 @@ class mif_mr_companion_core {
     
     
     //
+    //  id
+    //
+    
+    public function get_comp_id()
+    {
+        global $wp_query;
+        $comp_id = ( isset( $wp_query->query_vars['id'] ) ) ? $wp_query->query_vars['id'] : NULL;  
+        return apply_filters( 'mif_mr_get_comp_id', $comp_id );
+    }    
+ 
+
+    
+    
+    
+    //
     // Показать id
     //
     
-    public static function get_comp_id()
+    public static function show_comp_id()
     {
         global $wp_query;
 
@@ -415,7 +494,7 @@ class mif_mr_companion_core {
         
         }
 
-        return apply_filters( 'mif_mr_get_comp_id', $out );
+        return apply_filters( 'mif_mr_show_comp_id', $out );
     }    
  
 

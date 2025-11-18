@@ -65,11 +65,11 @@ class mif_mr_comp extends mif_mr_companion_core {
         
         // Save
 
-        if ( isset( $_REQUEST['do'] ) && $_REQUEST['do'] == 'save' ) {
+        // if ( isset( $_REQUEST['do'] ) && $_REQUEST['do'] == 'save' ) {
             
-            if ( isset( $_REQUEST['sub'] ) ) $this->save( (int) $_REQUEST['sub'], $comp_id, $opop_id );
+            if ( isset( $_REQUEST['sub'] ) ) $this->save_part( (int) $_REQUEST['sub'], $comp_id, $opop_id );
 
-        }
+        // }
 
 
         // HTML

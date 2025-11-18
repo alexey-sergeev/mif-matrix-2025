@@ -82,13 +82,16 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
     public function get_course( $course_id, $opop_id = NULL )
     {
         
-        if ( isset( $_REQUEST['do'] ) && $_REQUEST['do'] == 'save' ) {
+        // if ( isset( $_REQUEST['do'] ) && $_REQUEST['do'] == 'save' ) {
 
-            if ( isset( $_REQUEST['sub'] ) ) $this->save( sanitize_key( $_REQUEST['sub'] ), $course_id, $opop_id, true );
+            if ( isset( $_REQUEST['sub'] ) ) $this->save_part( sanitize_key( $_REQUEST['sub'] ), $course_id, $opop_id, true );
 
-        }
+        // }
         
-        
+        // p($_REQUEST);
+        $this->save_all();
+
+
         global $tree;
         
         if ( empty( $opop_id ) ) $opop_id = mif_mr_opop_core::get_opop_id();

@@ -59,7 +59,7 @@ function mif_mr_show_comp()
 
 function mif_mr_the_comp_id()
 {
-    echo mif_mr_companion_core::get_comp_id();
+    echo mif_mr_companion_core::show_comp_id();
 }
 
 
