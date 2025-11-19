@@ -271,6 +271,8 @@ class mif_mr_companion_core {
         $data_sub_id = ' data-sub="' . $item['sub_id'] . '"';
         $data_part = ( isset( $item['part'] ) ) ? ' data-part="' . $item['part'] . '"' : '';
         $part = ( isset( $item['part'] ) ) ? $item['part'] : $item['sub_id'];
+        $color = ( isset( $item['color'] ) ) ? $item['color'] : 'mr-gray';
+        $note = ( isset( $item['note'] ) ) ? $item['note'] : '';
 
         $up = ' d-none';
         $down = '';
@@ -290,13 +292,14 @@ class mif_mr_companion_core {
         
         // Наименование категории
 
-        $out .= '<div class="name col-11 mr-gray p-3 fw-bolder">';
-        $out .= $item['name'];
+        $out .= '<div class="name col-11 p-3 ' . $color . '">';
+        $out .= '<span class="fw-bolder">' . $item['name'] . '</span>';
+        $out .= $note;
         $out .= '</div>';
         
         // Кнопка edit
 
-        $out .= '<div class="col-1 mr-gray p-3 text-end">';
+        $out .= '<div class="col-1 p-3 text-end ' . $color . '">';
         if ( $item['f'] ) $out .= '<i class="fas fa-spinner fa-spin d-none"></i> ';
         if ( $item['f'] ) $out .= '<a href="#" class="edit pr-1"' . $data_sub_id . $data_part . '><i class="fa-regular fa-pen-to-square"></i></a>';
         // if ( $item['f'] ) $out .= '<a href="#" class="edit pr-1" data-sub="' . $item['sub_id'] . '"><i class="fa-regular fa-pen-to-square"></i></a>';
@@ -332,6 +335,14 @@ class mif_mr_companion_core {
         $out = '';
         
         $out .= '<form method="POST" action="' . $this->get_permalink_comp() . '">';
+
+        $out .= '<div class="row">';
+        $out .= '<div class="col">';
+        
+        $out .= mif_mr_functions::get_callout( '<a href="' . '123' . '">Помощь</a>', 'warning' );
+        
+        $out .= '</div>';
+        $out .= '</div>';
 
         $out .= '<textarea name="content" class="edit textarea mt-4 mr-h-48">';
         $out .= $post->post_content;

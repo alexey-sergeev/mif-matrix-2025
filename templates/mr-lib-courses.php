@@ -8,6 +8,7 @@
         
         <div class="col-10 p-0">
             
+            <?php mif_mr_show_messages() ?>
             <?php mif_mr_show_courses(); ?>
 
         </div>

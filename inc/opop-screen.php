@@ -147,7 +147,7 @@ class mif_mr_opop extends mif_mr_opop_tree_raw {
                 // } else {
                     
                     global $mif_mr_lib_courses;
-                    $mif_mr_lib_courses = new mif_mr_lib_courses();
+                    $mif_mr_lib_courses = new mif_mr_lib_courses_screen();
                     
                     $mif_mr_lib_courses->the_show();
 
