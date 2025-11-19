@@ -91,19 +91,52 @@ class content {
     private function get_outcomes( $data )
     {
         $arr = array( 'z' => NULL, 'u' => NULL, 'v' => NULL );
-
-        // $data = implode( "\n", $data );
+        
         $data = explode( "\n-", $data );
-
+        
         foreach ( $data as $key => $item ) {
-
+            
             $txt = trim( strim( $item ), ' -.,;' );
-
+        
             if ( $key % 3 === 0 && $txt != '' ) $arr['z'][] = $txt;
             if ( $key % 3 === 1 && $txt != '' ) $arr['u'][] = $txt;
             if ( $key % 3 === 2 && $txt != '' ) $arr['v'][] = $txt;
-
+        
         }
+        
+        // p($data);
+        
+        // $arr2 = array();
+        // $n = 0;
+
+        // foreach ( $data as $item ) {
+            
+        //     if ( preg_match( "/^-/", $item ) ) {
+                
+        //         $item = explode( "\n", $item );
+                
+        //         foreach ( $item as $item2 ) {
+                    
+        //             $item2 = trim( strim( $item2 ), ' -.,;' );
+        //             if ( ! empty( $item2 ) ) $arr2[$n][] = $item2;
+
+        //         }
+
+        //         $n++;
+
+        //     }
+
+        // }
+
+        // if ( isset( $arr2[0][0] ) ) $arr['z'] = $arr2[0];
+        // if ( isset( $arr2[1][0] ) ) $arr['u'] = $arr2[1];
+        
+        // unset( $arr2[0] );
+        // unset( $arr2[1] );
+
+        // foreach ( (array) $arr2 as $item ) $arr['v'] = array_merge( (array) $arr['v'], $item );
+
+        // p($arr);
 
         return $arr;
     }

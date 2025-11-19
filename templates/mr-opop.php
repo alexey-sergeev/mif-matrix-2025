@@ -35,7 +35,7 @@
             <div class="col-sm">
                 
                 <?php mif_mr_the_menu_item( 'Параметры ОПОП', 'param', 1 ); ?>
-                <?php mif_mr_the_menu_item( 'Компетенции', 'lib-competencies', 1 ); ?>
+                <?php mif_mr_the_menu_item( 'Библиотека компетенций', 'lib-competencies', 1 ); ?>
                 <?php mif_mr_the_menu_item( 'Библиотека дисциплин', 'lib-courses', 1 ); ?>
                 <?php mif_mr_the_menu_item(); ?>
                 <?php mif_mr_the_menu_item( 'Литература', '', 1 ); ?>

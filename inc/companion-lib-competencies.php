@@ -30,13 +30,13 @@ class mif_mr_comp extends mif_mr_companion_core {
 
     public function the_show()
     {
-        if ( $template = locate_template( 'mr-comp.php' ) ) {
+        if ( $template = locate_template( 'mr-competencies.php' ) ) {
            
             load_template( $template, false );
 
         } else {
 
-            load_template( dirname( __FILE__ ) . '/../templates/mr-comp.php', false );
+            load_template( dirname( __FILE__ ) . '/../templates/mr-competencies.php', false );
 
         }
     }
@@ -81,32 +81,26 @@ class mif_mr_comp extends mif_mr_companion_core {
 
         $out .= '<div class="content-ajax">';
 
-        // $out .= '<div class="pb-4"><a href="' . get_permalink( $opop_id ) .'competencies/">← Вернуться к странице раздела</a></div>';
-        if ( $f ) $out .= '<div><a href="' . get_edit_post_link( $comp_id ) . '">Расширенный редактор</a></div>';
+        // if ( $f ) $out .= '<div><a href="' . get_edit_post_link( $comp_id ) . '">Расширенный редактор</a></div>';
         
         if ( isset( $tree['content']['lib-competencies']['data'][$comp_id] ) ) {
 
             $item = $tree['content']['lib-competencies']['data'][$comp_id];
 
-
-            $out .= '<h4 class="mb-6 mt-5">' . $item['name'] . '</h4>';
-            $out .= 'id: ' . $comp_id;
+            // $out .= '<h4 class="mb-6 mt-5 ">' . $item['name'] . '</h4>';
+            $out .= '<h4 class="mb-4 mt-0 pb-5 pt-5 bg-body fiksa">' . $item['name'] . '</h4>';
+            // $out .= 'id: ' . $comp_id;
             $out .= $this->get_show_all();
-            // $out .= '<div class="text-end">';
-            // $out .= '<small><a href="#" id="roll-down-all">Показать всё</a> | <a href="#" id="roll-up-all">Свернуть</a></small>';
-            // $out .= '</div>';
 
             $out .= '<div class="container no-gutters">';
 
             foreach ( $item['data'] as $item2 ) {
                 
-                // if ( $f ) $out .= '<span>';
                 $out .= '<span>';
                 
                 $out .= $this->show_comp_sub( $item2['sub_id'], $comp_id, $opop_id );
                 
                 $out .= '</span>';
-                // if ( $f ) $out .= '</span>';
                 
             }
         
@@ -122,26 +116,21 @@ class mif_mr_comp extends mif_mr_companion_core {
             
         }
         
-        if ( $f ) $out .= '<div class="row mt-3">';
-        if ( $f ) $out .= '<div class="col">';
-        if ( $f ) $out .= '<small><a href="#" class="msg-remove">Удалить</a></small>';
-        // if ( $f ) $out .= '<div class="alert" style="display: none;">Вы уверены? <a href="#" class="ok">Да</a> / <a href="#" class="cancel">отмена</a></div>';
-        // if ( $f ) $out .= '<div class="alert pl-0 pr-0" style="display: none;">' . 
-        //                     mif_mr_functions::get_callout( 'Вы уверены? <a href="#" class="ok">Да</a> / <a href="#" class="cancel">отмена</a>', 'warning' ) . '</div>';
+        // if ( $f ) $out .= '<div class="row mt-3">';
+        // if ( $f ) $out .= '<div class="col">';
+        // if ( $f ) $out .= '<small><a href="#" class="msg-remove">Удалить</a></small>';
         
-        $msg = '<div>Вы уверены?</div>';
+        // $msg = '<div>Вы уверены?</div>';
 
-        $msg .= '<div><label class="form-label mt-4"><input type="checkbox" name="yes" value="on" class="form-check-input"> Да</label></div>';
-        $msg .= '<button type="button" class="btn btn-primary mr-3 remove">Удалить <i class="fas fa-spinner fa-spin d-none"></i></button>';
-        $msg .= '<button type="button" class="btn btn-light border mr-3 cancel">Отмена <i class="fas fa-spinner fa-spin d-none"></i></button>';
+        // $msg .= '<div><label class="form-label mt-4"><input type="checkbox" name="yes" value="on" class="form-check-input"> Да</label></div>';
+        // $msg .= '<button type="button" class="btn btn-primary mr-3 remove">Удалить <i class="fas fa-spinner fa-spin d-none"></i></button>';
+        // $msg .= '<button type="button" class="btn btn-light border mr-3 cancel">Отмена <i class="fas fa-spinner fa-spin d-none"></i></button>';
       
       
-        if ( $f ) $out .= '<div class="alert pl-0 pr-0" style="display: none;">' . mif_mr_functions::get_callout( $msg, 'warning' ) . '</div>';
+        // if ( $f ) $out .= '<div class="alert pl-0 pr-0" style="display: none;">' . mif_mr_functions::get_callout( $msg, 'warning' ) . '</div>';
         
-        
-        
-        if ( $f ) $out .= '</div>';
-        if ( $f ) $out .= '</div>';
+        // if ( $f ) $out .= '</div>';
+        // if ( $f ) $out .= '</div>';
 
         // Hidden
         
