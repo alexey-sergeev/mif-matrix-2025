@@ -46,7 +46,8 @@ class mif_mr_part_core {
 
         $out = '';
     
-        if (  $mr->user_can(3) && ! isset( $_REQUEST['edit'] ) ) {
+        // if (  $mr->user_can(3) && ! isset( $_REQUEST['edit'] ) ) {
+        if (  $mr->user_can(3) ) {
 
             $out .= '<div class="row mt-1">';
             $out .= '<div class="col-12 p-0 mb-3"><a href="?edit">Редактировать</a></div>';

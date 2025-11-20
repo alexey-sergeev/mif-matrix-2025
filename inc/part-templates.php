@@ -83,11 +83,26 @@ function mif_mr_the_link_edit_visual()
 // Выводит 
 //
 
-function mif_mr_the_link_edit_advanced( $type )
+function mif_mr_the_link_edit_advanced()
 {
     global $mif_mr_set_comp;
-    echo $mif_mr_set_comp->get_link_edit_advanced( $type );
+    global $mif_mr_set_courses;
+
+    if ( ! empty( $mif_mr_set_comp ) ) {
+
+        echo $mif_mr_set_comp->get_link_edit_advanced( 'set-competencies' );
+        return;
+
+    }
+
+    if ( ! empty( $mif_mr_set_courses ) ) {
+
+        echo $mif_mr_set_courses->get_link_edit_advanced( 'set-courses' );
+        return;
+
+    }
 }
+
 
 
 //
@@ -152,6 +167,18 @@ function mif_mr_the_set_comp()
 {
     global $mif_mr_set_comp;
     echo $mif_mr_set_comp->show_set_comp();
+}
+
+
+
+//
+// Выводит 
+//
+
+function mif_mr_the_set_courses()
+{
+    global $mif_mr_set_courses;
+    echo $mif_mr_set_courses->show_set_courses();
 }
 
 

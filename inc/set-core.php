@@ -8,7 +8,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
-class mif_mr_set_core extends mif_mr_part_companion {
+// class mif_mr_set_core extends mif_mr_part_companion {
+class mif_mr_set_core extends mif_mr_table {
     
     function __construct()
     {

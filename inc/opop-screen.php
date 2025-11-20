@@ -127,32 +127,33 @@ class mif_mr_opop extends mif_mr_opop_tree_raw {
                     
                     global $mif_mr_set_comp;
                     $mif_mr_set_comp = new mif_mr_set_comp();
-                    
-                    // $mif_mr_list_comp->the_show();
                     $mif_mr_set_comp->the_show();
-
+                    
                 }
-
-            break;
-            
-            case 'lib-courses':
-
-                // global $wp_query;
                 
-                // if ( isset( $wp_query->query_vars['id'] ) ) {
-
-                //     // global $mif_mr_comp;
-                //     // $mif_mr_comp = new mif_mr_comp();
-                //     // $mif_mr_comp->the_show();
+                break;
+                
+                case 'lib-courses':
                     
-                // } else {
+                    global $wp_query;
                     
+                    if ( isset( $wp_query->query_vars['id'] ) ) {
+                        
                     global $mif_mr_lib_courses;
                     $mif_mr_lib_courses = new mif_mr_lib_courses_screen();
                     
                     $mif_mr_lib_courses->the_show();
+                    
+                } else {
+                    
+                    global $mif_mr_lib_courses;
+                    $mif_mr_lib_courses = new mif_mr_lib_courses_screen();
+                    
+                    global $mif_mr_set_courses;
+                    $mif_mr_set_courses = new mif_mr_set_courses();
+                    $mif_mr_set_courses->the_show();
 
-                // }
+                }
 
             break;
             

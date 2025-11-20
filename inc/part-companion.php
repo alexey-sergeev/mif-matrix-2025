@@ -58,11 +58,17 @@ class mif_mr_part_companion extends mif_mr_part_core {
         $out = '';
         
         $companion_id = $this->get_companion_id( $type );
+        $f = ( empty( $companion_id ) ) ? false : true;
 
-        if (  $mr->user_can(3) ) {
+        if ( $mr->user_can(3) ) {
             
             $out .= '<div class="row mt-1">';
-            $out .= '<div class="col-12 p-0 mb-3"><a href="' . get_edit_post_link( $companion_id ) . '">Расширенный редактор</a></div>';
+            // $out .= '<div class="col-12 p-0 mb-3"><a href="' . get_edit_post_link( $companion_id ) . '">Расширенный редактор</a></div>';
+            $out .= '<div class="col-12 p-0 mb-3">';
+            if ( $f ) $out .= '<a href="' . get_edit_post_link( $companion_id ) . '">';
+            $out .= 'Расширенный редактор';
+            if ( $f ) $out .= '</a>';
+            $out .= '</div>';
             $out .= '</div>';
             // $out .= '<div class="mb-3"><a href="?edit=visual"></a></div>';
 
