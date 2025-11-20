@@ -73,7 +73,8 @@ class mif_mr_opop extends mif_mr_opop_tree_raw {
         global $wp_query;
         
         global $mif_mr_part;
-        $mif_mr_part = new mif_mr_part_core();
+        // $mif_mr_part = new mif_mr_part_core();
+        $mif_mr_part = new mif_mr_part_companion();
 
         $out = '';
         // p($wp_query);

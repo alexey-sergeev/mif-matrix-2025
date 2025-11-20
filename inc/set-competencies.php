@@ -8,16 +8,15 @@
 
 defined( 'ABSPATH' ) || exit;
 
-class mif_mr_set_comp extends mif_mr_part_companion {
+class mif_mr_set_comp extends mif_mr_set_core {
     
     function __construct()
     {
 
         parent::__construct();
         
-        
-        // $this->save( 'set-comp' );
-        
+        $this->save( 'set-competencies' );
+
     }
     
     
@@ -28,13 +27,13 @@ class mif_mr_set_comp extends mif_mr_part_companion {
     
     public function the_show()
     {
-        if ( $template = locate_template( 'mr-part-set-comp.php' ) ) {
+        if ( $template = locate_template( 'mr-set-competencies.php' ) ) {
             
             load_template( $template, false );
             
         } else {
             
-            load_template( dirname( __FILE__ ) . '/../templates/mr-part-set-comp.php', false );
+            load_template( dirname( __FILE__ ) . '/../templates/mr-set-competencies.php', false );
             
         }
     }
@@ -47,9 +46,8 @@ class mif_mr_set_comp extends mif_mr_part_companion {
     public function show_set_comp()
     {
         global $tree;
-        // if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
-        $this->save( 'set-competencies', $this->compose_set_comp() );
         
+        $this->save( 'set-competencies', $this->compose_set_comp() );
         // p($_REQUEST);
 
         $out = '';
@@ -74,9 +72,9 @@ class mif_mr_set_comp extends mif_mr_part_companion {
             
         } else {
             
-            $out .= '<div class="row">';
+            $out .= '<div class="row fiksa">';
             $out .= '<div class="col p-0">';
-            $out .= '<h4>Компетенции в ОПОП:</h4>';
+            $out .= '<h4 class="mb-4 mt-3 pb-5 bg-body">Компетенции в ОПОП:</h4>';
             $out .= '</div>';
             $out .= '</div>';
             
@@ -336,85 +334,85 @@ class mif_mr_set_comp extends mif_mr_part_companion {
 
 
     
-    //
-    // Возвращает массив из текста (post)
-    //
-    // новая:старая:id
-    //
-    // новая == старая          => УК-1             => УК-1:УК-1:NULL
-    // новая == старая, id      => УК-1:123         => УК-1:УК-1:123
-    // новая != старая          => УК-2:УК-1        => УК-2:УК-1:NULL
-    // новая != старая, id      => УК-2:УК-1:123    => УК-2:УК-1:123
-    // 
+    // //
+    // // Возвращает массив из текста (post)
+    // //
+    // // новая:старая:id
+    // //
+    // // новая == старая          => УК-1             => УК-1:УК-1:NULL
+    // // новая == старая, id      => УК-1:123         => УК-1:УК-1:123
+    // // новая != старая          => УК-2:УК-1        => УК-2:УК-1:NULL
+    // // новая != старая, id      => УК-2:УК-1:123    => УК-2:УК-1:123
+    // // 
 
-    public function get_arr( $opop_id = NULL )
-    {
-        if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
+    // public function get_arr( $opop_id = NULL )
+    // {
+    //     if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
         
-        // $this->get_index_comp( $opop_id );
+    //     // $this->get_index_comp( $opop_id );
 
 
-        $arr = array();
+    //     $arr = array();
         
-        $text = $this->get_companion_content( 'set-competencies', $opop_id );
+    //     $text = $this->get_companion_content( 'set-competencies', $opop_id );
         
-        // Разбить текст на массив строк
-        $data = preg_split( '/\\r\\n?|\\n/', $text );
-        $data = array_map( 'strim', $data );
+    //     // Разбить текст на массив строк
+    //     $data = preg_split( '/\\r\\n?|\\n/', $text );
+    //     $data = array_map( 'strim', $data );
         
-        foreach ( $data as $item ) {
+    //     foreach ( $data as $item ) {
             
             
-            $item .= '::';
-            $arr2 = explode( ':', $item );
-            // p($arr2);
+    //         $item .= '::';
+    //         $arr2 = explode( ':', $item );
+    //         // p($arr2);
             
-            if ( empty( $arr2[0] ) ) continue;
+    //         if ( empty( $arr2[0] ) ) continue;
             
-            if ( is_string( $arr2[0] ) && empty( $arr2[1] ) && empty( $arr2[2] ) ) {
+    //         if ( is_string( $arr2[0] ) && empty( $arr2[1] ) && empty( $arr2[2] ) ) {
                 
-                // $id = '123';
-                // $arr[] = array( $arr2[0], $arr2[0], $id );
-                $arr[] = array( $arr2[0], $arr2[0], NULL );
-                // p('1');
-                continue;                
+    //             // $id = '123';
+    //             // $arr[] = array( $arr2[0], $arr2[0], $id );
+    //             $arr[] = array( $arr2[0], $arr2[0], NULL );
+    //             // p('1');
+    //             continue;                
                 
-            }
+    //         }
             
-            if ( is_string( $arr2[0] ) && is_numeric( $arr2[1] ) && empty( $arr2[2] ) ) {
+    //         if ( is_string( $arr2[0] ) && is_numeric( $arr2[1] ) && empty( $arr2[2] ) ) {
                 
-                $arr[] = array( $arr2[0], $arr2[0], $arr2[1] );
-                // p('2');
-                continue;                
+    //             $arr[] = array( $arr2[0], $arr2[0], $arr2[1] );
+    //             // p('2');
+    //             continue;                
                 
-            }
+    //         }
             
-            if ( is_string( $arr2[0] ) && is_string( $arr2[1] ) && empty( $arr2[2] ) ) {
+    //         if ( is_string( $arr2[0] ) && is_string( $arr2[1] ) && empty( $arr2[2] ) ) {
                 
-                // $id = '123';
-                // $arr[] = array( $arr2[0], $arr2[1], $id );
-                $arr[] = array( $arr2[0], $arr2[1], NULL );
-                // p('3');
-                continue;                
+    //             // $id = '123';
+    //             // $arr[] = array( $arr2[0], $arr2[1], $id );
+    //             $arr[] = array( $arr2[0], $arr2[1], NULL );
+    //             // p('3');
+    //             continue;                
                 
-            }
+    //         }
             
-            if ( is_string( $arr2[0] ) && is_string( $arr2[1] ) && is_numeric( $arr2[2] ) ) {
+    //         if ( is_string( $arr2[0] ) && is_string( $arr2[1] ) && is_numeric( $arr2[2] ) ) {
                
-                $arr[] = array( $arr2[0], $arr2[1], $arr2[2] );
-                // p('4');
-                continue;                
+    //             $arr[] = array( $arr2[0], $arr2[1], $arr2[2] );
+    //             // p('4');
+    //             continue;                
             
-            }
+    //         }
             
-            // p('err');
+    //         // p('err');
 
-        }
+    //     }
         
-        // p($arr);
+    //     // p($arr);
         
-        return apply_filters( 'mif_mr_comp_set_arr', $arr );
-    }
+    //     return apply_filters( 'mif_mr_comp_set_arr', $arr );
+    // }
     
     
 }

@@ -78,6 +78,18 @@ function mif_mr_the_link_edit_visual()
 }
 
 
+
+//
+// Выводит 
+//
+
+function mif_mr_the_link_edit_advanced( $type )
+{
+    global $mif_mr_set_comp;
+    echo $mif_mr_set_comp->get_link_edit_advanced( $type );
+}
+
+
 //
 // Выводит 
 //
@@ -141,6 +153,26 @@ function mif_mr_the_set_comp()
     global $mif_mr_set_comp;
     echo $mif_mr_set_comp->show_set_comp();
 }
+
+
+// //
+// // Выводит 
+// //
+
+// function mif_mr_the_link_ae_part()
+// {
+//     echo mif_mr_part_core::get_link_advanced_edit_part();
+// }
+
+
+// //
+// // Выводит 
+// //
+
+// function mif_mr_the_link_e_part()
+// {
+//     echo mif_mr_part_core::get_link_edit_part();
+// }
 
 
 

@@ -22,7 +22,9 @@ include_once dirname( __FILE__ ) . '/part-param.php';
 include_once dirname( __FILE__ ) . '/part-courses.php';
 include_once dirname( __FILE__ ) . '/part-matrix.php';
 include_once dirname( __FILE__ ) . '/part-curriculum.php';
-include_once dirname( __FILE__ ) . '/part-set-comp.php';
+
+include_once dirname( __FILE__ ) . '/set-core.php';
+include_once dirname( __FILE__ ) . '/set-competencies.php';
 
 include_once dirname( __FILE__ ) . '/companion-lib-core.php';
 include_once dirname( __FILE__ ) . '/companion-lib-competencies.php';

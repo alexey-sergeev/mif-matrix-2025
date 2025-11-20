@@ -30,6 +30,14 @@ class mif_mr_part_companion extends mif_mr_part_core {
     {
         $out = '';
 
+        $out .= '<div class="row">';
+        $out .= '<div class="col">';
+        
+        $out .= mif_mr_functions::get_callout( '<a href="' . '123' . '">Помощь</a>', 'warning' );
+        
+        $out .= '</div>';
+        $out .= '</div>';
+
         $out .= '<textarea name="content" class="edit textarea mt-4" autofocus>';
         $out .= $this->get_companion_content( $type );
         $out .= '</textarea>';
@@ -37,6 +45,32 @@ class mif_mr_part_companion extends mif_mr_part_core {
         return apply_filters( 'mif_mr_core_companion_edit', $out );
     }
         
+
+    
+    // 
+    // link_edit_advanced
+    // 
+    
+    public function get_link_edit_advanced( $type )
+    {
+        global $mr;
+
+        $out = '';
+        
+        $companion_id = $this->get_companion_id( $type );
+
+        if (  $mr->user_can(3) ) {
+            
+            $out .= '<div class="row mt-1">';
+            $out .= '<div class="col-12 p-0 mb-3"><a href="' . get_edit_post_link( $companion_id ) . '">Расширенный редактор</a></div>';
+            $out .= '</div>';
+            // $out .= '<div class="mb-3"><a href="?edit=visual"></a></div>';
+
+        }
+
+        return apply_filters( 'mif_mr_part_core_link_edit_advanced', $out );
+    }
+    
 
 
     //
@@ -93,19 +127,23 @@ class mif_mr_part_companion extends mif_mr_part_core {
     {
         global $mif_mr_opop;
         
+        $opop_id = $mif_mr_opop->get_opop_id();
+        $opop_title = $mif_mr_opop->get_opop_title();
+
         if ( ! isset( $_REQUEST['save'] )) return false;
         // if ( $_REQUEST['save'] == 'visual' ) return false;
 
+        if ( $content == NULL && ! isset( $_REQUEST['content'] ) ) return;
         if ( $content == NULL ) $content = sanitize_textarea_field( $_REQUEST['content'] );
 
-        if ( $this->get_companion_id( $type, $mif_mr_opop->get_opop_id() ) === NULL) {
+        if ( $this->get_companion_id( $type, $opop_id ) === NULL) {
         // if ( $this->get_companion_id( $type, mif_mr_opop_core::get_opop_id() ) === NULL) {
             
             $res = wp_insert_post( array(
-                'post_title'    => $mif_mr_opop->get_opop_title() . ' (' . $mif_mr_opop->get_opop_id() . ')',
+                'post_title'    => $opop_title . ' (' . $opop_id . ')',
                 'post_type'     => $type,
                 'post_status'   => 'publish',
-                'post_parent'   => $mif_mr_opop->get_opop_id(),
+                'post_parent'   => $opop_id,
                 // 'post_content'  => sanitize_textarea_field( $_REQUEST['content'] ),
                 'post_content'  => $content,
                 ) );
@@ -113,7 +151,7 @@ class mif_mr_part_companion extends mif_mr_part_core {
         } else {
             
             $res = wp_update_post( array(
-                'ID' => $this->get_companion_id( $type, $mif_mr_opop->get_opop_id() ),
+                'ID' => $this->get_companion_id( $type, $opop_id ),
                 // 'post_content' => sanitize_textarea_field( $_REQUEST['content'] ),
                 'post_content' => $content,
                 ) );

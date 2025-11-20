@@ -49,8 +49,9 @@ class mif_mr_part_core {
         if (  $mr->user_can(3) && ! isset( $_REQUEST['edit'] ) ) {
 
             $out .= '<div class="row mt-1">';
-            $out .= '<div class="col-12 p-0"><a href="?edit">Редактировать</a></div>';
+            $out .= '<div class="col-12 p-0 mb-3"><a href="?edit">Редактировать</a></div>';
             $out .= '</div>';
+            // $out .= '<div class="mb-3"><a href="?edit">Редактировать</a></div>';
 
         }
 
@@ -66,19 +67,47 @@ class mif_mr_part_core {
     public function get_link_edit_visual()
     {
         global $mr;
-
+        
         $out = '';
-    
-        if (  $mr->user_can(3) && ! isset( $_REQUEST['edit'] ) ) {
-
+        
+        // if (  $mr->user_can(3) && ! isset( $_REQUEST['edit'] ) ) 
+        if (  $mr->user_can(3) ) {
+            
             $out .= '<div class="row mt-1">';
-            $out .= '<div class="col-12 p-0"><a href="?edit=visual">Визуальное редактирование</a></div>';
+            $out .= '<div class="col-12 p-0 mb-3"><a href="?edit=visual">Визуальное редактирование</a></div>';
             $out .= '</div>';
-
+            // $out .= '<div class="mb-3"><a href="?edit=visual">Визуальное редактирование</a></div>';
+            
         }
-
+        
         return apply_filters( 'mif_mr_part_core_link_edit_visual', $out );
     }
+    
+    
+    
+    // // 
+    // // 
+    // // 
+    
+    // public function get_link_edit_advanced( $type )
+    // {
+    //     global $mr;
+
+    //     $out = '';
+        
+    //     $id 
+
+    //     if (  $mr->user_can(3) ) {
+            
+    //         $out .= '<div class="row mt-1">';
+    //         $out .= '<div class="col-12 p-0 mb-3"><a href="' . get_edit_post_link( $wp_query->queried_object->ID ) . '">Расширенный редактор</a></div>';
+    //         $out .= '</div>';
+    //         // $out .= '<div class="mb-3"><a href="?edit=visual"></a></div>';
+
+    //     }
+
+    //     return apply_filters( 'mif_mr_part_core_link_edit_advanced', $out );
+    // }
     
     
     
@@ -119,7 +148,7 @@ class mif_mr_part_core {
         if ( (int) $id === 0 ) return $id;
         
         if ( ! get_post_type( $id ) && get_post_type( $id ) != $type ) return $id;
-
+        
         $out = '<a href="' . get_permalink( $id ) . '">' . get_the_title( $id ) . '</a>';
 
         return apply_filters( 'mif_mr_core_get_link_post', $out, $id, $type );

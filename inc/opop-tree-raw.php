@@ -221,8 +221,8 @@ class mif_mr_opop_tree_raw extends mif_mr_opop_core {
                 
             case 'set-competencies':
                 // p('@');
-                $m = new mif_mr_set_comp();
-                $data = $m->get_arr( $opop_id );
+                $m = new mif_mr_set_core();
+                $data = $m->get_arr_competencies( $opop_id );
             break;
             
 
