@@ -74,7 +74,7 @@ class mif_mr_set_comp extends mif_mr_set_core {
             
             $out .= '<div class="row fiksa">';
             $out .= '<div class="col p-0">';
-            $out .= '<h4 class="mb-4 mt-3 pb-5 bg-body">Компетенции в ОПОП:</h4>';
+            $out .= '<h4 class="mb-4 mt-0 pt-3 pb-5 bg-body">Компетенции в ОПОП:</h4>';
             $out .= '</div>';
             $out .= '</div>';
             

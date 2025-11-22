@@ -15,6 +15,10 @@ class mif_mr_set_courses extends mif_mr_set_core {
 
         parent::__construct();
         
+        add_filter( 'mif-mr-tbody-col', array( $this, 'filter_tbody_col'), 10, 4 );
+        add_filter( 'mif-mr-thead-col', array( $this, 'filter_thead_col'), 10 );
+        add_filter( 'mif-mr-tbody-colspan', array( $this, 'filter_tbody_colspan'), 10 );
+
         $this->save( 'set-courses' );
 
     }
@@ -50,13 +54,25 @@ class mif_mr_set_courses extends mif_mr_set_core {
         global $tree;
         
         $arr = $tree['content']['courses']['data'];
+        // p($arr);
         $m = new modules();
         $arr = $m->get_courses_tree( $arr );
         
-        
+        // p( $tree['content']['courses']['index'] );
+
+
         //     $this->save( 'set-competencies', $this->compose_set_comp() );
         //     // p($_REQUEST);
+        // foreach ( $arr as $item ) {
 
+        //     foreach ( $item['courses'] as $key2 => $item2 ) {
+
+        //         $this->get_course_ifno($key2);
+        //         // p($key2);
+
+        //     };
+
+        // }
 
 
         $out = '';
@@ -83,7 +99,7 @@ class mif_mr_set_courses extends mif_mr_set_core {
             
             $out .= '<div class="row fiksa">';
             $out .= '<div class="col p-0">';
-            $out .= '<h4 class="mb-4 mt-3 pb-5 bg-body">Дисциплины в ОПОП:</h4>';
+            $out .= '<h4 class="mb-4 mt-0 pt-3 pb-5 bg-body">Дисциплины в ОПОП:</h4>';
             $out .= '</div>';
             $out .= '</div>';
             
@@ -142,6 +158,90 @@ class mif_mr_set_courses extends mif_mr_set_core {
     
     
     
+    // //
+    // //
+    // //
+    
+    // public function get_course_ifno( $course )
+    // {
+    //     global $tree;
+        
+    //     $arr = array();
+
+    //     $arr_raw = $tree['content']['courses']['data'];
+    //     $arr_set = $tree['content']['set-courses']['data'];
+
+    //     // p($arr_raw);
+    //     // p($arr_set);
+
+    //     foreach ( $arr_raw as $item ) {
+
+    //         foreach ( $item['courses'] as $key2 => $item2 ) {
+
+    //             // p($key2);
+
+    //         }
+
+    //         // p($item);
+
+    //     }
+
+
+    //     return apply_filters( 'mif_mr_get_course_ifno', $arr );
+    // }
+        
+
+
+    //
+    //
+    //
+
+    public function filter_tbody_col( $arr, $key, $key2, $courses_arr )
+    {
+        global $tree;
+
+        $index = $tree['content']['courses']['index'];
+
+        // p($key2);
+        // p($index[$key2]);
+
+        if ( empty( $index[$key2]['course_id'] ) ) {
+
+            $arr[] = $this->add_to_col( '', array( 'elem' => 'td' ) );
+
+        } else {
+
+            $text = '';
+            
+            $text .= $index[$key2]['course_id'];
+
+            $arr[] = $this->add_to_col( $text, array( 'elem' => 'td' ) );
+
+        }
+
+        // p($arr);
+
+
+
+
+        return $arr;
+    }
+
+
+
+    public function filter_thead_col( $arr )
+    {
+        $arr[] = $this->add_to_col( '@@', array( 'elem' => 'th' ) );
+        return $arr;
+    }
+
+
+    public function filter_tbody_colspan( $n )
+    {
+        return $n + 1;
+    }
+
+
     // //
     // //
     // //
