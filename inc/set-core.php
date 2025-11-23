@@ -248,28 +248,39 @@ class mif_mr_set_core extends mif_mr_table {
         $index = array();
 
         foreach ( $arr_raw as $key => $item ) 
-            foreach ( $item['courses'] as $key2 => $item2 ) $index[$key2] = array( 'key' => $key );
+            foreach ( $item['courses'] as $key2 => $item2 ) $index[$key2] = array( 'key' => $key, 'name' => $key2 );
         
         // p($index);
         
         $index2 = array();
+        $index3 = array();
 
         foreach ( $arr_lib as $key => $item ) {
 
             // p($item);
             $index2[$item['name']][] = $key;
-
+            $index3[$item['comp_id']] = $item['from_id'];
+    
             if ( isset( $index[$item['name']] ) ) {
+                
+                // $index2[$item['name']][] = $key;
+                // $index3[$item['comp_id']] = $item['from_id'];
+                // $index[$item['name']]['name'] = $item['name']; 
+
                 $index[$item['name']]['course_id_all'][] = $item['comp_id']; 
+                // $index[$item['name']]['from_id_all'][] = $item['from_id']; 
                 $index[$item['name']]['course_id'] = $item['comp_id']; 
+                $index[$item['name']]['from_id'] = $item['from_id']; 
                 $index[$item['name']]['auto'] = true; 
-                // $index[$item['name']]['from_id'] = $item['parent']; 
                 // continue;
+           
             }
 
         }
 
+        // p($index);
         // p($index2);
+        // p($index3);
         // p($arr_set);
         
         foreach ( $arr_set as $item ) {
@@ -277,9 +288,30 @@ class mif_mr_set_core extends mif_mr_table {
             if ( ! isset( $index[$item[0]] ) ) continue;
             if ( ! isset( $index2[$item[1]] ) ) continue;
 
+            // $k = 0;
+
+            // if ( isset( $item[2] ) ) {
+
+            //     foreach ( $index2[$item[1]] as $key2 => $item2 ) {
+                    
+                    
+            //         p($item2);
+                    
+            //     }
+            // }
+
+            // p($index[$item[0]]['course_id_all']);
+            // p($index[$item[0]]);
+            // p($index2[$item[1]]);
+
+            // $course_id = ( isset( $item[2] ) ) ? $item[2] : $index2[$item[1]][0]; 
+
+            // $index[$item[0]]['name'] = $item['name']; 
             $index[$item[0]]['name_old'] = $item[1]; 
             $index[$item[0]]['course_id_all'] = $index2[$item[1]]; 
             $index[$item[0]]['course_id'] = ( isset( $item[2] ) ) ? $item[2] : $index2[$item[1]][0]; 
+            // $index[$item[0]]['course_id'] = $course_id; 
+            $index[$item[0]]['from_id'] = ( isset( $index3[$index[$item[0]]['course_id']] ) ) ? $index3[$index[$item[0]]['course_id']] : NULL; 
             $index[$item[0]]['auto'] = false; 
 
 

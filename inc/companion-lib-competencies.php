@@ -338,11 +338,11 @@ class mif_mr_comp extends mif_mr_companion_core {
             $out .= '</div>';
             
             $out .= '<div class="col-2 col-md-1 pt-1 pb-1 text-end">';
-            $out .= ( $item['parent'] == mif_mr_opop_core::get_opop_id() ||  $item['parent'] == 0 ) ?
+            $out .= ( $item['from_id'] == mif_mr_opop_core::get_opop_id() ||  $item['from_id'] == 0 ) ?
                     // $item['parent'] :
                     '' :
-                    '<a href="' .  get_permalink( $item['parent'] ) . 'lib-competencies/' . $item['comp_id'] . '" title="' . 
-                    $this->mb_substr( get_the_title( $item['parent'] ), 20 ) . '">' . $item['parent'] . '</a>';
+                    '<a href="' .  get_permalink( $item['from_id'] ) . 'lib-competencies/' . $item['from_id'] . '" title="' . 
+                    $this->mb_substr( get_the_title( $item['from_id'] ), 20 ) . '">' . $item['from_id'] . '</a>';
             $out .= '</div>';
             
             $out .= '</div>';
@@ -517,7 +517,7 @@ class mif_mr_comp extends mif_mr_companion_core {
         // p($arr_raw);
 
         $arr['comp_id'] = $id;
-        $arr['parent'] = $post->post_parent;
+        $arr['from_id'] = $post->post_parent;
         $arr['name'] = $arr_raw['name'];
         // $arr['competencies'] = '';
 

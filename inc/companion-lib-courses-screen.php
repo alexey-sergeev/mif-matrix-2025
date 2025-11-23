@@ -550,16 +550,31 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses {
 
     public function get_lib_courses( $opop_id = NULL )
     {
+        global $tree;
         global $wp_query;
+        
         if ( ! empty( $wp_query->query_vars['id'] ) ) return;
         
         if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
         
         ####!!!!!
         
+        $this->create( $opop_id, 'lib-courses' );
+        
+        $arr = array();
+        if ( isset( $tree['content']['lib-courses']['data'] ) ) $arr = $tree['content']['lib-courses']['data'];
+    
+        $index = array();
+        foreach ( $arr as $item ) $index[$item['name']][] = $item['comp_id'];
+        
+        foreach ( $index as $key => $item ) sort( $index[$key] ); 
+        ksort( $index );
+        
+        // p($arr);
+        // p($index);
+        
         $f = true;
         
-        $this->create( $opop_id, 'lib-courses' );
         
         $out = '';
         
@@ -574,30 +589,33 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses {
         $out .= '</div>';
         
         $out .= '</div>';
-        global $tree;
 
-        $arr = array();
-        if ( isset( $tree['content']['lib-courses']['data'] ) ) $arr = $tree['content']['lib-courses']['data'];
-    
-        // p($arr);
+        // foreach ( $arr as $item ) {
+        foreach ( $index as $i ) {
+            
+            foreach ( $i as $ii ) {
+                
+                $item = $arr[$ii];
+            
+                $comp_id_text = ( count( $index[$item['name']] ) > 1 ) ? ' (' . $item['comp_id'] . ')' : '';
 
-        foreach ( $arr as $item ) {
+                $out .= '<div class="row mt-3 mb-3">';
+                
+                $out .= '<div class="col-10 col-md-11 pt-1 pb-1">';
+                $out .= '<a href="' . mif_mr_opop_core::get_opop_url() . 'lib-courses/' . $item['comp_id'] . '">' . $item['name'] . $comp_id_text . '</a>';
+                $out .= '</div>';
+                
+                $out .= '<div class="col-2 col-md-1 pt-1 pb-1 text-end">';
+                $out .= ( $item['from_id'] == mif_mr_opop_core::get_opop_id() ||  $item['from_id'] == 0 ) ?
+                        '' :
+                        '<a href="' .  get_permalink( $item['from_id'] ) . 'lib-courses/' . $item['comp_id'] . '" title="' . 
+                        $this->mb_substr( get_the_title( $item['from_id'] ), 20 ) . '">' . $item['from_id'] . '</a>';
+                $out .= '</div>';
+                
+                $out .= '</div>';
+                
+            }
         
-            $out .= '<div class="row mt-3 mb-3">';
-            
-            $out .= '<div class="col-10 col-md-11 pt-1 pb-1">';
-            $out .= '<a href="' . mif_mr_opop_core::get_opop_url() . 'lib-courses/' . $item['comp_id'] . '">' . $item['name'] . '</a>';
-            $out .= '</div>';
-            
-            $out .= '<div class="col-2 col-md-1 pt-1 pb-1 text-end">';
-            $out .= ( $item['parent'] == mif_mr_opop_core::get_opop_id() ||  $item['parent'] == 0 ) ?
-                    '' :
-                    '<a href="' .  get_permalink( $item['parent'] ) . 'lib-courses/' . $item['comp_id'] . '" title="' . 
-                    $this->mb_substr( get_the_title( $item['parent'] ), 20 ) . '">' . $item['parent'] . '</a>';
-            $out .= '</div>';
-            
-            $out .= '</div>';
-            
         }
         
         if ( $f ) $out .= $this->get_lib_create( array(

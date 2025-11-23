@@ -145,7 +145,7 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
         foreach ( $this->index_part as $item ) $arr4[$item] = ( isset( $arr3[$item] ) ) ? $arr3[$item] : NULL;
 
         $arr['comp_id'] = $course_id;
-        $arr['parent'] = $post->post_parent;
+        $arr['from_id'] = $post->post_parent;
         $arr['name'] = $post->post_title;
         $arr['data'] = $arr4;
         

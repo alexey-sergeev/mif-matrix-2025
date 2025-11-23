@@ -200,21 +200,61 @@ class mif_mr_set_courses extends mif_mr_set_core {
     {
         global $tree;
 
-        $index = $tree['content']['courses']['index'];
+        // $index = $tree['content']['courses']['index'];
+        $i = $tree['content']['courses']['index'][$key2];
+    
 
+        // p($arr);
         // p($key2);
         // p($index[$key2]);
+        // p($i);
 
-        if ( empty( $index[$key2]['course_id'] ) ) {
+        if ( empty( $i['course_id'] ) ) {
 
             $arr[] = $this->add_to_col( '', array( 'elem' => 'td' ) );
-
-        } else {
-
-            $text = '';
             
-            $text .= $index[$key2]['course_id'];
+        } else {
+            
+            // $arr[1]['text'] = '<a href="' . mif_mr_opop_core::get_opop_url() . 'lib-courses/' . $index[$key2]['course_id'] . '">' . $arr[1]['text'] . '</a>';
+            
+            // $text = '';
+            
+            // // $text .= $index[$key2]['course_id'];
+            // $text .= ( $index[$key2]['auto'] ) ? 'auto' : $index[$key2]['course_id'];
+            
+            // $arr[] = $this->add_to_col( $text, array( 'elem' => 'td' ) );
+            
+            $selection_method = ( $i['auto'] ) ? 'автоматически' : 'ручной';
 
+
+            $text = $arr[1]['text'];
+            
+            $text .= '<div class="p-3 pt-5">';
+            $text .= '<div class="mr-gray p-3 b order rounded">';
+           
+            $text .= '<p class="mb-2">Метод выбора: <span class="bg-secondary text-light rounded p-1 pl-2 pr-2">' . $selection_method . '</span></p>';
+            
+            if ( ! empty( $i['name_old'] ) && $i['name_old'] != $i['name'] ) 
+                $text .= '<p class="mb-2">Старое название: <span class="bg-secondary text-light rounded p-1 pl-2 pr-2">' . $i['name_old'] . '</span></p>';
+           
+            if ( ! empty( $i['course_id'] ) ) 
+                $text .= '<p class="mb-2">Идентификатор дисциплины: <span class="bg-secondary text-light rounded p-1 pl-2 pr-2">' . $i['course_id'] . '</span></p>';
+           
+            if ( ! empty( $i['from_id'] ) ) 
+                $text .= '<p class="mb-2">Идентификатор ОПОП: <span class="bg-secondary text-light rounded p-1 pl-2 pr-2"  title="' . 
+                        $this->mb_substr( get_the_title( $i['from_id'] ), 20 ) . '">' . $i['from_id'] . 
+                        '</span></p>';
+           
+            $text .= '</div>';
+            $text .= '</div>';
+            
+            $arr[1]['text'] = $text;
+            
+            
+            $text = '';
+            $text .= '<a href="' . mif_mr_opop_core::get_opop_url() . 'lib-courses/' . $i['course_id'] . '">';
+            $text .= ( $i['auto'] ) ? 'auto' : $i['course_id'];
+            $text .= '</a>';
             $arr[] = $this->add_to_col( $text, array( 'elem' => 'td' ) );
 
         }
