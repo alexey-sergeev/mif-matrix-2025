@@ -93,7 +93,7 @@ class mif_mr_matrix extends mif_mr_table {
             foreach ( (array) $item['courses'] as $key2 => $item2 ) {
 
                 foreach ( $cmp as $c ) 
-                    if ( in_array( $c, $matrix_arr[$key2] ) ) {
+                    if ( isset( $matrix_arr[$key2] ) && in_array( $c, $matrix_arr[$key2] ) ) {
                         
                         if ( ! isset( $count_arr[$c] ) ) $count_arr[$c] = 0;
                         $count_arr[$c]++;
@@ -150,7 +150,7 @@ class mif_mr_matrix extends mif_mr_table {
         foreach ( (array) $courses_arr[$key]['courses'] as $key2 => $item2 ) {
 
             foreach ( $cmp as $c ) 
-                if ( in_array( $c, $matrix_arr[$key2] ) ) {
+                if ( isset( $matrix_arr[$key2] ) && in_array( $c, $matrix_arr[$key2] ) ) {
                     
                     if ( ! isset( $count_arr[$c] ) ) $count_arr[$c] = 0;
                     $count_arr[$c]++;

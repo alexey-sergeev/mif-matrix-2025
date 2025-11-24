@@ -104,7 +104,11 @@ class mif_mr_set_courses extends mif_mr_set_core {
             $out .= '</div>';
             
             
-            
+            $out .= '<div class="row">';
+            $out .= '<div class="col p-0 mb-3">';
+            $out .= mif_mr_companion_core::get_show_all();
+            $out .= '</div>';
+            $out .= '</div>';
             // $arr = $this->get_courses_arr(); 
             // return '@2';
             
@@ -199,36 +203,52 @@ class mif_mr_set_courses extends mif_mr_set_core {
     public function filter_tbody_col( $arr, $key, $key2, $courses_arr )
     {
         global $tree;
-
+        
         // $index = $tree['content']['courses']['index'];
         $i = $tree['content']['courses']['index'][$key2];
-    
-
+        
+        
         // p($arr);
         // p($key2);
         // p($index[$key2]);
         // p($i);
-
+        
         if ( empty( $i['course_id'] ) ) {
+            
+            $text = '';
+            $text .= '<i class="mr-red text-danger fa-solid fa-xmark"></i> ';
+            $text .= $arr[1]['text'];
+            $arr[1]['text'] = $text;
 
+            $arr[] = $this->add_to_col( '', array( 'elem' => 'td' ) );
             $arr[] = $this->add_to_col( '', array( 'elem' => 'td' ) );
             
         } else {
             
-            // $arr[1]['text'] = '<a href="' . mif_mr_opop_core::get_opop_url() . 'lib-courses/' . $index[$key2]['course_id'] . '">' . $arr[1]['text'] . '</a>';
             
-            // $text = '';
-            
-            // // $text .= $index[$key2]['course_id'];
-            // $text .= ( $index[$key2]['auto'] ) ? 'auto' : $index[$key2]['course_id'];
-            
-            // $arr[] = $this->add_to_col( $text, array( 'elem' => 'td' ) );
+            // Col 2
             
             $selection_method = ( $i['auto'] ) ? 'автоматически' : 'ручной';
+            $up = ' d-none';
+            $down = '';
 
+            $text = '';
 
-            $text = $arr[1]['text'];
-            
+            $text .= '<span>';
+            $text .= '<div class="container">';
+            $text .= '<div class="row">';
+            $text .= '<div class="col-10 p-0">';
+            $text .= '<i class="mr-green text-success fa-solid fa-check"></i> ';
+            $text .= $arr[1]['text'];
+            $text .= '</div>';
+            $text .= '<div class="col-2 p-0 text-end">';
+            $text .= '<a href="#" class="roll-up' . $up . '"><i class="fa-solid fa-angle-up"></i></a>';
+            $text .= '<a href="#" class="roll-down' . $down . '"><i class="fa-solid fa-chevron-down"></i></a>';
+            $text .= '</div>';
+            $text .= '</div>';
+            $text .= '</div>';
+
+            $text .= '<div class="coll" style="display: none;">';
             $text .= '<div class="p-3 pt-5">';
             $text .= '<div class="mr-gray p-3 b order rounded">';
            
@@ -240,22 +260,46 @@ class mif_mr_set_courses extends mif_mr_set_core {
             if ( ! empty( $i['course_id'] ) ) 
                 $text .= '<p class="mb-2">Идентификатор дисциплины: <span class="bg-secondary text-light rounded p-1 pl-2 pr-2">' . $i['course_id'] . '</span></p>';
            
-            if ( ! empty( $i['from_id'] ) ) 
-                $text .= '<p class="mb-2">Идентификатор ОПОП: <span class="bg-secondary text-light rounded p-1 pl-2 pr-2"  title="' . 
-                        $this->mb_substr( get_the_title( $i['from_id'] ), 20 ) . '">' . $i['from_id'] . 
-                        '</span></p>';
-           
+            if ( ! empty( $i['from_id'] ) ) {
+                // $text .= '<p class="mb-2">Идентификатор ОПОП: <span class="bg-secondary text-light rounded p-1 pl-2 pr-2"  title="' . 
+                //         $this->mb_substr( get_the_title( $i['from_id'] ), 20 ) . '">' . $i['from_id'] . 
+                //         '</span></p>';
+                $text .= '<p class="mb-2">Идентификатор ОПОП: <span class="bg-secondary text-light rounded p-1 pl-2 pr-2">' . $i['from_id'] . '</span></p>';
+                $text .= '<p class="mb-2">Название ОПОП: <span class="bg-secondary text-light rounded p-1 pl-2 pr-2">' . 
+                        $this->mb_substr( get_the_title( $i['from_id'] ), 50 ) . '</span></p>';
+            }
+
             $text .= '</div>';
             $text .= '</div>';
+            $text .= '</div>';
+            $text .= '</span>';
             
             $arr[1]['text'] = $text;
             
+
+            // Col 3
             
             $text = '';
+
             $text .= '<a href="' . mif_mr_opop_core::get_opop_url() . 'lib-courses/' . $i['course_id'] . '">';
-            $text .= ( $i['auto'] ) ? 'auto' : $i['course_id'];
+            // $text .= ( $i['auto'] ) ? 'auto' : $i['course_id'];
+            $text .= $i['course_id'];
             $text .= '</a>';
+            
             $arr[] = $this->add_to_col( $text, array( 'elem' => 'td' ) );
+            
+            
+            // Col 4
+            
+            $text = '';
+            
+            if ( $i['auto'] ) $text .= '<span class="hint" title="Автоматически">А</span> ';
+            if ( count( $i['course_id_all'] ) > 1 ) $text .= '<span class="hint" title="Есть другие дисциплины">М</span> ';
+            if ( ! empty( $i['name_old'] ) && $i['name_old'] != $i['name'] ) $text .= '<span class="hint" title="Поменяли название">П</span> ';
+            if ( $i['from_id'] != mif_mr_opop_core::get_opop_id() ) $text .= '<span class="hint" title="По наследованию">Н</span> ';
+            
+            $arr[] = $this->add_to_col( $text, array( 'elem' => 'td' ) );
+
 
         }
 
@@ -271,14 +315,15 @@ class mif_mr_set_courses extends mif_mr_set_core {
 
     public function filter_thead_col( $arr )
     {
-        $arr[] = $this->add_to_col( '@@', array( 'elem' => 'th' ) );
+        $arr[] = $this->add_to_col( 'id', array( 'elem' => 'th' ) );
+        $arr[] = $this->add_to_col( 'Прим.', array( 'elem' => 'th' ) );
         return $arr;
     }
 
 
     public function filter_tbody_colspan( $n )
     {
-        return $n + 1;
+        return $n + 2;
     }
 
 

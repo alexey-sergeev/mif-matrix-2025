@@ -114,7 +114,7 @@ class mif_mr_curriculum extends mif_mr_table {
         $n = $this->get_num_semesters();
         
         // if ( isset( $curriculum_arr[$key2] ) ) {
-        if ( ! empty( $n )) {
+        if ( ! empty( $n ) && ! empty( $curriculum_arr[$key2]['course_stat'] ) ) {
             
             $item = $curriculum_arr[$key2]['course_stat'];
             

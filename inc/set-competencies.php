@@ -78,8 +78,14 @@ class mif_mr_set_comp extends mif_mr_set_core {
             $out .= '</div>';
             $out .= '</div>';
             
-            $out .= mif_mr_comp::get_show_all();
+            // $out .= mif_mr_comp::get_show_all();
             
+            $out .= '<div class="row">';
+            $out .= '<div class="col p-0">';
+            $out .= mif_mr_companion_core::get_show_all();
+            $out .= '</div>';
+            $out .= '</div>';
+
             $data = $tree['content']['competencies']['data'];
             $old = '';
             $n = 0;
