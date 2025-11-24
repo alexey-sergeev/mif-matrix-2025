@@ -216,7 +216,7 @@ class mif_mr_set_courses extends mif_mr_set_core {
         if ( empty( $i['course_id'] ) ) {
             
             $text = '';
-            $text .= '<i class="mr-red text-danger fa-solid fa-xmark"></i> ';
+            $text .= '<span class="mr-red text-danger p-0 rounded"><i class="fa-solid fa-xmark fa-sm"></i></span> ';
             $text .= $arr[1]['text'];
             $arr[1]['text'] = $text;
 
@@ -238,7 +238,7 @@ class mif_mr_set_courses extends mif_mr_set_core {
             $text .= '<div class="container">';
             $text .= '<div class="row">';
             $text .= '<div class="col-10 p-0">';
-            $text .= '<i class="mr-green text-success fa-solid fa-check"></i> ';
+            $text .= '<span class="mr-green text-success p-0 rounded"><i class="fa-solid fa-check fa-sm"></i></span> ';
             $text .= $arr[1]['text'];
             $text .= '</div>';
             $text .= '<div class="col-2 p-0 text-end">';
@@ -250,7 +250,7 @@ class mif_mr_set_courses extends mif_mr_set_core {
 
             $text .= '<div class="coll" style="display: none;">';
             $text .= '<div class="p-3 pt-5">';
-            $text .= '<div class="mr-gray p-3 b order rounded">';
+            $text .= '<div class="mr-gray p-3 rounded">';
            
             $text .= '<p class="mb-2">Метод выбора: <span class="bg-secondary text-light rounded p-1 pl-2 pr-2">' . $selection_method . '</span></p>';
             

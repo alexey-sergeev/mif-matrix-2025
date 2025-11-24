@@ -29,6 +29,7 @@ include_once dirname( __FILE__ ) . '/set-courses.php';
 
 include_once dirname( __FILE__ ) . '/companion-lib-core.php';
 include_once dirname( __FILE__ ) . '/companion-lib-competencies.php';
+include_once dirname( __FILE__ ) . '/companion-lib-competencies-screen.php';
 include_once dirname( __FILE__ ) . '/companion-lib-courses.php';
 include_once dirname( __FILE__ ) . '/companion-lib-courses-screen.php';
 include_once dirname( __FILE__ ) . '/companion-lib-templates.php';

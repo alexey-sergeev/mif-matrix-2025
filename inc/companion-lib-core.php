@@ -67,6 +67,7 @@ class mif_mr_companion_core {
     public function save_all()
     {
         if ( empty( $_REQUEST['save'] ) ) return;
+        if ( empty( $_REQUEST['content'] ) ) return;
         
         // ####!!!!!
 
