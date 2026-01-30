@@ -15,12 +15,14 @@ class plx {
     // Инициализация 
     // 
 
-    function __construct()
+    function __construct( $file )
     {
 
         // Есть новый загруженный файл - делаем из него XML
         
-        if ( isset( $_FILES['file']['tmp_name'] ) ) $this->xml = simplexml_load_file( $_FILES['file']['tmp_name'] );
+        // if ( isset( $_FILES['file']['tmp_name'] ) ) 
+        // $this->xml = simplexml_load_file( $_FILES['file']['tmp_name'] );
+        $this->xml = simplexml_load_file( $file );
 
         // p($this->xml);
 
@@ -318,22 +320,30 @@ class plx {
         $out = '';
         
         $cmp_arr = $this->get_cmp_arr();
-
+        // p($cmp_arr);
+        // $cat = '';
+        $cat_old = NULL;
+        
         foreach ( $cmp_arr as $item ) {
             
-            $att = array( $item['code'] );
-            if ( $item['cat'] ) $att[] = $item['cat'];
+            if ( $cat_old != $item['cat'] ) $out .= '= ' . $item['cat'] . "\n\n";
+            $cat_old = $item['cat'];
+            
+            $out .= $item['code'] . '. ' . $item['name'] . "\n\n";
+            
+            // $att = array( $item['code'] );
+            // if ( $item['cat'] ) $att[] = $item['cat'];
 
-            $out .= "== " . $this->join_str( $item['name'], $att );
+            // $out .= "== " . $this->join_str( $item['name'], $att );
 
-            // Описание индикаторов (для примера)
-            $out .= "\n";
-            $out .= "Индикатор 1\n";
-            $out .= "\n";
-            $out .= "Индикатор 2\n";
-            $out .= "\n";
-            $out .= "Индикатор 3\n";
-            $out .= "\n";
+            // // Описание индикаторов (для примера)
+            // $out .= "\n";
+            // $out .= "Индикатор 1\n";
+            // $out .= "\n";
+            // $out .= "Индикатор 2\n";
+            // $out .= "\n";
+            // $out .= "Индикатор 3\n";
+            // $out .= "\n";
 
         }
 
@@ -372,7 +382,14 @@ class plx {
 
         $att_arr = $this->get_att_arr();
 
-        foreach ( $att_arr as $key => $value ) $out .= $this->join_str( $key, array( $value ) );
+        // foreach ( $att_arr as $key => $value ) $out .= $this->join_str( $key, array( $value ) );
+        // foreach ( $att_arr as $key => $value ) {
+            
+        //     $out .= '= ' . $key . "\n\n";
+        //     $out .= $value . "\n\n";
+        
+        // }
+        foreach ( $att_arr as $key => $value ) $out .= $key . ': ' . $value . "\n";
 
         return $out;
     }
@@ -407,7 +424,7 @@ class plx {
     // Получить атрибуты образовательной программы
     // 
 
-    private function get_att_arr()
+    function get_att_arr()
     {
         $arr = array();
 
@@ -418,8 +435,8 @@ class plx {
 
         // Информация ООП
 
-        // $d = current( (array) $data->{"ООП"} );
-        $d = current( $data->{"ООП"} );
+        $d = current( (array) $data->{"ООП"} );
+        // $d = current( $data->{"ООП"} );
 
         $arr["Шифр направления подготовки"] = (string) $d["Шифр"];
         $arr["Наименование направления подготовки"] = (string) $d["Название"];

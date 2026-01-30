@@ -135,11 +135,11 @@ class mif_mr_opop extends mif_mr_opop_tree_raw {
                 
                 break;
                 
-                case 'lib-courses':
+            case 'lib-courses':
+                
+                global $wp_query;
                     
-                    global $wp_query;
-                    
-                    if ( isset( $wp_query->query_vars['id'] ) ) {
+                if ( isset( $wp_query->query_vars['id'] ) ) {
                         
                     global $mif_mr_lib_courses;
                     $mif_mr_lib_courses = new mif_mr_lib_courses_screen();
@@ -156,6 +156,22 @@ class mif_mr_opop extends mif_mr_opop_tree_raw {
                     $mif_mr_set_courses->the_show();
 
                 }
+
+            break;
+            
+            case 'tools':
+
+                global $mif_mr_tools;
+                $mif_mr_tools = new mif_mr_tools_core();
+                $mif_mr_tools->the_show();
+
+            break;
+            
+            case 'tools-curriculum':
+
+                global $mif_mr_tools_curriculum;
+                $mif_mr_tools_curriculum = new mif_mr_tools_curriculum();
+                $mif_mr_tools_curriculum->the_show();
 
             break;
             

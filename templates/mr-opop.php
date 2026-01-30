@@ -29,7 +29,7 @@
                 <?php mif_mr_the_menu_item( 'Цели и содержание', '', 1 ); ?>
                 <?php mif_mr_the_menu_item( 'Разработчики', '', 1 ); ?>
                 <?php mif_mr_the_menu_item(); ?>
-                <?php mif_mr_the_menu_item( 'Инструменты разработки', '', 1 ); ?>
+                <?php mif_mr_the_menu_item( 'Инструменты разработки', 'tools', 1 ); ?>
                 
             </div>
             <div class="col-sm">

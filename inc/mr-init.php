@@ -34,7 +34,12 @@ include_once dirname( __FILE__ ) . '/companion-lib-courses.php';
 include_once dirname( __FILE__ ) . '/companion-lib-courses-screen.php';
 include_once dirname( __FILE__ ) . '/companion-lib-templates.php';
 
+include_once dirname( __FILE__ ) . '/tools-core.php';
+include_once dirname( __FILE__ ) . '/tools-curriculum.php';
+include_once dirname( __FILE__ ) . '/tools-templates.php';
+
 include_once dirname( __FILE__ ) . '/lib-download.php';
+include_once dirname( __FILE__ ) . '/lib-upload.php';
 include_once dirname( __FILE__ ) . '/lib-xlsx-core.php';
 include_once dirname( __FILE__ ) . '/lib-docx-core.php';
 
@@ -50,6 +55,7 @@ include_once dirname( __FILE__ ) . '/classes/content-class.php';
 include_once dirname( __FILE__ ) . '/classes/it-class.php';
 include_once dirname( __FILE__ ) . '/classes/mto-class.php';
 include_once dirname( __FILE__ ) . '/classes/parts-class.php';
+include_once dirname( __FILE__ ) . '/classes/plx-class.php';
 // include_once dirname( __FILE__ ) . '/classes/.php';
 
 
@@ -74,6 +80,7 @@ class mif_mr_init extends mif_mr_functions {
         
         $this->rewrite_rule();
         $this->post_types_init();
+      
         
         // add_action('init', array( $this, 'rewrite_rule' ) );
         add_action( 'wp_head', array( $this, 'ajaxurl' ) );
@@ -91,6 +98,11 @@ class mif_mr_init extends mif_mr_functions {
         
         add_action( 'wp_ajax_lib-competencies', array( $this, 'ajax' ) );
         add_action( 'wp_ajax_lib-courses', array( $this, 'ajax' ) );
+        
+        add_action( 'wp_ajax_tools-curriculum', array( $this, 'ajax' ) );
+        add_action( 'wp_ajax_nopriv_tools-curriculum', array( $this, 'ajax' ) );
+        
+        
         // add_action( 'wp_ajax_edit', array( $this, 'ajax' ) );
         // add_action( 'wp_ajax_cancel', array( $this, 'ajax' ) );
         // add_action( 'wp_ajax_save', array( $this, 'ajax' ) );
@@ -198,6 +210,54 @@ class mif_mr_init extends mif_mr_functions {
                     
                     $m = new mif_mr_curriculum();
                     echo $m->get_curriculum();
+                
+                } 
+
+                if ( $_REQUEST['action'] == 'tools-curriculum' ) {
+                    
+                    if ( $_REQUEST['do'] == 'remove' ) {
+                        
+                        $m = new mif_mr_tools_curriculum();
+                        echo $m->remove( (int) $_REQUEST['attid'] );
+                        
+                    }     
+                
+                    if ( $_REQUEST['do'] == 'save' ) {
+                        
+                        $m = new mif_mr_tools_curriculum();
+                        echo $m->save_comp( array(
+                                                'opop_title' => (int) $_REQUEST['opop_title'],
+                                                'opop_id' => (int) $_REQUEST['opop'],
+                                                'att_id' => (int) $_REQUEST['attid'],
+                                                'key' => sanitize_key( $_REQUEST['key'] ),
+                                                'yes' => sanitize_key( $_REQUEST['yes'] ),
+                                                'data' => sanitize_textarea_field( $_REQUEST['data'] ),
+                                                ) );
+                        
+                    }     
+                
+                
+                    if ( $_REQUEST['do'] == 'analysis' ) {
+                        
+                        $m = new mif_mr_tools_curriculum();
+                        echo $m->analysis( array(
+                                                'opop_title' => (int) $_REQUEST['opop_title'],
+                                                'opop_id' => (int) $_REQUEST['opop'],
+                                                'att_id' => (int) $_REQUEST['attid'],
+                                                'key' => sanitize_key( $_REQUEST['key'] ),
+                                                // 'yes' => sanitize_key( $_REQUEST['yes'] ),
+                                                'data' => sanitize_textarea_field( $_REQUEST['data'] ),
+                                                // 'data' => $_REQUEST['data'],
+                                                ) );
+                        
+                    }     
+                
+
+
+
+                    // p($_REQUEST);
+                    // $m = new mif_mr_curriculum();
+                    // echo $m->get_curriculum();
                 
                 } 
 

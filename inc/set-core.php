@@ -248,7 +248,8 @@ class mif_mr_set_core extends mif_mr_table {
         $index = array();
 
         foreach ( $arr_raw as $key => $item ) 
-            foreach ( $item['courses'] as $key2 => $item2 ) $index[$key2] = array( 'key' => $key, 'name' => $key2 );
+            if ( isset( $item['courses'] ) )
+                foreach ( $item['courses'] as $key2 => $item2 ) $index[$key2] = array( 'key' => $key, 'name' => $key2 );
         
         // p($index);
         

@@ -164,7 +164,8 @@ class parser {
     //      == Учебная практика (пленер). (ПК-3)
     // 
 
-    private function parse_name( $name, $att_exist = true, $default = false )
+    // private 
+    function parse_name( $name, $att_exist = true, $default = false )
     {
         $att = array();
         

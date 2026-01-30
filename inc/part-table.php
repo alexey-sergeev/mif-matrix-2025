@@ -138,22 +138,23 @@ class mif_mr_table extends mif_mr_part_companion {
                 
             $arr[] = $this->add_to_row( $arr2, array('elem' => 'tr') );
             
-            foreach ( (array) $item['courses'] as $key2 => $item2 ) {
-                
-                $arr2 = array();
-                $code = ( isset( $item2['code'] ) ) ? $item2['code'] : '';
-                
-                $arr2[] = ( $mode == 'modules' ) ? 
-                    $this->add_to_col( $code, array('elem' => 'td') ) :
-                    $this->add_to_col( $n++, array('elem' => 'td') ) ;
+            if ( isset( $item['courses'] ) )
+                foreach ( (array) $item['courses'] as $key2 => $item2 ) {
                     
-                $arr2[] = $this->add_to_col( $key2, array('elem' => 'td') ) ;
+                    $arr2 = array();
+                    $code = ( isset( $item2['code'] ) ) ? $item2['code'] : '';
+                    
+                    $arr2[] = ( $mode == 'modules' ) ? 
+                        $this->add_to_col( $code, array('elem' => 'td') ) :
+                        $this->add_to_col( $n++, array('elem' => 'td') ) ;
+                        
+                    $arr2[] = $this->add_to_col( $key2, array('elem' => 'td') ) ;
 
-                $arr2 = apply_filters( 'mif-mr-tbody-col', $arr2, $key, $key2, $courses_arr ); 
+                    $arr2 = apply_filters( 'mif-mr-tbody-col', $arr2, $key, $key2, $courses_arr ); 
 
-                $arr[] = $this->add_to_row( $arr2, array('elem' => 'tr', 'class' => apply_filters( 'mif-mr-tbody-class-tr', 'can-select', $key2 ) ) );
+                    $arr[] = $this->add_to_row( $arr2, array('elem' => 'tr', 'class' => apply_filters( 'mif-mr-tbody-class-tr', 'can-select', $key2 ) ) );
 
-            }
+                }
 
             $arr = apply_filters( 'mif-mr-tbody-section-row', $arr, $key, $courses_arr ); 
             

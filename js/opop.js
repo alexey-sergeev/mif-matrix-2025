@@ -179,7 +179,7 @@ jQuery( document ).ready( function( jq ) {
                 if ( response ) {
                     
                     div.replaceWith( response )
-                    console.log( response );
+                    // console.log( response );
                     
                 } else {
                     
@@ -501,7 +501,7 @@ jQuery( document ).ready( function( jq ) {
     })
     
     
-
+    
     jq( 'body' ).on( 'click', '.part .comp i.up', function() {
         
         // console.log( '@' );
@@ -512,25 +512,25 @@ jQuery( document ).ready( function( jq ) {
         if ( sort_1 < 65535 && sort_2 < 65535 ) {
             
             tr.addClass('mr-yellow flash');
-
+            
             jq( 'input.sort', jq(this).closest('tr') ).val( sort_1 );
             jq( 'input.sort', jq(this).closest('tr').prev() ).val( sort_2 );
             jq( jq(this).closest('tr').prev() ).before( jq(this).closest('tr') );
-        
+            
             setTimeout( function () { tr.removeClass('mr-yellow'); }, 1) ;
             setTimeout( function () { tr.removeClass('flash'); }, 2000 );
-
+            
         }
-
+        
         // jq( 'input.sort', jq(this).closest('tr').prev() ).val( jq( 'input.sort', jq(this).closest('tr') ).val() );
-
+        
         // console.log( sort );
         
     })
     
     jq( 'body' ).on( 'click', '.part .comp i.down', function() {
         
-
+        
         let sort_1 = jq( 'input.sort', jq(this).closest('tr').next() ).val();
         let sort_2 = jq( 'input.sort', jq(this).closest('tr') ).val();
         let tr = jq(this).closest('tr');
@@ -538,28 +538,289 @@ jQuery( document ).ready( function( jq ) {
         if ( sort_1 < 65535 && sort_2 < 65535 ) {
             
             tr.addClass('mr-yellow flash');
-
+            
             jq( 'input.sort', jq(this).closest('tr') ).val( sort_1 );
             jq( 'input.sort', jq(this).closest('tr').next() ).val( sort_2 );
             jq( jq(this).closest('tr').next() ).after( jq(this).closest('tr') );
             // jq( jq(this).closest('tr').prev() ).before( jq(this).closest('tr') );
-                
+            
             setTimeout( function () { tr.removeClass('mr-yellow'); }, 1) ;
             setTimeout( function () { tr.removeClass('flash'); }, 2000 );
-
+            
         }
-
-
+        
+        
         // let sort = jq( 'input.sort', jq(this).closest('tr').next() ).val();
         // jq( 'input.sort', jq(this).closest('tr').next() ).val( jq( 'input.sort', jq(this).closest('tr') ).val() );
         // jq( 'input.sort', jq(this).closest('tr') ).val( sort );
-
+        
         // jq( jq(this).closest('tr').next() ).after( jq(this).closest('tr') );
         // console.log( '@@' );
-      
+        
+        
+    })
+    
+    
+    
+    // tools curriculum
+    
+    // "remove"
+
+    jq( 'body' ).on( 'click', '.tools-curriculum .remove', function() {
+        
+        
+        // console.log( jq('.tools-curriculum .remove') );
+        // console.log( jq( 'input[name=opop]' ).val() );
+        // let nonce = jq( 'input[name=_wpnonce]' ).val();
+            // console.log( jq(this).closest('div.row') );
+            //         jq( jq(this).closest('div.row') ).slideUp( function(){ 
+            //             jq(this).remove();
+            //             if ( jq('.tools-curriculum .remove').length === 0 ) jq( '.no-plans' ).removeClass('d-none');  
+            //         });
+        let elem = jq(this).closest('div.row');
+            
+
+        jq.ajax( {
+            url: ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'tools-curriculum',
+                do: 'remove',
+                attid: jq(this).attr( 'data-attid' ),
+                opop: jq( 'input[name=opop]' ).val(),
+                // comp: comp_id,
+                // sub: sub_id,
+                // part: part,
+                // content: content,
+                // title: title,
+                // data: data,
+                // name: name,
+                _wpnonce: jq( 'input[name=_wpnonce]' ).val(),
+                // _wpnonce: nonce,
+                // coll: coll,
+            },
+            success: function( response ) {
+                
+                // console.log( response );
+                if ( response == '1' ) {
+                    
+                    jq( elem ).slideUp( function(){ 
+                        jq(this).remove();
+                        // if ( jq('.tools-curriculum .remove').length === 0 ) jq( '.no-plans' ).removeClass('d-none');  
+                        if ( jq('.tools-curriculum .remove').length === 0 ) jq( '.no-plans' ).slideDown();  
+                    });
+                    
+                    // console.log( response );
+                    
+                } else {
+                    
+                    console.log( 'error 7' );
+                    
+                }
+                
+            },
+            error: function( response ) {
+                
+                console.log( 'error 8' );
+                
+            },
+            
+        } );
+
+
+
+        return false;
+        
+    })
+    
+    
+
+
+    // "Сохранить"
+    
+    
+    jq( 'body' ).on( 'click', '.tools-curriculum .save', function() {
+        
+        let elem = jq(this).closest('div.plx-item');
+
+        if ( jq('.report', elem).attr('data-visible') == undefined ) { 
+            
+            jq( '.report', elem ).attr( 'data-visible', '1' ),
+
+            jq.ajax( {
+                url: ajaxurl,
+                type: 'POST',
+                data: {
+                    action: 'tools-curriculum',
+                    do: 'save',
+                    opop: jq( 'input[name=opop]' ).val(),
+                    attid: jq( 'input[name=attid]' ).val(),
+                    opop_title: jq( 'input[name=opop_title]' ).val(),
+                    yes: jq(this).attr( 'data-yes' ),
+                    // opop: opop_id,
+                    // data: data,
+                    // data: jq( 'textarea', jq(this).closest('div.row') ).val(),
+                    key: jq( 'textarea', jq(this).closest('div.plx-item') ).attr( 'name' ),
+                    _wpnonce: jq( 'input[name=_wpnonce]' ).val(),
+                },
+                success: function( response ) {
+                    
+                    // console.log( response );
+                    if ( response ) {
+
+                        // jq( '.report', elem ).html( response );
+                        // jq( '.report', elem ).slideDown();
+                        
+                        jq( '.report', elem ).slideUp( function() {
+                            jq( '.report', elem ).html( response );
+                            jq( '.report', elem ).slideDown();
+                        });
+
+                        jq( '.analysis-box', elem ).slideUp( function ( index, elem ) { jq(elem).html(''); });
+                        // console.log( response );
+                        
+                    } else {
+                        
+                        console.log( 'error 9' );
+                        
+                    }
+                    
+                },
+                error: function( response ) {
+                    
+                    console.log( 'error 10' );
+                    
+                },
+                
+            } );
+        
+        } else {
+
+            jq('.report', elem).removeAttr('data-visible');
+            jq( '.report', elem ).slideUp( function() { jq( '.report', elem ).html(''); });
+
+        }    
+        
+        return false;
+        
+    })
+    
+    
+    
+    // Отменить
+    
+    jq( 'body' ).on( 'click', '.tools-curriculum .cancel', function() {
+        jq( '.report',  jq(this).closest('div.plx-item') ).slideUp();
+        return false;
+    })
+    
+    
+    jq( 'body' ).on( 'click', '.tools-curriculum .cancel-analysis', function() {
+        // console.log( '@' );
+        jq( '.analysis-box',  jq(this).closest('div.plx-item') ).slideUp(function ( index, elem ) {jq(elem).html('');});
+        jq( '.analysis-box' ).each( function ( index, elem ) { jq(elem).removeAttr('data-visible'); } );                    
+        jq( 'div.container' ).removeClass( 'fullsize' );
+        jq( '#primary div.column' ).addClass( 'is-11-desktop' );
+        jq( '#primary div.column' ).removeClass( 'is-12-desktop' );
+
+        return false;
+    })
+    
+
+
+    // "Анализ"
+        
+    jq( 'body' ).on( 'click', '.tools-curriculum .analysis', function() {
+        
+        let elem = jq(this).closest('div.plx-item');
+        jq( '.report', elem ).slideUp();
+
+        if ( jq('.analysis-box', elem).attr('data-visible') == undefined ) { 
+
+            jq( '.analysis-box' ).each( function ( index, elem ) { jq(elem).removeAttr('data-visible'); } );
+            jq( '.analysis-box', elem ).attr( 'data-visible', '1' ),
+
+            // console.log( jq( 'textarea', jq(this).closest('div.row') ).val() );
+            
+            jq.ajax( {
+                url: ajaxurl,
+                type: 'POST',
+                data: {
+                    action: 'tools-curriculum',
+                    do: 'analysis',
+                    opop: jq( 'input[name=opop]' ).val(),
+                    attid: jq( 'input[name=attid]' ).val(),
+                    // data: jq( 'textarea', jq(this).closest('div.row') ).val(),
+                    key: jq( 'textarea', jq(this).closest('div.row') ).attr( 'name' ),
+                    _wpnonce: jq( 'input[name=_wpnonce]' ).val(),
+                },
+                success: function( response ) {
+                    
+                    if ( response ) {
+
+                        // jq( '.report', elem ).html( response );
+                        // // jq( '.report', elem ).slideDown();
+                        
+                        jq( '.analysis-box' ).each( function ( index, elem ) { 
+                            
+                            // jq('#fullsize').trigger('click');
+                            // jq( 'div.container' ).toggleClass( 'fullsize' );
+                            // jq( '#primary div.column' ).addClass( 'is-11-desktop is-12-desktop' ); 
+                            // jq( 'div.container' ).removeClass( 'fullsize' );
+                            // jq( '#primary div.column' ).addClass( 'is-11-desktop' );
+                            // jq( '#primary div.column' ).removeClass( 'is-12-desktop' );
+                            jq(elem).html(''); 
+                            jq(elem).slideUp(); 
+                        
+                        } );
+
+                        
+                        jq( '.analysis-box', elem ).slideUp( function() {
+                            jq( '.analysis-box', elem ).html( response );
+                            jq( '.analysis-box', elem ).slideDown();
+                        });
+
+                        // console.log( response );
+                        
+                    } else {
+                        
+                        console.log( 'error 11' );
+                        
+                    }
+                    
+                },
+                error: function( response ) {
+                    
+                    console.log( 'error 12' );
+                    
+                },
+                
+            } );
+
+                
+        } else {
+
+            // jq( '.analysis-box', elem ).removeAttr('data-visible');
+            // jq( '.analysis-box', elem ).slideUp( function() { jq( '.analysis-box', elem ).html(''); });
+            jq('.tools-curriculum .cancel-analysis').trigger('click');
+
+        }   
+        
+        return false;
         
     })
 
 
+
+    // "Копировать"
+
+    jq( 'body' ).on( 'click', '.copy-button', function() {
+        jq( 'textarea', jq(this).closest('div.row') ).select();    
+        document.execCommand('copy'); 
+        return false;
+    }); 
+    
+    
+    
     
 });

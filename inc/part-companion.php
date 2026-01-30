@@ -86,7 +86,7 @@ class mif_mr_part_companion extends mif_mr_part_core {
     public function get_companion_id( $type = 'courses', $opop_id = NULL )
     {
         // if ( $opop_id === NULL ) $opop_id = get_the_ID();
-        if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();;
+        if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
         
         $posts = get_posts( array(
             'post_type'     => $type,
@@ -142,28 +142,32 @@ class mif_mr_part_companion extends mif_mr_part_core {
         if ( $content == NULL && ! isset( $_REQUEST['content'] ) ) return;
         if ( $content == NULL ) $content = sanitize_textarea_field( $_REQUEST['content'] );
 
-        if ( $this->get_companion_id( $type, $opop_id ) === NULL) {
-        // if ( $this->get_companion_id( $type, mif_mr_opop_core::get_opop_id() ) === NULL) {
+        $res = $this->companion_insert( $att = array(
+                    'type' => $type,
+                    'opop_id' => $opop_id, 
+                    'opop_title' => $opop_title,
+                    'content' => $content,
+                    ) );
+    
+        // if ( $this->get_companion_id( $type, $opop_id ) === NULL) {
             
-            $res = wp_insert_post( array(
-                'post_title'    => $opop_title . ' (' . $opop_id . ')',
-                'post_type'     => $type,
-                'post_status'   => 'publish',
-                'post_parent'   => $opop_id,
-                // 'post_content'  => sanitize_textarea_field( $_REQUEST['content'] ),
-                'post_content'  => $content,
-                ) );
+        //     $res = wp_insert_post( array(
+        //         'post_title'    => $opop_title . ' (' . $opop_id . ')',
+        //         'post_type'     => $type,
+        //         'post_status'   => 'publish',
+        //         'post_parent'   => $opop_id,
+        //         'post_content'  => $content,
+        //         ) );
                 
-        } else {
+        // } else {
             
-            $res = wp_update_post( array(
-                'ID' => $this->get_companion_id( $type, $opop_id ),
-                // 'post_content' => sanitize_textarea_field( $_REQUEST['content'] ),
-                'post_content' => $content,
-                ) );
+        //     $res = wp_update_post( array(
+        //         'ID' => $this->get_companion_id( $type, $opop_id ),
+        //         'post_content' => $content,
+        //         ) );
                 
-        }
-        
+        // }
+
         global $messages;
         $messages[] = ( $res ) ? array( 'Сохранено', 'success' ) : array( 'Какая-то ошибка. Код ошибки: 102 (' . $type . ')', 'danger' );
         
@@ -178,7 +182,48 @@ class mif_mr_part_companion extends mif_mr_part_core {
         
         return $res;
     }
+  
+
     
+    
+    
+    public function companion_insert( $att = array() )
+    {
+        $type = $att['type'];
+        $opop_id = $att['opop_id'];
+        $opop_title = $att['opop_title'];
+        $content = $att['content'];
+        
+        // p($type);
+        // p($opop_id);
+        // p($opop_title);
+        // p($content);
+    
+        // remove_filter( 'content_save_pre', 'wp_filter_post_kses' ); 
+
+        if ( $this->get_companion_id( $type, $opop_id ) === NULL) {
+            // p('@');
+            $res = wp_insert_post( array(
+                'post_title'    => $opop_title . ' (' . $opop_id . ')',
+                'post_type'     => $type,
+                'post_status'   => 'publish',
+                'post_parent'   => $opop_id,
+                'post_content'  => $content,
+                ) );
+                
+        } else {
+            // p('@@');
+            // remove_filter( 'content_save_pre', 'wp_filter_post_kses' ); 
+
+            $res = wp_update_post( array(
+                'ID' => $this->get_companion_id( $type, $opop_id ),
+                'post_content' => $content,
+                ) );
+                
+        }
+        
+        return $res;
+    }
     
     
     

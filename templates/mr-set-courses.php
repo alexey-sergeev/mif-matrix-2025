@@ -39,17 +39,5 @@
     </div>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
 <?php mif_mr_the_form_end(); ?>
 

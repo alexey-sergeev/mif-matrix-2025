@@ -258,6 +258,8 @@ class mif_mr_opop_core {
     //
     // Получить id ОПОП
     //
+    // mif_mr_opop_core::get_opop_id()
+    //
 
     public static function get_opop_id()
     {
