@@ -152,7 +152,7 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
         $out .= $this->get_part( array( 'title' => 'Дисциплины', 'key' => 'courses', 'data' => $plx->get_courses(), 'save' => 'Сохранить в ОПОП', 'analysis' => 'Анализ' ) );
         $out .= $this->get_part( array( 'title' => 'Матрица компетенций', 'key' => 'matrix', 'data' => $plx->get_matrix(), 'save' => 'Сохранить в ОПОП', 'analysis' => 'Анализ' ) );
         $out .= $this->get_part( array( 'title' => 'Учебный план', 'key' => 'curriculum', 'data' => $plx->get_curriculum(), 'save' => 'Сохранить в ОПОП', 'analysis' => 'Анализ' ) );
-        $out .= $this->get_part( array( 'title' => 'Библиотека компетенций', 'key' => 'cmp', 'data' => $plx->get_cmp(), 'save' => 'Сохранить в библиотеке' ) );
+        $out .= $this->get_part( array( 'title' => 'Библиотека компетенций', 'key' => 'lib-competencies', 'data' => $plx->get_cmp(), 'save' => 'Сохранить в библиотеке' ) );
         $out .= $this->get_part( array( 'title' => 'Библиотека параметров ОПОП', 'key' => 'att', 'data' => $plx->get_att(), 'save' => 'Сохранить в библиотеке', 'analysis1' => 'Анализ' ) );
         $out .= $this->get_part( array( 'title' => 'Библиотека параметров организации', 'key' => 'kaf', 'data' => $plx->get_kaf(), 'save' => 'Сохранить в библиотеке' ) );
 
@@ -427,14 +427,36 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
                     // Данные не пустые. Замените их новыми данными?
 
             };
+            
+        } elseif ( in_array( $att['key'], array( 'lib-competencies' ) ) ) {
 
+            // p(  get_post( $att['att_id'] ) );
+            $attached = get_post( $att['att_id'] );
+            // p( $attached->post_title );
             
-            }
-            
-        return $out;
+            $m = new mif_mr_companion_core();
+            $res = $m->companion_insert( array(
+                'type' => $att['key'],
+                'opop_id' => $att['opop_id'], 
+                // 'opop_title' => $att['opop_title'],
+                'title' => $attached->post_title,
+                'data' => $this->get_date_from_plx( $att['key'], $att['att_id'] ),
+            ) );
+
+            p($res);
+
+            $out .= mif_mr_functions::get_callout( 'Сохранено', 'success' );
+
+
         }
+
         
-        
+
+
+        return $out;
+    }
+    
+    
         
         
         
@@ -491,7 +513,24 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
         $out .= '<a href="#" class="mr-3 cancel-analysis">Отменить</a>';
         $out .= '</div>';
 
+        $out .= '<div class="col p-3 bg-light text-end">';
+        $out .= '<a href="#" class="mr-3 help"><i class="fa-regular fa-circle-question fa-xl"></i></a>';
         $out .= '</div>';
+
+        $out .= '</div>';
+  
+        $out .= '<div class="row">';
+
+        $out .= '<div class="col bg-light help-box" style="display: none;">';
+        $out .= mif_mr_functions::get_callout( 
+                    'белые — эти строки доступны одинаково как в первом, так и во втором списке<br />
+                     желтые — есть дисциплина, но параметры другие<br />
+                     красные — это строки, которые написаны один раз, отсутствуют в другом списке.
+                    ', 'info' );;
+        $out .= '</div>';
+
+        $out .= '</div>';
+  
         $out .= '</div>';
 
         return $out;
@@ -609,7 +648,7 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
             case 'courses': $data = $plx->get_courses(); break;  
             case 'curriculum': $data = $plx->get_curriculum(); break;  
             case 'matrix': $data = $plx->get_matrix(); break;  
-            case 'cmp': $data = $plx->get_cmp(); break;  
+            case 'lib-competencies': $data = $plx->get_cmp(); break;  
             case 'kaf': $data = $plx->get_kaf(); break;  
             case 'att': $data = $plx->get_att(); break;  
             case 'get_att_arr': $data = $plx->get_att_arr(); break;  

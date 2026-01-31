@@ -214,13 +214,21 @@ class mif_mr_companion_core {
         if ( empty( $_REQUEST['title'] ) ) return;
   
 
-        $res = wp_insert_post( array(
-            'post_title'    => sanitize_textarea_field( $_REQUEST['title'] ),
-            'post_content'  => ( isset( $_REQUEST['data'] ) ) ? sanitize_textarea_field( $_REQUEST['data'] ) : '',
-            'post_type'     => $type,
-            'post_status'   => 'publish',
-            'post_parent'   => $opop_id,
-            ) );
+        // $res = wp_insert_post( array(
+        //     'post_title'    => sanitize_textarea_field( $_REQUEST['title'] ),
+        //     'post_content'  => ( isset( $_REQUEST['data'] ) ) ? sanitize_textarea_field( $_REQUEST['data'] ) : '',
+        //     'post_type'     => $type,
+        //     'post_status'   => 'publish',
+        //     'post_parent'   => $opop_id,
+        //     ) );
+
+        $res = $this->companion_insert( $att = array(
+                                            'title'     => sanitize_text_field( $_REQUEST['title'] ),
+                                            'data'      => ( isset( $_REQUEST['data'] ) ) ? sanitize_textarea_field( $_REQUEST['data'] ) : '',
+                                            'type'      => $type,
+                                            'opop_id'   => $opop_id,
+                                        ) );
+
 
 
         // global $messages;
@@ -241,6 +249,21 @@ class mif_mr_companion_core {
 
 
 
+
+    public function companion_insert( $att = array() )
+    {
+        // $res = false;
+        // p($att);
+        $res = wp_insert_post( array(
+            'post_title'    => $att['title'],
+            'post_content'  => $att['data'],
+            'post_type'     => $att['type'],
+            'post_status'   => 'publish',
+            'post_parent'   => $att['opop_id'],
+            ) );
+        
+        return $res;
+    }
     
     //
     // Показать всё

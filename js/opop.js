@@ -108,7 +108,7 @@ jQuery( document ).ready( function( jq ) {
     
     // jq( 'body' ).on( 'click', '.comp .remove', function() {
     jq( 'body' ).on( 'click', '.sidebar .remove', function() {
-        
+        //  console.log( '@@@' );
         if ( jq( 'input[name=yes]', jq(this).closest('div.alert') ).is(':checked') ) {
             
             // sub_do( this, 'remove', jq(this).closest('div.content-ajax') );
@@ -190,6 +190,7 @@ jQuery( document ).ready( function( jq ) {
             },
             error: function( response ) {
                 
+                console.log( response );
                 console.log( 'error 6' );
                 
             },
@@ -561,9 +562,10 @@ jQuery( document ).ready( function( jq ) {
     })
     
     
-    
+    // 
     // tools curriculum
-    
+    // 
+
     // "remove"
 
     jq( 'body' ).on( 'click', '.tools-curriculum .remove', function() {
@@ -645,7 +647,7 @@ jQuery( document ).ready( function( jq ) {
 
         if ( jq('.report', elem).attr('data-visible') == undefined ) { 
             
-            jq( '.report', elem ).attr( 'data-visible', '1' ),
+            // jq( '.report', elem ).attr( 'data-visible', '1' ),
 
             jq.ajax( {
                 url: ajaxurl,
@@ -696,8 +698,8 @@ jQuery( document ).ready( function( jq ) {
         
         } else {
 
-            jq('.report', elem).removeAttr('data-visible');
-            jq( '.report', elem ).slideUp( function() { jq( '.report', elem ).html(''); });
+            // jq('.report', elem).removeAttr('data-visible');
+            // jq( '.report', elem ).slideUp( function() { jq( '.report', elem ).html(''); });
 
         }    
         
@@ -810,6 +812,13 @@ jQuery( document ).ready( function( jq ) {
         
     })
 
+
+    // Help
+    
+    jq( 'body' ).on( 'click', '.tools-curriculum .help', function() {
+        jq( '.help-box',  jq(this).closest('div.plx-item') ).slideToggle();
+        return false;
+    })
 
 
     // "Копировать"

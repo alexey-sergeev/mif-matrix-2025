@@ -226,7 +226,7 @@ class mif_mr_init extends mif_mr_functions {
                         
                         $m = new mif_mr_tools_curriculum();
                         echo $m->save_comp( array(
-                                                'opop_title' => (int) $_REQUEST['opop_title'],
+                                                'opop_title' => sanitize_text_field( $_REQUEST['opop_title'] ),
                                                 'opop_id' => (int) $_REQUEST['opop'],
                                                 'att_id' => (int) $_REQUEST['attid'],
                                                 'key' => sanitize_key( $_REQUEST['key'] ),
@@ -241,7 +241,7 @@ class mif_mr_init extends mif_mr_functions {
                         
                         $m = new mif_mr_tools_curriculum();
                         echo $m->analysis( array(
-                                                'opop_title' => (int) $_REQUEST['opop_title'],
+                                                'opop_title' => sanitize_text_field( $_REQUEST['opop_title'] ),
                                                 'opop_id' => (int) $_REQUEST['opop'],
                                                 'att_id' => (int) $_REQUEST['attid'],
                                                 'key' => sanitize_key( $_REQUEST['key'] ),
@@ -267,21 +267,21 @@ class mif_mr_init extends mif_mr_functions {
                 
                     if ( in_array( $_REQUEST['do'], array( 'edit', 'cancel' ) ) ) {
                         
-                        $m = new mif_mr_comp();
+                        $m = new mif_mr_competencies_screen();
                         echo $m->show_comp_sub( (int) $_REQUEST['sub'], (int) $_REQUEST['comp'], (int) $_REQUEST['opop'] );
                     
                     } 
                     
                     if ( in_array( $_REQUEST['do'], array( 'save' ) ) ) {
                         
-                        $m = new mif_mr_comp();
+                        $m = new mif_mr_competencies_screen();
                         echo $m->show_comp( (int) $_REQUEST['comp'], (int) $_REQUEST['opop'] );
                         
                     } 
                     
                     if ( in_array( $_REQUEST['do'], array( 'remove' ) ) ) {
                         
-                        $m = new mif_mr_comp();
+                        $m = new mif_mr_competencies_screen();
                         $m->remove( (int) $_REQUEST['comp'], (int) $_REQUEST['opop'], 'lib-competencies' );
                         echo $mif_mr_opop->show_messages();
                         
@@ -289,7 +289,7 @@ class mif_mr_init extends mif_mr_functions {
                     
                     if ( in_array( $_REQUEST['do'], array( 'create' ) ) ) {
                        
-                        $m = new mif_mr_comp();
+                        $m = new mif_mr_competencies_screen();
                         echo $m->show_lib_comp( (int) $_REQUEST['opop'] );
     
                     } 
