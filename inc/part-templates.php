@@ -182,6 +182,19 @@ function mif_mr_the_set_courses()
 }
 
 
+
+
+// //
+// // Выводит 
+// //
+
+// function mif_mr_the_set_references()
+// {
+//     global $mif_mr_set_references;
+//     echo $mif_mr_set_references->show_set_references();
+// }
+
+
 // //
 // // Выводит 
 // //

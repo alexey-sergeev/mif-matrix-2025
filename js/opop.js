@@ -113,6 +113,7 @@ jQuery( document ).ready( function( jq ) {
             
             // sub_do( this, 'remove', jq(this).closest('div.content-ajax') );
             sub_do( this, 'remove', jq( 'div.content-ajax', jq(this).closest('div.container') ) );
+            jq( 'div.alert', jq(this).closest('div.row') ).slideUp();
             // console.log( '@' );
             
         } else {
@@ -146,13 +147,13 @@ jQuery( document ).ready( function( jq ) {
         let coll = {};
         jq( 'input.coll' ).each( function() { coll[jq(this).attr( 'data-key' )] = jq(this).attr( 'data-value' ); });
         
-        // console.log( action );
-        // console.log( action_do );
-        // console.log( nonce );
-        // console.log( sub_id );
-        // console.log( name );
-        // console.log( part );
-        // console.log( coll );
+        console.log( action );
+        console.log( action_do );
+        console.log( nonce );
+        console.log( sub_id );
+        console.log( name );
+        console.log( part );
+        console.log( coll );
         
         // let div = jq(elem).closest('span.content-ajax');
         jq( 'i.fa-spinner', jq(elem).closest('button') ).removeClass('d-none');
@@ -179,7 +180,7 @@ jQuery( document ).ready( function( jq ) {
                 if ( response ) {
                     
                     div.replaceWith( response )
-                    // console.log( response );
+                    console.log( response );
                     
                 } else {
                     
@@ -395,7 +396,7 @@ jQuery( document ).ready( function( jq ) {
 
     jq( 'body' ).on( 'click', '.part .comp input[type=checkbox]', function() {
         
-        console.log( '@' );
+        // console.log( '@' );
         
         let tr = jq(this).closest('tr');
         
@@ -658,6 +659,7 @@ jQuery( document ).ready( function( jq ) {
                     opop: jq( 'input[name=opop]' ).val(),
                     attid: jq( 'input[name=attid]' ).val(),
                     opop_title: jq( 'input[name=opop_title]' ).val(),
+                    explanation: jq( 'input[name=explanation]', elem ).val(),
                     yes: jq(this).attr( 'data-yes' ),
                     // opop: opop_id,
                     // data: data,

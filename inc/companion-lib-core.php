@@ -551,7 +551,7 @@ class mif_mr_companion_core {
 
             $out .= '<div class="mb-4">'; 
             // $out .= '<div><a href="' . get_edit_post_link( $wp_query->query_vars['id'] ) . '">Расширенный редактор</a></div>';
-            $out .= '<a href="' . get_edit_post_link( $wp_query->query_vars['id'] ) . '">Расширенный редактор</a>';
+            $out .= '<a href="' . get_edit_post_link( $wp_query->query_vars['id'] ) . '" target="_blank">Расширенный редактор</a>';
             $out .= '</div>'; 
         
         }

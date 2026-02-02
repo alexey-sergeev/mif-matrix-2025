@@ -158,6 +158,30 @@ class mif_mr_opop extends mif_mr_opop_tree_raw {
                 }
 
             break;
+                      
+            case 'lib-references':
+                
+                global $wp_query;
+                    
+                if ( isset( $wp_query->query_vars['id'] ) ) {
+                        
+                    global $mif_mr_lib_references;
+                    $mif_mr_lib_references = new mif_mr_lib_references_screen();
+                    
+                    $mif_mr_lib_references->the_show();
+                    
+                } else {
+                    
+                    global $mif_mr_lib_references;
+                    $mif_mr_lib_references = new mif_mr_lib_references_screen();
+                    
+                    global $mif_mr_set_references;
+                    $mif_mr_set_references = new mif_mr_set_references();
+                    $mif_mr_set_references->the_show();
+
+                }
+
+            break;
             
             case 'tools':
 

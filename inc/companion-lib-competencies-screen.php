@@ -89,20 +89,28 @@ class mif_mr_competencies_screen extends mif_mr_lib_competencies {
             // $out .= '<h4 class="mb-6 mt-5 ">' . $item['name'] . '</h4>';
             $out .= '<h4 class="mb-4 mt-0 pb-5 pt-5 bg-body fiksa">' . $item['name'] . '</h4>';
             // $out .= 'id: ' . $comp_id;
-            $out .= $this->get_show_all();
+          
+            if ( isset( $_REQUEST['edit'] ) ) {
 
-            $out .= '<div class="container no-gutters">';
+                $out .= $this->get_edit( $comp_id );
 
-            foreach ( $item['data'] as $item2 ) {
-                
-                $out .= '<span>';
-                
-                $out .= $this->show_comp_sub( $item2['sub_id'], $comp_id, $opop_id );
-                
-                $out .= '</span>';
-                
+            } else {
+
+                $out .= $this->get_show_all();
+
+                $out .= '<div class="container no-gutters">';
+
+                foreach ( $item['data'] as $item2 ) {
+                    
+                    $out .= '<span>';
+                    
+                    $out .= $this->show_comp_sub( $item2['sub_id'], $comp_id, $opop_id );
+                    
+                    $out .= '</span>';
+                    
+                }
+
             }
-        
             // New
 
             if ( $f ) $out .= '<div class="row mb-3 mt-6">';

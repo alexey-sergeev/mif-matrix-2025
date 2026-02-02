@@ -154,58 +154,59 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
         $out .= $this->get_part( array( 'title' => 'Учебный план', 'key' => 'curriculum', 'data' => $plx->get_curriculum(), 'save' => 'Сохранить в ОПОП', 'analysis' => 'Анализ' ) );
         $out .= $this->get_part( array( 'title' => 'Библиотека компетенций', 'key' => 'lib-competencies', 'data' => $plx->get_cmp(), 'save' => 'Сохранить в библиотеке' ) );
         $out .= $this->get_part( array( 'title' => 'Библиотека параметров ОПОП', 'key' => 'att', 'data' => $plx->get_att(), 'save' => 'Сохранить в библиотеке', 'analysis1' => 'Анализ' ) );
-        $out .= $this->get_part( array( 'title' => 'Библиотека параметров организации', 'key' => 'kaf', 'data' => $plx->get_kaf(), 'save' => 'Сохранить в библиотеке' ) );
+        $out .= $this->get_part( array( 'title' => 'Библиотека справочников (номера кафедр)', 'key' => 'lib-references', 'data' => $plx->get_kaf(), 'save' => 'Сохранить в библиотеке', 'explanation' => 'kaf' ) );
+        $out .= $this->get_part( array( 'title' => 'Библиотека справочников (должностные лица)', 'key' => 'lib-references', 'data' => $plx->get_att( 'staff' ), 'save' => 'Сохранить в библиотеке', 'explanation' => 'staff' ) );
 
 
         $out .= '<input type="hidden" name="attid" value="' . $att_id . '" />'; 
-
+        
         // $out .= '<textarea name="att" class="edit textarea mt-4" readonly>';
         // $out .= $plx->get_att();
         // $out .= '</textarea>';
-
+        
         // $out .= '<textarea name="courses" class="edit textarea mt-4" readonly>';
         // $out .= $plx->get_courses();
         // $out .= '</textarea>';
-
+        
         // $out .= '<textarea name="curriculum" class="edit textarea mt-4" readonly>';
         // $out .= $plx->get_curriculum();
         // $out .= '</textarea>';
-
+        
         // $out .= '<textarea name="matrix" class="edit textarea mt-4" readonly>';
         // $out .= $plx->get_matrix();
         // $out .= '</textarea>';
-
+        
         // $out .= '<textarea name="cmp" class="edit textarea mt-4" readonly>';
         // $out .= $plx->get_cmp();
         // $out .= '</textarea>';
-
+        
         // $out .= '<textarea name="kaf" class="edit textarea mt-4" readonly>';
         // $out .= $plx->get_kaf();
         // $out .= '</textarea>';
-
-
+        
+        
         $out .= '';
-    
+        
         // $out .= $att_id;
-    
-            
+        
+        
         // p( $att );
-
+        
         return $out;
         
-    }
-    
-   
-
-    // 
-    // Вывести  
-    // 
-    
+        }
+        
+        
+        
+        // 
+        // Вывести  
+        // 
+        
     private function get_part( $att = array() )
     {
         $out = '';
         
-       
+        
         $out .= '<div class="row mt-5 mb-5 plx-item">';
         $out .= '<div class="col p-0 pt-3 pb-3">';
         if ( isset( $att['title'] ) ) $out .= '<div class="mt-3 mb-3 fw-semibold">' . $att['title'] . '</div>';
@@ -217,6 +218,7 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
         $out .= '<textarea name="' . $att['key']. '" class="edit textarea" readonly>';
         $out .= $att['data'];
         $out .= '</textarea>'; 
+        if ( isset( $att['explanation'] ) ) $out .= '<input type="hidden" name="explanation" value="' . $att['explanation'] . '" />'; 
         if ( isset( $att['analysis'] ) ) $out .= '<div class="analysis-box p-0" style="display: none;"></div>'; 
         $out .= '</div>'; 
         
@@ -428,27 +430,55 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
 
             };
             
-        } elseif ( in_array( $att['key'], array( 'lib-competencies' ) ) ) {
+        } elseif ( in_array( $att['key'], array( 'lib-competencies', 'lib-references' ) ) ) {
 
-            // p(  get_post( $att['att_id'] ) );
             $attached = get_post( $att['att_id'] );
-            // p( $attached->post_title );
+
+            // p($att);
+
+            $title = '';
+            if ( $att['explanation'] === 'kaf' ) $title = 'Номера кафедр — ';
+            if ( $att['explanation'] === 'staff' ) $title = 'Должностные лица — ';
+            $title .= $attached->post_title;
+            
+            $key = $att['key'];
+            if ( ! empty( $att['explanation'] ) ) $key .= '-' . $att['explanation'];
             
             $m = new mif_mr_companion_core();
             $res = $m->companion_insert( array(
                 'type' => $att['key'],
                 'opop_id' => $att['opop_id'], 
-                // 'opop_title' => $att['opop_title'],
-                'title' => $attached->post_title,
-                'data' => $this->get_date_from_plx( $att['key'], $att['att_id'] ),
+                'title' => $title,
+                'data' => $this->get_date_from_plx( $key, $att['att_id'] ),
             ) );
 
-            p($res);
+            // p($res);
 
             $out .= mif_mr_functions::get_callout( 'Сохранено', 'success' );
 
 
-        }
+        } 
+        // elseif ( in_array( $att['key'], array( 'lib-references' ) ) ) {
+
+        //     // p(  get_post( $att['att_id'] ) );
+        //     $attached = get_post( $att['att_id'] );
+        //     // p( $attached->post_title );
+            
+        //     $m = new mif_mr_companion_core();
+        //     $res = $m->companion_insert( array(
+        //         'type' => $att['key'],
+        //         'opop_id' => $att['opop_id'], 
+        //         // 'opop_title' => $att['opop_title'],
+        //         'title' => $attached->post_title,
+        //         'data' => $this->get_date_from_plx( $att['key'], $att['att_id'] ),
+        //     ) );
+
+        //     // p($res);
+
+        //     $out .= mif_mr_functions::get_callout( 'Сохранено', 'success' );
+
+
+        // }
 
         
 
@@ -649,7 +679,8 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
             case 'curriculum': $data = $plx->get_curriculum(); break;  
             case 'matrix': $data = $plx->get_matrix(); break;  
             case 'lib-competencies': $data = $plx->get_cmp(); break;  
-            case 'kaf': $data = $plx->get_kaf(); break;  
+            case 'lib-references-kaf': $data = $plx->get_kaf(); break;  
+            case 'lib-references-staff': $data = $plx->get_att( 'staff' ); break;  
             case 'att': $data = $plx->get_att(); break;  
             case 'get_att_arr': $data = $plx->get_att_arr(); break;  
             default: $data = ''; break;  

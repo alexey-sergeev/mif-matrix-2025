@@ -108,6 +108,7 @@ class mif_mr_opop_tree_raw extends mif_mr_opop_core {
             $t = $this->arr_replace( $t, $this->get_companion( 'curriculum', $item ) ); 
             $t = array_replace_recursive( $t, $this->get_companion( 'lib-competencies', $item ) ); 
             $t = array_replace_recursive( $t, $this->get_companion( 'lib-courses', $item ) ); 
+            $t = array_replace_recursive( $t, $this->get_companion( 'lib-references', $item ) ); 
             $t = $this->arr_replace( $t, $this->get_companion( 'set-competencies', $item ) ); 
             $t = $this->arr_replace( $t, $this->get_companion( 'set-courses', $item ) ); 
             // 
@@ -220,6 +221,11 @@ class mif_mr_opop_tree_raw extends mif_mr_opop_core {
                 $m = new mif_mr_lib_courses();
                 $data = $m->get_all_arr( $opop_id );
                 // p($data);
+            break;
+                
+            case 'lib-references':
+                $m = new mif_mr_lib_references();
+                $data = $m->get_all_arr( $opop_id );
             break;
                 
             case 'set-competencies':

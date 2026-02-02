@@ -46,10 +46,31 @@ function mif_mr_the_lib_courses()
 // Выводит 
 //
 
+function mif_mr_the_lib_references()
+{
+    global $mif_mr_lib_references;
+    echo $mif_mr_lib_references->get_lib_references();
+}
+
+
+//
+// Выводит 
+//
+
 function mif_mr_show_courses()
 {
     global $mif_mr_lib_courses;
     echo $mif_mr_lib_courses->show_courses();
+}
+
+//
+// Выводит 
+//
+
+function mif_mr_show_references()
+{
+    global $mif_mr_lib_references;
+    echo $mif_mr_lib_references->show_references();
 }
 
 

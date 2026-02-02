@@ -23,28 +23,33 @@
                 <?php mif_mr_the_menu_item( 'Матрица компетенций', 'matrix', 1 ); ?>
                 <?php mif_mr_the_menu_item( 'Учебный план', 'curriculum', 1 ); ?>
                 <?php mif_mr_the_menu_item(); ?>
-                <?php mif_mr_the_menu_item( 'Описание разделов', '', 1 ); ?>
-                <?php mif_mr_the_menu_item( 'Оценочные средства', '', 1 ); ?>
-                <?php mif_mr_the_menu_item(); ?>
-                <?php mif_mr_the_menu_item( 'Цели и содержание', '', 1 ); ?>
-                <?php mif_mr_the_menu_item( 'Разработчики', '', 1 ); ?>
-                <?php mif_mr_the_menu_item(); ?>
                 <?php mif_mr_the_menu_item( 'Инструменты разработки', 'tools', 1 ); ?>
+                <?php mif_mr_the_menu_item(); ?>
+                <?php mif_mr_the_menu_item( 'Рекомендации', 'stat', 1 ); ?>
+                <?php mif_mr_the_menu_item( 'Статистика ОПОП', 'stat', 1 ); ?>
+                <?php // mif_mr_the_menu_item( 'Цели и содержание', '', 1 ); ?>
+                <?php // mif_mr_the_menu_item( 'Описание разделов', '', 1 ); ?>
+                <?php // mif_mr_the_menu_item( 'Оценочные средства', '', 1 ); ?>
+                <?php // mif_mr_the_menu_item(); ?>
+                <?php // mif_mr_the_menu_item( 'Литература', '', 1 ); ?>
+                <?php // mif_mr_the_menu_item( 'Информационные технологии', '', 1 ); ?>
+                <?php // mif_mr_the_menu_item( 'Разработчики', '', 1 ); ?>
+                <?php // mif_mr_the_menu_item( 'Материально-техническое обеспечение', '', 1 ); ?>
+                <?php // mif_mr_the_menu_item(); ?>
+                <?php // mif_mr_the_menu_item( 'Методические указания', '', 1 ); ?>
+                <?php // mif_mr_the_menu_item( 'Организация СРС', '', 1 ); ?>
                 
             </div>
             <div class="col-sm">
                 
                 <?php mif_mr_the_menu_item( 'Параметры ОПОП', 'param', 1 ); ?>
+                <?php mif_mr_the_menu_item( 'Атрибуты ОПОП', 'meta', 1 ); ?>
+                <?php mif_mr_the_menu_item(); ?>
                 <?php mif_mr_the_menu_item( 'Библиотека компетенций', 'lib-competencies', 1 ); ?>
                 <?php mif_mr_the_menu_item( 'Библиотека дисциплин', 'lib-courses', 1 ); ?>
+                <?php mif_mr_the_menu_item( 'Библиотека справочников', 'lib-references', 1 ); ?>
                 <?php mif_mr_the_menu_item(); ?>
-                <?php mif_mr_the_menu_item( 'Литература', '', 1 ); ?>
-                <?php mif_mr_the_menu_item( 'Информационные технологии', '', 1 ); ?>
-                <?php mif_mr_the_menu_item( 'Материально-техническое обеспечение', '', 1 ); ?>
-                <?php mif_mr_the_menu_item( 'Методические указания', '', 1 ); ?>
-                <?php mif_mr_the_menu_item( 'Организация СРС', '', 1 ); ?>
-                <?php mif_mr_the_menu_item(); ?>
-                <?php mif_mr_the_menu_item( 'Статистика ОПОП', 'stat', 1 ); ?>
+                <?php mif_mr_the_menu_item( 'Материалы дисциплин', '', 1 ); ?>
                 
             </div>
         </div>
