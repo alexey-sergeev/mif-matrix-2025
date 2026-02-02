@@ -27,12 +27,8 @@ class mif_mr_companion_core {
     
     public function get_list_companions( $type = 'course', $opop_id = NULL )
     {
-        // $content = '';
-        
         if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
         
-        // p($type);
-        // p($opop_id);
         $post = get_posts( array(
             'post_type' => $type,
             'post_status' => 'publish',
@@ -117,26 +113,6 @@ class mif_mr_companion_core {
         
         $res = $this->save( $comp_id, implode( "\n", $arr ) );
 
-
-        // $res = wp_update_post( array(
-        //     'ID' => $comp_id,
-        //     'post_content' => implode( "\n", $arr ),
-        //     ) );
-        // // p(implode( "\n", $arr ));        
-       
-        // global $messages;
-        // $messages[] = ( $res ) ? array( 'Сохранено', 'success' ) : array( 'Какая-то ошибка. Код ошибки: 103 (' . $type . ')', 'danger' );
-        
-        // if ( $res ) {
-            
-        //     global $tree;
-        //     global $mif_mr_opop;
-            
-        //     $tree = array();
-        //     $tree = $mif_mr_opop->get_tree();
-            
-        // }
-        
         return $res;
     }
 
@@ -213,15 +189,6 @@ class mif_mr_companion_core {
 
         if ( empty( $_REQUEST['title'] ) ) return;
   
-
-        // $res = wp_insert_post( array(
-        //     'post_title'    => sanitize_textarea_field( $_REQUEST['title'] ),
-        //     'post_content'  => ( isset( $_REQUEST['data'] ) ) ? sanitize_textarea_field( $_REQUEST['data'] ) : '',
-        //     'post_type'     => $type,
-        //     'post_status'   => 'publish',
-        //     'post_parent'   => $opop_id,
-        //     ) );
-
         $res = $this->companion_insert( $att = array(
                                             'title'     => sanitize_text_field( $_REQUEST['title'] ),
                                             'data'      => ( isset( $_REQUEST['data'] ) ) ? sanitize_textarea_field( $_REQUEST['data'] ) : '',
@@ -229,11 +196,6 @@ class mif_mr_companion_core {
                                             'opop_id'   => $opop_id,
                                         ) );
 
-
-
-        // global $messages;
-        // $messages[] = ( $res ) ? array( 'Данные были удалены', 'success' ) : array( 'Какая-то ошибка. Код ошибки: 105 (' . $type . ')', 'danger' );
-        
         if ( $res ) {
             
             global $tree;
@@ -252,8 +214,6 @@ class mif_mr_companion_core {
 
     public function companion_insert( $att = array() )
     {
-        // $res = false;
-        // p($att);
         $res = wp_insert_post( array(
             'post_title'    => $att['title'],
             'post_content'  => $att['data'],
@@ -284,7 +244,7 @@ class mif_mr_companion_core {
 
     
     //
-    // Показать cписок компетенций - компетенция, head
+    // Показать cписок, head
     //
     
     public static function get_sub_head( $item )
@@ -326,14 +286,11 @@ class mif_mr_companion_core {
         $out .= '<div class="col-1 p-3 text-end ' . $color . '">';
         if ( $item['f'] ) $out .= '<i class="fas fa-spinner fa-spin d-none"></i> ';
         if ( $item['f'] ) $out .= '<a href="#" class="edit pr-1"' . $data_sub_id . $data_part . '><i class="fa-regular fa-pen-to-square"></i></a>';
-        // if ( $item['f'] ) $out .= '<a href="#" class="edit pr-1" data-sub="' . $item['sub_id'] . '"><i class="fa-regular fa-pen-to-square"></i></a>';
         $out .= '<a href="#" class="roll-up' . $up . '"><i class="fa-solid fa-angle-up"></i></a>';
         $out .= '<a href="#" class="roll-down' . $down . '"><i class="fa-solid fa-chevron-down"></i></a>';
         $out .= '</div>';
 
         $out .= '<input type="hidden" class="coll" data-key="' . $part . '" data-value="' . $onoff . '">';
-        // $out .= '<input type="hidden" class="coll-status" name="coll[' . $part . ']" value="' . $onoff . '">';
-        // $out .= '<input type="hidden" name="coll[' . $part . ']" value="' . $onoff . '">';
         
         $out .= '</div>';
 
@@ -350,11 +307,6 @@ class mif_mr_companion_core {
     public function get_edit( $comp_id )
     {
         $post = get_post( $comp_id );
-        
-        // p($post->post_title);
-        // p($post->post_content);
-        // global $wp_query;
-        // p( $wp_query);
         
         $out = '';
         
@@ -393,7 +345,7 @@ class mif_mr_companion_core {
     public function get_sub_edit( $sub_id, $comp_id, $part = NULL )
     {
         // ####!!!!!
-        // p('@');
+
         $arr = $this->get_sub_arr( $comp_id );
         
         $data_sub_id = ' data-sub="' . $sub_id . '"';
@@ -403,7 +355,6 @@ class mif_mr_companion_core {
 
         if ( isset( $arr[$sub_id] ) || $sub_id == '-1' ) {
 
-            // $out .= '<div class="content-ajax">';
             $out .= '<div class="row">';
             $out .= '<div class="col p-0">';
             
@@ -426,14 +377,11 @@ class mif_mr_companion_core {
             $out .= '<div class="row">';
             $out .= '<div class="col p-0">';
 
-            // $out .= '<button type="button" class="btn btn-primary mt-4 mb-4 mr-3 save" data-sub="' . $sub_id . '">Сохранить <i class="fas fa-spinner fa-spin d-none"></i></button>';
-            // $out .= '<button type="button" class="btn btn-light mt-4 mb-4 mr-3 cancel" data-sub="' . $sub_id . '">Отмена <i class="fas fa-spinner fa-spin d-none"></i></button>';
             $out .= '<button type="button" class="btn btn-primary mt-4 mb-4 mr-3 save"' . $data_sub_id . $data_part . '>Сохранить <i class="fas fa-spinner fa-spin d-none"></i></button>';
             $out .= '<button type="button" class="btn btn-light mt-4 mb-4 mr-3 cancel"' . $data_sub_id . $data_part . '>Отмена <i class="fas fa-spinner fa-spin d-none"></i></button>';
 
             $out .= '</div>';
             $out .= '</div>';
-            // $out .= '</div>';
             
         }
 
@@ -444,42 +392,145 @@ class mif_mr_companion_core {
 
 
     //
+    // Показать cписок, head
+    //
+    
+    public static function get_lib_head( $att = array() )
+    {
+        $out = '';
+
+        $out .= '<div class="row">';
+        
+        $out .= '<div class="col">';
+        $out .= '<h4 class="border-bottom pb-5"><i class="fa-regular fa-file-lines"></i> ' . $att['title']. '</h4>';
+        $out .= '</div>';
+        
+        $out .= '</div>';
+
+        return apply_filters( 'mif_mr_show_list_compe_head', $out );
+    }
+    
+
+
+
+    // //
+    // // Показать cписок, body
+    // //
+    
+    // public static function get_lib_body( $att = array() )
+    // {
+    //     $out = '';
+
+    //     $out .= '<div class="row mt-3 mb-3">';
+        
+    //     $out .= '<div class="col-10 col-md-11 pt-1 pb-1">';
+    //     $out .= '<a href="' . mif_mr_opop_core::get_opop_url() . '' . $att['type']. '/' . $att['comp_id'] . '">' . $att['name'] . '</a>';
+    //     $out .= '</div>';
+        
+    //     $out .= '<div class="col-2 col-md-1 pt-1 pb-1 text-end">';
+    //     $out .= ( $att['from_id'] == mif_mr_opop_core::get_opop_id() ||  $att['from_id'] == 0 ) ?
+    //             '' :
+    //             '<a href="' .  get_permalink( $att['from_id'] ) . '' . $att['type']. '/' . $att['comp_id'] . '" title="' . 
+    //             mif_mr_functions::mb_substr( get_the_title( $att['from_id'] ), 20 ) . '">' . $att['from_id'] . '</a>';
+    //     $out .= '</div>';
+        
+    //     $out .= '</div>';
+
+    //     return apply_filters( 'mif_mr_show_list_compe_body', $out );
+    // }
+    
+    
+
+
+
+    //
+    // Показать cписок, body
+    //
+    
+    public static function get_lib_body( $att = array() )
+    {
+        $out = '';
+
+        $out .= '<div class="row mt-3 mb-3">';
+        
+        $out .= '<div class="col-8 col-md-10 pt-1 pb-1">';
+        $out .= '<a href="' . mif_mr_opop_core::get_opop_url() . '' . $att['type']. '/' . $att['comp_id'] . '">' . $att['name'] . '</a>';
+        $out .= '</div>';
+        
+        $out .= '<div class="col-2 col-md-1 pt-1 pb-1 text-end">';
+        // $out .= '<a href="' . mif_mr_opop_core::get_opop_url() . '' . $att['type']. '/' . $att['comp_id'] . '">' . $att['name'] . '</a>';
+        $out .= '<span class="bg-secondary text-light rounded pl-3 pr-3 p-1 copy">' . $att['comp_id'] . '</span>';
+        $out .= '</div>';
+        
+        $out .= '<div class="col-2 col-md-1 pt-1 pb-1 text-end">';
+        $out .= ( $att['from_id'] == mif_mr_opop_core::get_opop_id() ||  $att['from_id'] == 0 ) ?
+                '' :
+                '<a href="' .  get_permalink( $att['from_id'] ) . '' . $att['type']. '/' . $att['comp_id'] . '" title="' . 
+                mif_mr_functions::mb_substr( get_the_title( $att['from_id'] ), 20 ) . '">' . $att['from_id'] . '</a>';
+        $out .= '</div>';
+        
+        $out .= '</div>';
+
+        return apply_filters( 'mif_mr_show_list_compe_body', $out );
+    }
+    
+
+
+
+
+
+
+    //
     // Форму создания 
     //
     
-    public function get_lib_create( $arr )
+    public function get_lib_create( $att )
     {
         $out = '';
         
         $out .= '<div class="row mt-5">';
         $out .= '<div class="col">';
-        // $out .= '<button type="button" class="btn btn-primary new">Создать дисциплин</button>';
-        $out .= '<button type="button" class="btn btn-primary new">' . $arr['button']. '</button>';
+        $out .= '<button type="button" class="btn btn-primary new">' . $att['button']. '</button>';
+        $out .= '</div>';
+        $out .= '<div class="col p-3 bg-light text-end">';
+        $out .= '<a href="#" class="mr-3 help"><i class="fa-solid fa-circle-info fa-xl"></i></a>';
         $out .= '</div>';
         $out .= '</div>';
-        
+
+        $out .= '<div class="row">';
+
+        $out .= '<div class="col bg-light help-box" style="display: none;">';
+        $out .= mif_mr_functions::get_callout( 
+                    '<span class="bg-secondary text-light rounded pl-3 pr-3 p-1 copy">123</span>
+                    — это идентификатор объекта (cписок компетенций, дисциплина, справочник). 
+                    Если кликнете мышкой по номеру, вы скопируете его в буфера обмена. <br />
+                    <a href="javascript:void(0)">456</a>
+                    — это идентификатор ОПОП, в которой хранится объект. Если он не указан, то сохраняется в текущей ОПОП.
+                    ', 'info' );;
+        $out .= '</div>';
+
+        $out .= '</div>';
+  
+
+
         $out .= '<div class="row new" style="display: none;">';
         $out .= '<div class="col mt-5">';
         
         $out .= '<div class="mb-3">';
-        // $out .= '<label class="form-label">Название cписка компетенций:</label>';
-        $out .= '<label class="form-label">' . $arr['title']. ':</label>';
+        $out .= '<label class="form-label">' . $att['title']. ':</label>';
         $out .= '<input name="title" class="form-control" autofocus>';
-        // $out .= '<div class="form-text">Например: ФГОС "Информатика и вычислительная техника", ОПОП "Математика", ...</div>';
-        $out .= '<div class="form-text">' . $arr['hint_a']. '</div>';
+        $out .= '<div class="form-text">' . $att['hint_a']. '</div>';
         $out .= '</div>';
         
         $out .= '<div class="mb-3">';
-        // $out .= '<label class="form-label">Данные:</label>';
-        $out .= '<label class="form-label">' . $arr['date']. ':</label>';
+        $out .= '<label class="form-label">' . $att['date']. ':</label>';
         $out .= '<textarea name="data" class="form-control" rows="3"></textarea>';
-        // $out .= '<div class="form-text">Например: УК-1. Способен использовать философские знания, ... (<a href="' . '123' . '">помощь</a>)</div>';
-        $out .= '<div class="form-text">' . $arr['hint_b']. '</div>';
+        $out .= '<div class="form-text">' . $att['hint_b']. '</div>';
         $out .= '<button type="button" class="btn btn-primary mt-4 mr-3 create">Сохранить <i class="fas fa-spinner fa-spin d-none"></i></button>';
         $out .= '<button type="button" class="btn btn-light border mt-4 mr-3 cancel">Отмена <i class="fas fa-spinner fa-spin d-none"></i></button>';
         
         $out .= '<input type="hidden" name="opop" value="' . mif_mr_opop_core::get_opop_id() . '">';
-        $out .= '<input type="hidden" name="action" value="' . $arr['action'] . '">';
+        $out .= '<input type="hidden" name="action" value="' . $att['action'] . '">';
         $out .= '<input type="hidden" name="_wpnonce" value="' . wp_create_nonce( 'mif-mr' ) . '">';
         
         $out .= '</div>';
@@ -520,7 +571,6 @@ class mif_mr_companion_core {
 
         if ( isset( $wp_query->query_vars['id'] ) ) {
 
-            // $out .= '<span class="p-0 pr-3 pl-3 rounded">ID: '; 
             $out .= '<div class="mb-4 mt-0 pb-5 pt-5">'; 
             $out .= '<span class="bg-secondary text-light rounded pl-4 pr-4 p-2">ID: '; 
             $out .= $wp_query->query_vars['id']; 
@@ -574,9 +624,7 @@ class mif_mr_companion_core {
 
         if ( isset( $wp_query->query_vars['id'] ) ) {
 
-            // $out .= '<div class="mb-4 mt-0 pb-3 pt-5">'; 
             $out .= '<div class="mb-4">'; 
-            // $out .= 'Редактировать';
             $out .= '<div><a href="?edit">Редактировать</a></div>';
             $out .= '</div>'; 
             
@@ -600,8 +648,6 @@ class mif_mr_companion_core {
         
         if ( isset( $wp_query->query_vars['id'] ) ) {
             
-            // $out .= '<div class="mb-4 mt-6">'; 
-            // $out .= '<small><a href="#" class="msg-remove">Удалить</a></small>';
             $out .= '<div class="mb-4">'; 
             $out .= '<a href="#" class="msg-remove">Удалить</a>';
             
@@ -634,27 +680,17 @@ class mif_mr_companion_core {
         return apply_filters( 'mif_mr_get_permalink_comp', $out );
     }    
     
-    // public static function get_permalink_comp( $comp_id )
-    // {
-    //     // $out = mif_mr_opop_core::get_opop_url() . '/' . $comp_id;
-    //     $out = mif_mr_opop_core::get_opop_url() . $comp_id;
-    //     return apply_filters( 'mif_mr_get_permalink_comp', $out, $comp_id );
-    // }    
- 
 
 
    
-    //
-    //  
-    //
+    // //
+    // //  
+    // //
     
-    public function mb_substr( $s, $length )
-    {
-        // $out = mb_substr( $s, 0, $length - 3 );
-        // if ( mb_strlen( $s ) >= $length ) $out .= '...';
-        // return apply_filters( 'mif_mr_part_core_mb_substr', $out );
-        return mif_mr_functions::mb_substr( $s, $length );
-    }
+    // public function mb_substr( $s, $length )
+    // {
+    //     return mif_mr_functions::mb_substr( $s, $length );
+    // }
     
 
 }

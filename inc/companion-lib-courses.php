@@ -238,18 +238,6 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
             
         }
 
-        // p($arr);
-        
-        // $index = array( 
-        //     'content',
-        //     'evaluations',
-        //     'biblio',
-        //     'it',
-        //     'mto',
-        //     'guidelines',
-        //     'authors',
-        // );
-        
         $arr2 = array();
         
         foreach ( $this->index_part as $item ) {
@@ -264,7 +252,6 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
         }
         
         $arr2 = array_merge( $arr2, $arr );
-        // p($arr2);
         
         return apply_filters( 'mif_mr_companion_course_get_sub_arr', $arr2, $course_id );
     }

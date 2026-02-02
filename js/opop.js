@@ -821,6 +821,11 @@ jQuery( document ).ready( function( jq ) {
         jq( '.help-box',  jq(this).closest('div.plx-item') ).slideToggle();
         return false;
     })
+    
+    jq( 'body' ).on( 'click', '.comp .help', function() {
+        jq( '.help-box',  jq(this).closest('div.comp') ).slideToggle();
+        return false;
+    })
 
 
     // "Копировать"
@@ -828,6 +833,18 @@ jQuery( document ).ready( function( jq ) {
     jq( 'body' ).on( 'click', '.copy-button', function() {
         jq( 'textarea', jq(this).closest('div.row') ).select();    
         document.execCommand('copy'); 
+        return false;
+    }); 
+    
+    
+    jq( 'body' ).on( 'click', 'span.copy', function() {
+        
+        // console.log('@');  
+        navigator.clipboard.writeText( jq(this).text() );
+        elem = this;
+        jq(this).addClass('act'); 
+        setTimeout( function() { jq(elem).removeClass('act') }, 200);
+
         return false;
     }); 
     

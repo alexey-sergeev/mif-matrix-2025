@@ -13,27 +13,10 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
     
     function __construct()
     {
-
         parent::__construct();
-        
-        // add_filter( 'mif-mr-tbody-col', array( $this, 'filter_tbody_col'), 10, 4 );
-        // add_filter( 'mif-mr-tbody-class-tr', array( $this, 'filter_tbody_class_tr'), 10, 2 );
-        // add_filter( 'mif-mr-tbody-colspan', array( $this, 'filter_tbody_colspan'), 10 );
-        // add_filter( 'mif-mr-thead-row', array( $this, 'filter_thead_row'), 10, 2 );
-
-        // $this->save( 'curriculum' );
-
-        // add_filter( 'upload_mimes', array( $this, 'add_type' ), 10 );
-        
         
     }
         
-
-
-        // public function add_type( $mime_types ){
-        //     p('@');
-        //     return $mime_types;
-        // }
 
     
 
@@ -132,10 +115,6 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
         $ext = explode( '.', $att->guid );
         if ( array_pop( $ext ) != 'plx' ) return;
         
-        // p('@');
-        
-        // $plx = simplexml_load_file( get_attached_file( $att_id ) );
-        // p(get_attached_file( $att_id ));
         $plx = new plx( get_attached_file( $att_id ) );
 
         // p($plx);
@@ -157,55 +136,22 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
         $out .= $this->get_part( array( 'title' => 'Библиотека справочников (номера кафедр)', 'key' => 'lib-references', 'data' => $plx->get_kaf(), 'save' => 'Сохранить в библиотеке', 'explanation' => 'kaf' ) );
         $out .= $this->get_part( array( 'title' => 'Библиотека справочников (должностные лица)', 'key' => 'lib-references', 'data' => $plx->get_att( 'staff' ), 'save' => 'Сохранить в библиотеке', 'explanation' => 'staff' ) );
 
-
         $out .= '<input type="hidden" name="attid" value="' . $att_id . '" />'; 
-        
-        // $out .= '<textarea name="att" class="edit textarea mt-4" readonly>';
-        // $out .= $plx->get_att();
-        // $out .= '</textarea>';
-        
-        // $out .= '<textarea name="courses" class="edit textarea mt-4" readonly>';
-        // $out .= $plx->get_courses();
-        // $out .= '</textarea>';
-        
-        // $out .= '<textarea name="curriculum" class="edit textarea mt-4" readonly>';
-        // $out .= $plx->get_curriculum();
-        // $out .= '</textarea>';
-        
-        // $out .= '<textarea name="matrix" class="edit textarea mt-4" readonly>';
-        // $out .= $plx->get_matrix();
-        // $out .= '</textarea>';
-        
-        // $out .= '<textarea name="cmp" class="edit textarea mt-4" readonly>';
-        // $out .= $plx->get_cmp();
-        // $out .= '</textarea>';
-        
-        // $out .= '<textarea name="kaf" class="edit textarea mt-4" readonly>';
-        // $out .= $plx->get_kaf();
-        // $out .= '</textarea>';
-        
         
         $out .= '';
         
-        // $out .= $att_id;
-        
-        
-        // p( $att );
-        
         return $out;
-        
-        }
-        
+    }
         
         
-        // 
-        // Вывести  
-        // 
+    
+    // 
+    // Вывести  
+    // 
         
     private function get_part( $att = array() )
     {
         $out = '';
-        
         
         $out .= '<div class="row mt-5 mb-5 plx-item">';
         $out .= '<div class="col p-0 pt-3 pb-3">';
@@ -222,11 +168,10 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
         if ( isset( $att['analysis'] ) ) $out .= '<div class="analysis-box p-0" style="display: none;"></div>'; 
         $out .= '</div>'; 
         
-
         return $out;
-        
     }
         
+
     
     // 
     // Вывести  
@@ -273,12 +218,7 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
 
         $out .= '</div>';
 
-
-        // $out .= '<input type="hidden" name="_wpnonce" value="' . wp_create_nonce( 'mif-mr' ) . '" />';  
-        
-
         return $out;
-        
     }
 
 
@@ -389,17 +329,10 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
     
         // !!!!!!
     
-    //     global $tree;
-    // p($tree);
         $out = '';
 
-        // p($_REQUEST);
-        // p($att);
-        // if ( $att['key'] == 'courses' ) {
         if ( in_array( $att['key'], array( 'courses', 'curriculum', 'matrix' ) ) ) {
         
-            // if ( empty( $tree['content']['courses']['data'] ) ) {
-            // if ( ! $this->is_empty( 'courses', $att['opop'] ) || ! empty( $att['yes'] ) ) {
             if ( ! $this->is_empty( $att['key'], $att['opop'] ) || ! empty( $att['yes'] ) ) {
 
                 $m = new mif_mr_part_companion();
@@ -407,7 +340,6 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
                     'type' => $att['key'],
                     'opop_id' => $att['opop_id'], 
                     'opop_title' => $att['opop_title'],
-                    // 'content' => $att['data'],
                     'content' => $this->get_date_from_plx( $att['key'], $att['att_id'] ),
                 ) );
 
@@ -424,17 +356,11 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
                     <a href="#" class="mr-1 analysis">Анализ</a>
                     ', 'warning' );
                     
-                    // 'Это данные не являются пустыми. Заменить новыми данными? <br />
-                    // Данные не являются пустыми. Заменить новыми данными?
-                    // Данные не пустые. Замените их новыми данными?
-
             };
             
         } elseif ( in_array( $att['key'], array( 'lib-competencies', 'lib-references' ) ) ) {
 
             $attached = get_post( $att['att_id'] );
-
-            // p($att);
 
             $title = '';
             if ( $att['explanation'] === 'kaf' ) $title = 'Номера кафедр — ';
@@ -452,36 +378,9 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
                 'data' => $this->get_date_from_plx( $key, $att['att_id'] ),
             ) );
 
-            // p($res);
-
             $out .= mif_mr_functions::get_callout( 'Сохранено', 'success' );
 
-
         } 
-        // elseif ( in_array( $att['key'], array( 'lib-references' ) ) ) {
-
-        //     // p(  get_post( $att['att_id'] ) );
-        //     $attached = get_post( $att['att_id'] );
-        //     // p( $attached->post_title );
-            
-        //     $m = new mif_mr_companion_core();
-        //     $res = $m->companion_insert( array(
-        //         'type' => $att['key'],
-        //         'opop_id' => $att['opop_id'], 
-        //         // 'opop_title' => $att['opop_title'],
-        //         'title' => $attached->post_title,
-        //         'data' => $this->get_date_from_plx( $att['key'], $att['att_id'] ),
-        //     ) );
-
-        //     // p($res);
-
-        //     $out .= mif_mr_functions::get_callout( 'Сохранено', 'success' );
-
-
-        // }
-
-        
-
 
         return $out;
     }
@@ -489,40 +388,29 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
     
         
         
-        
-        //
-        // Анализ
-        // 
-        
+    
+    //
+    // Анализ
+    // 
+    
     public function analysis( $att = array() )
     {
         
-        // p($_REQUEST);
         $out = '';
 
-        // p($att);
-        // $out .= '@';
         $m = new mif_mr_part_companion();
         $data[0] = $this->get_date_from_plx( $att['key'], $att['att_id'] );
         $data[1] = $m->get_companion_content( $att['key'], $att['opop_id'] );
-        // p($att['att_id']);
-
 
         $data = $this->analysis_process( $data );
 
-
         $one = '<div class="p-1 pt-3 pb-3 bg-light">' . $data[0] . '</div>';
         $two = '<div class="p-1 pt-3 pb-3 bg-light">' . $data[1] . '</div>';
-        // $one = '<pre>' . $data[0] . '</pre>';
-        // $two = '<pre>' . $data[1] . '</pre>';
-
         
         $out .= '<div class="container mt-5 fullsize-fix">';
 
         $out .= '<div class="row">';
         $out .= '<div class="col d-none d-sm-block mt-5 pr-0 text-end">';
-        // $out .= '<a href="#">Сохранить</a>';
-        // $out .= '<a href="#">Отменить</a></p>';
         $out .= '<a href="#" class="text-secondary" id="fullsize">';
         $out .= '<i class="fa-solid fa-expand fa-2x"></i><i class="d-none fa-solid fa-compress fa-2x"></i>';
         $out .= '</a>';
@@ -544,7 +432,7 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
         $out .= '</div>';
 
         $out .= '<div class="col p-3 bg-light text-end">';
-        $out .= '<a href="#" class="mr-3 help"><i class="fa-regular fa-circle-question fa-xl"></i></a>';
+        $out .= '<a href="#" class="mr-3 help"><i class="fa-solid fa-circle-info fa-xl"></i></a>';
         $out .= '</div>';
 
         $out .= '</div>';
@@ -603,35 +491,6 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
             }
 
         }
-
-        // foreach ( $arr2[0] as $k => $i )
-        // foreach ( $arr2[1] as $k2 => $i2 ) {
-        
-        //     if ( $i[0] !== $i2[0] ) continue;
-            
-        //     $arr3[0][$k] = 1;
-        //     $arr3[1][$k2] = 1;
-            
-        //     if ( $i[1] === $i2[1] ) {
-                
-        //         $arr3[0][$k] = 0;
-        //         $arr3[1][$k2] = 0;
-            
-        //     }
-
-        //     // if ( $arr3[0][$k] == 1 ) {
-                
-        //     //     p('@');
-        //     //     p($i[0]);
-        //     //     p($i[1]);
-        //     //     p($i2[0]);
-        //     //     p($i2[1]);
-
-        //     // }
-
-        // }
-            
-        // p($arr2);
         
         $f = true;
         foreach ( array( 0, 1 ) as $k ) if ( empty( $data[$k]) ) $f = false;
@@ -659,10 +518,6 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
     {
         $m = new mif_mr_part_companion();
         $res = $m->get_companion_id( $type, $opop_id );
-
-        // p('@');
-        // p($res);
-        // p(get_post($res));
 
         return ( $res ) ? true : false;
     }
@@ -694,7 +549,6 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
 
     function remove( $attid )
     {
-        
         // !!!!!!!
 
         $res = ( wp_delete_attachment( $attid, true ) === false ) ? false : true;
@@ -713,65 +567,6 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
         return $out;
     }
 
-
-
-
-
-
-
-    // // Форма загрузки
-
-    // public function upload_curriculum()
-    // {
-       
-    //     $out = '';
-    //     p($_REQUEST);
-
-    //     if ( isset( $_REQUEST['submit'] ) ) {
-        
-    //         p('@');
-
-    //         // global $post;
-             
-    //         // require_once( ABSPATH . 'wp-admin/includes/image.php' );
-    //         // require_once( ABSPATH . 'wp-admin/includes/file.php' );
-    //         // require_once( ABSPATH . 'wp-admin/includes/media.php' );
-
-    //         // $attachment_id = media_handle_upload( 'template_file', $post->ID, array( 'post_title' => $_REQUEST['template_name'] ) );
-           
-    //         // if ( is_wp_error( $attachment_id ) ) {
-    //         //     $out .= '<div class="error">Ошибка загрузки файла</div>';
-    //         // } else {
-    //         //     $out .= '<div class="note">Файл успешно загружен</div>';
-    //         // }
-           
-    //     } else {
-          
-    //         $out .= mif_mr_upload::form_upload( array( 
-    //                             'text' => 'Загрузите файл учебного плана в формате XML', 
-    //                             'title_placeholder' => 'Название плана', 
-    //                             'url' => 'tools-curriculum' 
-    //                         ) );
-
-
-    //         // $out .= '<div class="upload"><p>Загрузка шаблона';
-            
-    //         // $out .= '<form method="post" action="#" enctype="multipart/form-data">
-    //         // <p><input type="text" name="template_name" placeholder="Название шаблона">
-    //         // <p><input type="file" name="template_file" multiple="false">
-    //         // <p><input type="submit" name="template_submit" value="Загрузить">       
-    //         // </form>';
-         
-    //         // $out .= '</div>';
-    //     }
-
-    //     return $out;
-            
-    // }
-    
-    
-    
-    
 }
 
 ?>

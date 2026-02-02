@@ -23,7 +23,7 @@
                 <?php mif_mr_the_menu_item( 'Матрица компетенций', 'matrix', 1 ); ?>
                 <?php mif_mr_the_menu_item( 'Учебный план', 'curriculum', 1 ); ?>
                 <?php mif_mr_the_menu_item(); ?>
-                <?php mif_mr_the_menu_item( 'Инструменты разработки', 'tools', 1 ); ?>
+                <?php mif_mr_the_menu_item( 'Материалы дисциплин', '', 1 ); ?>
                 <?php mif_mr_the_menu_item(); ?>
                 <?php mif_mr_the_menu_item( 'Рекомендации', 'stat', 1 ); ?>
                 <?php mif_mr_the_menu_item( 'Статистика ОПОП', 'stat', 1 ); ?>
@@ -49,7 +49,7 @@
                 <?php mif_mr_the_menu_item( 'Библиотека дисциплин', 'lib-courses', 1 ); ?>
                 <?php mif_mr_the_menu_item( 'Библиотека справочников', 'lib-references', 1 ); ?>
                 <?php mif_mr_the_menu_item(); ?>
-                <?php mif_mr_the_menu_item( 'Материалы дисциплин', '', 1 ); ?>
+                <?php mif_mr_the_menu_item( 'Инструменты разработки', 'tools', 1 ); ?>
                 
             </div>
         </div>

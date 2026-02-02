@@ -75,10 +75,8 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses {
     public function get_course( $course_id = NULL, $opop_id = NULL )
     { 
         global $wp_query;
-        // if ( empty( $wp_query->query_vars['id'] ) ) return;
 
         if ( isset( $_REQUEST['sub'] ) ) $this->save_part( sanitize_key( $_REQUEST['sub'] ), $course_id, $opop_id, true );
-        // $this->save_all();
         
         global $tree;
         
@@ -98,7 +96,6 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses {
             // p($arr);
             
             $out .= '<h4 class="mb-4 mt-0 pb-5 pt-5 bg-body fiksa">' . $arr['name'] . '</h4>';
-            // $out .= '&nbsp;';
             
             if ( isset( $_REQUEST['edit'] ) ) {
 
@@ -210,8 +207,6 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses {
     
     public function get_course_part( $d )
     {
-        // p($d);
-        // p($_REQUEST);
         global $tree;
         
         if ( empty( $d['data'] ) ) $d['data'] = $tree['content']['lib-courses']['data'][$d['course_id']]['data'][$d['sub_id']];
@@ -232,7 +227,6 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses {
                                             'sub_id' => $d['sub_id'],
                                             'f' => $f, 
                                             'coll' => $coll,    
-                                            // 'color' => ( empty( $d['data'] ) ) ? 'mr-red' : 'mr-gray',      
                                             ) );
 
         if ( isset( $_REQUEST['do'] ) && $_REQUEST['do'] == 'edit' ) {
@@ -287,9 +281,7 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses {
 
     public function get_item_body_evaluations( $d )
     {
-        // p($d); 
         if ( empty( $d['data']) ) return $this->data_none( $d );
-        // if ( empty( $d['data']) ) return '';
 
         $t = apply_filters( 'mif-mr-body-evaluations-text', array( 
                                 'sem' => 'Семестр',
@@ -313,31 +305,29 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses {
                 $out .= '</div>';
                 
             }
+                
+            // Оценочные средства
             
-        // Оценочные средства
-        
-        foreach ( $item['data'] as $item2 ) {
-            
-            $out .= '<div class="row coll"' . $style . '">';
-            
-            $out .= '<div class="col">';
-            $out .= '<p class="pl-3">' . $item2['name'] . '</p>';
-            $out .= '</div>';
-            
-            $out .= '<div class="col-1">';
-            $out .= $item2['att']['rating'];
-            $out .= '</div>';
-            
-            $out .= '<div class="col-3 col-lg-2">';
-            $out .= $item2['att']['cmp'];
-            $out .= '</div>';
-            
-            $out .= '</div>';
+            foreach ( $item['data'] as $item2 ) {
+                
+                $out .= '<div class="row coll"' . $style . '">';
+                
+                $out .= '<div class="col">';
+                $out .= '<p class="pl-3">' . $item2['name'] . '</p>';
+                $out .= '</div>';
+                
+                $out .= '<div class="col-1">';
+                $out .= $item2['att']['rating'];
+                $out .= '</div>';
+                
+                $out .= '<div class="col-3 col-lg-2">';
+                $out .= $item2['att']['cmp'];
+                $out .= '</div>';
+                
+                $out .= '</div>';
 
-        }
+            }
             
-        //     // p( $item );
-
         }
 
         return apply_filters( 'mif_mr_companion_lib_courses_get_item_body_evaluations', $out, $d );
@@ -351,9 +341,7 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses {
 
     public function get_item_body_content( $d )
     {
-        // p($d);
         if ( empty( $d['data']) ) return $this->data_none( $d );
-        // if ( empty( $d['data']) ) return '';
 
         $t = apply_filters( 'mif-mr-body-content-text', array( 
                                 'target' => 'Цель освоения дисциплины',
@@ -476,9 +464,7 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses {
 
     public function get_item_body( $d )
     {
-        // p($d);
         if ( empty( $d['data']) ) return $this->data_none( $d );
-        // if ( empty( $d['data']) ) return '';
 
         $t = apply_filters( 'mif-mr-get-item-body', array(
             'biblio' => array( 'basic' => 'Основная литература', 'additional' => 'Дополнительная литература' ),
@@ -570,49 +556,54 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses {
         foreach ( $index as $key => $item ) sort( $index[$key] ); 
         ksort( $index );
         
-        // p($arr);
-        // p($index);
-        
         $f = true;
-        
         
         $out = '';
         
         $out .= '<div class="content-ajax">';
         
         $out .= '<div class="comp container bg-light pt-5 pb-5 pl-4 pr-4 border rounded">';
-        
-        $out .= '<div class="row">';
-        
-        $out .= '<div class="col">';
-        $out .= '<h4 class="border-bottom pb-5"><i class="fa-regular fa-file-lines"></i> Библиотека дисциплин</h4>';
-        $out .= '</div>';
-        
-        $out .= '</div>';
 
-        // foreach ( $arr as $item ) {
+        $out .= $this->get_lib_head( array( 'title' => 'Библиотека дисциплин' ) );
+        
+        // $out .= '<div class="row">';
+        
+        // $out .= '<div class="col">';
+        // $out .= '<h4 class="border-bottom pb-5"><i class="fa-regular fa-file-lines"></i> Библиотека дисциплин</h4>';
+        // $out .= '</div>';
+        
+        // $out .= '</div>';
+
         foreach ( $index as $i ) {
             
             foreach ( $i as $ii ) {
                 
                 $item = $arr[$ii];
             
-                $comp_id_text = ( count( $index[$item['name']] ) > 1 ) ? ' (' . $item['comp_id'] . ')' : '';
+                $out .= $this->get_lib_body( array( 
+                                                    'comp_id' => $item['comp_id'],    
+                                                    'name' => $item['name'],    
+                                                    'from_id' => $item['from_id'],    
+                                                    'type' => 'lib-courses',    
+                                                ) );
+                
 
-                $out .= '<div class="row mt-3 mb-3">';
+                // $comp_id_text = ( count( $index[$item['name']] ) > 1 ) ? ' (' . $item['comp_id'] . ')' : '';
                 
-                $out .= '<div class="col-10 col-md-11 pt-1 pb-1">';
-                $out .= '<a href="' . mif_mr_opop_core::get_opop_url() . 'lib-courses/' . $item['comp_id'] . '">' . $item['name'] . $comp_id_text . '</a>';
-                $out .= '</div>';
+                // $out .= '<div class="row mt-3 mb-3">';
                 
-                $out .= '<div class="col-2 col-md-1 pt-1 pb-1 text-end">';
-                $out .= ( $item['from_id'] == mif_mr_opop_core::get_opop_id() ||  $item['from_id'] == 0 ) ?
-                        '' :
-                        '<a href="' .  get_permalink( $item['from_id'] ) . 'lib-courses/' . $item['comp_id'] . '" title="' . 
-                        $this->mb_substr( get_the_title( $item['from_id'] ), 20 ) . '">' . $item['from_id'] . '</a>';
-                $out .= '</div>';
+                // $out .= '<div class="col-10 col-md-11 pt-1 pb-1">';
+                // $out .= '<a href="' . mif_mr_opop_core::get_opop_url() . 'lib-courses/' . $item['comp_id'] . '">' . $item['name'] . $comp_id_text . '</a>';
+                // $out .= '</div>';
                 
-                $out .= '</div>';
+                // $out .= '<div class="col-2 col-md-1 pt-1 pb-1 text-end">';
+                // $out .= ( $item['from_id'] == mif_mr_opop_core::get_opop_id() ||  $item['from_id'] == 0 ) ?
+                //         '' :
+                //         '<a href="' .  get_permalink( $item['from_id'] ) . 'lib-courses/' . $item['comp_id'] . '" title="' . 
+                //         $this->mb_substr( get_the_title( $item['from_id'] ), 20 ) . '">' . $item['from_id'] . '</a>';
+                // $out .= '</div>';
+                
+                // $out .= '</div>';
                 
             }
         

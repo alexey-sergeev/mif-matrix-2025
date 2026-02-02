@@ -12,15 +12,8 @@ class mif_mr_set_references extends mif_mr_set_core {
     
     function __construct()
     {
-
         parent::__construct();
         
-        // add_filter( 'mif-mr-tbody-col', array( $this, 'filter_tbody_col'), 10, 4 );
-        // add_filter( 'mif-mr-thead-col', array( $this, 'filter_thead_col'), 10 );
-        // add_filter( 'mif-mr-tbody-colspan', array( $this, 'filter_tbody_colspan'), 10 );
-
-        // $this->save( 'set-courses' );
-
     }
     
     
@@ -54,7 +47,6 @@ class mif_mr_set_references extends mif_mr_set_core {
         global $tree;
         
         $arr = $tree['content']['references']['data'];
-        // p($arr);
         $m = new modules();
         $arr = $m->get_courses_tree( $arr );
         
@@ -97,45 +89,6 @@ class mif_mr_set_references extends mif_mr_set_core {
         return apply_filters( 'mif_mr_show_set_references', $out );
     }
     
-    
-    
-    
-    // //
-    // //
-    // //
-    
-    // public function get_course_ifno( $course )
-    // {
-    //     global $tree;
-        
-    //     $arr = array();
-
-    //     $arr_raw = $tree['content']['courses']['data'];
-    //     $arr_set = $tree['content']['set-courses']['data'];
-
-    //     // p($arr_raw);
-    //     // p($arr_set);
-
-    //     foreach ( $arr_raw as $item ) {
-
-    //         foreach ( $item['courses'] as $key2 => $item2 ) {
-
-    //             // p($key2);
-
-    //         }
-
-    //         // p($item);
-
-    //     }
-
-
-    //     return apply_filters( 'mif_mr_get_course_ifno', $arr );
-    // }
-        
-
-
-
-  
     
 }
 
