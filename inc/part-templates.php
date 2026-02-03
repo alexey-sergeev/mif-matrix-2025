@@ -118,6 +118,7 @@ function mif_mr_the_link_edit_advanced()
     global $mif_mr_set_comp;
     global $mif_mr_set_courses;
     global $mif_mr_set_references;
+    global $mif_mr_attributes;
 
     if ( ! empty( $mif_mr_set_comp ) ) {
 
@@ -136,6 +137,13 @@ function mif_mr_the_link_edit_advanced()
     if ( ! empty( $mif_mr_set_references ) ) {
 
         echo $mif_mr_set_references->get_link_edit_advanced( 'set-references' );
+        return;
+
+    }
+
+    if ( ! empty( $mif_mr_attributes ) ) {
+
+        echo $mif_mr_attributes->get_link_edit_advanced( 'attributes' );
         return;
 
     }
@@ -187,6 +195,17 @@ function mif_mr_the_matrix()
 {
     global $mif_mr_matrix;
     echo $mif_mr_matrix->get_matrix();
+}
+
+
+//
+// Выводит 
+//
+
+function mif_mr_the_attributes()
+{
+    global $mif_mr_attributes;
+    echo $mif_mr_attributes->get_attributes();
 }
 
 

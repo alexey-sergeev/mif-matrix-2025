@@ -108,6 +108,12 @@ class mif_mr_opop extends mif_mr_opop_tree_raw {
                 $mif_mr_curriculum->the_show();
             break;
             
+            case 'attributes':
+                global $mif_mr_attributes;
+                $mif_mr_attributes = new mif_mr_attributes();
+                $mif_mr_attributes->the_show();
+            break;
+            
             case 'lib-competencies':
 
                 global $wp_query;

@@ -44,6 +44,10 @@ class mif_mr_opop_core {
                                             'key' => array( 'parents', 'p' ),
                                             'description' => __( 'Parents', 'mif-mr' )
                                         ),
+                                        // array(
+                                        //     'key' => array( 'attributes', 'att' ),
+                                        //     'description' => __( 'Parameters attributes', 'mif-mr' )
+                                        // ),
                                         array(
                                             'key' => array( 'references', 'r' ),
                                             'description' => __( 'Reference book', 'mif-mr' )
@@ -134,8 +138,8 @@ class mif_mr_opop_core {
                 }
                 // p('@');
                 // p($item);
-                // p($value);
                 $value = ( isset( $value )) ? $value : $item;
+                // p($value);
                 
                 if ( ! empty( $value ) ) {
                     
@@ -145,17 +149,17 @@ class mif_mr_opop_core {
                         // p($value);
                         // p($value);
                         
-                        // preg_match_all( '/\S+/', $value, $m2 );
-                        // preg_match_all( '/\d+|\(.*\)/', $value, $m2 );
-                        preg_match_all( '/\w+|\(.*\)/', $value, $m2 );
-                        // preg_match_all( '/(\+)||(\(.*\))/', $value, $m2 );
-                        // preg_match_all( '/(\(.*\))/U', $value, $m2 );
+                        // preg_match_all( '/\w+|\(.*\)/', $value, $m2 );
+                        preg_match_all( '/\w+|\(.*\)|.+/', $value, $m2 );
 
                         // p($m2);
+                        // P($key);
                         $arr2 = array();
                         // $n = 0;
                         foreach ( $m2[0] as $item2 ) {
                             
+                            $item2 = trim( $item2 );
+
                             if ( ! preg_match( '/^\(.*/', $item2 ) ) $n[$key]++;
                             
                             $t[$main_key][$key]['data'][$n[$key]] = ( isset( $t[$main_key][$key]['data'][$n[$key]] ) ) ?
@@ -171,6 +175,7 @@ class mif_mr_opop_core {
                         
                         $t[$main_key][$key]['data'][] = $grid . $value;
                         
+                        // p($key);
                     }
                     
                     $t[$main_key][$key]['from_id'] = $post->ID;
@@ -186,7 +191,7 @@ class mif_mr_opop_core {
             wp_cache_set( 'get_param_and_meta', $t, $opop_id );
 
         }
-
+        // p($t);
         return apply_filters( 'mif_mr_core_opop_get_param_and_meta', $t, $opop_id );
     }
     

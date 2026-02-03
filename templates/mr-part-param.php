@@ -39,6 +39,15 @@
     
     <div class="row mt-4 bg-primary-subtle border border-primary-subtle fw-semibold text-center">
         <div class="col-1 p-2"></div>
+        <div class="col-10 p-2">Параметры для атрибутов</div>
+        <div class="col-1 p-2 text-black-50"><?php mif_mr_the_from_id('attributes'); ?></div>
+    </div>
+    
+    <?php mif_mr_show_explanation('attributes'); ?>
+    <div class="row"><?php mif_mr_the_text('attributes'); ?></div>
+    
+    <div class="row mt-4 bg-primary-subtle border border-primary-subtle fw-semibold text-center">
+        <div class="col-1 p-2"></div>
         <div class="col-10 p-2">Справочники</div>
         <div class="col-1 p-2 text-black-50"><?php mif_mr_the_from_id('references'); ?></div>
     </div>

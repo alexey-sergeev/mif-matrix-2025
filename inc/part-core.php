@@ -264,8 +264,12 @@ class mif_mr_part_core {
             foreach ( (array) $tree['param'][$key]['data'] as $item ) {
 
                 if ( preg_match( '/^#.*/', $item ) ) continue; 
-            
-                $out .= $this->get_link_post( (int) $item, '' ); // ###!!!
+        
+                // $out .= $this->get_link_post( (int) $item, '' ); // ###!!!
+                // $out .= '<p>';
+                $out .= $item;
+                $out .= '<br />';
+                // $out .= '</p>';
                 
             } 
             
