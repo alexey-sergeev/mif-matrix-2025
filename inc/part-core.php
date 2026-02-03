@@ -84,6 +84,29 @@ class mif_mr_part_core {
         return apply_filters( 'mif_mr_part_core_link_edit_visual', $out );
     }
     
+        
+    
+    // 
+    // 
+    // 
+    
+    public function get_link_edit_easy()
+    {
+        global $mr;
+        
+        $out = '';
+        
+        if (  $mr->user_can(3) ) {
+            
+            $out .= '<div class="row mt-1">';
+            $out .= '<div class="col-12 p-0 mb-3"><a href="?edit=easy">Простой редактор</a></div>';
+            $out .= '</div>';
+            
+        }
+        
+        return apply_filters( 'mif_mr_part_core_link_edit_easy', $out );
+    }
+    
     
     
     // // 

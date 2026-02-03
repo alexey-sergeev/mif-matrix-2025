@@ -74,7 +74,37 @@ function mif_mr_the_link_edit()
 function mif_mr_the_link_edit_visual()
 {
     global $mif_mr_set_comp;
-    echo $mif_mr_set_comp->get_link_edit_visual();
+    // global $mif_mr_set_references;
+
+    // if ( ! empty( $mif_mr_set_comp ) ) {
+
+        echo $mif_mr_set_comp->get_link_edit_visual();
+        return;
+
+    // }
+
+    // if ( ! empty( $mif_mr_set_references ) ) {
+
+    //     echo $mif_mr_set_references->get_link_edit_visual();
+    //     return;
+
+    // }
+    
+}
+
+
+//
+// Выводит 
+//
+
+function mif_mr_the_link_edit_easy()
+{
+    global $mif_mr_set_references;
+
+    echo $mif_mr_set_references->get_link_edit_easy();
+    return;
+
+    
 }
 
 
@@ -87,6 +117,7 @@ function mif_mr_the_link_edit_advanced()
 {
     global $mif_mr_set_comp;
     global $mif_mr_set_courses;
+    global $mif_mr_set_references;
 
     if ( ! empty( $mif_mr_set_comp ) ) {
 
@@ -101,6 +132,17 @@ function mif_mr_the_link_edit_advanced()
         return;
 
     }
+
+    if ( ! empty( $mif_mr_set_references ) ) {
+
+        echo $mif_mr_set_references->get_link_edit_advanced( 'set-references' );
+        return;
+
+    }
+
+
+
+
 }
 
 
@@ -184,15 +226,15 @@ function mif_mr_the_set_courses()
 
 
 
-// //
-// // Выводит 
-// //
+//
+// Выводит 
+//
 
-// function mif_mr_the_set_references()
-// {
-//     global $mif_mr_set_references;
-//     echo $mif_mr_set_references->show_set_references();
-// }
+function mif_mr_the_set_references()
+{
+    global $mif_mr_set_references;
+    echo $mif_mr_set_references->show_set_references();
+}
 
 
 // //

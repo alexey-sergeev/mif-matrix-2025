@@ -1,6 +1,12 @@
 /* Body */
 
 
+.tie:hover {
+    /* background-color: #CED4DA; */
+    background-color: #E9ECEF;
+}
+
+
 .striped .row:nth-child(odd) {
 	/* background: #F4F4F4; */
 	background:rgb(248, 249, 250);

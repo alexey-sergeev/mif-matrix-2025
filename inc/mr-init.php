@@ -837,6 +837,49 @@ class mif_mr_init extends mif_mr_functions {
                 'query_var'           => true,
     
             ) );
+
+
+
+
+
+            register_post_type( 'set-references', array(
+                'label'  => null,
+                'labels' => array(
+                    'name'               => __( 'Настройки справочников', 'mif-mr' ), // основное название для типа записи
+                    'singular_name'      => __( 'Настройки справочников', 'mif-mr' ), // название для одной записи этого типа
+                    'add_new'            => __( 'Создать настройки справочников', 'mif-mr' ), // для добавления новой записи
+                    'add_new_item'       => __( 'Создание настройки справочников', 'mif-mr' ), // заголовка у вновь создаваемой записи в админ-панели.
+                    'edit_item'          => __( 'Редактирование настройки справочников', 'mif-mr' ), // для редактирования типа записи
+                    'new_item'           => __( 'Новый настройки справочника', 'mif-mr' ), // текст новой записи
+                    'view_item'          => __( 'Посмотреть настройки справочника', 'mif-mr' ), // для просмотра записи этого типа.
+                    'search_items'       => __( 'Найти', 'mif-mr' ), // для поиска по этим типам записи
+                    'not_found'          => __( 'Настройки справочник не найдена', 'mif-mr' ), // если в результате поиска ничего не было найдено
+                    'not_found_in_trash' => __( 'Не найдено в корзине', 'mif-mr' ), // если не было найдено в корзине
+                    'parent_item_colon'  => '', // для родителей (у древовидных типов)
+                ),
+                'description'         => '',
+                'public'              => true,
+                'publicly_queryable'  => null,
+                'exclude_from_search' => null,
+                'show_ui'             => null,
+                'show_in_menu'        => true, // показывать ли в меню адмнки
+                'show_in_admin_bar'   => null, // по умолчанию значение show_in_menu
+                'show_in_nav_menus'   => null,
+                'show_in_rest'        => null, // добавить в REST API. C WP 4.7
+                'rest_base'           => null, // $post_type. C WP 4.7
+                'menu_position'       => 20,
+                'menu_icon'           => 'dashicons-forms', 
+                'capability_type'   => 'post',
+                //'capabilities'      => 'post', // массив дополнительных прав для этого типа записи
+                'map_meta_cap'      => true, // Ставим true чтобы включить дефолтный обработчик специальных прав
+                'hierarchical'        => false,
+                'supports'            => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'custom-fields', 'revisions' ), // 'title','editor','author','thumbnail','excerpt','trackbacks','custom-fields','comments','revisions','page-attributes','post-formats'
+                'taxonomies'          => array(),
+                'has_archive'         => true,
+                'rewrite'             => array( 'slug' => 'set-references' ),
+                'query_var'           => true,
+    
+            ) );
             
             // register_post_type( 'courses', array(
         //     'label'  => null,

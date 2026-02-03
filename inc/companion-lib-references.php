@@ -62,6 +62,9 @@ class mif_mr_lib_references extends mif_mr_companion_core {
         $p = new parser();
         $arr3 = array();
 
+        $is_numeric = false;
+        $is_string = false;
+
         foreach ( $arr2 as $item ) {
             
             if ( empty( $item ) ) continue;
@@ -72,13 +75,22 @@ class mif_mr_lib_references extends mif_mr_companion_core {
                 'att' => $data['att'][0],
             );
 
+            // p($data['att'][0]);
+            if ( is_numeric( $data['att'][0] ) ) $is_numeric = true;
+            if ( ! is_numeric( $data['att'][0] ) ) $is_string = true;
+
+
         }
 
         $arr['comp_id'] = $references_id;
         $arr['from_id'] = $post->post_parent;
         $arr['name'] = $post->post_title;
+        $arr['is_numeric'] = $is_numeric;
+        $arr['is_string'] = $is_string;
         $arr['data'] = $arr3;
         
+        // p($arr);
+
         return apply_filters( 'mif_mr_get_references_arr', $arr, $references_id );
     }        
     

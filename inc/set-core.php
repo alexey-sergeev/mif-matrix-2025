@@ -334,6 +334,87 @@ class mif_mr_set_core extends mif_mr_table {
 
 
 
+
+   
+    //
+    // Возвращает массив из текста (post)
+    //
+    // kaf::reference_id
+    // staff::reference_id
+    // 
+
+    public function get_arr_references( $opop_id = NULL )
+    {
+        if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
+        
+        $arr = array();
+        
+        $text = $this->get_companion_content( 'set-references', $opop_id );
+        
+       // Разбить текст на массив строк
+        $data = preg_split( '/\\r\\n?|\\n/', $text );
+        $data = array_map( 'strim', $data );
+        
+        foreach ( $data as $item ) {
+            
+            $arr2 = explode( '::', $item );
+            $arr2 = array_map( 'trim', $arr2 );
+
+            if ( empty( $arr2[0] ) ) continue;
+            if ( empty( $arr2[1] ) ) continue;
+
+            if ( is_string( $arr2[0] ) && is_numeric( $arr2[1] ) ) {
+                
+                // $arr[] = array( $arr2[0], $arr2[1] );
+                $arr[$arr2[0]] = $arr2[1];
+                
+            }
+
+            // p($arr2);
+        }
+       
+        // p("@@@@");
+        // p($arr);
+        
+        return apply_filters( 'mif_mr_set_references_arr_comp', $arr );
+    }
+    
+    
+
+
+    //
+    // 
+    //
+    
+    public static function set_references_to_tree( $t = array() )
+    {
+        $arr = array();
+        
+        foreach ( $t['content']['set-references']['data'] as $key => $item ) {
+
+            // if ( is_numeric( $item[1] ) ) {
+           
+            //     if ( isset( $t['content']['lib-references']['data'][$item[1]]['data'] ) )
+            //         $arr[$item[0]] = $t['content']['lib-references']['data'][$item[1]]['data'];
+            
+            // } 
+            
+            if ( is_numeric( $item ) ) {
+           
+                if ( isset( $t['content']['lib-references']['data'][$item] ) )
+                    $arr[$key] = $t['content']['lib-references']['data'][$item];
+            
+            } 
+        
+        }
+
+        return apply_filters( 'mif_mr_comp_set_references_to_tree', $arr, $t );
+    }
+
+
+
+
+
 }
 
 ?>

@@ -278,6 +278,7 @@ class mif_mr_companion_core {
 
         $out .= '<div class="name col-11 p-3 ' . $color . '">';
         $out .= '<span class="fw-bolder">' . $item['name'] . '</span>';
+        // $out .= '<span class="fw-semibold">' . $item['name'] . '</span>';
         $out .= $note;
         $out .= '</div>';
         
@@ -451,18 +452,18 @@ class mif_mr_companion_core {
     {
         $out = '';
 
-        $out .= '<div class="row mt-3 mb-3">';
+        $out .= '<div class="row mt-0 mb-0 tie">';
         
-        $out .= '<div class="col-8 col-md-10 pt-1 pb-1">';
+        $out .= '<div class="col-8 col-md-10 pt-3 pb-3">';
         $out .= '<a href="' . mif_mr_opop_core::get_opop_url() . '' . $att['type']. '/' . $att['comp_id'] . '">' . $att['name'] . '</a>';
         $out .= '</div>';
         
-        $out .= '<div class="col-2 col-md-1 pt-1 pb-1 text-end">';
+        $out .= '<div class="col-2 col-md-1 pt-3 pb-3 text-end">';
         // $out .= '<a href="' . mif_mr_opop_core::get_opop_url() . '' . $att['type']. '/' . $att['comp_id'] . '">' . $att['name'] . '</a>';
         $out .= '<span class="bg-secondary text-light rounded pl-3 pr-3 p-1 copy">' . $att['comp_id'] . '</span>';
         $out .= '</div>';
         
-        $out .= '<div class="col-2 col-md-1 pt-1 pb-1 text-end">';
+        $out .= '<div class="col-2 col-md-1 pt-3 pb-3 text-end">';
         $out .= ( $att['from_id'] == mif_mr_opop_core::get_opop_id() ||  $att['from_id'] == 0 ) ?
                 '' :
                 '<a href="' .  get_permalink( $att['from_id'] ) . '' . $att['type']. '/' . $att['comp_id'] . '" title="' . 

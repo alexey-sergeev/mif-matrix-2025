@@ -65,7 +65,8 @@ class mif_mr_part_companion extends mif_mr_part_core {
             $out .= '<div class="row mt-1">';
             // $out .= '<div class="col-12 p-0 mb-3"><a href="' . get_edit_post_link( $companion_id ) . '">Расширенный редактор</a></div>';
             $out .= '<div class="col-12 p-0 mb-3">';
-            if ( $f ) $out .= '<a href="' . get_edit_post_link( $companion_id ) . '">';
+            // if ( $f ) $out .= '<a href="' . get_edit_post_link( $companion_id ) . '">';
+            if ( $f ) $out .= '<a href="' . get_edit_post_link( $companion_id ) . '" target="_blank">';
             $out .= 'Расширенный редактор';
             if ( $f ) $out .= '</a>';
             $out .= '</div>';

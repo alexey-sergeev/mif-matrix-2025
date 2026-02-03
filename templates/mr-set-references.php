@@ -14,7 +14,7 @@
             
             <div class="container">
                 
-                <?php // mif_mr_the_set_references(); ?>
+                <?php mif_mr_the_set_references(); ?>
                 
             </div>
             
@@ -26,7 +26,7 @@
                 
                 <div class="container">
                     
-                    <?php // mif_mr_the_link_edit_visual(); ?>
+                    <?php mif_mr_the_link_edit_easy(); ?>
                     <?php mif_mr_the_link_edit() ?>
                     <?php mif_mr_the_link_edit_advanced(); ?>
                     

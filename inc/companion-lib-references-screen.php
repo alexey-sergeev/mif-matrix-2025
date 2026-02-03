@@ -70,38 +70,37 @@ class mif_mr_lib_references_screen extends mif_mr_lib_references {
 
             } else {
 
-                $n = 0;                
+                $out .= $this->get_references_data( $arr );
+
+                // $n = 0;                
                 
-                $out .= '<table>';
+                // $out .= '<table>';
                 
-                $out .= '<thead><tr>';
-                $out .= '<th>№</th>';
-                $out .= '<th>Наименование</th>';
-                $out .= '<th>Данные</th>';
-                $out .= '</tr></thead>';
+                // $out .= '<thead><tr>';
+                // $out .= '<th>№</th>';
+                // $out .= '<th>Наименование</th>';
+                // $out .= '<th>Данные</th>';
+                // $out .= '</tr></thead>';
 
-                foreach ( $arr['data'] as $item ) {
+                // foreach ( $arr['data'] as $item ) {
                     
-                    $out .= '<tr>';
-                    $out .= '<td>';
-                    $out .= ++$n;
-                    $out .= '</td>';
+                //     $out .= '<tr>';
+                //     $out .= '<td>';
+                //     $out .= ++$n;
+                //     $out .= '</td>';
 
-                    $out .= '<td>';
-                    $out .= ( isset( $item['name'] ) ) ? $item['name'] : '';
-                    $out .= '</td>';
+                //     $out .= '<td>';
+                //     $out .= ( isset( $item['name'] ) ) ? $item['name'] : '';
+                //     $out .= '</td>';
                     
-                    $out .= '<td>';
-                    $out .= ( isset( $item['att'] ) ) ? $item['att'] : '';
-                    $out .= '</td>';
+                //     $out .= '<td>';
+                //     $out .= ( isset( $item['att'] ) ) ? $item['att'] : '';
+                //     $out .= '</td>';
 
-                    $out .= '</tr>';
-                }
+                //     $out .= '</tr>';
+                // }
 
-        
-
-
-                $out .= '</table>';
+                // $out .= '</table>';
                 
             }
             
@@ -119,8 +118,49 @@ class mif_mr_lib_references_screen extends mif_mr_lib_references {
 
         return apply_filters( 'mif_mr_show_references', $out );
     }    
- 
+        
+        
+
+        
     
+    public static function get_references_data( $arr = array() )
+    {
+        // p($arr);
+        
+        $out = '';
+        
+        $n = 0;                
+        
+        $out .= '<table>';
+        
+        $out .= '<thead><tr>';
+        $out .= '<th>№</th>';
+        $out .= '<th>Наименование</th>';
+        $out .= '<th>Данные</th>';
+        $out .= '</tr></thead>';
+
+        foreach ( $arr['data'] as $item ) {
+            
+            $out .= '<tr>';
+            $out .= '<td>';
+            $out .= ++$n;
+            $out .= '</td>';
+
+            $out .= '<td>';
+            $out .= ( isset( $item['name'] ) ) ? $item['name'] : '';
+            $out .= '</td>';
+            
+            $out .= '<td>';
+            $out .= ( isset( $item['att'] ) ) ? $item['att'] : '';
+            $out .= '</td>';
+
+            $out .= '</tr>';
+        }
+
+        $out .= '</table>';
+    
+        return apply_filters( 'mif_mr_get_references_data', $out, $arr );
+    }
 
     
     // //
