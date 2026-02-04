@@ -51,6 +51,7 @@ include_once dirname( __FILE__ ) . '/lib-docx-core.php';
 include_once dirname( __FILE__ ) . '/classes/modules-class.php';
 include_once dirname( __FILE__ ) . '/classes/matrix-class.php';
 include_once dirname( __FILE__ ) . '/classes/curriculum-class.php';
+include_once dirname( __FILE__ ) . '/classes/attributes-class.php';
 // include_once dirname( __FILE__ ) . '/classes/assessments-class.php';
 include_once dirname( __FILE__ ) . '/classes/evaluations-class.php';
 include_once dirname( __FILE__ ) . '/classes/authors-class.php';

@@ -12,11 +12,11 @@
             
             <?php mif_mr_show_messages() ?>
             
-            <div class="container">
+            <!-- <div class="container"> -->
                 
                 <?php mif_mr_the_set_references(); ?>
                 
-            </div>
+            <!-- </div> -->
             
         </div>
         

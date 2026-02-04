@@ -30,15 +30,15 @@ class mif_mr_part_companion extends mif_mr_part_core {
     {
         $out = '';
 
-        $out .= '<div class="row">';
-        $out .= '<div class="col">';
+        // $out .= '<div class="row">';
+        // $out .= '<div class="col">';
         
         $out .= mif_mr_functions::get_callout( '<a href="' . '123' . '">Помощь</a>', 'warning' );
         
-        $out .= '</div>';
-        $out .= '</div>';
+        // $out .= '</div>';
+        // $out .= '</div>';
 
-        $out .= '<textarea name="content" class="edit textarea mt-4" autofocus>';
+        $out .= '<textarea name="content" class="edit textarea mt-5" autofocus>';
         $out .= $this->get_companion_content( $type );
         $out .= '</textarea>';
 

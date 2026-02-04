@@ -100,10 +100,21 @@ function mif_mr_the_link_edit_visual()
 function mif_mr_the_link_edit_easy()
 {
     global $mif_mr_set_references;
+    global $mif_mr_attributes;
+    
+    if ( ! empty( $mif_mr_set_references ) ) {
 
-    echo $mif_mr_set_references->get_link_edit_easy();
-    return;
+        echo $mif_mr_set_references->get_link_edit_easy();
+        return;
+  
+    }
+    
+    if ( ! empty( $mif_mr_attributes ) ) {
 
+        echo $mif_mr_attributes->get_link_edit_easy();
+        return;
+  
+    }
     
 }
 

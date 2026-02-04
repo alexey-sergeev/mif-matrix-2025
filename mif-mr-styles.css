@@ -180,11 +180,11 @@ html {
   cursor: help;
 }
 
-span.copy {
+span.copy-button {
   cursor: pointer;
 }
 
-span.copy.act {
+span.copy-button.act {
   opacity:0.5;
 }
 
@@ -209,6 +209,14 @@ span.copy.act {
     height: 32em;
 }
 
+.mr-mh-16 {
+    min-height: 16em !important;
+}
+
+.mr-mh-4 {
+    min-height: 4.5em !important;
+}
+
 .mr-h-48 {
     height: 48em !important;
 }
@@ -231,7 +239,7 @@ span.copy.act {
 }
 
 .mr-gray {
-    background-color: #f0f0f0 !important;
+    background-color: #f4f4f4 !important;
 }
 
 .mr-blue {

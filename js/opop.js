@@ -830,23 +830,29 @@ jQuery( document ).ready( function( jq ) {
 
     // "Копировать"
 
-    jq( 'body' ).on( 'click', '.copy-button', function() {
+    jq( 'body' ).on( 'click', 'a.copy-button', function() {
         jq( 'textarea', jq(this).closest('div.row') ).select();    
         document.execCommand('copy'); 
         return false;
     }); 
     
     
-    jq( 'body' ).on( 'click', 'span.copy', function() {
-        
-        // console.log('@');  
-        navigator.clipboard.writeText( jq(this).text() );
+    jq( 'body' ).on( 'click', 'span.copy-button', function() {
+     
+        // navigator.clipboard.writeText( jq(this).text() );
+        navigator.clipboard.writeText( jq( '.copy',  jq(this).closest('.copy-wrapper') ).text() );
+     
         elem = this;
         jq(this).addClass('act'); 
         setTimeout( function() { jq(elem).removeClass('act') }, 200);
-
         return false;
+        
     }); 
+    
+    // jq( 'body' ).on( 'click', 'a.copy', function() {
+    //     navigator.clipboard.writeText( jq(this).text() );
+    //     return false;
+    // }); 
     
     
     

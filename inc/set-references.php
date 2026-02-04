@@ -63,8 +63,10 @@ class mif_mr_set_references extends mif_mr_set_core {
             
             // $out .= $this->companion_edit( 'set-references' );
 
-            $out .= '<div class="row">';
-            $out .= '<div class="col p-0">';
+            // $out .= '<div class="row">';
+            // $out .= '<div class="col p-0">';
+            // $out .= '<div class="p-0">';
+            // $out .= '@';
             
             if ( $_REQUEST['edit'] == 'easy' ) {
                 
@@ -76,8 +78,9 @@ class mif_mr_set_references extends mif_mr_set_core {
                 
             }
             
-            $out .= '</div>';
-            $out .= '</div>';
+            // $out .= '@';
+            // $out .= '</div>';
+            // $out .= '</div>';
             
         } else {
             
@@ -183,9 +186,9 @@ class mif_mr_set_references extends mif_mr_set_core {
 
         $n = 0; 
 
-        $out .= '<div class="container">';
-        $out .= '<div class="row">';
-        $out .= '<div class="col">';
+        // $out .= '<div class="container">';
+        // $out .= '<div class="row">';
+        // $out .= '<div class="col">';
         
         $out .= '<table>';
     
@@ -219,9 +222,9 @@ class mif_mr_set_references extends mif_mr_set_core {
 
         $out .= '</table>';
 
-        $out .= '</div>';
-        $out .= '</div>';
-        $out .= '</div>';
+        // $out .= '</div>';
+        // $out .= '</div>';
+        // $out .= '</div>';
         
         
         return apply_filters( 'mif_mr_edit_easy', $out );
