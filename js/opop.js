@@ -754,6 +754,7 @@ jQuery( document ).ready( function( jq ) {
                     do: 'analysis',
                     opop: jq( 'input[name=opop]' ).val(),
                     attid: jq( 'input[name=attid]' ).val(),
+                    method: jq( 'input[name=method]', jq(this).closest('div.row') ).val(),
                     // data: jq( 'textarea', jq(this).closest('div.row') ).val(),
                     key: jq( 'textarea', jq(this).closest('div.row') ).attr( 'name' ),
                     _wpnonce: jq( 'input[name=_wpnonce]' ).val(),

@@ -128,11 +128,11 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
         
         $out = '';
         
+        $out .= $this->get_part( array( 'title' => 'Атрибуты ОПОП', 'key' => 'attributes', 'data' => $plx->get_att(), 'save' => 'Сохранить в ОПОП', 'analysis' => 'Анализ', 'method' => 'dots' ) );
         $out .= $this->get_part( array( 'title' => 'Дисциплины', 'key' => 'courses', 'data' => $plx->get_courses(), 'save' => 'Сохранить в ОПОП', 'analysis' => 'Анализ' ) );
         $out .= $this->get_part( array( 'title' => 'Матрица компетенций', 'key' => 'matrix', 'data' => $plx->get_matrix(), 'save' => 'Сохранить в ОПОП', 'analysis' => 'Анализ' ) );
         $out .= $this->get_part( array( 'title' => 'Учебный план', 'key' => 'curriculum', 'data' => $plx->get_curriculum(), 'save' => 'Сохранить в ОПОП', 'analysis' => 'Анализ' ) );
         $out .= $this->get_part( array( 'title' => 'Библиотека компетенций', 'key' => 'lib-competencies', 'data' => $plx->get_cmp(), 'save' => 'Сохранить в библиотеке' ) );
-        $out .= $this->get_part( array( 'title' => 'Библиотека параметров ОПОП', 'key' => 'att', 'data' => $plx->get_att(), 'save' => 'Сохранить в библиотеке', 'analysis1' => 'Анализ' ) );
         $out .= $this->get_part( array( 'title' => 'Библиотека справочников (номера кафедр)', 'key' => 'lib-references', 'data' => $plx->get_kaf(), 'save' => 'Сохранить в библиотеке', 'explanation' => 'kaf' ) );
         $out .= $this->get_part( array( 'title' => 'Библиотека справочников (должностные лица)', 'key' => 'lib-references', 'data' => $plx->get_att( 'staff' ), 'save' => 'Сохранить в библиотеке', 'explanation' => 'staff' ) );
 
@@ -164,6 +164,7 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
         $out .= '<textarea name="' . $att['key']. '" class="edit textarea" readonly>';
         $out .= $att['data'];
         $out .= '</textarea>'; 
+        if ( isset( $att['method'] ) ) $out .= '<input type="hidden" name="method" value="' . $att['method'] . '" />'; 
         if ( isset( $att['explanation'] ) ) $out .= '<input type="hidden" name="explanation" value="' . $att['explanation'] . '" />'; 
         if ( isset( $att['analysis'] ) ) $out .= '<div class="analysis-box p-0" style="display: none;"></div>'; 
         $out .= '</div>'; 
@@ -331,7 +332,7 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
     
         $out = '';
 
-        if ( in_array( $att['key'], array( 'courses', 'curriculum', 'matrix' ) ) ) {
+        if ( in_array( $att['key'], array( 'courses', 'curriculum', 'matrix', 'attributes' ) ) ) {
         
             if ( ! $this->is_empty( $att['key'], $att['opop'] ) || ! empty( $att['yes'] ) ) {
 
@@ -395,14 +396,15 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
     
     public function analysis( $att = array() )
     {
-        
+        // p($_REQUEST);
+        // p($att);
         $out = '';
 
         $m = new mif_mr_part_companion();
         $data[0] = $this->get_date_from_plx( $att['key'], $att['att_id'] );
         $data[1] = $m->get_companion_content( $att['key'], $att['opop_id'] );
-
-        $data = $this->analysis_process( $data );
+    
+        $data = $this->analysis_process( $data, $att['method'] );
 
         $one = '<div class="p-1 pt-3 pb-3 bg-light">' . $data[0] . '</div>';
         $two = '<div class="p-1 pt-3 pb-3 bg-light">' . $data[1] . '</div>';
@@ -457,15 +459,30 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
 
 
 
-    private function analysis_process( $data = array() )
+    private function analysis_process( $data = array(), $method = '' )
     {
 
         foreach ( array( 0, 1 ) as $k ) $arr[$k] = array_map( 'strim', explode( "\n", $data[$k] ) );     
         
-        $p = new parser();
-        foreach ( array( 0, 1 ) as $k ) foreach ( $arr[$k] as $item ) {
-            
-            $d = $p->parse_name( $item );
+        foreach ( array( 0, 1 ) as $k ) 
+        foreach ( $arr[$k] as $item ) {
+        
+            if ( empty( $method ) ) {
+                
+                $p = new parser();
+                $d = $p->parse_name( $item );
+                
+            } elseif ( $method == 'dots' ) {
+                
+                $p = new attributes( $item );
+                $a = array_keys( $p->get_arr() );
+                $d['name'] = $a[0];
+
+            }
+
+            // p('$d');
+            // p($d);
+
             $a = trim( preg_replace( '/' . $d['name'] . '/', '', $item ) ); 
             $arr2[$k][] = array( $d['name'], $a );       
             
@@ -536,7 +553,7 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
             case 'lib-competencies': $data = $plx->get_cmp(); break;  
             case 'lib-references-kaf': $data = $plx->get_kaf(); break;  
             case 'lib-references-staff': $data = $plx->get_att( 'staff' ); break;  
-            case 'att': $data = $plx->get_att(); break;  
+            case 'attributes': $data = $plx->get_att(); break;  
             case 'get_att_arr': $data = $plx->get_att_arr(); break;  
             default: $data = ''; break;  
         }  

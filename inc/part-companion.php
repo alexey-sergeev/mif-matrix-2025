@@ -116,7 +116,7 @@ class mif_mr_part_companion extends mif_mr_part_core {
             $content = $post->post_content;
 
         }
-
+        // p('@');
         return apply_filters( 'mif_mr_core_get_companion_content', $content, $type );
     }
 

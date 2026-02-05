@@ -243,7 +243,6 @@ class mif_mr_init extends mif_mr_functions {
                         
                     }     
                 
-                
                     if ( $_REQUEST['do'] == 'analysis' ) {
                         
                         $m = new mif_mr_tools_curriculum();
@@ -252,8 +251,9 @@ class mif_mr_init extends mif_mr_functions {
                                                 'opop_id' => (int) $_REQUEST['opop'],
                                                 'att_id' => (int) $_REQUEST['attid'],
                                                 'key' => sanitize_key( $_REQUEST['key'] ),
+                                                'method' => sanitize_key( $_REQUEST['method'] ),
                                                 // 'yes' => sanitize_key( $_REQUEST['yes'] ),
-                                                'data' => sanitize_textarea_field( $_REQUEST['data'] ),
+                                                // 'data' => sanitize_textarea_field( $_REQUEST['data'] ),
                                                 // 'data' => $_REQUEST['data'],
                                                 ) );
                         
