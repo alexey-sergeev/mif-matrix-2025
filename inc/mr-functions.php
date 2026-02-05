@@ -161,6 +161,34 @@ class mif_mr_functions {
 
 
 
+    
+    // 
+    // link_edit_advanced
+    // 
+    
+    public function get_link_edit_advanced( $id = NULL )
+    {
+        $out = '';
+
+        $f = ( empty( get_edit_post_link( $id ) ) ) ? false : true;
+        
+        if ( $this->user_can(3) ) {
+            
+            $out .= '<div class="row mt-1">';
+            $out .= '<div class="col-12 p-0 mb-3">';
+            if ( $f ) $out .= '<a href="' . get_edit_post_link( $id ) . '" target="_blank">';
+            $out .= 'Расширенный редактор';
+            if ( $f ) $out .= '</a>';
+            $out .= '</div>';
+            $out .= '</div>';
+
+        }
+
+        return apply_filters( 'mif_mr_link_edit_advanced', $out );
+    }
+    
+
+    
 
     //
     // Получить время в человекопонятном формате

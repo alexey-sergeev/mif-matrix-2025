@@ -432,7 +432,7 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
         $out .= '</div>';
 
         $out .= '<div class="col p-3 bg-light text-end">';
-        $out .= '<a href="#" class="mr-3 help"><i class="fa-solid fa-circle-info fa-xl"></i></a>';
+        $out .= '<a href="#" class="mr-3 help"><i class="fa-solid fa-circle-question fa-xl"></i></a>';
         $out .= '</div>';
 
         $out .= '</div>';

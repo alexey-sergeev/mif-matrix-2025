@@ -15,7 +15,7 @@
             <?php mif_mr_the_form_end(); ?>
             
         </div>
-        
+                
         <div class="sidebar col-2 pl-5">
             
             <div class="fiksa">

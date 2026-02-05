@@ -55,25 +55,22 @@ class mif_mr_part_companion extends mif_mr_part_core {
     {
         global $mr;
 
-        $out = '';
-        
         $companion_id = $this->get_companion_id( $type );
-        $f = ( empty( $companion_id ) ) ? false : true;
+        // $f = ( empty( $companion_id ) ) ? false : true;
+        
+        $out = $mr->get_link_edit_advanced( $companion_id );
 
-        if ( $mr->user_can(3) ) {
+        // if ( $mr->user_can(3) ) {
             
-            $out .= '<div class="row mt-1">';
-            // $out .= '<div class="col-12 p-0 mb-3"><a href="' . get_edit_post_link( $companion_id ) . '">Расширенный редактор</a></div>';
-            $out .= '<div class="col-12 p-0 mb-3">';
-            // if ( $f ) $out .= '<a href="' . get_edit_post_link( $companion_id ) . '">';
-            if ( $f ) $out .= '<a href="' . get_edit_post_link( $companion_id ) . '" target="_blank">';
-            $out .= 'Расширенный редактор';
-            if ( $f ) $out .= '</a>';
-            $out .= '</div>';
-            $out .= '</div>';
-            // $out .= '<div class="mb-3"><a href="?edit=visual"></a></div>';
+        //     $out .= '<div class="row mt-1">';
+        //     $out .= '<div class="col-12 p-0 mb-3">';
+        //     if ( $f ) $out .= '<a href="' . get_edit_post_link( $companion_id ) . '" target="_blank">';
+        //     $out .= 'Расширенный редактор';
+        //     if ( $f ) $out .= '</a>';
+        //     $out .= '</div>';
+        //     $out .= '</div>';
 
-        }
+        // }
 
         return apply_filters( 'mif_mr_part_core_link_edit_advanced', $out );
     }

@@ -101,6 +101,7 @@ function mif_mr_the_link_edit_easy()
 {
     global $mif_mr_set_references;
     global $mif_mr_attributes;
+    global $mif_mr_param;
     
     if ( ! empty( $mif_mr_set_references ) ) {
 
@@ -112,6 +113,13 @@ function mif_mr_the_link_edit_easy()
     if ( ! empty( $mif_mr_attributes ) ) {
 
         echo $mif_mr_attributes->get_link_edit_easy();
+        return;
+  
+    }
+    
+    if ( ! empty( $mif_mr_param ) ) {
+
+        echo $mif_mr_param->get_link_edit_easy();
         return;
   
     }
@@ -130,6 +138,8 @@ function mif_mr_the_link_edit_advanced()
     global $mif_mr_set_courses;
     global $mif_mr_set_references;
     global $mif_mr_attributes;
+    global $mif_mr_param;
+    global $mr;
 
     if ( ! empty( $mif_mr_set_comp ) ) {
 
@@ -159,7 +169,14 @@ function mif_mr_the_link_edit_advanced()
 
     }
 
+    // if ( ! empty( $mif_mr_param ) ) {
 
+    //     echo $mif_mr_param->get_link_edit_advanced( 'param' );
+    //     return;
+
+    // }
+
+    echo $mr->get_link_edit_advanced();
 
 
 }

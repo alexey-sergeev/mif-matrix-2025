@@ -150,7 +150,7 @@ class mif_mr_attributes extends mif_mr_part_companion {
 
         $out .= '<div class="content p-3 mb-0">';
 
-        $out .= '<div class="row pt-3 pb-3 mb-5 bg-body-secondary fw-bold text-center border">';
+        $out .= '<div class="row pt-2 pb-2 mb-5 bg-body-secondary fw-semibold text-center border">';
         
         $out .= '<div class="col">';
         $out .= $title;
