@@ -22,6 +22,19 @@
 </div>  
 
 
+<div class="p-4 pr-5 pl-5 bg-light mt-4 border border-light">
+
+    <div class="fw-semibold"><?php mif_mr_the_menu_item( 'Импорт шаблонов учебных дисциплин', 'tools-courses' ); ?></div> 
+
+    <div class="mt-2">
+
+        Загрузка Excel-шаблонов дисциплин для обновления данных ОПОП.
+    
+    </div>
+
+</div>  
+
+
 
 <?php //mif_mr_the_form_end(); ?>
 

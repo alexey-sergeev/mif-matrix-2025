@@ -30,6 +30,17 @@ function mif_mr_tools_curriculum()
 }
 
 
+//
+// Выводит 
+//
+
+function mif_mr_tools_courses()
+{
+    global $mif_mr_tools_courses;
+    echo $mif_mr_tools_courses->get_tools_courses();
+}
+
+
 
 
 ?>

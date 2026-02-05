@@ -205,6 +205,14 @@ class mif_mr_opop extends mif_mr_opop_tree_raw {
 
             break;
             
+            case 'tools-courses':
+
+                global $mif_mr_tools_courses;
+                $mif_mr_tools_courses = new mif_mr_tools_courses();
+                $mif_mr_tools_courses->the_show();
+
+            break;
+            
             case 'stat':
                 global $tree;
                 p($tree);

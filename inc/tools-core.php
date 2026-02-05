@@ -37,6 +37,58 @@ class mif_mr_tools_core {
     }
     
 
+
+
+    // 
+    // Получить файлы 
+    //    
+
+    public function get_file( $att = array() )
+    {
+        global $post;
+
+        $args = array(
+            'numberposts' => -1,
+            'post_parent' => mif_mr_opop_core::get_opop_id(), 
+            'post_type' => 'attachment',
+            // 'order' => 'ASC',
+            'order' => 'DESC',
+            'post_status' => 'inherit',
+            // 'orderby' => 'menu_order',
+        );
+        
+        $arr = get_posts( $args );
+            
+        // Удалить из ответа лишние файлы 
+        
+        if ( isset( $att['unset'] ) ) {
+        
+            foreach ( $arr as $key => $item ) {
+                $arr_tmp = explode( '.', $item->guid );
+                $ext = array_pop( $arr_tmp );
+                if ( ! in_array( $ext, (array) $att['unset'] ) ) unset( $arr[$key] );
+            }
+
+        }
+
+        return $arr;
+    }
+
+
+
+
+    public function get_meta()
+    {
+        $out = '';
+        $out .= '<input type="hidden" name="_wpnonce" value="' . wp_create_nonce( 'mif-mr' ) . '" />';  
+        $out .= '<input type="hidden" name="opop" value="' . mif_mr_opop_core::get_opop_id() . '" />';  
+        $out .= '<input type="hidden" name="opop_title" value="' . mif_mr_opop_core::get_opop_title() . '" />';  
+        
+        return $out;
+    }
+
+
+
 }
 
 ?>

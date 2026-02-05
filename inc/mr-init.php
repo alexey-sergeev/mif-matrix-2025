@@ -40,6 +40,7 @@ include_once dirname( __FILE__ ) . '/companion-lib-templates.php';
 
 include_once dirname( __FILE__ ) . '/tools-core.php';
 include_once dirname( __FILE__ ) . '/tools-curriculum.php';
+include_once dirname( __FILE__ ) . '/tools-courses.php';
 include_once dirname( __FILE__ ) . '/tools-templates.php';
 
 include_once dirname( __FILE__ ) . '/lib-download.php';

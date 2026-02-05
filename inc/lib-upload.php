@@ -60,7 +60,7 @@ class mif_mr_upload {
 
 
 
-    public static function form_upload( $args = array( 'url' => '' ) )
+    public static function form_upload( $args = array( 'url' => '', 'multiple' => false ) )
     {
         
         $out = '';
@@ -71,9 +71,20 @@ class mif_mr_upload {
         if ( isset( $args['text'] ) ) $out .= '<div class="fw-semibold">' . $args['text'] . '</div>';
         if ( isset( $args['title_placeholder'] ) ) $out .= '<div class="mt-4"><input type="text" class="form-control" name="title" placeholder="' . $args['title_placeholder'] . '"></div>';
         
-        $out .= '<input type="file" name="file" class="mt-4 p-5 w-100" style="border: dashed 3px #ddd">';
+        if ( ! isset( $args['multiple'] ) || $args['multiple'] == false ) {
+        
+            $out .= '<input type="file" name="file" class="mt-4 p-5 w-100" style="border: dashed 3px #ddd">';
+        
+        } elseif ( $args['multiple'] == true ) {
+        
+            $out .= '<input type="file" name="file[]" class="mt-4 p-5 w-100" style="border: dashed 3px #ddd" multiple>';
+
+        }
+        
         $out .= '<div class="mt-4">Максимальный размер загружаемого файла: ' . ini_get('upload_max_filesize') . '</div>'; 
-        $out .= '<div class="mt-4"><input type="submit" name="submit" value="Загрузить" class="btn btn-primary "></div>';
+        if ( isset( $args['multiple'] ) && $args['multiple'] == true ) $out .= '<div class="mt-0">Количество одновременно загружаемых файлов : ' . ini_get('max_file_uploads') . '</div>'; 
+        
+        $out .= '<div class="mt-5"><input type="submit" name="submit" value="Загрузить" class="btn btn-primary "></div>';
 
         // $out .= '<input type="hidden" name="action" value="' . $type . '" />';
         // $out .= '<input type="hidden" name="opop" value="' . $this->get_opop_id() . '" />';
