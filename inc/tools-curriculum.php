@@ -47,7 +47,6 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
 
     public function get_tools_curriculum()
     {
-
         global $wp_query;
         if ( isset( $wp_query->query_vars['id'] ) ) $att_id = $wp_query->query_vars['id'];
                 
@@ -62,12 +61,13 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
             if ( $att_id = $this->save() ) {
                 $out .= mif_mr_functions::get_callout( 'Сохранено', 'success' );
             } else {
-                $out .= mif_mr_functions::get_callout( 'План не найден', 'danger' );
+                // $out .= mif_mr_functions::get_callout( 'План не найден', 'danger' );
+                $out .= mif_mr_functions::get_callout( 'План не был найден в файле', 'danger' );
             }
 
-        } else {
+        } elseif ( ! empty( $res ) ) {
             
-            $out .= $res;
+            $out .= mif_mr_functions::get_callout( $res, 'danger' );
 
         }
 
@@ -266,7 +266,6 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
 
     public function save()
     {
-        
         // !!!!!!!!!
     
         if ( ! isset( $_FILES['file']['tmp_name'] ) ) return false;
@@ -298,14 +297,14 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
 
             $att_id = media_handle_upload( 'file', mif_mr_opop_core::get_opop_id(), array( 'post_title' => $title ) );
             
-            // p($att_id);
-            
+            p($att_id);
+
             if ( is_wp_error( $att_id ) ) {
                 
                 return false;
                 
             } else {
-                
+
                 return $att_id;
             
             }

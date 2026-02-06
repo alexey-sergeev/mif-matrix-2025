@@ -25,37 +25,70 @@ class mif_mr_upload {
 
 
 
-    public static function proceeding_upload()
+    // public static function proceeding_upload()
+    // {
+    //     if ( ! isset( $_REQUEST['submit'] ) ) return;
+    //     if ( ! isset( $_FILES['file']['error'] ) ) return;
+        
+    //     // $out = '';
+        
+    //     $arr = array();
+
+    //     if ( is_array( $_FILES['file']['error'] ) ) {
+    //         foreach ( $_FILES['file']['error'] as $i ) $arr[] = $i;
+    //     } else {
+    //         $arr[0] = $_FILES['file']['error'];
+    //     }
+
+    //     p($arr);
+    //     $arr2 = array();
+
+    //     foreach ( $arr as $item ) {
+
+    //         switch ( $item ) {  
+    
+    //             case 0: $arr2[] = ''; break;  
+    //             case 1: $arr2[] = 'Размер файла превышает допустимое значение'; break;  
+    //             case 4: $arr2[] =  'Файл не был загружен'; break;  
+    //             default: $arr2[] = 'Какая-то ошибка. Код ошибки: 06020'; break;  
+
+    //         }  
+
+    //     }
+    //     p($arr2);
+
+    //     $arr2 = array_diff( $arr2, array( '' ) );        
+    //     $arr2 = array_unique( $arr2 );        
+        
+    //     $item2 = implode( '.', $arr2 );
+
+    //     // p($arr2);
+
+    //     $out = ( ! empty( $item2 ) ) ? mif_mr_functions::get_callout( $item2, 'danger' ) : 'file';
+
+    //     return $out;
+  
+    // }
+
+
+    public static function proceeding_upload( $item = NULL )
     {
+        if ( ! isset( $_REQUEST['submit'] ) ) return;
+        
+        if ( $item === NULL ) $item = $_FILES['file']['error'];
         
         $out = '';
-   
-        if ( isset( $_REQUEST['submit'] ) ) {
 
-            switch ( $_FILES['file']['error'] ) {  
-    
-                case 0: 
-                    $out = 'file';
-                    break;  
+        switch ( $item ) {  
 
-                case 1:                                  
-                    $out .= mif_mr_functions::get_callout( 'Размер файла превышает допустимое значение', 'danger' );
-                    break;  
-    
-                case 4: 
-                    $out .= mif_mr_functions::get_callout( 'Файл не был загружен', 'danger' );
-                    break;  
-                    
-                default: 
-                    $out .= mif_mr_functions::get_callout( 'Какая-то ошибка', 'danger' );
-                    break;  
+            case 0: $out .= 'file'; break;  
+            case 1: $out .= 'Размер файла превышает допустимое значение'; break;  
+            case 4: $out .= 'Файл не был загружен'; break;  
+            default: $out .='Какая-то ошибка. Код: 06020'; break;  
 
-            }  
-
-        }
+        }  
 
         return $out;
-  
     }
 
 
@@ -96,6 +129,103 @@ class mif_mr_upload {
         return $out;
   
     }
+
+
+
+
+
+
+
+
+    //
+    // Сохранить файл 
+    // 
+
+    public function save( $att = array() )
+    {
+        // p($_FILES);
+        // p($_REQUEST);
+    
+        if ( ! isset( $_REQUEST['submit'] ) ) return;
+        if ( ! isset( $_FILES['file']['error'] ) ) return;
+        if ( ! is_array( $_FILES['file']['error'] ) ) return;
+
+        // $out = '';
+        $arr = array();
+
+        foreach ( $_FILES['file']['name'] as $key => $item ) {
+
+            $arr[$key]['name'] = $item;
+            
+            $a = explode( '.', $item );
+            $ext = array_pop( $a );
+            p($item);
+            p($ext);
+
+            if ( isset( $att['ext'] ) && ! in_array( $ext, $att['ext'] ) ) {
+
+                $arr[$key]['status'] = 'warning';
+                $arr[$key]['messages'] = 'Неправильный формат файла';
+
+                continue;
+
+            } 
+                
+            $res = $this->proceeding_upload( $_FILES['file']['error'][$key] );
+
+            if ( $res == 'file' ) {
+
+                require_once( ABSPATH . 'wp-admin/includes/image.php' );
+                require_once( ABSPATH . 'wp-admin/includes/file.php' );
+                require_once( ABSPATH . 'wp-admin/includes/media.php' );
+
+                // $id = media_handle_upload( 'file', mif_mr_opop_core::get_opop_id(), array( 'post_title' => mif_mr_opop_core::get_opop_title() . ' - ' . $item ) );
+                
+                $file = array(  
+                    'name' => $_FILES['file']['name'][$key],
+                    'tmp_name' => $_FILES['file']['tmp_name'][$key],
+                    'error' => $_FILES['file']['error'][$key],
+                    'size' => $_FILES['file']['size'][$key],
+                );
+
+                $id = media_handle_sideload( $file, mif_mr_opop_core::get_opop_id() );
+
+                // p($id);
+                
+                if ( is_wp_error( $id ) ) {
+           
+                    $arr[$key]['status'] = 'danger';
+                    $arr[$key]['messages'] = '???';
+                    p(is_wp_error($id));
+                
+                } else {
+
+                    $arr[$key]['status'] = 'success';
+                    $arr[$key]['messages'] = 'Сохранено';
+                    // $arr[$key]['messages'] = 'Ок!';
+                    $arr[$key]['id'] = $id;
+                
+                }
+
+            } else {
+
+                $arr[$key]['status'] = 'danger';
+                $arr[$key]['messages'] = $res;
+
+            }
+
+        }
+
+        p($arr);
+        
+        return $arr;
+    }
+
+
+
+
+
+
 
 
 

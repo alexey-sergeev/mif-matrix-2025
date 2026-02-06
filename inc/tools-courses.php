@@ -48,13 +48,37 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
     public function get_tools_courses()
     {
 
-        global $wp_query;
-        if ( isset( $wp_query->query_vars['id'] ) ) $att_id = $wp_query->query_vars['id'];
+        // global $wp_query;
+        // if ( isset( $wp_query->query_vars['id'] ) ) $att_id = $wp_query->query_vars['id'];
                 
         $out = '';
 
-        p($_FILES);
-        p($_REQUEST);
+        // p($_FILES);
+        // p($_REQUEST);
+
+        $m = new mif_mr_upload();
+
+        $res = $m->save( array( 'ext' => array( 'png' ) ) ); 
+        
+        // $a = array();
+        foreach ( $res as $i ) $out .= mif_mr_functions::get_callout( 
+            $i['name'] . ' — <span class="fw-semibold">' . $i['messages'] . '</span>', $i['status'] ); 
+            
+
+
+        //     {
+            
+        //     $a[] = '<div>' . $i['name'] . ' — ' . '<span class="bg-' . $i['status'] . '-subtle p-1 pr-3 pl-3 fw-semibold">' . $i['messages'] . '</span></div>';
+        //     // $st[$i['status']] = 1;
+            
+        // }
+        
+        // // $status = 'success';
+        // // if ( isset( $st['warning'] ) ) $status = 'warning';
+        // // if ( isset( $st['danger'] ) ) $status = 'danger';
+
+        // // $out .= mif_mr_functions::get_callout( implode( "<br />\n", $a ), $status ); 
+        // $out .= mif_mr_functions::get_callout( implode( "\n", $a ), 'success' ); 
 
 
         // // Разбор формы
@@ -77,7 +101,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
 
         // Показать форму
 
-        $out .= mif_mr_upload::form_upload( array( 
+        $out .= $m->form_upload( array( 
                             'text' => 'Загрузите файл шаблона учебной дисциплины в формате Excel', 
                             // 'title_placeholder' => 'Название плана', 
                             'url' => 'tools-courses',
