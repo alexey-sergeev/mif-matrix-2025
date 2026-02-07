@@ -48,57 +48,21 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
     public function get_tools_courses()
     {
 
-        // global $wp_query;
-        // if ( isset( $wp_query->query_vars['id'] ) ) $att_id = $wp_query->query_vars['id'];
-                
         $out = '';
 
         // p($_FILES);
         // p($_REQUEST);
-
+        
+        // Разбор формы
+        
         $m = new mif_mr_upload();
-
-        $res = $m->save( array( 'ext' => array( 'png' ) ) ); 
+        // $res = $m->save( array( 'ext' => array( 'png' ) ) ); 
+        $res = $m->save( array( 'ext' => array( 'xlsx' ) ) ); 
         
-        // $a = array();
-        foreach ( $res as $i ) $out .= mif_mr_functions::get_callout( 
-            $i['name'] . ' — <span class="fw-semibold">' . $i['messages'] . '</span>', $i['status'] ); 
+        foreach ( (array) $res as $i ) $out .= mif_mr_functions::get_callout( 
+                $i['name'] . ' — <span class="fw-semibold">' . $i['messages'] . '</span>', 
+                $i['status'] ); 
             
-
-
-        //     {
-            
-        //     $a[] = '<div>' . $i['name'] . ' — ' . '<span class="bg-' . $i['status'] . '-subtle p-1 pr-3 pl-3 fw-semibold">' . $i['messages'] . '</span></div>';
-        //     // $st[$i['status']] = 1;
-            
-        // }
-        
-        // // $status = 'success';
-        // // if ( isset( $st['warning'] ) ) $status = 'warning';
-        // // if ( isset( $st['danger'] ) ) $status = 'danger';
-
-        // // $out .= mif_mr_functions::get_callout( implode( "<br />\n", $a ), $status ); 
-        // $out .= mif_mr_functions::get_callout( implode( "\n", $a ), 'success' ); 
-
-
-        // // Разбор формы
-
-        // $res = mif_mr_upload::proceeding_upload();
-
-        // if ( $res === 'file' ) { 
-
-        //     if ( $att_id = $this->save() ) {
-        //         $out .= mif_mr_functions::get_callout( 'Сохранено', 'success' );
-        //     } else {
-        //         $out .= mif_mr_functions::get_callout( 'План не найден', 'danger' );
-        //     }
-
-        // } else {
-            
-        //     $out .= $res;
-
-        // }
-
         // Показать форму
 
         $out .= $m->form_upload( array( 
@@ -113,16 +77,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         
         $out .= $this->show_list_file_courses();
         
-        
-        // // Показать план
-        
-        // if ( isset( $att_id ) ) $out .= $this->show_file_curriculum( $att_id );
-        
-        
-        // // 
-        
-        $out .= $this->get_meta();
-
+        // $out .= $this->get_meta();
 
         return apply_filters( 'mif_mr_get_tools_courses', $out );
 
@@ -130,78 +85,6 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
     
 
     
-    // // 
-    // // Вывести  
-    // // 
-
-    // public function show_file_curriculum( $att_id )
-    // {
-    //     $att = get_post( $att_id );
-        
-    //     if ( empty( $att ) ) return;
-    //     if ( $att->post_type != 'attachment' ) return;
-        
-    //     $ext = explode( '.', $att->guid );
-    //     if ( array_pop( $ext ) != 'plx' ) return;
-        
-    //     $plx = new plx( get_attached_file( $att_id ) );
-
-    //     // p($plx);
-    //     // p($plx->get_courses());
-    //     // p($plx->get_curriculum());
-    //     // p($plx->get_matrix());
-    //     // p($plx->get_cmp());
-    //     // p($plx->get_kaf());
-    //     // p($plx->get_att());
-    //     // p($plx->get_att_arr());
-        
-    //     $out = '';
-        
-    //     $out .= $this->get_part( array( 'title' => 'Атрибуты ОПОП', 'key' => 'attributes', 'data' => $plx->get_att(), 'save' => 'Сохранить в ОПОП', 'analysis' => 'Анализ', 'method' => 'dots' ) );
-    //     $out .= $this->get_part( array( 'title' => 'Дисциплины', 'key' => 'courses', 'data' => $plx->get_courses(), 'save' => 'Сохранить в ОПОП', 'analysis' => 'Анализ' ) );
-    //     $out .= $this->get_part( array( 'title' => 'Матрица компетенций', 'key' => 'matrix', 'data' => $plx->get_matrix(), 'save' => 'Сохранить в ОПОП', 'analysis' => 'Анализ' ) );
-    //     $out .= $this->get_part( array( 'title' => 'Учебный план', 'key' => 'curriculum', 'data' => $plx->get_curriculum(), 'save' => 'Сохранить в ОПОП', 'analysis' => 'Анализ' ) );
-    //     $out .= $this->get_part( array( 'title' => 'Библиотека компетенций', 'key' => 'lib-competencies', 'data' => $plx->get_cmp(), 'save' => 'Сохранить в библиотеке' ) );
-    //     $out .= $this->get_part( array( 'title' => 'Библиотека справочников (номера кафедр)', 'key' => 'lib-references', 'data' => $plx->get_kaf(), 'save' => 'Сохранить в библиотеке', 'explanation' => 'kaf' ) );
-    //     $out .= $this->get_part( array( 'title' => 'Библиотека справочников (должностные лица)', 'key' => 'lib-references', 'data' => $plx->get_att( 'staff' ), 'save' => 'Сохранить в библиотеке', 'explanation' => 'staff' ) );
-
-    //     $out .= '<input type="hidden" name="attid" value="' . $att_id . '" />'; 
-        
-    //     $out .= '';
-        
-    //     return $out;
-    // }
-        
-        
-    
-    // // 
-    // // Вывести  
-    // // 
-        
-    // private function get_part( $att = array() )
-    // {
-    //     $out = '';
-        
-    //     $out .= '<div class="row mt-5 mb-5 plx-item">';
-    //     $out .= '<div class="col p-0 pt-3 pb-3">';
-    //     if ( isset( $att['title'] ) ) $out .= '<div class="mt-3 mb-3 fw-semibold">' . $att['title'] . '</div>';
-    //     if ( isset( $att['save'] ) ) $out .= '<a href="#" class="mr-3 save"><i class="fa-regular fa-floppy-disk fa-lg"></i>' . $att['save'] . '</a>';
-    //     if ( isset( $att['analysis'] ) ) $out .= '<a href="#" class="mr-3 analysis"><i class="fa-solid fa-chart-simple fa-lg"></i>' . $att['analysis'] . '</a> ';
-    //     $out .= '<a href="#" class="mr-3 copy-button"><i class="fa-regular fa-clone fa-lg"></i>Копировать</a> ';
-    //     $out .= '</div>'; 
-    //     $out .= '<div class="report p-0" style="display: none;"></div>'; 
-    //     $out .= '<textarea name="' . $att['key']. '" class="edit textarea" readonly>';
-    //     $out .= $att['data'];
-    //     $out .= '</textarea>'; 
-    //     if ( isset( $att['method'] ) ) $out .= '<input type="hidden" name="method" value="' . $att['method'] . '" />'; 
-    //     if ( isset( $att['explanation'] ) ) $out .= '<input type="hidden" name="explanation" value="' . $att['explanation'] . '" />'; 
-    //     if ( isset( $att['analysis'] ) ) $out .= '<div class="analysis-box p-0" style="display: none;"></div>'; 
-    //     $out .= '</div>'; 
-        
-    //     return $out;
-    // }
-        
-
     
     // 
     // Вывести  
@@ -212,7 +95,8 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         $out = '';
 
         // $arr = $this->get_file_curriculum();
-        $arr = $this->get_file( array( 'unset' => array( 'xlsx' ) ) );
+        // $arr = $this->get_file( array( 'unset' => array( 'xlsx' ) ) );
+        $arr = $this->get_file();
 
         // p($arr);
 
@@ -255,169 +139,6 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
 
 
 
-    // // 
-    // // Получить файлы плана
-    // //    
-
-    // public function get_file_curriculum()
-    // {
-    //     global $post;
-
-    //     $args = array(
-    //         'numberposts' => -1,
-    //         'post_parent' => mif_mr_opop_core::get_opop_id(), 
-    //         'post_type' => 'attachment',
-    //         // 'order' => 'ASC',
-    //         'order' => 'DESC',
-    //         'post_status' => 'inherit',
-    //         // 'orderby' => 'menu_order',
-    //     );
-        
-    //     $arr = get_posts( $args );
-            
-    //     // Удалить из ответа лишние файлы 
-        
-    //     foreach ( $arr as $key => $item ) {
-    //         $arr_tmp = explode( '.', $item->guid );
-    //         $ext = array_pop( $arr_tmp );
-    //         if ( ! in_array( $ext, array( 'plx' ) ) ) unset( $arr[$key] );
-    //     }
-            
-    //     return $arr;
-    // }
-
-
-
-    //
-    // Сохранить файл плана
-    // 
-
-    public function save()
-    {
-        // p($_FILES);    
-
-        // !!!!!!!!!
-    
-        // if ( ! isset( $_FILES['file']['tmp_name'] ) ) return false;
-
-        // libxml_use_internal_errors(true);
-
-        // if ( simplexml_load_file( $_FILES['file']['tmp_name'] ) !== false ) {
-
-        //     $title = $_FILES['file']['name'];
-
-        //     if ( empty( $_REQUEST['title'] ) ) {
-
-        //         $plx = new plx( $_FILES['file']['tmp_name'] );
-        //         $arr = $plx->get_att_arr();
-                
-        //         $title = $arr['Титул'] . ', ' . $arr['Год начала подготовки'] . ', ' . $arr['Форма обучения']; 
-            
-        //     } else {
-
-        //         $title = sanitize_text_field( $_REQUEST['title'] );
-
-        //     }
-
-        //     // p( $title );
-
-        //     require_once( ABSPATH . 'wp-admin/includes/image.php' );
-        //     require_once( ABSPATH . 'wp-admin/includes/file.php' );
-        //     require_once( ABSPATH . 'wp-admin/includes/media.php' );
-
-        //     $att_id = media_handle_upload( 'file', mif_mr_opop_core::get_opop_id(), array( 'post_title' => $title ) );
-            
-        //     // p($att_id);
-            
-        //     if ( is_wp_error( $att_id ) ) {
-                
-        //         return false;
-                
-        //     } else {
-                
-        //         return $att_id;
-            
-        //     }
-
-        // } else {
-
-        //     return false;
-
-        // }
-
-    }
-
-
-
-
-  
-    // //
-    // // Сохранить часть данных из формы сайта
-    // // 
-
-    // public function save_comp( $att = array() )
-    // {
-    
-    //     // !!!!!!
-    
-    //     $out = '';
-
-    //     if ( in_array( $att['key'], array( 'courses', 'curriculum', 'matrix', 'attributes' ) ) ) {
-        
-    //         if ( ! $this->is_empty( $att['key'], $att['opop'] ) || ! empty( $att['yes'] ) ) {
-
-    //             $m = new mif_mr_part_companion();
-    //             $res = $m->companion_insert( array(
-    //                 'type' => $att['key'],
-    //                 'opop_id' => $att['opop_id'], 
-    //                 'opop_title' => $att['opop_title'],
-    //                 'content' => $this->get_date_from_plx( $att['key'], $att['att_id'] ),
-    //             ) );
-
-    //             // p($res);
-
-    //             $out .= mif_mr_functions::get_callout( 'Сохранено', 'success' );
-                
-    //         } else {
-                    
-    //             $out .= mif_mr_functions::get_callout( 
-    //                 'В программе уже есть данные. Заменить новыми данными? <br />
-    //                 <a href="#" class="mr-1 save" data-yes="yes">Сохранить</a>
-    //                 <a href="#" class="mr-1 cancel">Отменить</a>
-    //                 <a href="#" class="mr-1 analysis">Анализ</a>
-    //                 ', 'warning' );
-                    
-    //         };
-            
-    //     } elseif ( in_array( $att['key'], array( 'lib-competencies', 'lib-references' ) ) ) {
-
-    //         $attached = get_post( $att['att_id'] );
-
-    //         $title = '';
-    //         if ( $att['explanation'] === 'kaf' ) $title = 'Номера кафедр — ';
-    //         if ( $att['explanation'] === 'staff' ) $title = 'Должностные лица — ';
-    //         $title .= $attached->post_title;
-            
-    //         $key = $att['key'];
-    //         if ( ! empty( $att['explanation'] ) ) $key .= '-' . $att['explanation'];
-            
-    //         $m = new mif_mr_companion_core();
-    //         $res = $m->companion_insert( array(
-    //             'type' => $att['key'],
-    //             'opop_id' => $att['opop_id'], 
-    //             'title' => $title,
-    //             'data' => $this->get_date_from_plx( $key, $att['att_id'] ),
-    //         ) );
-
-    //         $out .= mif_mr_functions::get_callout( 'Сохранено', 'success' );
-
-    //     } 
-
-    //     return $out;
-    // }
-    
-    
-        
         
     
     // //

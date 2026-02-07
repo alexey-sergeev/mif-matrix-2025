@@ -15,8 +15,6 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
     {
         parent::__construct();
         
-        add_filter( 'lib-upload-save-title', array( $this, 'set_save_title'), 10, 2 );
-
     }
         
 
@@ -56,40 +54,29 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
 
         // Разбор формы
 
-        // $res = mif_mr_upload::proceeding_upload();
+        $res = mif_mr_upload::proceeding_upload();
 
-        // if ( $res === 'file' ) { 
+        if ( $res === 'file' ) { 
 
-        //     if ( $att_id = $this->save() ) {
-        //         $out .= mif_mr_functions::get_callout( 'Сохранено', 'success' );
-        //     } else {
-        //         // $out .= mif_mr_functions::get_callout( 'План не найден', 'danger' );
-        //         $out .= mif_mr_functions::get_callout( 'План не был найден в файле', 'danger' );
-        //     }
+            if ( $att_id = $this->save() ) {
+                $out .= mif_mr_functions::get_callout( 'Сохранено', 'success' );
+            } else {
+                // $out .= mif_mr_functions::get_callout( 'План не найден', 'danger' );
+                $out .= mif_mr_functions::get_callout( 'План не был найден в файле', 'danger' );
+            }
 
-        // } elseif ( ! empty( $res ) ) {
+        } elseif ( ! empty( $res ) ) {
             
-        //     $out .= mif_mr_functions::get_callout( $res, 'danger' );
+            $out .= mif_mr_functions::get_callout( $res, 'danger' );
 
-        // }
-
-        
-        $m = new mif_mr_upload();
-        // $res = $m->save( array( 'ext' => array( 'png' ) ) ); 
-        $res = $m->save( array( 'ext' => array( 'plx' ) ) ); 
-        
-        foreach ( (array) $res as $i ) $out .= mif_mr_functions::get_callout( 
-                $i['name'] . ' — <span class="fw-semibold">' . $i['messages'] . '</span>', 
-                $i['status'] ); 
-
+        }
 
         // Показать форму
 
         $out .= mif_mr_upload::form_upload( array( 
                             'text' => 'Загрузите файл учебного плана в формате XML', 
-                            // 'title_placeholder' => 'Название плана', 
-                            'url' => 'tools-curriculum',
-                            'multiple' => true  
+                            'title_placeholder' => 'Название плана', 
+                            'url' => 'tools-curriculum' 
                         ) );
         
 
@@ -129,8 +116,7 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
         if ( array_pop( $ext ) != 'plx' ) return;
         
         $plx = new plx( get_attached_file( $att_id ) );
-        if ( empty( $plx->{'xml:plx:private'} ) ) return mif_mr_functions::get_callout( 'План не обнаружен', 'danger' ); 
-            
+
         // p($plx);
         // p($plx->get_courses());
         // p($plx->get_curriculum());
@@ -241,63 +227,95 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
 
 
 
-
-    // //
-    // // Сохранить файл плана
     // // 
+    // // Получить файлы плана
+    // //    
 
-    // public function save()
+    // public function get_file_curriculum()
     // {
-    //     // !!!!!!!!!
-    
-    //     if ( ! isset( $_FILES['file']['tmp_name'] ) ) return false;
+    //     global $post;
 
-    //     libxml_use_internal_errors(true);
-
-    //     if ( simplexml_load_file( $_FILES['file']['tmp_name'] ) !== false ) {
-
-    //         $title = $_FILES['file']['name'];
-
-    //         if ( empty( $_REQUEST['title'] ) ) {
-
-    //             $plx = new plx( $_FILES['file']['tmp_name'] );
-    //             $arr = $plx->get_att_arr();
-                
-    //             $title = $arr['Титул'] . ', ' . $arr['Год начала подготовки'] . ', ' . $arr['Форма обучения']; 
+    //     $args = array(
+    //         'numberposts' => -1,
+    //         'post_parent' => mif_mr_opop_core::get_opop_id(), 
+    //         'post_type' => 'attachment',
+    //         // 'order' => 'ASC',
+    //         'order' => 'DESC',
+    //         'post_status' => 'inherit',
+    //         // 'orderby' => 'menu_order',
+    //     );
+        
+    //     $arr = get_posts( $args );
             
-    //         } else {
-
-    //             $title = sanitize_text_field( $_REQUEST['title'] );
-
-    //         }
-
-    //         // p( $title );
-
-    //         require_once( ABSPATH . 'wp-admin/includes/image.php' );
-    //         require_once( ABSPATH . 'wp-admin/includes/file.php' );
-    //         require_once( ABSPATH . 'wp-admin/includes/media.php' );
-
-    //         $att_id = media_handle_upload( 'file', mif_mr_opop_core::get_opop_id(), array( 'post_title' => $title ) );
-            
-    //         p($att_id);
-
-    //         if ( is_wp_error( $att_id ) ) {
-                
-    //             return false;
-                
-    //         } else {
-
-    //             return $att_id;
-            
-    //         }
-
-    //     } else {
-
-    //         return false;
-
+    //     // Удалить из ответа лишние файлы 
+        
+    //     foreach ( $arr as $key => $item ) {
+    //         $arr_tmp = explode( '.', $item->guid );
+    //         $ext = array_pop( $arr_tmp );
+    //         if ( ! in_array( $ext, array( 'plx' ) ) ) unset( $arr[$key] );
     //     }
-
+            
+    //     return $arr;
     // }
+
+
+
+    //
+    // Сохранить файл плана
+    // 
+
+    public function save()
+    {
+        // !!!!!!!!!
+    
+        if ( ! isset( $_FILES['file']['tmp_name'] ) ) return false;
+
+        libxml_use_internal_errors(true);
+
+        if ( simplexml_load_file( $_FILES['file']['tmp_name'] ) !== false ) {
+
+            $title = $_FILES['file']['name'];
+
+            if ( empty( $_REQUEST['title'] ) ) {
+
+                $plx = new plx( $_FILES['file']['tmp_name'] );
+                $arr = $plx->get_att_arr();
+                
+                $title = $arr['Титул'] . ', ' . $arr['Год начала подготовки'] . ', ' . $arr['Форма обучения']; 
+            
+            } else {
+
+                $title = sanitize_text_field( $_REQUEST['title'] );
+
+            }
+
+            // p( $title );
+
+            require_once( ABSPATH . 'wp-admin/includes/image.php' );
+            require_once( ABSPATH . 'wp-admin/includes/file.php' );
+            require_once( ABSPATH . 'wp-admin/includes/media.php' );
+
+            $att_id = media_handle_upload( 'file', mif_mr_opop_core::get_opop_id(), array( 'post_title' => $title ) );
+            
+            p($att_id);
+
+            if ( is_wp_error( $att_id ) ) {
+                
+                return false;
+                
+            } else {
+
+                return $att_id;
+            
+            }
+
+        } else {
+
+            return false;
+
+        }
+
+    }
 
 
 
@@ -552,27 +570,6 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
 
         $res = ( wp_delete_attachment( $attid, true ) === false ) ? false : true;
         return $res;
-    }
-
-
-
-    function set_save_title( $title, $tmp_name )
-    {
-
-        libxml_use_internal_errors( true );
-        
-        if ( simplexml_load_file( $tmp_name ) !== false ) {
-            
-            $plx = new plx( $tmp_name );
-            $arr = $plx->get_att_arr();
-            
-            $title = $arr['Титул'] . ', ' . $arr['Год начала подготовки'] . ', ' . $arr['Форма обучения']; 
-            
-        }
-        
-        libxml_use_internal_errors( false );
-
-        return $title;
     }
 
 

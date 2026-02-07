@@ -24,8 +24,11 @@ class plx {
         
         // if ( isset( $_FILES['file']['tmp_name'] ) ) 
         // $this->xml = simplexml_load_file( $_FILES['file']['tmp_name'] );
+        libxml_use_internal_errors( true );
+        
         $this->xml = simplexml_load_file( $file );
-
+        
+        libxml_use_internal_errors( false );
         // p($this->xml);
 
     }

@@ -71,25 +71,25 @@ class mif_mr_upload {
     // }
 
 
-    public static function proceeding_upload( $item = NULL )
-    {
-        if ( ! isset( $_REQUEST['submit'] ) ) return;
+    // public static function proceeding_upload( $item = NULL )
+    // {
+    //     if ( ! isset( $_REQUEST['submit'] ) ) return;
         
-        if ( $item === NULL ) $item = $_FILES['file']['error'];
+    //     if ( $item === NULL ) $item = $_FILES['file']['error'];
         
-        $out = '';
+    //     $out = '';
 
-        switch ( $item ) {  
+    //     switch ( $item ) {  
 
-            case 0: $out .= 'file'; break;  
-            case 1: $out .= 'Размер файла превышает допустимое значение'; break;  
-            case 4: $out .= 'Файл не был загружен'; break;  
-            default: $out .='Какая-то ошибка. Код: 06020'; break;  
+    //         case 0: $out .= 'file'; break;  
+    //         case 1: $out .= 'Размер файла превышает допустимое значение'; break;  
+    //         case 4: $out .= 'Файл не был загружен'; break;  
+    //         default: $out .='Какая-то ошибка. Код: 06020'; break;  
 
-        }  
+    //     }  
 
-        return $out;
-    }
+    //     return $out;
+    // }
 
 
 
@@ -159,13 +159,14 @@ class mif_mr_upload {
             
             $a = explode( '.', $item );
             $ext = array_pop( $a );
-            p($item);
-            p($ext);
+            // p($item);
+            // p($ext);
 
             if ( isset( $att['ext'] ) && ! in_array( $ext, $att['ext'] ) ) {
 
                 $arr[$key]['status'] = 'warning';
                 $arr[$key]['messages'] = 'Неправильный формат файла';
+                // $arr[$key]['messages'] = 'Неправильный формат файла. Допускается: ' . implode( ', ', $att['ext'] );
 
                 continue;
 
@@ -188,15 +189,19 @@ class mif_mr_upload {
                     'size' => $_FILES['file']['size'][$key],
                 );
 
-                $id = media_handle_sideload( $file, mif_mr_opop_core::get_opop_id() );
+                // p($_FILES['file']['tmp_name'][$key]);
+
+                $title =  apply_filters( 'lib-upload-save-title', NULL, $_FILES['file']['tmp_name'][$key] );
+                $id = media_handle_sideload( $file, mif_mr_opop_core::get_opop_id(), $title );
 
                 // p($id);
                 
                 if ( is_wp_error( $id ) ) {
            
                     $arr[$key]['status'] = 'danger';
-                    $arr[$key]['messages'] = '???';
-                    p(is_wp_error($id));
+                    // $arr[$key]['messages'] = '???';
+                    $arr[$key]['messages'] = implode( '; ', $id->errors['upload_error'] );
+                    // p(is_wp_error($id));
                 
                 } else {
 
@@ -216,7 +221,7 @@ class mif_mr_upload {
 
         }
 
-        p($arr);
+        // p($arr);
         
         return $arr;
     }
@@ -224,6 +229,27 @@ class mif_mr_upload {
 
 
 
+
+
+    public static function proceeding_upload( $item = NULL )
+    {
+        if ( ! isset( $_REQUEST['submit'] ) ) return;
+        
+        if ( $item === NULL ) $item = $_FILES['file']['error'];
+        
+        $out = '';
+
+        switch ( $item ) {  
+
+            case 0: $out .= 'file'; break;  
+            case 1: $out .= 'Размер файла превышает допустимое значение'; break;  
+            case 4: $out .= 'Файл не был загружен'; break;  
+            default: $out .='Какая-то ошибка. Код: 06020'; break;  
+
+        }  
+
+        return $out;
+    }
 
 
 
