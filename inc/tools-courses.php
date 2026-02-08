@@ -57,7 +57,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         
         $m = new mif_mr_upload();
         // $res = $m->save( array( 'ext' => array( 'png' ) ) ); 
-        $res = $m->save( array( 'ext' => array( 'xlsx' ) ) ); 
+        $res = $m->save( array( 'ext' => array( 'xls', 'xlsx' ) ) ); 
         
         foreach ( (array) $res as $i ) $out .= mif_mr_functions::get_callout( 
                 $i['name'] . ' — <span class="fw-semibold">' . $i['messages'] . '</span>', 
@@ -77,7 +77,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         
         $out .= $this->show_list_file_courses();
         
-        // $out .= $this->get_meta();
+        $out .= $this->get_meta( 'courses' );
 
         return apply_filters( 'mif_mr_get_tools_courses', $out );
 

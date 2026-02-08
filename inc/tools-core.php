@@ -74,18 +74,37 @@ class mif_mr_tools_core {
         return $arr;
     }
 
+    
 
+    //
+    //
+    //
 
-
-    public function get_meta()
+    public function get_meta( $type = 'courses' )
     {
         $out = '';
         $out .= '<input type="hidden" name="_wpnonce" value="' . wp_create_nonce( 'mif-mr' ) . '" />';  
         $out .= '<input type="hidden" name="opop" value="' . mif_mr_opop_core::get_opop_id() . '" />';  
+        $out .= '<input type="hidden" name="type" value="' . $type . '" />';  
         $out .= '<input type="hidden" name="opop_title" value="' . mif_mr_opop_core::get_opop_title() . '" />';  
         
         return $out;
     }
+
+
+
+    //
+    //
+    //   
+
+    function remove( $attid )
+    {
+        // !!!!!!!
+
+        $res = ( wp_delete_attachment( $attid, true ) === false ) ? false : true;
+        return $res;
+    }
+
 
 
 

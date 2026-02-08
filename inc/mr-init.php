@@ -106,8 +106,8 @@ class mif_mr_init extends mif_mr_functions {
         add_action( 'wp_ajax_lib-courses', array( $this, 'ajax' ) );
         add_action( 'wp_ajax_lib-references', array( $this, 'ajax' ) );
         
-        add_action( 'wp_ajax_tools-curriculum', array( $this, 'ajax' ) );
-        add_action( 'wp_ajax_nopriv_tools-curriculum', array( $this, 'ajax' ) );
+        add_action( 'wp_ajax_tools', array( $this, 'ajax' ) );
+        // add_action( 'wp_ajax_nopriv_tools', array( $this, 'ajax' ) );
         
         
         // add_action( 'wp_ajax_edit', array( $this, 'ajax' ) );
@@ -220,11 +220,11 @@ class mif_mr_init extends mif_mr_functions {
                 
                 } 
 
-                if ( $_REQUEST['action'] == 'tools-curriculum' ) {
+                if ( $_REQUEST['action'] == 'tools' ) {
                     
                     if ( $_REQUEST['do'] == 'remove' ) {
                         
-                        $m = new mif_mr_tools_curriculum();
+                        $m = new mif_mr_tools_core();
                         echo $m->remove( (int) $_REQUEST['attid'] );
                         
                     }     
@@ -259,13 +259,6 @@ class mif_mr_init extends mif_mr_functions {
                                                 ) );
                         
                     }     
-                
-
-
-
-                    // p($_REQUEST);
-                    // $m = new mif_mr_curriculum();
-                    // echo $m->get_curriculum();
                 
                 } 
 

@@ -1,6 +1,6 @@
 <h3 class="pt-4 pb-3">Инструменты разработки</h3>
 
-<div class="container pt-5 tools-curriculum">
+<div class="container pt-5 tools">
     <div class="row">
         
         <div class="col-10 p-0">

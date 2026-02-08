@@ -569,9 +569,10 @@ jQuery( document ).ready( function( jq ) {
 
     // "remove"
 
-    jq( 'body' ).on( 'click', '.tools-curriculum .remove', function() {
+    jq( 'body' ).on( 'click', '.tools .remove', function() {
         
         
+        // console.log( jq( 'input[name=type]' ).val());
         // console.log( jq('.tools-curriculum .remove') );
         // console.log( jq( 'input[name=opop]' ).val() );
         // let nonce = jq( 'input[name=_wpnonce]' ).val();
@@ -587,7 +588,9 @@ jQuery( document ).ready( function( jq ) {
             url: ajaxurl,
             type: 'POST',
             data: {
-                action: 'tools-curriculum',
+                action: 'tools',
+                // action: 'tools-curriculum',
+                // action: 'tools-' + jq( 'input[name=type]' ).val(),
                 do: 'remove',
                 attid: jq(this).attr( 'data-attid' ),
                 opop: jq( 'input[name=opop]' ).val(),
@@ -610,7 +613,7 @@ jQuery( document ).ready( function( jq ) {
                     jq( elem ).slideUp( function(){ 
                         jq(this).remove();
                         // if ( jq('.tools-curriculum .remove').length === 0 ) jq( '.no-plans' ).removeClass('d-none');  
-                        if ( jq('.tools-curriculum .remove').length === 0 ) jq( '.no-plans' ).slideDown();  
+                        if ( jq('.tools .remove').length === 0 ) jq( '.no-plans' ).slideDown();  
                     });
                     
                     // console.log( response );
@@ -642,7 +645,7 @@ jQuery( document ).ready( function( jq ) {
     // "Сохранить"
     
     
-    jq( 'body' ).on( 'click', '.tools-curriculum .save', function() {
+    jq( 'body' ).on( 'click', '.tools .save', function() {
         
         let elem = jq(this).closest('div.plx-item');
 

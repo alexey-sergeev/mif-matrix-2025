@@ -77,7 +77,7 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
         $m = new mif_mr_upload();
         // $res = $m->save( array( 'ext' => array( 'png' ) ) ); 
         $res = $m->save( array( 'ext' => array( 'plx' ) ) ); 
-        
+        // p($res);
         foreach ( (array) $res as $i ) $out .= mif_mr_functions::get_callout( 
                 $i['name'] . ' — <span class="fw-semibold">' . $i['messages'] . '</span>', 
                 $i['status'] ); 
@@ -105,7 +105,7 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
         
         // 
         
-        $out .= $this->get_meta();
+        $out .= $this->get_meta( 'curriculum' );
 
 
         return apply_filters( 'mif_mr_get_tools_curriculum', $out );
@@ -129,7 +129,7 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
         if ( array_pop( $ext ) != 'plx' ) return;
         
         $plx = new plx( get_attached_file( $att_id ) );
-        if ( empty( $plx->{'xml:plx:private'} ) ) return mif_mr_functions::get_callout( 'План не обнаружен', 'danger' ); 
+        if ( empty( $plx->get_att() ) ) return mif_mr_functions::get_callout( 'План не обнаружен', 'danger' ); 
             
         // p($plx);
         // p($plx->get_courses());
@@ -546,13 +546,13 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
 
     
 
-    function remove( $attid )
-    {
-        // !!!!!!!
+    // function remove( $attid )
+    // {
+    //     // !!!!!!!
 
-        $res = ( wp_delete_attachment( $attid, true ) === false ) ? false : true;
-        return $res;
-    }
+    //     $res = ( wp_delete_attachment( $attid, true ) === false ) ? false : true;
+    //     return $res;
+    // }
 
 
 

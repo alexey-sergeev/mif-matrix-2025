@@ -155,14 +155,19 @@ class mif_mr_upload {
 
         foreach ( $_FILES['file']['name'] as $key => $item ) {
 
+            if ( empty( $item ) ) continue; 
+        
             $arr[$key]['name'] = $item;
             
             $a = explode( '.', $item );
             $ext = array_pop( $a );
             // p($item);
+            // p($att);
             // p($ext);
 
             if ( isset( $att['ext'] ) && ! in_array( $ext, $att['ext'] ) ) {
+
+
 
                 $arr[$key]['status'] = 'warning';
                 $arr[$key]['messages'] = 'Неправильный формат файла';
