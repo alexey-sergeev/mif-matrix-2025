@@ -217,6 +217,36 @@ class mif_mr_functions {
 
 
 
+    //
+    //  
+    //
+    
+    public static function get_ext( $file )
+    {
+        $a = explode( '.', $file );
+        return array_pop( $a );
+    }
+    
+
+
+
+    //
+    //  
+    //
+    
+    public static function get_att_id()
+    {
+        $att_id = NULL;
+        
+        global $wp_query;
+        if ( isset( $wp_query->query_vars['id'] ) ) $att_id = $wp_query->query_vars['id'];
+
+        return $att_id;
+    }
+    
+
+
+
 }
 
 ?>

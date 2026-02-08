@@ -582,7 +582,15 @@ jQuery( document ).ready( function( jq ) {
             //             if ( jq('.tools-curriculum .remove').length === 0 ) jq( '.no-plans' ).removeClass('d-none');  
             //         });
         let elem = jq(this).closest('div.row');
-            
+        let attid = jq(this).attr( 'data-attid' );    
+        let attid_show = jq( '.show-file' ).attr( 'data-attid' );    
+
+        // console.log(attid);
+        // console.log(attid_show);
+
+        // if ( attid == attid_show ) jq( '.show-file' ).slideUp( function(){ jq(this).remove(); });
+
+        
 
         jq.ajax( {
             url: ajaxurl,
@@ -592,7 +600,7 @@ jQuery( document ).ready( function( jq ) {
                 // action: 'tools-curriculum',
                 // action: 'tools-' + jq( 'input[name=type]' ).val(),
                 do: 'remove',
-                attid: jq(this).attr( 'data-attid' ),
+                attid: attid,
                 opop: jq( 'input[name=opop]' ).val(),
                 // comp: comp_id,
                 // sub: sub_id,
@@ -615,6 +623,8 @@ jQuery( document ).ready( function( jq ) {
                         // if ( jq('.tools-curriculum .remove').length === 0 ) jq( '.no-plans' ).removeClass('d-none');  
                         if ( jq('.tools .remove').length === 0 ) jq( '.no-plans' ).slideDown();  
                     });
+                    
+                    if ( attid == attid_show ) jq( '.show-file' ).slideUp( function(){ jq(this).remove(); });
                     
                     // console.log( response );
                     

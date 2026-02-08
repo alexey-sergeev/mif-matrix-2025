@@ -45,8 +45,8 @@ include_once dirname( __FILE__ ) . '/tools-templates.php';
 
 include_once dirname( __FILE__ ) . '/lib-download.php';
 include_once dirname( __FILE__ ) . '/lib-upload.php';
-include_once dirname( __FILE__ ) . '/lib-xlsx-core.php';
-include_once dirname( __FILE__ ) . '/lib-docx-core.php';
+include_once dirname( __FILE__ ) . '/lib-xlsx.php';
+// include_once dirname( __FILE__ ) . '/lib-docx-core.php';
 
 
 include_once dirname( __FILE__ ) . '/classes/modules-class.php';

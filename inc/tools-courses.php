@@ -14,6 +14,10 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
     function __construct()
     {
         parent::__construct();
+
+        add_filter( 'lib-upload-save-title', array( $this, 'set_save_title'), 10, 2 );
+
+        $this->scheme = apply_filters( 'scheme-data-courses', array( 'name' => 'C4' ) );
         
     }
         
@@ -47,6 +51,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
 
     public function get_tools_courses()
     {
+        $att_id = mif_mr_functions::get_att_id();
 
         $out = '';
 
@@ -58,11 +63,19 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         $m = new mif_mr_upload();
         // $res = $m->save( array( 'ext' => array( 'png' ) ) ); 
         $res = $m->save( array( 'ext' => array( 'xls', 'xlsx' ) ) ); 
-        
-        foreach ( (array) $res as $i ) $out .= mif_mr_functions::get_callout( 
+            
+        foreach ( (array) $res as $i ) {
+            
+            $out .= mif_mr_functions::get_callout( 
                 $i['name'] . ' — <span class="fw-semibold">' . $i['messages'] . '</span>', 
                 $i['status'] ); 
-            
+
+            if ( isset( $i['id'] ) ) $att_id = $i['id'];
+
+        }        
+
+
+
         // Показать форму
 
         $out .= $m->form_upload( array( 
@@ -73,12 +86,17 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
                         ) );
         
 
-        // Показать список файлов плана
+        // Показать список файлов courses
         
         $out .= $this->show_list_file_courses();
         
         $out .= $this->get_meta( 'courses' );
 
+
+        // Показать courses
+
+        if ( ! empty( $att_id ) ) $out .= $this->show_file_courses( $att_id );
+        
         return apply_filters( 'mif_mr_get_tools_courses', $out );
 
     }
@@ -94,9 +112,8 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
     {
         $out = '';
 
-        // $arr = $this->get_file_curriculum();
-        // $arr = $this->get_file( array( 'unset' => array( 'xlsx' ) ) );
-        $arr = $this->get_file();
+        $arr = $this->get_file( array( 'ext' => array( 'xls', 'xlsx' ) ) );
+        // $arr = $this->get_file();
 
         // p($arr);
 
@@ -136,6 +153,40 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
     }
 
 
+    
+
+    
+    // 
+    // Вывести  
+    // 
+
+    public function show_file_courses( $att_id )
+    {
+        $att = get_post( $att_id );
+        
+        if ( empty( $att ) ) return;
+        if ( $att->post_type != 'attachment' ) return;
+        if ( ! in_array( mif_mr_functions::get_ext( $att->guid ), array( 'xls', 'xlsx' ) ) ) return;
+        
+        $m = new mif_mr_xlsx( get_attached_file( $att_id ) );
+        $c = $m->get( $this->scheme['name'] );
+
+        // p($c);
+
+        $out = '';
+        
+        $out .= '<div class="container show-file" data-attid="' . $att_id . '">';
+
+
+        $out .= '</div>';
+
+        $out .= '<input type="hidden" name="attid" value="' . $att_id . '" />'; 
+        
+        $out .= '';
+        
+        return $out;
+    }
+        
 
 
 
@@ -282,58 +333,24 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
 
 
 
-    // private function is_empty( $type, $opop_id )
-    // {
-    //     $m = new mif_mr_part_companion();
-    //     $res = $m->get_companion_id( $type, $opop_id );
-
-    //     return ( $res ) ? true : false;
-    // }
 
 
 
+    function set_save_title( $title, $tmp_name )
+    {
+        $m = new mif_mr_xlsx( $tmp_name );
+        $name = $m->get( $this->scheme['name'] );
 
-    // private function get_date_from_plx( $type, $att_id )
-    // {
-    //     $plx = new plx( get_attached_file( $att_id ) );
+        if ( ! empty( $name ) ) $title = $name;
 
-    //     switch ( $type ) {  
-    //         case 'courses': $data = $plx->get_courses(); break;  
-    //         case 'curriculum': $data = $plx->get_curriculum(); break;  
-    //         case 'matrix': $data = $plx->get_matrix(); break;  
-    //         case 'lib-competencies': $data = $plx->get_cmp(); break;  
-    //         case 'lib-references-kaf': $data = $plx->get_kaf(); break;  
-    //         case 'lib-references-staff': $data = $plx->get_att( 'staff' ); break;  
-    //         case 'attributes': $data = $plx->get_att(); break;  
-    //         case 'get_att_arr': $data = $plx->get_att_arr(); break;  
-    //         default: $data = ''; break;  
-    //     }  
-        
-    //     return $data;
-    // }
-
-
-    
-
-    // function remove( $attid )
-    // {
-    //     // !!!!!!!
-
-    //     $res = ( wp_delete_attachment( $attid, true ) === false ) ? false : true;
-    //     return $res;
-    // }
+        return $title;
+    }
 
 
 
 
-    // private static function get_meta()
-    // {
-    //     $out = '';
-    //     $out .= '<input type="hidden" name="_wpnonce" value="' . wp_create_nonce( 'mif-mr' ) . '" />';  
-    //     $out .= '<input type="hidden" name="opop" value="' . mif_mr_opop_core::get_opop_id() . '" />';  
-    //     $out .= '<input type="hidden" name="opop_title" value="' . mif_mr_opop_core::get_opop_title() . '" />';  
-    //     return $out;
-    // }
+    private $scheme = array();
+
 
 }
 

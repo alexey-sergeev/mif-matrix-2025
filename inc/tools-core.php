@@ -61,12 +61,12 @@ class mif_mr_tools_core {
             
         // Удалить из ответа лишние файлы 
         
-        if ( isset( $att['unset'] ) ) {
+        if ( isset( $att['ext'] ) ) {
         
             foreach ( $arr as $key => $item ) {
                 $arr_tmp = explode( '.', $item->guid );
                 $ext = array_pop( $arr_tmp );
-                if ( ! in_array( $ext, (array) $att['unset'] ) ) unset( $arr[$key] );
+                if ( ! in_array( $ext, (array) $att['ext'] ) ) unset( $arr[$key] );
             }
 
         }
@@ -74,7 +74,7 @@ class mif_mr_tools_core {
         return $arr;
     }
 
-    
+
 
     //
     //
