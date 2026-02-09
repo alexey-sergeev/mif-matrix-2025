@@ -667,7 +667,7 @@ jQuery( document ).ready( function( jq ) {
                 url: ajaxurl,
                 type: 'POST',
                 data: {
-                    action: 'tools-curriculum',
+                    action: 'tools',
                     do: 'save',
                     opop: jq( 'input[name=opop]' ).val(),
                     attid: jq( 'input[name=attid]' ).val(),
@@ -726,13 +726,13 @@ jQuery( document ).ready( function( jq ) {
     
     // Отменить
     
-    jq( 'body' ).on( 'click', '.tools-curriculum .cancel', function() {
+    jq( 'body' ).on( 'click', '.tools .cancel', function() {
         jq( '.report',  jq(this).closest('div.plx-item') ).slideUp();
         return false;
     })
     
     
-    jq( 'body' ).on( 'click', '.tools-curriculum .cancel-analysis', function() {
+    jq( 'body' ).on( 'click', '.tools .cancel-analysis', function() {
         // console.log( '@' );
         jq( '.analysis-box',  jq(this).closest('div.plx-item') ).slideUp(function ( index, elem ) {jq(elem).html('');});
         jq( '.analysis-box' ).each( function ( index, elem ) { jq(elem).removeAttr('data-visible'); } );                    
@@ -747,7 +747,7 @@ jQuery( document ).ready( function( jq ) {
 
     // "Анализ"
         
-    jq( 'body' ).on( 'click', '.tools-curriculum .analysis', function() {
+    jq( 'body' ).on( 'click', '.tools .analysis', function() {
         
         let elem = jq(this).closest('div.plx-item');
         jq( '.report', elem ).slideUp();
@@ -763,7 +763,7 @@ jQuery( document ).ready( function( jq ) {
                 url: ajaxurl,
                 type: 'POST',
                 data: {
-                    action: 'tools-curriculum',
+                    action: 'tools',
                     do: 'analysis',
                     opop: jq( 'input[name=opop]' ).val(),
                     attid: jq( 'input[name=attid]' ).val(),

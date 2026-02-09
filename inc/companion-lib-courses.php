@@ -17,7 +17,7 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
     {
         parent::__construct();
         
-        $this->index_part =  apply_filters( 'mif-mr-index_part', array( 
+        $this->index_part =  apply_filters( 'index-courses-part', array( 
                                                                     'content',
                                                                     'evaluations',
                                                                     'biblio',
