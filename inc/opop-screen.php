@@ -215,6 +215,14 @@ class mif_mr_opop extends mif_mr_opop_tree_raw {
             
             case 'stat':
                 global $tree;
+
+                p('====== 1 ======');
+                foreach ( $tree as $k => $i ) p($k);
+
+                p('====== 2 ======');
+                foreach ( $tree['content'] as $k => $i ) p($k);
+
+
                 p($tree);
             break;
             

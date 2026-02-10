@@ -246,6 +246,42 @@ span.copy-button.act {
     background-color: #ddeeff !important;
 }
 
+.mr-white {
+    background-color: #FFFFFF !important;
+}
+
+
+/* Цвета 2 */
+
+.mr-red-2 {
+    /* background-color: #FF0066 !important; */
+    background-color: #FF5050 !important;
+}
+
+.mr-yellow-2 {
+    background-color: #FFFF00 !important;
+}
+
+.mr-green-2 {
+    background-color: #00FF00 !important;
+}
+
+.mr-orange-2 {
+    background-color: #FFCC00 !important;
+}
+
+.mr-blue-2 {
+    background-color: #0099FF !important;
+}
+
+.mr-magenta-2 {
+    background-color: #FF00FF !important;
+}
+
+.mr-gray-2 {
+    background-color: #777777 !important;
+}
+
 
 /* table th {
     /* background: #f4f4f4; */

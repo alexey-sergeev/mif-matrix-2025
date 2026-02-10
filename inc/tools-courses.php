@@ -140,12 +140,46 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         
         foreach ( $arr as $item ) {
             
+            $a = $this->get_stats_courses( $item->ID );
+            $title = ( $a['is_course'] ) ? $a['title'] : 'Дисциплина не обнаружена';
+            $is_curriculum = ( $a['is_curriculum'] ) ? 'Есть плане' : 'Нету плане';
+            $is_content_local = ( $a['is_content_local'] ) ? 'Есть локальный контент' : 'Локальный контента нет';    
+            $is_content_lib = ( $a['is_content_lib'] ) ? 'В библиотеке есть контент' : 'В библиотеке нет контент';    
+
+            
             $out .= '<div class="row">';
             $out .= '<div class="col col-1 p-2">' . ++$n . '</div>';
             $out .= '<div class="col p-2"><a href="' .  mif_mr_opop_core::get_opop_url() . 'tools-courses/' . $item->ID . '">' . $item->post_title . '</a></div>';
-            $out .= '<div class="col col-1 p-2 text-center"><a href="' . $item->guid . '"><i class="fa-regular fa-file-code fa-lg"></i></a></div>';
+            $out .= '<div class="col col-1 p-2 text-center">';
+            
+            $out .= ( ! $a['is_course'] ) ? '<span class="pr-3 mr-1 mr-gray-2"></span>' : '<span class="pr-3 mr-1"></span>';
+            $out .= ( $a['is_curriculum'] ) ? '<span class="pr-3 mr-1 mr-blue-2"></span>' : '<span class="pr-3 mr-1 mr-red-2"></span>';
+            $out .= ( $a['is_content_local'] ) ? '<span class="pr-3 mr-1 mr-green-2"></span>' : '<span class="pr-3 mr-1"></span>';
+            // $out .= '<span class="pr-2 mr-yellow-2"></span>';
+            // $out .= '<span class="pr-2 mr-orange-2"></span>';
+            $out .= ( $a['is_content_lib'] ) ? '<span class="pr-2 mr-1 mr-magenta-2"></span>' : '<span class="pr-2 mr-1"></span>';
+            // $out .= '<span class="pr-2 mr-magenta-2 "></span>';
+            // if ( ! $a['is_course'] ) $out .= '<span class="pr-2 mr-red-2"></span>';
+            // if ( $a['is_curriculum'] ) $out .= '<span class="pr-2 mr-green-2"></span>';
+            // if ( $a['is_content_local'] ) $out .= '<span class="pr-2 mr-white"></span>';
+            // // $out .= '<span class="pr-2 mr-yellow-2"></span>';
+            // // $out .= '<span class="pr-2 mr-orange-2"></span>';
+            // if ( $a['is_content_lib'] ) $out .= '<span class="pr-2 mr-blue-2"></span>';
+            // // $out .= '<span class="pr-2 mr-magenta-2 "></span>';
+
+            $out .= '</div>';
+            // $out .= '<div class="col col-1 p-2 text-center"><a href="' . $item->guid . '"><i class="fa-regular fa-file-code fa-lg"></i></a></div>';
             $out .= '<div class="col col-1 p-2 text-center"><a href="#" class="remove" data-attid="' . $item->ID . '"><i class="fa-regular fa-trash-can fa-lg"></i></a></div>';
             $out .= '</div>';
+            
+            
+            // $out .= '<div class="row"><div class="col">';
+            // $out .= '<div>' . $title . '</div>';
+            // $out .= '<div>' . $is_curriculum . '</div>';
+            // $out .= '<div>' . $is_content_local . '</div>';
+            // $out .= '<div>' . $is_content_lib . '</div>';
+            // $out .= '</div></div>';
+
             
         }
             
@@ -160,11 +194,65 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
 
         return $out;
     }
+    
+    
+    
+    
+    // 
+    // Вывести статистику  
+    // 
+    
+    private function get_stats_courses( $att_id )
+    {
+        global $tree;
+    
+        $arr = array();
+
+        $m = new mif_mr_xlsx( get_attached_file( $att_id ) );
+        $name = $m->get( $this->scheme['name'][0] );
+
+        // p($c);
+
+        $arr['title'] = $name;    
+        $arr['is_course'] = ( ! empty( $name ) ) ? true : false; // !!!!
+        $arr['is_curriculum'] = ( ! empty( $tree['content']['courses']['index'][$name]) ) ? true : false;
+     
+        // p(mif_mr_opop_core::get_opop_id());
+        // p($tree['content']['lib-courses']['data']);
+        
+        // if ( isset( $tree['content']['lib-courses']['data'] ) ) {
+            
+        $f_local = false;
+        $f_lib = false;
+
+        foreach ( $tree['content']['lib-courses']['data'] as $i ) {
+            if ( $i['name'] != $name ) continue;
+            if ( $i['from_id'] == mif_mr_opop_core::get_opop_id() ) $f_local = true; else $f_lib = true;
+        } 
+        
+        $arr['is_content_local'] = $f_local;    
+        $arr['is_content_lib'] = $f_lib;    
 
 
+
+        // [mif_mr_opop_core::get_opop_id()] as $i ) p($i);
+
+
+
+        // } else {
+
+        //     $f = false;
+
+        // }
+
+
+        return $arr;
+    }
     
 
-    
+
+
+
     // 
     // Вывести  
     // 
