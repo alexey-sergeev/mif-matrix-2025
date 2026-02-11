@@ -19,6 +19,24 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         add_filter( 'scheme-data-courses', array( $this, 'scheme_data_courses'), 10 );
 
         $this->scheme = apply_filters( 'scheme-data-courses', array() );
+
+        $this->index = apply_filters( 'index-data-courses', array(
+                array( 'title' => 'Цели', 'key' => 'target', 'key2' => NULL, 'return' => ' mr-yellow' ),
+                array( 'title' => 'Разделы (содержание)', 'key' => 'parts', 'key2' => 'content', 'return' => ' mr-yellow' ),
+                array( 'title' => 'Разделы (компетенции)', 'key' => 'parts', 'key2' => 'cmp', 'return' => ' mr-yellow' ),
+                array( 'title' => 'Разделы (трудоемкость)', 'key' => 'parts', 'key2' => 'hours', 'return' => ' mr-yellow' ),
+                array( 'title' => 'Разделы (знать, уметь, владеть)', 'key' => 'parts', 'key2' => 'outcomes', 'return' => ' mr-yellow' ),
+                array( 'title' => 'Оценочные средства', 'key' => 'evaluations', 'key2' => NULL, 'return' => ' mr-yellow' ),
+                array( 'title' => 'Основная литература', 'key' => 'biblio', 'key2' => 'basic', 'return' => ' mr-yellow' ),
+                array( 'title' => 'Дополнительная литература', 'key' => 'biblio', 'key2' => 'additional', 'return' => ' mr-yellow' ),
+                array( 'title' => 'Ресурсы Интернета', 'key' => 'it', 'key2' => 'inet', 'return' => ' mr-yellow' ),
+                array( 'title' => 'Программное обеспечение', 'key' => 'it', 'key2' => 'app', 'return' => ' mr-yellow' ),
+                array( 'title' => 'Материально-техническое обеспечение', 'key' => 'mto', 'key2' => 'mto', 'return' => ' mr-yellow' ),
+                array( 'title' => 'Разработчики', 'key' => 'authors', 'key2' => 'authors', 'return' => ' mr-yellow' ),
+            ) );
+
+
+
         // $this->index_part =  apply_filters( 'index-courses-part', array( 
         //                                                     'content',
         //                                                     'evaluations',
@@ -140,7 +158,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         
         foreach ( $arr as $item ) {
             
-            $a = $this->get_stats_courses( $item->ID );
+            $a = $this->get_info_courses( $item->ID );
 
             // p($a);
 
@@ -148,9 +166,9 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
             $title = ( $a['is_course'] ) ? $a['title'] : 'Дисциплина не обнаружена';
             $is_curriculum = ( $a['is_curriculum'] ) ? 'Есть плане' : 'Нету плане';
             $is_content_local = ( $a['is_content_local'] ) ? 'Есть локальный контент' : 'Локальный контента нет';    
-            $id_local = ( $a['is_content_local'] ) ? ' (' . $this->get_ids_link( $a['id_local'] ) . ')': '';    
+            $id_local = ( $a['is_content_local'] ) ? ': ' . $this->get_link_local( $a ) . '': '';    
             $is_content_lib = ( $a['is_content_lib'] ) ? 'В библиотеке есть контент' : 'В библиотеке нет контента';    
-            $id_libs = ( $a['is_content_lib'] ) ? ' (' . $this->get_ids_link( $a['id_libs'] ) . ')' : '';    
+            $id_libs = ( $a['is_content_lib'] ) ? ': ' . $this->get_link_lib( $a ) . '' : '';    
 
             
             $out .= '<div class="row">';
@@ -202,22 +220,33 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
     }
     
     
+
     
-    private function get_ids_link( $ids )
+    private function get_link_local( $a )
     {
-    
-        if ( is_array( $ids ) ) {
+        return $a['id_local'] .  ' (' . '<a href="' . $a['id_local'] . '">' . $a['percent_local'] . '%</a>)';
+    }
 
-            $a = array();
-            foreach ( $ids as $i ) $a[] = '<a href="' . $i . '">' . $i . '</a>';
 
-            return implode( ', ', $a );
 
-        } else {
 
-            return '<a href="' . $ids . '">' . $ids . '</a>';
+    private function get_link_lib( $a )
+    {
 
-        }
+
+    // p($a);
+        // if ( is_array( $ids ) ) {
+
+            $b = array();
+            foreach ( $a['id_libs'] as $k => $i ) $b[] = $i . ' (' . '<a href="' . $i . '">' . $a['percent_libs'][$k] . '%</a>)';
+            
+            return implode( ', ', $b );
+
+        // } else {
+
+        //     return '<a href="' . $ids . '">' . $ids . '</a>';
+
+        // }
 
     }
 
@@ -228,7 +257,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
     // Вывести статистику  
     // 
     
-    private function get_stats_courses( $att_id )
+    private function get_info_courses( $att_id )
     {
         global $tree;
     
@@ -264,9 +293,35 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         $arr['id_libs'] = array();    
         
         foreach ( $tree['content']['lib-courses']['data'] as $i ) {
+            
             if ( $i['name'] == $name ) {
-                if ( $i['from_id'] == mif_mr_opop_core::get_opop_id() ) $arr['id_local'] = $i['comp_id']; else $arr['id_libs'][] = $i['comp_id'] ;
+            
+                // $a = array( 'id' => $i['comp_id'], 'percent' => $this->get_stats_courses( 
+                //         $this->set_courses_form_xls( $att_id ), 
+                //         $tree['content']['lib-courses']['data'][$i['comp_id']]['data'] ) );
+                // $a = array( 'id' => $i['comp_id'], 'percent' => '' ); 
+                
+                
+                $p = $this->get_stats_courses( 
+                        $this->set_courses_form_xls( $att_id ), 
+                        $tree['content']['lib-courses']['data'][$i['comp_id']]['data'] );
+
+                if ( $i['from_id'] == mif_mr_opop_core::get_opop_id() ) {
+
+                    $arr['id_local'] = $i['comp_id']; 
+                    $arr['percent_local'] = $p; 
+                    
+                } else {
+                    
+                    $arr['id_libs'][] = $i['comp_id'];
+                    $arr['percent_libs'][] = $p; 
+            
+                }
+
+
+
             }
+
         } 
         
 
@@ -359,6 +414,10 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         $out .= '<p>.';
         $out .= '<p>.';
 
+
+        // p( $this->get_stats_courses( $arr, $arr2 ) );
+
+
         $out .= '<div class="container show-file" data-attid="' . $att_id . '">';
         
         $out .= '<div class="row">';
@@ -376,7 +435,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         $out .= '<div class="col fw-semibold bg-light p-2 text-center">Цели</div>';
         $out .= '</div>';
         
-        $out .= '<div class="row">';
+        $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'target', NULL, ' mr-yellow' ) . '">';
         $out .= $this->get_course_part( $arr, 'target' );
         $out .= $this->get_course_part( $arr2, 'target' );
         $out .= '</div>';
@@ -387,7 +446,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         $out .= '<div class="col fw-semibold bg-light p-2 text-center">Разделы (содержание)</div>';
         $out .= '</div>';
         
-        $out .= '<div class="row">';
+        $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'parts', 'content', ' mr-yellow' ) . '">';
         $out .= $this->get_course_part( $arr, 'parts', 'content' );
         $out .= $this->get_course_part( $arr2, 'parts', 'content' );
         $out .= '</div>';
@@ -398,7 +457,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         $out .= '<div class="col fw-semibold bg-light p-2 text-center">Разделы (компетенции)</div>';
         $out .= '</div>';
         
-        $out .= '<div class="row">';
+        $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'parts', 'cmp', ' mr-yellow' ) . '">';
         $out .= $this->get_course_part( $arr, 'parts', 'cmp' );
         $out .= $this->get_course_part( $arr2, 'parts', 'cmp' );
         $out .= '</div>';
@@ -409,7 +468,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         $out .= '<div class="col fw-semibold bg-light p-2 text-center">Разделы (трудоемкость)</div>';
         $out .= '</div>';
         
-        $out .= '<div class="row">';
+        $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'parts', 'hours', ' mr-yellow' ) . '">';
         $out .= $this->get_course_part( $arr, 'parts', 'hours' );
         $out .= $this->get_course_part( $arr2, 'parts', 'hours' );
         $out .= '</div>';
@@ -420,7 +479,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         $out .= '<div class="col fw-semibold bg-light p-2 text-center">Разделы (знать, уметь, владеть)</div>';
         $out .= '</div>';
         
-        $out .= '<div class="row">';
+        $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'parts', 'outcomes', ' mr-yellow' ) . '">';
         $out .= $this->get_course_part( $arr, 'parts', 'outcomes' );
         $out .= $this->get_course_part( $arr2, 'parts', 'outcomes' );
         $out .= '</div>';
@@ -431,7 +490,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         $out .= '<div class="col fw-semibold bg-light p-2 text-center">Оценочные средства</div>';
         $out .= '</div>';
         
-        $out .= '<div class="row">';
+        $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'evaluations', NULL, ' mr-yellow' ) . '">';
         $out .= $this->get_course_part( $arr, 'evaluations' );
         $out .= $this->get_course_part( $arr2, 'evaluations' );
         $out .= '</div>';
@@ -442,7 +501,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         $out .= '<div class="col fw-semibold bg-light p-2 text-center">Основная литература</div>';
         $out .= '</div>';
         
-        $out .= '<div class="row">';
+        $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'biblio', 'basic', ' mr-yellow' ) . '">';
         $out .= $this->get_course_part( $arr, 'biblio', 'basic' );
         $out .= $this->get_course_part( $arr2, 'biblio', 'basic' );
         $out .= '</div>';
@@ -453,7 +512,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         $out .= '<div class="col fw-semibold bg-light p-2 text-center">Дополнительная литература</div>';
         $out .= '</div>';
         
-        $out .= '<div class="row">';
+        $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'biblio', 'additional', ' mr-yellow' ) . '">';
         $out .= $this->get_course_part( $arr, 'biblio', 'additional' );
         $out .= $this->get_course_part( $arr2, 'biblio', 'additional' );
         $out .= '</div>';
@@ -464,7 +523,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         $out .= '<div class="col fw-semibold bg-light p-2 text-center">Ресурсы Интернета</div>';
         $out .= '</div>';
         
-        $out .= '<div class="row">';
+        $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'it', 'inet', ' mr-yellow' ) . '">';
         $out .= $this->get_course_part( $arr, 'it', 'inet' );
         $out .= $this->get_course_part( $arr2, 'it', 'inet' );
         $out .= '</div>';
@@ -475,7 +534,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         $out .= '<div class="col fw-semibold bg-light p-2 text-center">Программное обеспечение</div>';
         $out .= '</div>';
         
-        $out .= '<div class="row">';
+        $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'it', 'app', ' mr-yellow' ) . '">';
         $out .= $this->get_course_part( $arr, 'it', 'app' );
         $out .= $this->get_course_part( $arr2, 'it', 'app' );
         $out .= '</div>';
@@ -486,7 +545,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         $out .= '<div class="col fw-semibold bg-light p-2 text-center">Материально-техническое обеспечение</div>';
         $out .= '</div>';
         
-        $out .= '<div class="row">';
+        $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'mto', 'mto', ' mr-yellow' ) . '">';
         $out .= $this->get_course_part( $arr, 'mto', 'mto' );
         $out .= $this->get_course_part( $arr2, 'mto', 'mto' );
         $out .= '</div>';
@@ -497,32 +556,153 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         $out .= '<div class="col fw-semibold bg-light p-2 text-center">Разработчики</div>';
         $out .= '</div>';
         
-        $out .= '<div class="row">';
+        $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'authors', 'authors', ' mr-yellow' ) . '">';
         $out .= $this->get_course_part( $arr, 'authors', 'authors' );
         $out .= $this->get_course_part( $arr2, 'authors', 'authors' );
         $out .= '</div>';
-
-
-
-
 
         $out .= '</div>';
         
         // $out .= '<input type="hidden" name="attid" value="' . $att_id . '" />'; 
         
-        
         return $out;
         }
         
+
+
+
+
+        //
+        //
+        //
         
+        private function get_diff_courses( $arr, $arr2, $key, $key2, $return = NULL )
+        {
+            $yes = true;  
+            $no = false;  
+            
+            if ( $return !== NULL ) {
+                
+                $yes = $return;  
+                $no = '';  
+
+            }
         
+            $s = $this->get_course_part( $arr, $key, $key2 );
+            $s2 = $this->get_course_part( $arr2, $key, $key2 );
+
+            if ( $s == $s2 ) $res = $no; else $res = $yes;
+
+            // p($s);
+            // p($s2);
+
+
+            return $res;
+        }
+
+
+
+
+        //
+        //
+        //
+        
+        private function get_stats_courses( $arr, $arr2 )
+        {
+            $p = 0;
+            $n = 0;
+
+            // array(
+            //     array( 'title' => 'Цели', 'key' => 'target', 'key2' => NULL, 'return' => ' mr-yellow' ),
+            //     array( 'title' => 'Разделы (содержание)', 'key' => 'parts', 'key2' => 'content', 'return' => ' mr-yellow' ),
+            //     array( 'title' => 'Разделы (компетенции)', 'key' => 'parts', 'key2' => 'cmp', 'return' => ' mr-yellow' ),
+            //     array( 'title' => 'Разделы (трудоемкость)', 'key' => 'parts', 'key2' => 'hours', 'return' => ' mr-yellow' ),
+            //     array( 'title' => 'Разделы (знать, уметь, владеть)', 'key' => 'parts', 'key2' => 'outcomes', 'return' => ' mr-yellow' ),
+            //     array( 'title' => 'Оценочные средства', 'key' => 'evaluations', 'key2' => NULL, 'return' => ' mr-yellow' ),
+            //     array( 'title' => 'Основная литература', 'key' => 'biblio', 'key2' => 'basic', 'return' => ' mr-yellow' ),
+            //     array( 'title' => 'Дополнительная литература', 'key' => 'biblio', 'key2' => 'additional', 'return' => ' mr-yellow' ),
+            //     array( 'title' => 'Ресурсы Интернета', 'key' => 'it', 'key2' => 'inet', 'return' => ' mr-yellow' ),
+            //     array( 'title' => 'Программное обеспечение', 'key' => 'it', 'key2' => 'app', 'return' => ' mr-yellow' ),
+            //     array( 'title' => 'Материально-техническое обеспечение', 'key' => 'mto', 'key2' => 'mto', 'return' => ' mr-yellow' ),
+            //     array( 'title' => 'Разработчики', 'key' => 'authors', 'key2' => 'authors', 'return' => ' mr-yellow' ),
+            // )
+
+            foreach ( $this->index as $i ) {
+
+                if ( ! $this->get_diff_courses( $arr, $arr2, $i['key'], $i['key2'] ) ) $p++; 
+                $n++;            
+            
+            }
+
+            
+            // p($p);
+            // p($n);
+
+            // p( $p / $n * 100);
+
+
+
+
+
+
+
+
+
+
+
+
+            return round( $p / $n * 100, 0 );
+        }
+
+
+
+
+
+
+        //
+        //
+        //      
         
         private function get_course_part( $arr, $key, $key2 = NULL )
         {
-            $out = '';    
-
-            $out .= '<div class="col col-6 mt-3 mb-3">';
             
+            // Пропускаем
+
+            switch ( $key ) {
+                        
+                case 'target':
+                case 'evaluations':
+        
+                    if ( empty( $arr[$key] ) ) return;
+
+                break;
+                
+                case 'parts':
+
+                    if ( empty( $arr['content'][$key][$key2] ) ) return;
+                
+                break;
+                
+                case 'biblio':
+                case 'it':
+                case 'mto':
+                case 'authors':
+
+                    if ( empty( $arr[$key][$key2]) ) return;
+                
+                break;
+                        
+                // default:
+                // break;
+            
+            }
+
+
+            // Собираем
+
+            $out = '';    
+            $out .= '<div class="col col-6 mt-3 mb-3">';
+
             switch ( $key ) {
                         
                 case 'target':
@@ -1300,6 +1480,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
 
 
     protected $scheme = array();
+    protected $index = array();
     // protected $index_part = array();
 
 }

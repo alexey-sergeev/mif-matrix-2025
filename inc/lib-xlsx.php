@@ -104,8 +104,8 @@ class mif_mr_xlsx  {
     function get( $cell = 'A1' )
     {
         $cell_value = $this->sheet->getCell($cell)->getValue();
-        // p($cellValue);
-        return $cell_value;
+        if ( empty( $cell_value ) ) $cell_value = '';
+        return strim( $cell_value );
     }
 
 
