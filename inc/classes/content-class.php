@@ -67,6 +67,7 @@ class content {
                     $this->content_arr[$item['content']['name']]['parts'][$part['sub_id']]['outcomes'] =  $outcomes;
                     // $this->content_arr[$item['content']['name']]['parts'][$part['sub_id']]['content'] = arr_to_text( $part['data'] );
                     $this->content_arr[$item['content']['name']]['parts'][$part['sub_id']]['hours'] = $this->get_hours( $hours );
+                    $this->content_arr[$item['content']['name']]['parts'][$part['sub_id']]['hours_raw'] = $hours;
                     // $this->content_arr[$item['content']['name']]['parts'][$part['name']]['hours'] = $hours[$part['name']]['clean'];
                     
                 }
