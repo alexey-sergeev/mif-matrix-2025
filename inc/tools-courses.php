@@ -147,9 +147,63 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         $out .= '<div class="container mt-5">';
         
         $out .= '<div class="row">';
+        $out .= '<div class="col p-2 pt-4 pb-4">';
+
+        
+        $a = array(
+                array( 'curriculum-yes', 'mr-blue-2', '1', 'Входит в учебный план', '2' ),
+                array( 'curriculum-no', 'mr-red-2', '1', 'Не включена в учебный план', '5' ),
+                array( 'local-no', 'mr-gray-2', '2', 'Локальный контента нет', '2' ),
+                array( 'local-yes', 'mr-green-2', '2', 'Есть локальный контент', '2' ),
+                array( 'local-maybe', 'mr-orange-2', '2', 'Есть локальный контент, но он отличается', '5' ),
+                array( 'local-no', 'mr-gray-2', '3', 'В библиотеке нет контента', '2' ),
+                array( 'local-yes', 'mr-magenta-2', '3', 'Есть в библиотеке контент', '2' ),
+                array( 'local-maybe', 'mr-orange-2', '3', 'Есть в библиотеке контент, но он отличается', '2' ),
+        );
+
+        
+        foreach ( $a as $i ) {
+
+            $out .= '<div class="mb-' . $i[4]. '">';
+            $out .= '<input class="form-check-input mr-3" type="checkbox" value="" id="' . $i[0] . '" checked>';
+            $out .= '<label class="form-check-label" for="' . $i[0] . '">';
+            $out .= '<span class="p-1 pl-2 pr-2 mr-1 text-light rounded ' . $i[1] . '"><i class="fa-solid fa-' . $i[2] . ' fa-xs"></i></span> ' . $i[3];
+            // $out .= '<button type="button" class="btn p-0 pl-2 pr-2 ' . $i[1] . ' text-light"><i class="fa-solid fa-' . $i[2] . ' fa-xs"></i></button> ' . $i[3];
+            $out .= '</label>';
+            $out .= '</div>';
+
+        }
+
+        
+        // $out .= '<div class="mb-2"><button type="button" class="btn p-0 pl-2 pr-2 mr-blue-2 text-light"><i class="fa-solid fa-1 fa-xs"></i></button> Входит в учебный план</div>';
+        // $out .= '<div class="mb-5"><button type="button" class="btn p-0 pl-2 pr-2 mr-red-2 text-light"><i class="fa-solid fa-1 fa-xs"></i></button> Не включена в учебный план</div>';
+        // $out .= '<div class="mb-2"><button type="button" class="btn p-0 pl-2 pr-2 mr-gray-2 text-light"><i class="fa-solid fa-2 fa-xs"></i></button> Локальный контента нет</div>';
+        // $out .= '<div class="mb-2"><button type="button" class="btn p-0 pl-2 pr-2 mr-green-2 text-light"><i class="fa-solid fa-2 fa-xs"></i></button> Есть локальный контент</div>';
+        // $out .= '<div class="mb-5"><button type="button" class="btn p-0 pl-2 pr-2 mr-orange-2 text-light"><i class="fa-solid fa-2 fa-xs"></i></button> Есть локальный контент, но он отличается</div>';
+        // $out .= '<div class="mb-2"><button type="button" class="btn p-0 pl-2 pr-2 mr-gray-2 text-light"><i class="fa-solid fa-3 fa-xs"></i></button> В библиотеке нет контента</div>';
+        // $out .= '<div class="mb-2"><button type="button" class="btn p-0 pl-2 pr-2 mr-magenta-2 text-light"><i class="fa-solid fa-3 fa-xs"></i></button> Есть в библиотеке контент</div>';
+        // $out .= '<div class="mb-2"><button type="button" class="btn p-0 pl-2 pr-2 mr-orange-2 text-light"><i class="fa-solid fa-3 fa-xs"></i></button> Есть в библиотеке контент, но он отличается</div>';
+        
+        
+        
+        // $out .= '<div class="mb-2"><button type="button" class="btn p-0 pl-2 pr-2 mr-blue-2 text-light"><i class="fa-solid fa-table-list"></i></button> Входит в учебный план</div>';
+        // $out .= '<div class="mb-2"><button type="button" class="btn p-0 pl-2 pr-2 mr-red-2 text-light"><i class="fa-solid fa-table-list"></i></button> Не включена в учебный план</div>';
+        // $out .= '<div class="mb-2"><button type="button" class="btn p-0 pl-2 pr-2 mr-gray-2 text-light"><i class="fa-regular fa-file-lines"></i></button> Локальный контента нет</div>';
+        // $out .= '<div class="mb-2"><button type="button" class="btn p-0 pl-2 pr-2 mr-green-2 text-light"><i class="fa-regular fa-file-lines"></i></button> Есть локальный контент</div>';
+        // // $out .= '<div class="mb-2"><button type="button" class="btn p-0 pl-2 pr-2 mr-yellow-2 text-light"><i class="fa-regular fa-file-lines"></i></button> Есть локальный контент</div>';
+        // $out .= '<div class="mb-2"><button type="button" class="btn p-0 pl-2 pr-2 mr-orange-2 text-light"><i class="fa-regular fa-file-lines"></i></button> Есть локальный контент, но он отличается</div>';
+        // $out .= '<div class="mb-2"><button type="button" class="btn p-0 pl-2 pr-2 mr-gray-2 text-light"><i class="fa-solid fa-book"></i></button> В библиотеке нет контента</div>';
+        // $out .= '<div class="mb-2"><button type="button" class="btn p-0 pl-2 pr-2 mr-magenta-2 text-light"><i class="fa-solid fa-book"></i></button> Есть в библиотеке контент</div>';
+        // $out .= '<div class="mb-2"><button type="button" class="btn p-0 pl-2 pr-2 mr-orange-2 text-light"><i class="fa-regular fa-file-lines"></i></button> Есть в библиотеке контент, но он отличается</div>';
+
+        $out .= '</div>';
+        $out .= '</div>';
+        
+        $out .= '<div class="row">';
         $out .= '<div class="col col-1 p-2 pt-4 pb-4 fw-semibold">№</div>';
         $out .= '<div class="col p-2 pt-4 pb-4 fw-semibold">Название дисциплины</div>';
-        $out .= '<div class="col col-1 p-2 pt-4 pb-4 fw-semibold">Файл</div>';
+        // $out .= '<div class="col col-1 p-2 pt-4 pb-4 fw-semibold">Файл</div>';
+        $out .= '<div class="col col-1 p-2 pt-4 pb-4 fw-semibold"></div>';
         $out .= '<div class="col col-1 p-2 pt-4 pb-4 fw-semibold"></div>';
         $out .= '</div>';
         
@@ -164,41 +218,63 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
 
 
             $title = ( $a['is_course'] ) ? $a['title'] : 'Дисциплина не обнаружена';
-            $is_curriculum = ( $a['is_curriculum'] ) ? 'Есть плане' : 'Нету плане';
+            $is_curriculum = ( $a['is_curriculum'] ) ? 'Есть в плане' : 'Нету в плане';
             $is_content_local = ( $a['is_content_local'] ) ? 'Есть локальный контент' : 'Локальный контента нет';    
             $id_local = ( $a['is_content_local'] ) ? ': ' . $this->get_link_local( $a ) . '': '';    
             $is_content_lib = ( $a['is_content_lib'] ) ? 'В библиотеке есть контент' : 'В библиотеке нет контента';    
             $id_libs = ( $a['is_content_lib'] ) ? ': ' . $this->get_link_lib( $a ) . '' : '';    
 
+            $item_1 = ( $a['is_curriculum'] ) ? 'mr-blue-2' : 'mr-red-2';
+            $item_2 = ( ! $a['is_content_local'] ) ? 'mr-gray-2'  : ( ( $a['percent_local'] === 100 ) ? 'mr-green-2' : 'mr-orange-2' );
+            $item_3 = ( ! $a['is_content_lib'] ) ? 'mr-gray-2'  : ( ( $a['percent_lib_max'] === 100 ) ? 'mr-magenta-2' : 'mr-orange-2' );
+
+
+
             
             $out .= '<div class="row">';
+            // $out .= '<div class="col col-1 p-2"><input class="form-check-input mr-3" type="checkbox" value="">' . ++$n . '</div>';
             $out .= '<div class="col col-1 p-2">' . ++$n . '</div>';
             $out .= '<div class="col p-2"><a href="' .  mif_mr_opop_core::get_opop_url() . 'tools-courses/' . $item->ID . '">' . $item->post_title . '</a></div>';
-            $out .= '<div class="col col-1 p-2 text-center">';
+            $out .= '<div class="col col-2 p-2 text-center">';
             
-            $out .= ( ! $a['is_course'] ) ? '<span class="pr-3 mr-1 mr-gray-2"></span>' : '<span class="pr-3 mr-1"></span>';
-            $out .= ( $a['is_curriculum'] ) ? '<span class="pr-3 mr-1 mr-blue-2"></span>' : '<span class="pr-3 mr-1 mr-red-2"></span>';
-            $out .= ( $a['is_content_local'] ) ? '<span class="pr-3 mr-1 mr-green-2"></span>' : '<span class="pr-3 mr-1"></span>';
-            // $out .= '<span class="pr-2 mr-yellow-2"></span>';
-            // $out .= '<span class="pr-2 mr-orange-2"></span>';
-            $out .= ( $a['is_content_lib'] ) ? '<span class="pr-3 mr-1 mr-magenta-2"></span>' : '<span class="pr-3 mr-1"></span>';
-            // $out .= '<span class="pr-2 mr-magenta-2 "></span>';
-            // if ( ! $a['is_course'] ) $out .= '<span class="pr-2 mr-red-2"></span>';
-            // if ( $a['is_curriculum'] ) $out .= '<span class="pr-2 mr-green-2"></span>';
-            // if ( $a['is_content_local'] ) $out .= '<span class="pr-2 mr-white"></span>';
+            $out .= '<span class="p-1 mr-1 text-light rounded ' . $item_1 . '"><i class="fa-solid fa-1 fa-xs"></i></span>';
+            $out .= '<span class="p-1 mr-1 text-light rounded ' . $item_2 . '"><i class="fa-solid fa-2 fa-xs"></i></span>';
+            $out .= '<span class="p-1 mr-1 text-light rounded ' . $item_3 . '"><i class="fa-solid fa-3 fa-xs"></i></span>';
+            
+            // $out .= '<span class=""><i class="fa-solid fa-table-list"></i></span>';
+            // $out .= '<span class=""><i class="fa-regular fa-file-lines"></i></span>';
+            // $out .= '<span class=""><i class="fa-solid fa-percent"></i></span>';
+            // $out .= '<span class=""><i class="fa-solid fa-book"></i></span>';
+
+
+            // $out .= ( ! $a['is_course'] ) ? '<span class="pr-3 mr-1 mr-gray-2"></span>' : '<span class="pr-3 mr-1"></span>';
+            // $out .= ( $a['is_curriculum'] ) ? '<span class="pr-3 mr-1 mr-blue-2"></span>' : '<span class="pr-3 mr-1 mr-red-2"></span>';
+            // $out .= ( $a['is_content_local'] ) ? '<span class="pr-3 mr-1 mr-green-2"></span>' : '<span class="pr-3 mr-1"></span>';
             // // $out .= '<span class="pr-2 mr-yellow-2"></span>';
             // // $out .= '<span class="pr-2 mr-orange-2"></span>';
-            // if ( $a['is_content_lib'] ) $out .= '<span class="pr-2 mr-blue-2"></span>';
+            // $out .= ( $a['is_content_lib'] ) ? '<span class="pr-3 mr-1 mr-magenta-2"></span>' : '<span class="pr-3 mr-1"></span>';
             // // $out .= '<span class="pr-2 mr-magenta-2 "></span>';
+            // // if ( ! $a['is_course'] ) $out .= '<span class="pr-2 mr-red-2"></span>';
+            // // if ( $a['is_curriculum'] ) $out .= '<span class="pr-2 mr-green-2"></span>';
+            // // if ( $a['is_content_local'] ) $out .= '<span class="pr-2 mr-white"></span>';
+            // // // $out .= '<span class="pr-2 mr-yellow-2"></span>';
+            // // // $out .= '<span class="pr-2 mr-orange-2"></span>';
+            // // if ( $a['is_content_lib'] ) $out .= '<span class="pr-2 mr-blue-2"></span>';
+            // // // $out .= '<span class="pr-2 mr-magenta-2 "></span>';
 
             $out .= '</div>';
             // $out .= '<div class="col col-1 p-2 text-center"><a href="' . $item->guid . '"><i class="fa-regular fa-file-code fa-lg"></i></a></div>';
-            $out .= '<div class="col col-1 p-2 text-center"><a href="#" class="remove" data-attid="' . $item->ID . '"><i class="fa-regular fa-trash-can fa-lg"></i></a></div>';
+            $out .= '<div class="col col-2 p-2 ">';
+            $out .= '<a href="#" class="mr-3 analysis"><i class="fa-solid fa-chart-simple fa-lg"></i></a>';
+            $out .= '<a href="#" class="mr-3 save"><i class="fa-regular fa-floppy-disk fa-lg"></i></a>';
+            $out .= '<a href="#" class="remove" data-attid="' . $item->ID . '"><i class="fa-regular fa-trash-can fa-lg"></i></a>';
+            $out .= '<input class="form-check-input ml-2 mr-1" type="checkbox" value="">';
+            $out .= '</div>';
             $out .= '</div>';
             
             
             $out .= '<div class="row"><div class="col">';
-            $out .= '<div>' . $title . '</div>';
+            // $out .= '<div>' . $title . '</div>';
             $out .= '<div>' . $is_curriculum . '</div>';
             $out .= '<div>' . $is_content_local . $id_local . '</div>';
             $out .= '<div>' . $is_content_lib . $id_libs . '</div>';
@@ -290,7 +366,11 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         
 
         $arr['id_local'] = NULL;    
-        $arr['id_libs'] = array();    
+        $arr['id_libs'] = array();  
+        
+        $arr['percent_local'] = 0;
+        $arr['percent_libs'] = array(); 
+        $arr['percent_lib_max'] = 0;    
         
         foreach ( $tree['content']['lib-courses']['data'] as $i ) {
             
@@ -315,6 +395,8 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
                     
                     $arr['id_libs'][] = $i['comp_id'];
                     $arr['percent_libs'][] = $p; 
+
+                    if ( $p > $arr['percent_lib_max'] ) $arr['percent_lib_max'] = $p;
             
                 }
 
