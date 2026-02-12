@@ -868,7 +868,38 @@ jQuery( document ).ready( function( jq ) {
     //     return false;
     // }); 
     
+
     
+    // 
+    // tools courses
+    // 
+
+    jq( 'body' ).on( 'click', '.slct-menu input', function() {
+     
+        console.log( jq(this).val() );
+        console.log( '.slct .' + jq(this).val() );
+        console.log( jq('.slct .' + jq(this).val(), jq(this).closest('container')) );
+        
+        let checkbox = this;
+
+        jq('.slct .' + jq(this).val(), jq(this).closest('.container')).each( function () { 
+           
+            if ( ! jq(checkbox).is(':checked') ) jq(this).slideUp(); else jq(this).slideDown();
+        
+        });
+
+
+//  jq('th input.rsm', jq(this).closest('table')).each( function ( index, elem ) { jq(elem).prop('checked', false); });
+
+        // // navigator.clipboard.writeText( jq(this).text() );
+        // navigator.clipboard.writeText( jq( '.copy',  jq(this).closest('.copy-wrapper') ).text() );
+     
+        // elem = this;
+        // jq(this).addClass('act'); 
+        // setTimeout( function() { jq(elem).removeClass('act') }, 200);
+        // return false;
+        
+    }); 
     
     
 });
