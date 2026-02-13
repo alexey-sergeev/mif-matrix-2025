@@ -203,7 +203,8 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
             $out .= '</div>';
             $out .= '<div class="col col-2 p-2 text-end">';
             $out .= '<a href="#" class="mr-3 analysis"><i class="fa-solid fa-chart-simple fa-lg"></i></a>';
-            $out .= '<a href="#" class="mr-3 save"><i class="fa-regular fa-floppy-disk fa-lg"></i></a>';
+            // $out .= '<a href="#" class="mr-3 export"><i class="fa-solid fa-file-export fa-lg"></i></a>';
+            $out .= '<a href="#" class="mr-3 export"><i class="fa-regular fa-floppy-disk fa-lg"></i></a>';
             $out .= '<a href="#" class="remove" data-attid="' . $item->ID . '"><i class="fa-regular fa-trash-can fa-lg"></i></a>';
             $out .= '<input class="form-check-input ml-2 mr-1" type="checkbox" value="' . $item->ID . '" name="ids[]">';
             $out .= '</div>';
@@ -226,9 +227,15 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         $out .= '</div>';
         
         
-        $out .= '<div class="row bg-light">';
-        $out .= '<div class="col"></div>';
-        $out .= '<div class="col col-2 p-2 text-end"><input class="form-check-input ml-2 mr-1" type="checkbox" value="" name="all"></div>';
+        $out .= '<div class="row bg-light pt-5 pb-5">';
+        $out .= '<div class="col">';
+        // $out .= '<button type="button" class="btn btn-primary">Экспорт</button>';
+        // $out .= '<button type="button" class="btn btn-primary">Сохранить и удалить</button>';
+        // $out .= '<button type="button" class="btn btn-secondary">Удалить</button>';
+        $out .= '<a href="#" class="mr-3 export-all"><i class="fa-regular fa-floppy-disk fa-lg"></i>Сохранить и удалить</a>';
+        $out .= '<a href="#" class="remove-all"><i class="fa-regular fa-trash-can fa-lg"></i>Удалить</a>';
+        $out .= '</div>';
+        $out .= '<div class="col col-2 text-end pr-2"><input class="form-check-input ml-2 mr-1" type="checkbox" value="" name="all"></div>';
          $out .= '</div>';
 
 

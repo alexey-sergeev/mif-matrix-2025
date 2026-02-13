@@ -895,25 +895,54 @@ jQuery( document ).ready( function( jq ) {
 
     jq( 'body' ).on( 'click', '.tools input[name=all]', function() {
         
-        console.log( '@1' );
-        // console.log( jq(this).is(':checked') );
-        // console.log( jq(true).prop('checked') );
-        // console.log( jq(true).html() );
-
-
-
         jq('.select-item.select-yes input[type="checkbox"]', jq(this).closest('.container')).prop('checked', jq(this).is(':checked') );
-        
-        
-        // ;
 
-        // jq('.select-menu input', jq(this).closest('.container')).each( function() { 
-        //     if ( ! jq(this).is(':checked') ) jq('.select-item.' + jq(this).val(), jq(this).closest('.container')).removeClass('select-yes');
-        // });
+    }); 
 
-        // jq('.select-item', jq(this).closest('.container')).each( function() { 
-        //     if ( ! jq(this).hasClass('select-yes') ) jq(this).slideUp(); else jq(this).slideDown();
-        // });
+
+    // Save
+
+    jq( 'body' ).on( 'click', '.tools .export-all', function() {
+        
+        // jq('.select-item.select-yes input[type="checkbox"]', jq(this).closest('.container')).prop('checked', jq(this).is(':checked') );
+        let f = false;        
+        jq('.select-item input[type="checkbox"]', jq(this).closest('.container')).each( function() { if ( jq(this).is(':checked') ) f = true; });
+        
+        if ( f ) {
+            
+            console.log('@');
+            
+        } else {
+            
+            console.log('@@');
+            jq( 'input[name="all"]', jq(this).closest('.container') ).focus();
+
+        }
+        
+        return false;
+
+    }); 
+
+
+    // Remove
+
+    jq( 'body' ).on( 'click', '.tools .remove-all', function() {
+        
+        let f = false;        
+        jq('.select-item input[type="checkbox"]', jq(this).closest('.container')).each( function() { if ( jq(this).is(':checked') ) f = true; });
+        
+        if ( f ) {
+            
+            console.log('@1');
+            
+        } else {
+            
+            console.log('@@1');
+            jq( 'input[name="all"]', jq(this).closest('.container') ).focus();
+
+        }
+
+        return false;
 
     }); 
 
