@@ -946,6 +946,97 @@ jQuery( document ).ready( function( jq ) {
 
     }); 
 
+
+
+    // Info (analysis)
+
+    jq( 'body' ).on( 'click', '.tools .info', function() {
+        
+        console.log('@@@');
+        let elem = jq( '.col', jq(this).closest('.row') ).parent();
+
+        jq.ajax( {
+            url: ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'tools',
+                do: 'info',
+                // opop: jq( 'input[name=opop]' ).val(),
+                attid: jq( 'input[type="checkbox"]', jq(this).closest('.select-item') ).val(),
+                // method: jq( 'input[name=method]', jq(this).closest('div.row') ).val(),
+                // key: jq( 'textarea', jq(this).closest('div.row') ).attr( 'name' ),
+                _wpnonce: jq( 'input[name=_wpnonce]' ).val(),
+            },
+            success: function( response ) {
+                
+                if ( response ) {
+
+                    // // jq( '.report', elem ).html( response );
+                    // // // jq( '.report', elem ).slideDown();
+                    
+                    // jq( '.analysis-box' ).each( function ( index, elem ) { 
+                        
+                    //     // jq('#fullsize').trigger('click');
+                    //     // jq( 'div.container' ).toggleClass( 'fullsize' );
+                    //     // jq( '#primary div.column' ).addClass( 'is-11-desktop is-12-desktop' ); 
+                    //     // jq( 'div.container' ).removeClass( 'fullsize' );
+                    //     // jq( '#primary div.column' ).addClass( 'is-11-desktop' );
+                    //     // jq( '#primary div.column' ).removeClass( 'is-12-desktop' );
+                    //     jq(elem).html(''); 
+                    //     jq(elem).slideUp(); 
+                    
+                    // } );
+
+                    
+                    // jq( '.analysis-box', elem ).slideUp( function() {
+                    //     jq( '.analysis-box', elem ).html( response );
+                    //     jq( '.analysis-box', elem ).slideDown();
+                    // });
+
+                    elem.after( response );
+                    elem.next("div").slideDown();
+
+                    // elem.after(response).hide().slideDown();
+                    console.log( response );
+                    
+                } else {
+                    
+                    console.log( 'error 13' );
+                    
+                }
+                
+            },
+            error: function( response ) {
+                
+                console.log( 'error 14' );
+                
+            },
+            
+        } );
+
+
+
+
+
+
+        // let f = false;        
+        // jq('.select-item input[type="checkbox"]', jq(this).closest('.container')).each( function() { if ( jq(this).is(':checked') ) f = true; });
+        
+        // if ( f ) {
+            
+        //     console.log('@1');
+            
+        // } else {
+            
+        //     console.log('@@1');
+        //     jq( 'input[name="all"]', jq(this).closest('.container') ).focus();
+
+        // }
+
+        return false;
+
+    }); 
+
     
 
 

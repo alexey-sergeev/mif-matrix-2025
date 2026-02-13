@@ -260,6 +260,15 @@ class mif_mr_init extends mif_mr_functions {
                         
                     }     
                 
+                    if ( $_REQUEST['do'] == 'info' ) {
+                        
+                        $m = new mif_mr_tools_courses();
+                        echo $m->analysis( array(
+                                                'att_id' => (int) $_REQUEST['attid'],
+                                                ) );
+                        
+                    }     
+                
                 } 
 
 

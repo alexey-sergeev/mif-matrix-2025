@@ -460,7 +460,9 @@ class mif_mr_companion_core {
         
         $out .= '<div class="col-2 col-md-1 pt-3 pb-3 text-end copy-wrapper">';
         // $out .= '<a href="' . mif_mr_opop_core::get_opop_url() . '' . $att['type']. '/' . $att['comp_id'] . '">' . $att['name'] . '</a>';
-        $out .= '<span class="bg-secondary text-light rounded pl-3 pr-3 p-1 copy copy-button">' . $att['comp_id'] . '</span>';
+        
+        // $out .= '<span class="bg-secondary text-light rounded pl-3 pr-3 p-1 copy copy-button">' . $att['comp_id'] . '</span>';
+        $out .= mif_mr_opop_core::get_span_id( $att['comp_id'] );
         $out .= '</div>';
         
         $out .= '<div class="col-2 col-md-1 pt-3 pb-3 text-end">';

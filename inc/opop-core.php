@@ -296,6 +296,17 @@ class mif_mr_opop_core {
 
     
 
+    //
+    // Получить ID
+    //
+
+    public static function get_span_id( $comp_id )
+    {
+        return '<span class="bg-secondary text-light rounded pl-3 pr-3 p-1 copy copy-button">' . $comp_id . '</span>';
+    }
+
+    
+
     
 
 }

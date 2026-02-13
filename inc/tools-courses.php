@@ -20,7 +20,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
 
         $this->scheme = apply_filters( 'scheme-data-courses', array() );
 
-        $this->index = apply_filters( 'index-data-courses', array(
+        $this->index = apply_filters( 'index-tools-courses', array(
                 array( 'title' => 'Цели', 'key' => 'target', 'key2' => NULL, 'return' => ' mr-yellow' ),
                 array( 'title' => 'Разделы (содержание)', 'key' => 'parts', 'key2' => 'content', 'return' => ' mr-yellow' ),
                 array( 'title' => 'Разделы (компетенции)', 'key' => 'parts', 'key2' => 'cmp', 'return' => ' mr-yellow' ),
@@ -35,6 +35,16 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
                 array( 'title' => 'Разработчики', 'key' => 'authors', 'key2' => 'authors', 'return' => ' mr-yellow' ),
             ) );
 
+        $this->description = apply_filters( 'description-tools-courses', array(
+                'curriculum-yes' => 'Входит в учебный план',
+                'curriculum-no'=> 'Не включена в учебный план', 
+                'local-no' => 'Локальный контента нет', 
+                'local-yes' => 'Есть локальный контент',
+                'local-maybe' => 'Есть локальный контент, но он отличается',
+                'lib-no' => 'В библиотеке нет контента',
+                'lib-yes' => 'Есть в библиотеке контент',
+                'lib-maybe' => 'Есть в библиотеке контент, но он отличается', 
+            ) );
 
 
         // $this->index_part =  apply_filters( 'index-courses-part', array( 
@@ -152,12 +162,12 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
 
             // p($a);
 
-            $arr_info[$key]['title'] = ( $a['is_course'] ) ? $a['title'] : 'Дисциплина не обнаружена';
-            $arr_info[$key]['is_curriculum'] = ( $a['is_curriculum'] ) ? 'Есть в плане' : 'Нету в плане';
-            $arr_info[$key]['is_content_local'] = ( $a['is_content_local'] ) ? 'Есть локальный контент' : 'Локальный контента нет';    
-            $arr_info[$key]['id_local'] = ( $a['is_content_local'] ) ? ': ' . $this->get_link_local( $a ) . '': '';    
-            $arr_info[$key]['is_content_lib'] = ( $a['is_content_lib'] ) ? 'В библиотеке есть контент' : 'В библиотеке нет контента';    
-            $arr_info[$key]['id_libs'] = ( $a['is_content_lib'] ) ? ': ' . $this->get_link_lib( $a ) . '' : '';    
+            // $arr_info[$key]['title'] = ( $a['is_course'] ) ? $a['title'] : 'Дисциплина не обнаружена';
+            // $arr_info[$key]['is_curriculum'] = ( $a['is_curriculum'] ) ? $this->description['curriculum-yes'] : $this->description['curriculum-no'];
+            // $arr_info[$key]['is_content_local'] = ( $a['is_content_local'] ) ? $this->description['local-yes'] : $this->description['local-no'];    
+            // $arr_info[$key]['id_local'] = ( $a['is_content_local'] ) ? ': ' . $this->get_link_local( $a ) . '': '';    
+            // $arr_info[$key]['is_content_lib'] = ( $a['is_content_lib'] ) ? $this->description['lib-yes'] : $this->description['lib-no'];    
+            // $arr_info[$key]['id_libs'] = ( $a['is_content_lib'] ) ? ': ' . $this->get_link_lib( $a ) . '' : '';    
 
             $arr_info[$key]['item_1'] = ( $a['is_curriculum'] ) ? 'curriculum-yes' : 'curriculum-no';
             $arr_info[$key]['item_2'] = ( ! $a['is_content_local'] ) ? 'local-no' : ( ( $a['percent_local'] === 100 ) ? 'local-yes' : 'local-maybe' );
@@ -193,7 +203,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
             $out .= '<div class="row select-item select-yes ' . $arr_info[$key]['item_1'] . ' ' . $arr_info[$key]['item_2'] . ' ' . $arr_info[$key]['item_3'] . '">';
             $out .= '<div class="col col-1 p-2">' . ++$n . '</div>';
             // $out .= '<div class="col col-1 p-2"><input class="form-check-input ml-2 mr-1" type="checkbox" value=""></div>';
-            $out .= '<div class="col p-2"><a href="' .  mif_mr_opop_core::get_opop_url() . 'tools-courses/' . $item->ID . '">' . $item->post_title . '</a></div>';
+            $out .= '<div class="col p-2"><a href="' .  mif_mr_opop_core::get_opop_url() . 'tools-courses/' . $item->ID . '" class="info">' . $item->post_title . '</a></div>';
             $out .= '<div class="col col-2 p-2 text-center">';
             
             $out .= '<span class="p-1 mr-1 text-light rounded ' . $arr_info[$key]['class_1'] . '"><i class="fa-solid fa-1 fa-xs"></i></span>';
@@ -202,19 +212,24 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
             
             $out .= '</div>';
             $out .= '<div class="col col-2 p-2 text-end">';
-            $out .= '<a href="#" class="mr-3 analysis"><i class="fa-solid fa-chart-simple fa-lg"></i></a>';
+            $out .= '<a href="#" class="mr-3 info"><i class="fa-solid fa-chart-simple fa-lg"></i></a>';
             // $out .= '<a href="#" class="mr-3 export"><i class="fa-solid fa-file-export fa-lg"></i></a>';
             $out .= '<a href="#" class="mr-3 export"><i class="fa-regular fa-floppy-disk fa-lg"></i></a>';
             $out .= '<a href="#" class="remove" data-attid="' . $item->ID . '"><i class="fa-regular fa-trash-can fa-lg"></i></a>';
             $out .= '<input class="form-check-input ml-2 mr-1" type="checkbox" value="' . $item->ID . '" name="ids[]">';
+            // $out .= '<input type="hidden" value="' . $item->ID . '" name="attid">';
             $out .= '</div>';
             $out .= '</div>';
             
+            // p($arr_info[$key])
             
+
+            // $out .= $this->analysis( array( 'att_id' => $item->ID ) );
+
             // $out .= '<div class="row"><div class="col">';
-            // $out .= '<div>' . $is_curriculum . '</div>';
-            // $out .= '<div>' . $is_content_local . $id_local . '</div>';
-            // $out .= '<div>' . $is_content_lib . $id_libs . '</div>';
+            // $out .= '<div>' . $arr_info[$key]['is_curriculum'] . '</div>';
+            // $out .= '<div>' . $arr_info[$key]['is_content_local'] . $arr_info[$key]['id_local'] . '</div>';
+            // $out .= '<div>' . $arr_info[$key]['is_content_lib'] . $arr_info[$key]['id_libs'] . '</div>';
             // $out .= '</div></div>';
             
             }
@@ -236,11 +251,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         $out .= '<a href="#" class="remove-all"><i class="fa-regular fa-trash-can fa-lg"></i>Удалить</a>';
         $out .= '</div>';
         $out .= '<div class="col col-2 text-end pr-2"><input class="form-check-input ml-2 mr-1" type="checkbox" value="" name="all"></div>';
-         $out .= '</div>';
-
-
-
-
+        $out .= '</div>';
 
         $out .= '</div>';
 
@@ -250,6 +261,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
     
 
     
+
     private function get_select_menu( $arr_info )
     {
         $out = '';
@@ -354,17 +366,15 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
 
         // p($arr);
 
-
-
         $arr3 = array(
-                array( 'curriculum-yes', 'mr-blue-2', '1', 'Входит в учебный план', '2', $arr['curriculum-yes'] ),
-                array( 'curriculum-no', 'mr-red-2', '1', 'Не включена в учебный план', '5', $arr['curriculum-no'] ),
-                array( 'local-no', 'mr-gray-2', '2', 'Локальный контента нет', '2', $arr['local-no'] ),
-                array( 'local-yes', 'mr-green-2', '2', 'Есть локальный контент', '2', $arr['local-yes'] ),
-                array( 'local-maybe', 'mr-orange-2', '2', 'Есть локальный контент, но он отличается', '5', $arr['local-maybe'] ),
-                array( 'lib-no', 'mr-gray-2', '3', 'В библиотеке нет контента', '2', $arr['lib-no'] ),
-                array( 'lib-yes', 'mr-magenta-2', '3', 'Есть в библиотеке контент', '2', $arr['lib-yes'] ),
-                array( 'lib-maybe', 'mr-orange-2', '3', 'Есть в библиотеке контент, но он отличается', '2', $arr['lib-maybe'] ),
+                array( 'curriculum-yes', 'mr-blue-2', '1', $this->description['curriculum-yes'], '2', $arr['curriculum-yes'] ),
+                array( 'curriculum-no', 'mr-red-2', '1', $this->description['curriculum-no'], '5', $arr['curriculum-no'] ),
+                array( 'local-no', 'mr-gray-2', '2', $this->description['local-no'], '2', $arr['local-no'] ),
+                array( 'local-yes', 'mr-green-2', '2', $this->description['local-yes'], '2', $arr['local-yes'] ),
+                array( 'local-maybe', 'mr-orange-2', '2', $this->description['local-maybe'], '5', $arr['local-maybe'] ),
+                array( 'lib-no', 'mr-gray-2', '3', $this->description['lib-no'], '2', $arr['lib-no'] ),
+                array( 'lib-yes', 'mr-magenta-2', '3', $this->description['lib-yes'], '2', $arr['lib-yes'] ),
+                array( 'lib-maybe', 'mr-orange-2', '3', $this->description['lib-maybe'], '2', $arr['lib-maybe'] ),
                 );
                 
         foreach ( $arr3 as $i ) {
@@ -390,7 +400,8 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
     
     private function get_link_local( $a )
     {
-        return $a['id_local'] .  ' (' . '<a href="' . $a['id_local'] . '">' . $a['percent_local'] . '%</a>)';
+        // return  mif_mr_opop_core::get_span_id( $a['id_local'] ) .  ' (' . '<a href="' . $a['id_local'] . '">' . $a['percent_local'] . '%</a>)';
+        return  '<a href="' . $a['id_local'] . '">' . $a['percent_local'] . '%</a>';
     }
 
 
@@ -404,7 +415,8 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         // if ( is_array( $ids ) ) {
 
             $b = array();
-            foreach ( $a['id_libs'] as $k => $i ) $b[] = $i . ' (' . '<a href="' . $i . '">' . $a['percent_libs'][$k] . '%</a>)';
+            // foreach ( $a['id_libs'] as $k => $i ) $b[] = mif_mr_opop_core::get_span_id( $i ) . ' (' . '<a href="' . $i . '">' . $a['percent_libs'][$k] . '%</a>)';
+            foreach ( $a['id_libs'] as $k => $i ) $b[] = '<a href="' . $i . '">' . $a['percent_libs'][$k] . '%</a> (' . $i . ')';
             
             return implode( ', ', $b );
 
@@ -537,9 +549,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         $courses_id = 1162;
         
         global $tree;
-
         $arr2 = array();
-        
         if ( isset( $tree['content']['lib-courses']['data'][$courses_id]['data'] ) ) $arr2 = $tree['content']['lib-courses']['data'][$courses_id]['data'];
 
 
@@ -784,44 +794,12 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
             $p = 0;
             $n = 0;
 
-            // array(
-            //     array( 'title' => 'Цели', 'key' => 'target', 'key2' => NULL, 'return' => ' mr-yellow' ),
-            //     array( 'title' => 'Разделы (содержание)', 'key' => 'parts', 'key2' => 'content', 'return' => ' mr-yellow' ),
-            //     array( 'title' => 'Разделы (компетенции)', 'key' => 'parts', 'key2' => 'cmp', 'return' => ' mr-yellow' ),
-            //     array( 'title' => 'Разделы (трудоемкость)', 'key' => 'parts', 'key2' => 'hours', 'return' => ' mr-yellow' ),
-            //     array( 'title' => 'Разделы (знать, уметь, владеть)', 'key' => 'parts', 'key2' => 'outcomes', 'return' => ' mr-yellow' ),
-            //     array( 'title' => 'Оценочные средства', 'key' => 'evaluations', 'key2' => NULL, 'return' => ' mr-yellow' ),
-            //     array( 'title' => 'Основная литература', 'key' => 'biblio', 'key2' => 'basic', 'return' => ' mr-yellow' ),
-            //     array( 'title' => 'Дополнительная литература', 'key' => 'biblio', 'key2' => 'additional', 'return' => ' mr-yellow' ),
-            //     array( 'title' => 'Ресурсы Интернета', 'key' => 'it', 'key2' => 'inet', 'return' => ' mr-yellow' ),
-            //     array( 'title' => 'Программное обеспечение', 'key' => 'it', 'key2' => 'app', 'return' => ' mr-yellow' ),
-            //     array( 'title' => 'Материально-техническое обеспечение', 'key' => 'mto', 'key2' => 'mto', 'return' => ' mr-yellow' ),
-            //     array( 'title' => 'Разработчики', 'key' => 'authors', 'key2' => 'authors', 'return' => ' mr-yellow' ),
-            // )
-
             foreach ( $this->index as $i ) {
 
                 if ( ! $this->get_diff_courses( $arr, $arr2, $i['key'], $i['key2'] ) ) $p++; 
                 $n++;            
             
             }
-
-            
-            // p($p);
-            // p($n);
-
-            // p( $p / $n * 100);
-
-
-
-
-
-
-
-
-
-
-
 
             return round( $p / $n * 100, 0 );
         }
@@ -1115,15 +1093,60 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
 
         
     
-    // //
-    // // Анализ
-    // // 
+    //
+    // Анализ
+    // 
     
-    // public function analysis( $att = array() )
-    // {
+    public function analysis( $att = array() )
+    {
     //     // p($_REQUEST);
-    //     // p($att);
-    //     $out = '';
+        // p($att);
+        
+        // Course 1
+        
+        if ( empty( $att['att_id'] ) ) return;
+
+        // $att = get_post( $att['att_id'] );
+        
+        // if ( empty( $att ) ) return;
+        // if ( $att->post_type != 'attachment' ) return;
+        // if ( ! in_array( mif_mr_functions::get_ext( $att->guid ), array( 'xls', 'xlsx' ) ) ) return;
+        
+        // $arr = $this->set_courses_form_xls( $att_id );
+        $a = $this->get_info_courses( $att['att_id'] );
+        
+        $arr_info['title'] = ( $a['is_course'] ) ? $a['title'] : 'Дисциплина не обнаружена';
+        $arr_info['is_curriculum'] = ( $a['is_curriculum'] ) ? $this->description['curriculum-yes'] : $this->description['curriculum-no'];
+        $arr_info['is_content_local'] = ( $a['is_content_local'] ) ? $this->description['local-yes'] : $this->description['local-no'];    
+        $arr_info['id_local'] = ( $a['is_content_local'] ) ? ': ' . $this->get_link_local( $a ) . '': '';    
+        $arr_info['is_content_lib'] = ( $a['is_content_lib'] ) ? $this->description['lib-yes'] : $this->description['lib-no'];    
+        $arr_info['id_libs'] = ( $a['is_content_lib'] ) ? ': ' . $this->get_link_lib( $a ) . '' : '';    
+
+
+        // p($arr_info);
+
+        // Course 2
+        
+        $courses_id = 1162;
+        
+        global $tree;
+        $arr2 = array();
+        if ( isset( $tree['content']['lib-courses']['data'][$courses_id]['data'] ) ) $arr2 = $tree['content']['lib-courses']['data'][$courses_id]['data'];
+        // p($tree);
+
+        $out = '';
+
+        $out .= '<div class="row" style="display:none;"><div class="col p-3">';
+
+        // $out .= $att['att_id'];
+        $out .= '<div>' . $arr_info['is_curriculum'] . '</div>';
+        $out .= '<div>' . $arr_info['is_content_local'] . $arr_info['id_local'] . '</div>';
+        $out .= '<div>' . $arr_info['is_content_lib'] . $arr_info['id_libs'] . '</div>';
+        $out .= '</div></div>';
+            
+
+
+
 
     //     $m = new mif_mr_part_companion();
     //     $data[0] = $this->get_date_from_plx( $att['key'], $att['att_id'] );
@@ -1178,8 +1201,8 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
   
     //     $out .= '</div>';
 
-    //     return $out;
-    // }
+        return $out;
+    }
 
 
 
@@ -1653,6 +1676,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
 
     protected $scheme = array();
     protected $index = array();
+    protected $description = array();
     // protected $index_part = array();
 
 }
