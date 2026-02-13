@@ -190,7 +190,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         foreach ( $arr as $key => $item ) {
             
             
-            $out .= '<div class="row select-item ' . $arr_info[$key]['item_1'] . ' ' . $arr_info[$key]['item_2'] . ' ' . $arr_info[$key]['item_3'] . '">';
+            $out .= '<div class="row select-item select-yes ' . $arr_info[$key]['item_1'] . ' ' . $arr_info[$key]['item_2'] . ' ' . $arr_info[$key]['item_3'] . '">';
             $out .= '<div class="col col-1 p-2">' . ++$n . '</div>';
             // $out .= '<div class="col col-1 p-2"><input class="form-check-input ml-2 mr-1" type="checkbox" value=""></div>';
             $out .= '<div class="col p-2"><a href="' .  mif_mr_opop_core::get_opop_url() . 'tools-courses/' . $item->ID . '">' . $item->post_title . '</a></div>';
@@ -201,11 +201,11 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
             $out .= '<span class="p-1 mr-1 text-light rounded ' . $arr_info[$key]['class_3'] . '"><i class="fa-solid fa-3 fa-xs"></i></span>';
             
             $out .= '</div>';
-            $out .= '<div class="col col-2 p-2 ">';
+            $out .= '<div class="col col-2 p-2 text-end">';
             $out .= '<a href="#" class="mr-3 analysis"><i class="fa-solid fa-chart-simple fa-lg"></i></a>';
             $out .= '<a href="#" class="mr-3 save"><i class="fa-regular fa-floppy-disk fa-lg"></i></a>';
             $out .= '<a href="#" class="remove" data-attid="' . $item->ID . '"><i class="fa-regular fa-trash-can fa-lg"></i></a>';
-            $out .= '<input class="form-check-input ml-2 mr-1" type="checkbox" value="">';
+            $out .= '<input class="form-check-input ml-2 mr-1" type="checkbox" value="' . $item->ID . '" name="ids[]">';
             $out .= '</div>';
             $out .= '</div>';
             
@@ -216,14 +216,24 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
             // $out .= '<div>' . $is_content_lib . $id_libs . '</div>';
             // $out .= '</div></div>';
             
-        }
+            }
             
-        $out .= '</div>';
-
-            $style = ( $n === 0 ) ? '' : ' style="display: none;"'; 
-            $out .= '<div class="row no-plans"' . $style . '>';
-            $out .= '<div class="col p-4 text-center bg-light border rounded fw-semibold">Нету дисциплин</div>';
             $out .= '</div>';
+
+        $style = ( $n === 0 ) ? '' : ' style="display: none;"'; 
+        $out .= '<div class="row no-plans"' . $style . '>';
+        $out .= '<div class="col p-4 text-center bg-light border rounded fw-semibold">Нету дисциплин</div>';
+        $out .= '</div>';
+        
+        
+        $out .= '<div class="row bg-light">';
+        $out .= '<div class="col"></div>';
+        $out .= '<div class="col col-2 p-2 text-end"><input class="form-check-input ml-2 mr-1" type="checkbox" value="" name="all"></div>';
+         $out .= '</div>';
+
+
+
+
 
         $out .= '</div>';
 

@@ -874,59 +874,51 @@ jQuery( document ).ready( function( jq ) {
     // tools courses
     // 
 
-    jq( 'body' ).on( 'click', '.select-menu input', function() {
-     
-        // console.log( jq(this).val() );
-        // console.log( '.slct .' + jq(this).val() );
-        // console.log( jq('.slct .' + jq(this).val(), jq(this).closest('.container')) );
+    jq( 'body' ).on( 'click', '.tools .select-menu input', function() {
         
-        let checkbox = this;
-        // let item = '';
-
-        // console.log( jq('.slct', jq(this).closest('.container')) );
         jq('.select-item', jq(this).closest('.container')).addClass('select-yes');
-        
+        jq('.select-item input[type="checkbox"]', jq(this).closest('.container')).prop('checked', false );
+        jq('input[name="all"]', jq(this).closest('.container')).prop('checked', false );
+
         jq('.select-menu input', jq(this).closest('.container')).each( function() { 
-            
-            // console.log( jq(this).is(':checked') );
-
             if ( ! jq(this).is(':checked') ) jq('.select-item.' + jq(this).val(), jq(this).closest('.container')).removeClass('select-yes');
-            // console.log( jq(this).val() );
-        //     if ( jq(this).is(':checked') ) item += '.' + jq(this).val();
-            
         });
         
-        // console.log( item );
-
-
         jq('.select-item', jq(this).closest('.container')).each( function() { 
-
             if ( ! jq(this).hasClass('select-yes') ) jq(this).slideUp(); else jq(this).slideDown();
-            
         });
-        // jq('.select-item.select-yes', jq(this).closest('.container')).each( function() { 
-        //     jq(this).slideDown();
-            
-        // });
-        // // jq('.select-item.' + jq(this).val(), jq(this).closest('.container')).each( function() { 
-        // jq('.slct ' + item, jq(this).closest('.container')).each( function () { 
-           
-        // if ( ! jq(checkbox).is(':checked') ) jq(this).slideUp(); else jq(this).slideDown();
-        
-        // });
-
-
-//  jq('th input.rsm', jq(this).closest('table')).each( function ( index, elem ) { jq(elem).prop('checked', false); });
-
-        // // navigator.clipboard.writeText( jq(this).text() );
-        // navigator.clipboard.writeText( jq( '.copy',  jq(this).closest('.copy-wrapper') ).text() );
-     
-        // elem = this;
-        // jq(this).addClass('act'); 
-        // setTimeout( function() { jq(elem).removeClass('act') }, 200);
-        // return false;
-        
-    }); 
     
+    }); 
+
+
+    // All
+
+    jq( 'body' ).on( 'click', '.tools input[name=all]', function() {
+        
+        console.log( '@1' );
+        // console.log( jq(this).is(':checked') );
+        // console.log( jq(true).prop('checked') );
+        // console.log( jq(true).html() );
+
+
+
+        jq('.select-item.select-yes input[type="checkbox"]', jq(this).closest('.container')).prop('checked', jq(this).is(':checked') );
+        
+        
+        // ;
+
+        // jq('.select-menu input', jq(this).closest('.container')).each( function() { 
+        //     if ( ! jq(this).is(':checked') ) jq('.select-item.' + jq(this).val(), jq(this).closest('.container')).removeClass('select-yes');
+        // });
+
+        // jq('.select-item', jq(this).closest('.container')).each( function() { 
+        //     if ( ! jq(this).hasClass('select-yes') ) jq(this).slideUp(); else jq(this).slideDown();
+        // });
+
+    }); 
+
+    
+
+
     
 });
