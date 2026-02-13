@@ -874,19 +874,46 @@ jQuery( document ).ready( function( jq ) {
     // tools courses
     // 
 
-    jq( 'body' ).on( 'click', '.slct-menu input', function() {
+    jq( 'body' ).on( 'click', '.select-menu input', function() {
      
-        console.log( jq(this).val() );
-        console.log( '.slct .' + jq(this).val() );
-        console.log( jq('.slct .' + jq(this).val(), jq(this).closest('container')) );
+        // console.log( jq(this).val() );
+        // console.log( '.slct .' + jq(this).val() );
+        // console.log( jq('.slct .' + jq(this).val(), jq(this).closest('.container')) );
         
         let checkbox = this;
+        // let item = '';
 
-        jq('.slct .' + jq(this).val(), jq(this).closest('.container')).each( function () { 
-           
-            if ( ! jq(checkbox).is(':checked') ) jq(this).slideUp(); else jq(this).slideDown();
+        // console.log( jq('.slct', jq(this).closest('.container')) );
+        jq('.select-item', jq(this).closest('.container')).addClass('select-yes');
         
+        jq('.select-menu input', jq(this).closest('.container')).each( function() { 
+            
+            // console.log( jq(this).is(':checked') );
+
+            if ( ! jq(this).is(':checked') ) jq('.select-item.' + jq(this).val(), jq(this).closest('.container')).removeClass('select-yes');
+            // console.log( jq(this).val() );
+        //     if ( jq(this).is(':checked') ) item += '.' + jq(this).val();
+            
         });
+        
+        // console.log( item );
+
+
+        jq('.select-item', jq(this).closest('.container')).each( function() { 
+
+            if ( ! jq(this).hasClass('select-yes') ) jq(this).slideUp(); else jq(this).slideDown();
+            
+        });
+        // jq('.select-item.select-yes', jq(this).closest('.container')).each( function() { 
+        //     jq(this).slideDown();
+            
+        // });
+        // // jq('.select-item.' + jq(this).val(), jq(this).closest('.container')).each( function() { 
+        // jq('.slct ' + item, jq(this).closest('.container')).each( function () { 
+           
+        // if ( ! jq(checkbox).is(':checked') ) jq(this).slideUp(); else jq(this).slideDown();
+        
+        // });
 
 
 //  jq('th input.rsm', jq(this).closest('table')).each( function ( index, elem ) { jq(elem).prop('checked', false); });

@@ -144,35 +144,36 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
 
         // p($arr);
 
-        $out .= '<div class="container mt-5">';
-        
-        $out .= '<div class="row">';
-        $out .= '<div class="col p-2 pt-4 pb-4 slct-menu">';
+        $arr_info = array();
 
-        
-        $a = array(
-                array( 'curriculum-yes', 'mr-blue-2', '1', 'Входит в учебный план', '2' ),
-                array( 'curriculum-no', 'mr-red-2', '1', 'Не включена в учебный план', '5' ),
-                array( 'local-no', 'mr-gray-2', '2', 'Локальный контента нет', '2' ),
-                array( 'local-yes', 'mr-green-2', '2', 'Есть локальный контент', '2' ),
-                array( 'local-maybe', 'mr-orange-2', '2', 'Есть локальный контент, но он отличается', '5' ),
-                array( 'lib-no', 'mr-gray-2', '3', 'В библиотеке нет контента', '2' ),
-                array( 'lib-yes', 'mr-magenta-2', '3', 'Есть в библиотеке контент', '2' ),
-                array( 'lib-maybe', 'mr-orange-2', '3', 'Есть в библиотеке контент, но он отличается', '2' ),
-                );
-                
-       
-        foreach ( $a as $i ) {
+        foreach ( $arr as $key => $item ) {
+            
+            $a = $this->get_info_courses( $item->ID );
 
-            $out .= '<div class="mb-' . $i[4]. '">';
-            $out .= '<input class="form-check-input mr-3" type="checkbox" value="' . $i[0] . '" id="' . $i[0] . '" checked>';
-            $out .= '<label class="form-check-label" for="' . $i[0] . '">';
-            $out .= '<span class="p-1 pl-2 pr-2 mr-1 text-light rounded ' . $i[1] . '"><i class="fa-solid fa-' . $i[2] . ' fa-xs"></i></span> ' . $i[3];
-            $out .= '</label>';
-            $out .= '</div>';
+            // p($a);
+
+            $arr_info[$key]['title'] = ( $a['is_course'] ) ? $a['title'] : 'Дисциплина не обнаружена';
+            $arr_info[$key]['is_curriculum'] = ( $a['is_curriculum'] ) ? 'Есть в плане' : 'Нету в плане';
+            $arr_info[$key]['is_content_local'] = ( $a['is_content_local'] ) ? 'Есть локальный контент' : 'Локальный контента нет';    
+            $arr_info[$key]['id_local'] = ( $a['is_content_local'] ) ? ': ' . $this->get_link_local( $a ) . '': '';    
+            $arr_info[$key]['is_content_lib'] = ( $a['is_content_lib'] ) ? 'В библиотеке есть контент' : 'В библиотеке нет контента';    
+            $arr_info[$key]['id_libs'] = ( $a['is_content_lib'] ) ? ': ' . $this->get_link_lib( $a ) . '' : '';    
+
+            $arr_info[$key]['item_1'] = ( $a['is_curriculum'] ) ? 'curriculum-yes' : 'curriculum-no';
+            $arr_info[$key]['item_2'] = ( ! $a['is_content_local'] ) ? 'local-no' : ( ( $a['percent_local'] === 100 ) ? 'local-yes' : 'local-maybe' );
+            $arr_info[$key]['item_3'] = ( ! $a['is_content_lib'] ) ? 'lib-no' : ( ( $a['percent_lib_max'] === 100 ) ? 'lib-yes' : 'lib-maybe' );
+            
+            $arr_info[$key]['class_1'] = ( $arr_info[$key]['item_1'] === 'curriculum-yes' ) ? 'mr-blue-2' : 'mr-red-2';
+            $arr_info[$key]['class_2'] = ( $arr_info[$key]['item_2'] === 'local-no' ) ? 'mr-gray-2'  : ( ( $arr_info[$key]['item_2'] === 'local-yes' ) ? 'mr-green-2' : 'mr-orange-2' );
+            $arr_info[$key]['class_3'] = ( $arr_info[$key]['item_3'] === 'lib-no' ) ? 'mr-gray-2'  : ( ( $arr_info[$key]['item_3'] === 'lib-yes') ? 'mr-magenta-2' : 'mr-orange-2' );
 
         }
 
+        $out .= '<div class="container mt-5">';
+        
+        $out .= '<div class="row">';
+        $out .= '<div class="col p-2 pt-4 pb-4 select-menu">';
+        $out .= $this->get_select_menu( $arr_info );
         $out .= '</div>';
         $out .= '</div>';
         
@@ -184,45 +185,20 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         $out .= '</div>';
         
         $n = 0;
-        $out .= '<div class="striped slct">';
+        $out .= '<div class="striped">';
         
-        foreach ( $arr as $item ) {
+        foreach ( $arr as $key => $item ) {
             
-            $a = $this->get_info_courses( $item->ID );
-
-            // p($a);
-
-            $title = ( $a['is_course'] ) ? $a['title'] : 'Дисциплина не обнаружена';
-            $is_curriculum = ( $a['is_curriculum'] ) ? 'Есть в плане' : 'Нету в плане';
-            $is_content_local = ( $a['is_content_local'] ) ? 'Есть локальный контент' : 'Локальный контента нет';    
-            $id_local = ( $a['is_content_local'] ) ? ': ' . $this->get_link_local( $a ) . '': '';    
-            $is_content_lib = ( $a['is_content_lib'] ) ? 'В библиотеке есть контент' : 'В библиотеке нет контента';    
-            $id_libs = ( $a['is_content_lib'] ) ? ': ' . $this->get_link_lib( $a ) . '' : '';    
-
-            $item_1 = ( $a['is_curriculum'] ) ? 'curriculum-yes' : 'curriculum-no';
-            $item_2 = ( ! $a['is_content_local'] ) ? 'local-no' : ( ( $a['percent_local'] === 100 ) ? 'local-yes' : 'local-maybe' );
-            $item_3 = ( ! $a['is_content_lib'] ) ? 'lib-no' : ( ( $a['percent_lib_max'] === 100 ) ? 'lib-yes' : 'lib-maybe' );
             
-            // $item_1 = ( $a['is_curriculum'] ) ? 'mr-blue-2' : 'mr-red-2';
-            // $item_2 = ( ! $a['is_content_local'] ) ? 'mr-gray-2'  : ( ( $a['percent_local'] === 100 ) ? 'mr-green-2' : 'mr-orange-2' );
-            // $item_3 = ( ! $a['is_content_lib'] ) ? 'mr-gray-2'  : ( ( $a['percent_lib_max'] === 100 ) ? 'mr-magenta-2' : 'mr-orange-2' );
-            
-            $class_1 = ( $item_1 === 'curriculum-yes' ) ? 'mr-blue-2' : 'mr-red-2';
-            $class_2 = ( $item_2 === 'local-no' ) ? 'mr-gray-2'  : ( ( $item_2 === 'local-yes' ) ? 'mr-green-2' : 'mr-orange-2' );
-            $class_3 = ( $item_3 === 'lib-no' ) ? 'mr-gray-2'  : ( ( $item_3 === 'lib-yes') ? 'mr-magenta-2' : 'mr-orange-2' );
-
-
-
-            
-            $out .= '<div class="row ' . $item_1 . ' ' . $item_2 . ' ' . $item_3 . '">';
+            $out .= '<div class="row select-item ' . $arr_info[$key]['item_1'] . ' ' . $arr_info[$key]['item_2'] . ' ' . $arr_info[$key]['item_3'] . '">';
             $out .= '<div class="col col-1 p-2">' . ++$n . '</div>';
             // $out .= '<div class="col col-1 p-2"><input class="form-check-input ml-2 mr-1" type="checkbox" value=""></div>';
             $out .= '<div class="col p-2"><a href="' .  mif_mr_opop_core::get_opop_url() . 'tools-courses/' . $item->ID . '">' . $item->post_title . '</a></div>';
             $out .= '<div class="col col-2 p-2 text-center">';
             
-            $out .= '<span class="p-1 mr-1 text-light rounded ' . $class_1 . '"><i class="fa-solid fa-1 fa-xs"></i></span>';
-            $out .= '<span class="p-1 mr-1 text-light rounded ' . $class_2 . '"><i class="fa-solid fa-2 fa-xs"></i></span>';
-            $out .= '<span class="p-1 mr-1 text-light rounded ' . $class_3 . '"><i class="fa-solid fa-3 fa-xs"></i></span>';
+            $out .= '<span class="p-1 mr-1 text-light rounded ' . $arr_info[$key]['class_1'] . '"><i class="fa-solid fa-1 fa-xs"></i></span>';
+            $out .= '<span class="p-1 mr-1 text-light rounded ' . $arr_info[$key]['class_2'] . '"><i class="fa-solid fa-2 fa-xs"></i></span>';
+            $out .= '<span class="p-1 mr-1 text-light rounded ' . $arr_info[$key]['class_3'] . '"><i class="fa-solid fa-3 fa-xs"></i></span>';
             
             $out .= '</div>';
             $out .= '<div class="col col-2 p-2 ">';
@@ -255,6 +231,144 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
     }
     
     
+
+    
+    private function get_select_menu( $arr_info )
+    {
+        $out = '';
+
+        // p($arr_info);
+
+        $arr = array(
+                'curriculum-yes' => false,
+                'curriculum-no' => false,
+                'local-no' => false,
+                'local-yes' => false,
+                'local-maybe' => false,
+                'lib-no' => false,
+                'lib-yes' => false,
+                'lib-maybe' => false,
+            );
+
+        foreach ( $arr_info as $item ) {
+
+            $arr[$item['item_1']] = true;
+            $arr[$item['item_2']] = true;
+            $arr[$item['item_3']] = true;
+
+        }
+
+        // p($arr);
+
+        $arr2 = array( '1' => 0, '2' => 0, '3' => 0 );
+
+        foreach ( $arr as $k => $i ) {
+
+            switch ( $k ) {
+                        
+                case 'curriculum-yes':
+                case 'curriculum-no':
+
+                    // $arr2['1'][$k] = true;
+                    if ( $i ) $arr2['1']++;
+
+                break;
+                
+                case 'local-no':
+                case 'local-yes':
+                case 'local-maybe':
+
+                    // $arr2['2'][$k] = true;
+                    if ( $i ) $arr2['2']++;
+                
+                break;
+                
+                case 'lib-no':
+                case 'lib-yes':
+                case 'lib-maybe':
+
+                    // $arr2['3'][$k] = true;
+                    if ( $i ) $arr2['3']++;
+                
+                break;
+                        
+                // default:
+                // break;
+            
+            }
+
+        }
+
+        // p($arr2);
+        
+        foreach ( $arr as $k => $i ) {
+
+            switch ( $k ) {
+                        
+                case 'curriculum-yes':
+                case 'curriculum-no':
+
+                    if ( $arr2['1'] <= 1 ) $arr[$k] = false;
+
+                break;
+                
+                case 'local-no':
+                case 'local-yes':
+                case 'local-maybe':
+
+                    if ( $arr2['2'] <= 1 ) $arr[$k] = false;
+                
+                break;
+                
+                case 'lib-no':
+                case 'lib-yes':
+                case 'lib-maybe':
+
+                    if ( $arr2['3'] <= 1 ) $arr[$k] = false;
+                
+                break;
+                        
+                // default:
+                // break;
+            
+            }
+
+        }
+
+        // p($arr);
+
+
+
+        $arr3 = array(
+                array( 'curriculum-yes', 'mr-blue-2', '1', 'Входит в учебный план', '2', $arr['curriculum-yes'] ),
+                array( 'curriculum-no', 'mr-red-2', '1', 'Не включена в учебный план', '5', $arr['curriculum-no'] ),
+                array( 'local-no', 'mr-gray-2', '2', 'Локальный контента нет', '2', $arr['local-no'] ),
+                array( 'local-yes', 'mr-green-2', '2', 'Есть локальный контент', '2', $arr['local-yes'] ),
+                array( 'local-maybe', 'mr-orange-2', '2', 'Есть локальный контент, но он отличается', '5', $arr['local-maybe'] ),
+                array( 'lib-no', 'mr-gray-2', '3', 'В библиотеке нет контента', '2', $arr['lib-no'] ),
+                array( 'lib-yes', 'mr-magenta-2', '3', 'Есть в библиотеке контент', '2', $arr['lib-yes'] ),
+                array( 'lib-maybe', 'mr-orange-2', '3', 'Есть в библиотеке контент, но он отличается', '2', $arr['lib-maybe'] ),
+                );
+                
+        foreach ( $arr3 as $i ) {
+
+            if ( ! $i[5] ) continue;
+
+            $out .= '<div class="mb-' . $i[4]. '">';
+            $out .= '<input class="form-check-input mr-3" type="checkbox" value="' . $i[0] . '" id="' . $i[0] . '" checked>';
+            $out .= '<label class="form-check-label" for="' . $i[0] . '">';
+            $out .= '<span class="p-1 pl-2 pr-2 mr-1 text-light rounded ' . $i[1] . '"><i class="fa-solid fa-' . $i[2] . ' fa-xs"></i></span> ' . $i[3];
+            $out .= '</label>';
+            $out .= '</div>';
+
+        }
+
+        return $out;
+    }
+    
+    
+
+
 
     
     private function get_link_local( $a )
