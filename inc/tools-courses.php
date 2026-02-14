@@ -401,7 +401,8 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
     private function get_link_local( $a )
     {
         // return  mif_mr_opop_core::get_span_id( $a['id_local'] ) .  ' (' . '<a href="' . $a['id_local'] . '">' . $a['percent_local'] . '%</a>)';
-        return  '<a href="' . $a['id_local'] . '">' . $a['percent_local'] . '%</a>';
+        // return  '<a href="' . $a['id_local'] . '">' . $a['percent_local'] . '%</a>';
+        return  '<a href="#" class="info-clarifications" data-id="' . $a['id_local'] . '">' . $a['percent_local'] . '%</a> (' . $a['id_local'] . ')';
     }
 
 
@@ -414,11 +415,11 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
     // p($a);
         // if ( is_array( $ids ) ) {
 
-            $b = array();
-            // foreach ( $a['id_libs'] as $k => $i ) $b[] = mif_mr_opop_core::get_span_id( $i ) . ' (' . '<a href="' . $i . '">' . $a['percent_libs'][$k] . '%</a>)';
-            foreach ( $a['id_libs'] as $k => $i ) $b[] = '<a href="' . $i . '">' . $a['percent_libs'][$k] . '%</a> (' . $i . ')';
-            
-            return implode( ', ', $b );
+        $b = array();
+        // foreach ( $a['id_libs'] as $k => $i ) $b[] = mif_mr_opop_core::get_span_id( $i ) . ' (' . '<a href="' . $i . '">' . $a['percent_libs'][$k] . '%</a>)';
+        foreach ( $a['id_libs'] as $k => $i ) $b[] = '<a href="#" class="info-clarifications" data-id="' . $i . '">' . $a['percent_libs'][$k] . '%</a> (' . $i . ')';
+        
+        return implode( ', ', $b );
 
         // } else {
 
@@ -546,13 +547,15 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         // Course 2
 
         
-        $courses_id = 1162;
+        // $courses_id = 1162;
         
         global $tree;
         $arr2 = array();
         if ( isset( $tree['content']['lib-courses']['data'][$courses_id]['data'] ) ) $arr2 = $tree['content']['lib-courses']['data'][$courses_id]['data'];
 
+        $from_id = ( $tree['content']['lib-courses']['data'][$courses_id]['from_id'] ) ? $tree['content']['lib-courses']['data'][$courses_id]['from_id'] : NULL;
 
+        // p($tree['content']['lib-courses']['data'][$courses_id]);
 
 
         // p($arr);
@@ -592,9 +595,9 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
 
         $out = '';
         
-        $out .= '<p>.';
-        $out .= '<p>.';
-        $out .= '<p>.';
+        // $out .= '<p>.';
+        // $out .= '<p>.';
+        // $out .= '<p>.';
 
 
         // p( $this->get_stats_courses( $arr, $arr2 ) );
@@ -602,6 +605,32 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
 
         $out .= '<div class="container show-file" data-attid="' . $att_id . '">';
         
+        $out .= '<div class="row">';
+        $out .= '<div class="col d-none d-sm-block mt-3 mb-3 pr-0 text-end">';
+        $out .= '<a href="#" class="text-secondary" id="fullsize">';
+        $out .= '<i class="fa-solid fa-expand fa-2x"></i><i class="d-none fa-solid fa-compress fa-2x"></i>';
+        $out .= '</a>';
+        $out .= '</div>';
+        $out .= '</div>';
+        
+        if ( ! empty( $from_id ) ) {
+
+            $out .= '<div class="row">';
+            $out .= '<div class="col fw-semibold p-3">';
+            $out .= 'Дисциплина ' . mif_mr_opop_core::get_span_id( $courses_id );
+            $out .= ( $from_id == mif_mr_opop_core::get_opop_id() ) ? ' из текущей ОПОП' : 
+                ' из ОПОП: <a href="' .  get_permalink( $from_id ) . 'lib-courses/' . $courses_id . '">'
+                 . mif_mr_functions::mb_substr( get_the_title( $from_id ), 40 ) . '</a>';
+
+        }    
+
+// '<a href="' .  get_permalink( $att['from_id'] ) . '' . $att['type']. '/' . $att['comp_id'] . '" title="' . 
+//                 mif_mr_functions::mb_substr( get_the_title( $att['from_id'] ), 20 ) . '">' . $att['from_id'] . '</a>'
+
+
+        $out .= '</div>';
+        $out .= '</div>';
+
         $out .= '<div class="row">';
         $out .= '<div class="col fw-semibold bg-light p-3 text-center">' . $arr['name'] . '</div>';
         $out .= '</div>';
@@ -817,22 +846,22 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         {
             
             // Пропускаем
-
+       
             switch ( $key ) {
                         
                 case 'target':
+                case 'parts':
+        
+                    if ( empty( $arr['content'][$key] ) ) return;
+                
+                break;
+                    
                 case 'evaluations':
         
                     if ( empty( $arr[$key] ) ) return;
 
                 break;
-                
-                case 'parts':
-
-                    if ( empty( $arr['content'][$key][$key2] ) ) return;
-                
-                break;
-                
+               
                 case 'biblio':
                 case 'it':
                 case 'mto':
@@ -856,7 +885,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
             switch ( $key ) {
                         
                 case 'target':
-        
+        // p($arr['content']['target']);
                     $out .= '<div class="mb-3">' . $arr['content']['target'] . '</div>';
 
                 break;
@@ -1123,26 +1152,52 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         $arr_info['id_libs'] = ( $a['is_content_lib'] ) ? ': ' . $this->get_link_lib( $a ) . '' : '';    
 
 
-        // p($arr_info);
+        // p($a);
+
+        if ( ! empty( $a['id_local'] ) ) {
+
+            $course_id = $a['id_local'];
+            
+        } elseif ( ! empty( $a['id_libs'][0] ) ) {
+            
+            $course_id = $a['id_libs'][0];
+            
+        } else {
+            
+            $course_id = NULL;
+
+        }
+
+        if ( ! empty( $att['course_id'] ) ) $course_id = $att['course_id'];
 
         // Course 2
         
-        $courses_id = 1162;
+        // $courses_id = 600;
         
-        global $tree;
-        $arr2 = array();
-        if ( isset( $tree['content']['lib-courses']['data'][$courses_id]['data'] ) ) $arr2 = $tree['content']['lib-courses']['data'][$courses_id]['data'];
-        // p($tree);
-
+        // global $tree;
+        // $arr2 = array();
+        // if ( isset( $tree['content']['lib-courses']['data'][$courses_id]['data'] ) ) $arr2 = $tree['content']['lib-courses']['data'][$courses_id]['data'];
+        // // p($tree);
+        
+        // p($att);
         $out = '';
 
-        $out .= '<div class="row" style="display:none;"><div class="col p-3">';
-
+        if ( $att['course_id'] == 0 ) $out .= '<div class="row analysis-box" style="display:none;">';
+      
+        $out .= '<div class="col p-3">';
         // $out .= $att['att_id'];
         $out .= '<div>' . $arr_info['is_curriculum'] . '</div>';
         $out .= '<div>' . $arr_info['is_content_local'] . $arr_info['id_local'] . '</div>';
         $out .= '<div>' . $arr_info['is_content_lib'] . $arr_info['id_libs'] . '</div>';
-        $out .= '</div></div>';
+        // $out .= '</div>';
+        
+        // $out .= '<div class="col p-3">';
+
+        $out .= $this->show_file_courses( $att['att_id'], $course_id );
+
+        $out .= '</div>';
+        
+        if ( $att['course_id'] == 0 ) $out .= '</div>';
             
 
 

@@ -952,8 +952,65 @@ jQuery( document ).ready( function( jq ) {
 
     jq( 'body' ).on( 'click', '.tools .info', function() {
         
-        console.log('@@@');
+        // console.log('@@@');
         let elem = jq( '.col', jq(this).closest('.row') ).parent();
+        
+        if ( elem.next().hasClass('select-item') ) {
+
+            jq.ajax( {
+                url: ajaxurl,
+                type: 'POST',
+                data: {
+                    action: 'tools',
+                    do: 'info',
+                    opop: jq( 'input[name=opop]' ).val(),
+                    attid: jq( 'input[type="checkbox"]', jq(this).closest('.select-item') ).val(),
+                    _wpnonce: jq( 'input[name=_wpnonce]' ).val(),
+                },
+                success: function( response ) {
+                    
+                    if ( response ) {
+    
+                        jq('.analysis-box').remove();
+                        elem.after( response );
+                        elem.next("div").slideDown();
+                        
+                    } else {
+                        
+                        console.log( 'error 13' );
+                        
+                    }
+                    
+                },
+                error: function( response ) {
+                    
+                    console.log( 'error 14' );
+                    
+                },
+                
+            } );
+
+        } else {
+
+            jq('.analysis-box').slideUp( function() { jq('.analysis-box').remove() });
+            // console.log('@');
+        };    
+
+        return false;
+
+    }); 
+
+
+
+    // Info уточнения (analysis)
+
+    jq( 'body' ).on( 'click', '.tools .info-clarifications', function() {
+        
+        console.log('@@@');
+        // let elem = jq( '.col', jq(this).closest('.row') ).parent();
+        
+        // console.log( jq(this).closest('.analysis-box').prev('div') );
+        // console.log(jq( 'input[type="checkbox"]', jq(this).closest('.analysis-box').prev('div') ).val());
 
         jq.ajax( {
             url: ajaxurl,
@@ -961,78 +1018,37 @@ jQuery( document ).ready( function( jq ) {
             data: {
                 action: 'tools',
                 do: 'info',
-                // opop: jq( 'input[name=opop]' ).val(),
-                attid: jq( 'input[type="checkbox"]', jq(this).closest('.select-item') ).val(),
-                // method: jq( 'input[name=method]', jq(this).closest('div.row') ).val(),
-                // key: jq( 'textarea', jq(this).closest('div.row') ).attr( 'name' ),
+                courseid: jq(this).attr( 'data-id' ),
+                opop: jq( 'input[name=opop]' ).val(),
+                attid: jq( 'input[type="checkbox"]', jq(this).closest('.analysis-box').prev('div') ).val(),
                 _wpnonce: jq( 'input[name=_wpnonce]' ).val(),
             },
             success: function( response ) {
                 
                 if ( response ) {
 
-                    // // jq( '.report', elem ).html( response );
-                    // // // jq( '.report', elem ).slideDown();
-                    
-                    // jq( '.analysis-box' ).each( function ( index, elem ) { 
-                        
-                    //     // jq('#fullsize').trigger('click');
-                    //     // jq( 'div.container' ).toggleClass( 'fullsize' );
-                    //     // jq( '#primary div.column' ).addClass( 'is-11-desktop is-12-desktop' ); 
-                    //     // jq( 'div.container' ).removeClass( 'fullsize' );
-                    //     // jq( '#primary div.column' ).addClass( 'is-11-desktop' );
-                    //     // jq( '#primary div.column' ).removeClass( 'is-12-desktop' );
-                    //     jq(elem).html(''); 
-                    //     jq(elem).slideUp(); 
-                    
-                    // } );
-
-                    
-                    // jq( '.analysis-box', elem ).slideUp( function() {
-                    //     jq( '.analysis-box', elem ).html( response );
-                    //     jq( '.analysis-box', elem ).slideDown();
-                    // });
-
-                    elem.after( response );
-                    elem.next("div").slideDown();
-
-                    // elem.after(response).hide().slideDown();
-                    console.log( response );
+                    // jq('.analysis-box').remove();
+                    // elem.after( response );
+                    // elem.next("div").slideDown();
+                    // console.log( response );
+                    jq('.analysis-box').html( response );
                     
                 } else {
                     
-                    console.log( 'error 13' );
+                    console.log( 'error 15' );
                     
                 }
                 
             },
             error: function( response ) {
                 
-                console.log( 'error 14' );
+                console.log( 'error 16' );
                 
             },
             
         } );
 
-
-
-
-
-
-        // let f = false;        
-        // jq('.select-item input[type="checkbox"]', jq(this).closest('.container')).each( function() { if ( jq(this).is(':checked') ) f = true; });
-        
-        // if ( f ) {
-            
-        //     console.log('@1');
-            
-        // } else {
-            
-        //     console.log('@@1');
-        //     jq( 'input[name="all"]', jq(this).closest('.container') ).focus();
-
-        // }
-
+ 
         return false;
 
     }); 

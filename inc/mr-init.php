@@ -265,6 +265,7 @@ class mif_mr_init extends mif_mr_functions {
                         $m = new mif_mr_tools_courses();
                         echo $m->analysis( array(
                                                 'att_id' => (int) $_REQUEST['attid'],
+                                                'course_id' => (int) $_REQUEST['courseid'],
                                                 ) );
                         
                     }     
