@@ -130,9 +130,9 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         $out .= $this->get_meta( 'courses' );
 
 
-        // Показать courses
+        // // Показать courses
 
-        if ( ! empty( $att_id ) ) $out .= $this->show_file_courses( $att_id );
+        // if ( ! empty( $att_id ) ) $out .= $this->show_file_courses( $att_id );
         
         return apply_filters( 'mif_mr_get_tools_courses', $out );
 
@@ -241,17 +241,20 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         $out .= '<div class="col p-4 text-center bg-light border rounded fw-semibold">Нету дисциплин</div>';
         $out .= '</div>';
         
-        
-        $out .= '<div class="row bg-light pt-5 pb-5">';
-        $out .= '<div class="col">';
-        // $out .= '<button type="button" class="btn btn-primary">Экспорт</button>';
-        // $out .= '<button type="button" class="btn btn-primary">Сохранить и удалить</button>';
-        // $out .= '<button type="button" class="btn btn-secondary">Удалить</button>';
-        $out .= '<a href="#" class="mr-3 export-all"><i class="fa-regular fa-floppy-disk fa-lg"></i>Сохранить и удалить</a>';
-        $out .= '<a href="#" class="remove-all"><i class="fa-regular fa-trash-can fa-lg"></i>Удалить</a>';
-        $out .= '</div>';
-        $out .= '<div class="col col-2 text-end pr-2"><input class="form-check-input ml-2 mr-1" type="checkbox" value="" name="all"></div>';
-        $out .= '</div>';
+        if ( $n !== 0 ) {
+
+            $out .= '<div class="row bg-light pt-5 pb-5 bottom-panel">';
+            $out .= '<div class="col">';
+            // $out .= '<button type="button" class="btn btn-primary">Экспорт</button>';
+            // $out .= '<button type="button" class="btn btn-primary">Сохранить и удалить</button>';
+            // $out .= '<button type="button" class="btn btn-secondary">Удалить</button>';
+            $out .= '<a href="#" class="mr-3 export-all"><i class="fa-regular fa-floppy-disk fa-lg"></i>Сохранить и удалить</a>';
+            $out .= '<a href="#" class="remove-all"><i class="fa-regular fa-trash-can fa-lg"></i>Удалить</a>';
+            $out .= '</div>';
+            $out .= '<div class="col col-2 text-end pr-2"><input class="form-check-input ml-2 mr-1" type="checkbox" value="" name="all"></div>';
+            $out .= '</div>';
+
+        }
 
         $out .= '</div>';
 
@@ -621,15 +624,15 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
             $out .= ( $from_id == mif_mr_opop_core::get_opop_id() ) ? ' из текущей ОПОП' : 
                 ' из ОПОП: <a href="' .  get_permalink( $from_id ) . 'lib-courses/' . $courses_id . '">'
                  . mif_mr_functions::mb_substr( get_the_title( $from_id ), 40 ) . '</a>';
+    
+            $out .= '</div>';
+            $out .= '</div>';
 
         }    
 
 // '<a href="' .  get_permalink( $att['from_id'] ) . '' . $att['type']. '/' . $att['comp_id'] . '" title="' . 
 //                 mif_mr_functions::mb_substr( get_the_title( $att['from_id'] ), 20 ) . '">' . $att['from_id'] . '</a>'
 
-
-        $out .= '</div>';
-        $out .= '</div>';
 
         $out .= '<div class="row">';
         $out .= '<div class="col fw-semibold bg-light p-3 text-center">' . $arr['name'] . '</div>';
@@ -640,341 +643,378 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         $out .= '<div class="col col-6 text-center fw-semibold mt-2 mb-2">из Matrix</div>';
         $out .= '</div>';
         
-        // Цели
 
-        $out .= '<div class="row">';
-        $out .= '<div class="col fw-semibold bg-light p-2 text-center">Цели</div>';
-        $out .= '</div>';
-        
-        $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'target', NULL, ' mr-yellow' ) . '">';
-        $out .= $this->get_course_part( $arr, 'target' );
-        $out .= $this->get_course_part( $arr2, 'target' );
-        $out .= '</div>';
+        foreach ( $this->index as $i ) {
 
-        // Разделы (содержание)
-
-        $out .= '<div class="row">';
-        $out .= '<div class="col fw-semibold bg-light p-2 text-center">Разделы (содержание)</div>';
-        $out .= '</div>';
-        
-        $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'parts', 'content', ' mr-yellow' ) . '">';
-        $out .= $this->get_course_part( $arr, 'parts', 'content' );
-        $out .= $this->get_course_part( $arr2, 'parts', 'content' );
-        $out .= '</div>';
-
-        // Разделы (компетенции)
-
-        $out .= '<div class="row">';
-        $out .= '<div class="col fw-semibold bg-light p-2 text-center">Разделы (компетенции)</div>';
-        $out .= '</div>';
-        
-        $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'parts', 'cmp', ' mr-yellow' ) . '">';
-        $out .= $this->get_course_part( $arr, 'parts', 'cmp' );
-        $out .= $this->get_course_part( $arr2, 'parts', 'cmp' );
-        $out .= '</div>';
-
-        // Разделы (трудоемкость)
-
-        $out .= '<div class="row">';
-        $out .= '<div class="col fw-semibold bg-light p-2 text-center">Разделы (трудоемкость)</div>';
-        $out .= '</div>';
-        
-        $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'parts', 'hours', ' mr-yellow' ) . '">';
-        $out .= $this->get_course_part( $arr, 'parts', 'hours' );
-        $out .= $this->get_course_part( $arr2, 'parts', 'hours' );
-        $out .= '</div>';
-
-        // Разделы (знать, уметь, владеть)
-
-        $out .= '<div class="row">';
-        $out .= '<div class="col fw-semibold bg-light p-2 text-center">Разделы (знать, уметь, владеть)</div>';
-        $out .= '</div>';
-        
-        $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'parts', 'outcomes', ' mr-yellow' ) . '">';
-        $out .= $this->get_course_part( $arr, 'parts', 'outcomes' );
-        $out .= $this->get_course_part( $arr2, 'parts', 'outcomes' );
-        $out .= '</div>';
-  
-        // Оценочные средства
-
-        $out .= '<div class="row">';
-        $out .= '<div class="col fw-semibold bg-light p-2 text-center">Оценочные средства</div>';
-        $out .= '</div>';
-        
-        $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'evaluations', NULL, ' mr-yellow' ) . '">';
-        $out .= $this->get_course_part( $arr, 'evaluations' );
-        $out .= $this->get_course_part( $arr2, 'evaluations' );
-        $out .= '</div>';
-  
-        // Основная литература
-
-        $out .= '<div class="row">';
-        $out .= '<div class="col fw-semibold bg-light p-2 text-center">Основная литература</div>';
-        $out .= '</div>';
-        
-        $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'biblio', 'basic', ' mr-yellow' ) . '">';
-        $out .= $this->get_course_part( $arr, 'biblio', 'basic' );
-        $out .= $this->get_course_part( $arr2, 'biblio', 'basic' );
-        $out .= '</div>';
-  
-        // Дополнительная литература
-
-        $out .= '<div class="row">';
-        $out .= '<div class="col fw-semibold bg-light p-2 text-center">Дополнительная литература</div>';
-        $out .= '</div>';
-        
-        $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'biblio', 'additional', ' mr-yellow' ) . '">';
-        $out .= $this->get_course_part( $arr, 'biblio', 'additional' );
-        $out .= $this->get_course_part( $arr2, 'biblio', 'additional' );
-        $out .= '</div>';
-  
-        // Ресурсы Интернета
-
-        $out .= '<div class="row">';
-        $out .= '<div class="col fw-semibold bg-light p-2 text-center">Ресурсы Интернета</div>';
-        $out .= '</div>';
-        
-        $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'it', 'inet', ' mr-yellow' ) . '">';
-        $out .= $this->get_course_part( $arr, 'it', 'inet' );
-        $out .= $this->get_course_part( $arr2, 'it', 'inet' );
-        $out .= '</div>';
-  
-        // Программное обеспечение
-
-        $out .= '<div class="row">';
-        $out .= '<div class="col fw-semibold bg-light p-2 text-center">Программное обеспечение</div>';
-        $out .= '</div>';
-        
-        $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'it', 'app', ' mr-yellow' ) . '">';
-        $out .= $this->get_course_part( $arr, 'it', 'app' );
-        $out .= $this->get_course_part( $arr2, 'it', 'app' );
-        $out .= '</div>';
-  
-        // Материально-техническое обеспечение
-
-        $out .= '<div class="row">';
-        $out .= '<div class="col fw-semibold bg-light p-2 text-center">Материально-техническое обеспечение</div>';
-        $out .= '</div>';
-        
-        $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'mto', 'mto', ' mr-yellow' ) . '">';
-        $out .= $this->get_course_part( $arr, 'mto', 'mto' );
-        $out .= $this->get_course_part( $arr2, 'mto', 'mto' );
-        $out .= '</div>';
-  
-        // Разработчики
-
-        $out .= '<div class="row">';
-        $out .= '<div class="col fw-semibold bg-light p-2 text-center">Разработчики</div>';
-        $out .= '</div>';
-        
-        $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'authors', 'authors', ' mr-yellow' ) . '">';
-        $out .= $this->get_course_part( $arr, 'authors', 'authors' );
-        $out .= $this->get_course_part( $arr2, 'authors', 'authors' );
-        $out .= '</div>';
-
-        $out .= '</div>';
-        
-        // $out .= '<input type="hidden" name="attid" value="' . $att_id . '" />'; 
-        
-        return $out;
-        }
-        
-
-
-
-
-        //
-        //
-        //
-        
-        private function get_diff_courses( $arr, $arr2, $key, $key2, $return = NULL )
-        {
-            $yes = true;  
-            $no = false;  
+            // p( $i );
             
-            if ( $return !== NULL ) {
-                
-                $yes = $return;  
-                $no = '';  
-
-            }
-        
-            $s = $this->get_course_part( $arr, $key, $key2 );
-            $s2 = $this->get_course_part( $arr2, $key, $key2 );
-
-            if ( $s == $s2 ) $res = $no; else $res = $yes;
-
-            // p($s);
-            // p($s2);
-
-
-            return $res;
-        }
-
-
-
-
-        //
-        //
-        //
-        
-        private function get_stats_courses( $arr, $arr2 )
-        {
-            $p = 0;
-            $n = 0;
-
-            foreach ( $this->index as $i ) {
-
-                if ( ! $this->get_diff_courses( $arr, $arr2, $i['key'], $i['key2'] ) ) $p++; 
-                $n++;            
+            $out .= '<div class="row">';
+            $out .= '<div class="col fw-semibold bg-light p-2 text-center">' . $i['title'] . '</div>';
+            $out .= '</div>';
             
-            }
-
-            return round( $p / $n * 100, 0 );
-        }
-
-
-
-
-
-
-        //
-        //
-        //      
-        
-        private function get_course_part( $arr, $key, $key2 = NULL )
-        {
-            
-            // Пропускаем
-       
-            switch ( $key ) {
-                        
-                case 'target':
-                case 'parts':
-        
-                    if ( empty( $arr['content'][$key] ) ) return;
-                
-                break;
-                    
-                case 'evaluations':
-        
-                    if ( empty( $arr[$key] ) ) return;
-
-                break;
-               
-                case 'biblio':
-                case 'it':
-                case 'mto':
-                case 'authors':
-
-                    if ( empty( $arr[$key][$key2]) ) return;
-                
-                break;
-                        
-                // default:
-                // break;
-            
-            }
-
-
-            // Собираем
-
-            $out = '';    
-            $out .= '<div class="col col-6 mt-3 mb-3">';
-
-            switch ( $key ) {
-                        
-                case 'target':
-        // p($arr['content']['target']);
-                    $out .= '<div class="mb-3">' . $arr['content']['target'] . '</div>';
-
-                break;
-                
-                case 'parts':
-
-                    foreach ( $arr['content']['parts'] as $i ) {
-
-                        $out .= '<div class="mb-3 fw-bold">= ' . $i['name'] . '</div>';
-                        // $out .= '<div class="mb-3">= ' . $i['name'] . '</div>';
-                        if ( $key2 == 'content' ) $out .= '<div class="mb-3">' . $i['content'] . '</div>';
-                        if ( $key2 == 'cmp' ) $out .= '<div class="mb-3">' . $i['cmp'] . '</div>';
-                        
-                        if ( $key2 == 'hours' ) {
-
-                            $out .= '<div class="mb-3">' . $i['hours_raw'] . '</div>';
-
-                        }
-                        
-                        if ( $key2 == 'outcomes' ) {
-                            
-                            $ii = array_diff( (array) $i['outcomes']['z'], array( '' ) );
-                            $out .= '<div class="mb-3"><i>знать:</i><br />— ' . implode( '<br />— ', $ii ) . '</div>';
-                            $ii = array_diff( (array) $i['outcomes']['u'], array( '' ) );
-                            $out .= '<div class="mb-3"><i>уметь:</i><br />— ' . implode( '<br />— ', $ii ) . '</div>';
-                            $ii = array_diff( (array) $i['outcomes']['v'], array( '' ) );
-                            $out .= '<div class="mb-3"><i>владеть:</i><br />— ' . implode( '<br />— ', $ii ) . '</div>';
-                        
-                        }
-
-                    }
-                
-                break;
-                
-                case 'evaluations':
-                    
-                    foreach ( $arr['evaluations'] as $k => $d ) {
-                    
-                        if ( $k != 0 ) $out .= '<br />';
-
-                        foreach ( $d['data'] as $i ) {
-
-                            $out .= '<div>' . $i['name'] . ' (' . $i['att']['rating'] . ') (' . $i['att']['cmp'] . ')' . '</div>';
-
-                        }
-
-                    }
-                    
-                    
-                break;
-                
-                case 'biblio':
-
-                    if ( $key2 == 'basic' ) $out .= '<div class="mb-3">' . implode( '<br /><br />', $arr['biblio']['basic'] ) . '</div>';
-                    if ( $key2 == 'additional' ) $out .= '<div class="mb-3">' . implode( '<br /><br />', $arr['biblio']['additional'] ) . '</div>';
-                    
-                break;
-                
-                case 'it':
-
-                    if ( $key2 == 'inet' ) $out .= '<div class="mb-3">— ' . implode( '<br />— ', $arr['it']['inet'] ) . '</div>';
-                    if ( $key2 == 'app' ) $out .= '<div class="mb-3">— ' . implode( '<br />— ', $arr['it']['app'] ) . '</div>';
-                    
-                break;
-                
-                case 'mto':
-                    
-                    if ( $key2 == 'mto' ) $out .= '<div class="mb-3">— ' . implode( '<br />— ', $arr['mto']['mto'] ) . '</div>';
-                    
-                break;
-                
-                case 'authors':
-                    
-                    if ( $key2 == 'authors' ) $out .= '<div class="mb-3">— ' . implode( '<br />— ', $arr['authors']['authors'] ) . '</div>';
-                
-                break;
-                        
-                // default:
-                // break;
-            
-            }
-
+            $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, $i['key'], $i['key2'], ' mr-yellow' ) . '">';
+            $out .= $this->get_course_part( $arr, 'target' );
+            $out .= $this->get_course_part( $arr2, 'target' );
             $out .= '</div>';
 
-            return $out;
+
         }
+
+
+        // $out .= '<div class="row mb-5">';
+        // $out .= '<div class="col bg-light p-4">';
         
         
+
+        // $out .= '<a href="#" class="mr-3 export-panel"><i class="fa-regular fa-floppy-disk fa-lg"></i></a>';
+        // $out .= '<a href="#" class="remove-panel"><i class="fa-regular fa-trash-can fa-lg"></i></a>';
+        // $out .= '<p>Комментарий</p>';
+
+
+
+        
+        // $out .= '</div>';
+        // $out .= '</div>';
+
+        $out .= '</div>';
+
+
+
+        // // Цели
+
+        // $out .= '<div class="row">';
+        // $out .= '<div class="col fw-semibold bg-light p-2 text-center">Цели</div>';
+        // $out .= '</div>';
+        
+        // $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'target', NULL, ' mr-yellow' ) . '">';
+        // $out .= $this->get_course_part( $arr, 'target' );
+        // $out .= $this->get_course_part( $arr2, 'target' );
+        // $out .= '</div>';
+
+        // // Разделы (содержание)
+
+        // $out .= '<div class="row">';
+        // $out .= '<div class="col fw-semibold bg-light p-2 text-center">Разделы (содержание)</div>';
+        // $out .= '</div>';
+        
+        // $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'parts', 'content', ' mr-yellow' ) . '">';
+        // $out .= $this->get_course_part( $arr, 'parts', 'content' );
+        // $out .= $this->get_course_part( $arr2, 'parts', 'content' );
+        // $out .= '</div>';
+
+        // // Разделы (компетенции)
+
+        // $out .= '<div class="row">';
+        // $out .= '<div class="col fw-semibold bg-light p-2 text-center">Разделы (компетенции)</div>';
+        // $out .= '</div>';
+        
+        // $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'parts', 'cmp', ' mr-yellow' ) . '">';
+        // $out .= $this->get_course_part( $arr, 'parts', 'cmp' );
+        // $out .= $this->get_course_part( $arr2, 'parts', 'cmp' );
+        // $out .= '</div>';
+
+        // // Разделы (трудоемкость)
+
+        // $out .= '<div class="row">';
+        // $out .= '<div class="col fw-semibold bg-light p-2 text-center">Разделы (трудоемкость)</div>';
+        // $out .= '</div>';
+        
+        // $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'parts', 'hours', ' mr-yellow' ) . '">';
+        // $out .= $this->get_course_part( $arr, 'parts', 'hours' );
+        // $out .= $this->get_course_part( $arr2, 'parts', 'hours' );
+        // $out .= '</div>';
+
+        // // Разделы (знать, уметь, владеть)
+
+        // $out .= '<div class="row">';
+        // $out .= '<div class="col fw-semibold bg-light p-2 text-center">Разделы (знать, уметь, владеть)</div>';
+        // $out .= '</div>';
+        
+        // $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'parts', 'outcomes', ' mr-yellow' ) . '">';
+        // $out .= $this->get_course_part( $arr, 'parts', 'outcomes' );
+        // $out .= $this->get_course_part( $arr2, 'parts', 'outcomes' );
+        // $out .= '</div>';
+  
+        // // Оценочные средства
+
+        // $out .= '<div class="row">';
+        // $out .= '<div class="col fw-semibold bg-light p-2 text-center">Оценочные средства</div>';
+        // $out .= '</div>';
+        
+        // $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'evaluations', NULL, ' mr-yellow' ) . '">';
+        // $out .= $this->get_course_part( $arr, 'evaluations' );
+        // $out .= $this->get_course_part( $arr2, 'evaluations' );
+        // $out .= '</div>';
+  
+        // // Основная литература
+
+        // $out .= '<div class="row">';
+        // $out .= '<div class="col fw-semibold bg-light p-2 text-center">Основная литература</div>';
+        // $out .= '</div>';
+        
+        // $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'biblio', 'basic', ' mr-yellow' ) . '">';
+        // $out .= $this->get_course_part( $arr, 'biblio', 'basic' );
+        // $out .= $this->get_course_part( $arr2, 'biblio', 'basic' );
+        // $out .= '</div>';
+  
+        // // Дополнительная литература
+
+        // $out .= '<div class="row">';
+        // $out .= '<div class="col fw-semibold bg-light p-2 text-center">Дополнительная литература</div>';
+        // $out .= '</div>';
+        
+        // $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'biblio', 'additional', ' mr-yellow' ) . '">';
+        // $out .= $this->get_course_part( $arr, 'biblio', 'additional' );
+        // $out .= $this->get_course_part( $arr2, 'biblio', 'additional' );
+        // $out .= '</div>';
+  
+        // // Ресурсы Интернета
+
+        // $out .= '<div class="row">';
+        // $out .= '<div class="col fw-semibold bg-light p-2 text-center">Ресурсы Интернета</div>';
+        // $out .= '</div>';
+        
+        // $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'it', 'inet', ' mr-yellow' ) . '">';
+        // $out .= $this->get_course_part( $arr, 'it', 'inet' );
+        // $out .= $this->get_course_part( $arr2, 'it', 'inet' );
+        // $out .= '</div>';
+  
+        // // Программное обеспечение
+
+        // $out .= '<div class="row">';
+        // $out .= '<div class="col fw-semibold bg-light p-2 text-center">Программное обеспечение</div>';
+        // $out .= '</div>';
+        
+        // $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'it', 'app', ' mr-yellow' ) . '">';
+        // $out .= $this->get_course_part( $arr, 'it', 'app' );
+        // $out .= $this->get_course_part( $arr2, 'it', 'app' );
+        // $out .= '</div>';
+  
+        // // Материально-техническое обеспечение
+
+        // $out .= '<div class="row">';
+        // $out .= '<div class="col fw-semibold bg-light p-2 text-center">Материально-техническое обеспечение</div>';
+        // $out .= '</div>';
+        
+        // $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'mto', 'mto', ' mr-yellow' ) . '">';
+        // $out .= $this->get_course_part( $arr, 'mto', 'mto' );
+        // $out .= $this->get_course_part( $arr2, 'mto', 'mto' );
+        // $out .= '</div>';
+  
+        // // Разработчики
+
+        // $out .= '<div class="row">';
+        // $out .= '<div class="col fw-semibold bg-light p-2 text-center">Разработчики</div>';
+        // $out .= '</div>';
+        
+        // $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, 'authors', 'authors', ' mr-yellow' ) . '">';
+        // $out .= $this->get_course_part( $arr, 'authors', 'authors' );
+        // $out .= $this->get_course_part( $arr2, 'authors', 'authors' );
+        // $out .= '</div>';
+
+        // $out .= '</div>';
+        
+        // $out .= '<input type="hidden" name="attid" value="' . $att_id . '" />'; 
     
+    return $out;
+    }
+    
+
+
+
+
+    //
+    //
+    //
+    
+    private function get_diff_courses( $arr, $arr2, $key, $key2, $return = NULL )
+    {
+        $yes = true;  
+        $no = false;  
+        
+        if ( $return !== NULL ) {
+            
+            $yes = $return;  
+            $no = '';  
+
+        }
+    
+        $s = $this->get_course_part( $arr, $key, $key2 );
+        $s2 = $this->get_course_part( $arr2, $key, $key2 );
+
+        if ( $s == $s2 ) $res = $no; else $res = $yes;
+
+        // p($s);
+        // p($s2);
+
+
+        return $res;
+    }
+
+
+
+
+    //
+    //
+    //
+    
+    private function get_stats_courses( $arr, $arr2 )
+    {
+        $p = 0;
+        $n = 0;
+
+        foreach ( $this->index as $i ) {
+
+            if ( ! $this->get_diff_courses( $arr, $arr2, $i['key'], $i['key2'] ) ) $p++; 
+            $n++;            
+        
+        }
+
+        return round( $p / $n * 100, 0 );
+    }
+
+
+
+
+
+
+    //
+    //
+    //      
+    
+    private function get_course_part( $arr, $key, $key2 = NULL )
+    {
+        
+        // Пропускаем
+    
+        switch ( $key ) {
+                    
+            case 'target':
+            case 'parts':
+    
+                if ( empty( $arr['content'][$key] ) ) return;
+            
+            break;
+                
+            case 'evaluations':
+    
+                if ( empty( $arr[$key] ) ) return;
+
+            break;
+            
+            case 'biblio':
+            case 'it':
+            case 'mto':
+            case 'authors':
+
+                if ( empty( $arr[$key][$key2]) ) return;
+            
+            break;
+                    
+            // default:
+            // break;
+        
+        }
+
+
+        // Собираем
+
+        $out = '';    
+        $out .= '<div class="col col-6 mt-3 mb-3">';
+
+        switch ( $key ) {
+                    
+            case 'target':
+    // p($arr['content']['target']);
+                $out .= '<div class="mb-3">' . $arr['content']['target'] . '</div>';
+
+            break;
+            
+            case 'parts':
+
+                foreach ( $arr['content']['parts'] as $i ) {
+
+                    $out .= '<div class="mb-3 fw-bold">= ' . $i['name'] . '</div>';
+                    // $out .= '<div class="mb-3">= ' . $i['name'] . '</div>';
+                    if ( $key2 == 'content' ) $out .= '<div class="mb-3">' . $i['content'] . '</div>';
+                    if ( $key2 == 'cmp' ) $out .= '<div class="mb-3">' . $i['cmp'] . '</div>';
+                    
+                    if ( $key2 == 'hours' ) {
+
+                        $out .= '<div class="mb-3">' . $i['hours_raw'] . '</div>';
+
+                    }
+                    
+                    if ( $key2 == 'outcomes' ) {
+                        
+                        $ii = array_diff( (array) $i['outcomes']['z'], array( '' ) );
+                        $out .= '<div class="mb-3"><i>знать:</i><br />— ' . implode( '<br />— ', $ii ) . '</div>';
+                        $ii = array_diff( (array) $i['outcomes']['u'], array( '' ) );
+                        $out .= '<div class="mb-3"><i>уметь:</i><br />— ' . implode( '<br />— ', $ii ) . '</div>';
+                        $ii = array_diff( (array) $i['outcomes']['v'], array( '' ) );
+                        $out .= '<div class="mb-3"><i>владеть:</i><br />— ' . implode( '<br />— ', $ii ) . '</div>';
+                    
+                    }
+
+                }
+            
+            break;
+            
+            case 'evaluations':
+                
+                foreach ( $arr['evaluations'] as $k => $d ) {
+                
+                    if ( $k != 0 ) $out .= '<br />';
+
+                    foreach ( $d['data'] as $i ) {
+
+                        $out .= '<div>' . $i['name'] . ' (' . $i['att']['rating'] . ') (' . $i['att']['cmp'] . ')' . '</div>';
+
+                    }
+
+                }
+                
+                
+            break;
+            
+            case 'biblio':
+
+                if ( $key2 == 'basic' ) $out .= '<div class="mb-3">' . implode( '<br /><br />', $arr['biblio']['basic'] ) . '</div>';
+                if ( $key2 == 'additional' ) $out .= '<div class="mb-3">' . implode( '<br /><br />', $arr['biblio']['additional'] ) . '</div>';
+                
+            break;
+            
+            case 'it':
+
+                if ( $key2 == 'inet' ) $out .= '<div class="mb-3">— ' . implode( '<br />— ', $arr['it']['inet'] ) . '</div>';
+                if ( $key2 == 'app' ) $out .= '<div class="mb-3">— ' . implode( '<br />— ', $arr['it']['app'] ) . '</div>';
+                
+            break;
+            
+            case 'mto':
+                
+                if ( $key2 == 'mto' ) $out .= '<div class="mb-3">— ' . implode( '<br />— ', $arr['mto']['mto'] ) . '</div>';
+                
+            break;
+            
+            case 'authors':
+                
+                if ( $key2 == 'authors' ) $out .= '<div class="mb-3">— ' . implode( '<br />— ', $arr['authors']['authors'] ) . '</div>';
+            
+            break;
+                    
+            // default:
+            // break;
+        
+        }
+
+        $out .= '</div>';
+
+        return $out;
+    }
+    
+    
+
 
 
 
@@ -1151,6 +1191,17 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         $arr_info['is_content_lib'] = ( $a['is_content_lib'] ) ? $this->description['lib-yes'] : $this->description['lib-no'];    
         $arr_info['id_libs'] = ( $a['is_content_lib'] ) ? ': ' . $this->get_link_lib( $a ) . '' : '';    
 
+        $comment = '';
+        
+        if ( ! $a['is_curriculum'] ) $comment .= 'curriculum-no';
+
+        if ( $a['is_content_local'] && $a['percent_local'] == 100 ) $comment .= 'local-yes, 100';
+        elseif ( $a['is_content_local'] && $a['percent_local'] < 100 ) $comment .= 'local-no, < 99';
+        elseif ( $a['is_content_lib'] && $a['percent_lib_max'] == 100 ) $comment .= 'lib-yes, 100';
+        elseif ( $a['is_content_lib'] && $a['percent_lib_max'] < 100 ) $comment .= 'lib-yes, < 99';
+        elseif ( ! $a['is_content_local'] ) $comment .= 'local-no';
+        
+        // $comment = '###';
 
         // p($a);
 
@@ -1195,7 +1246,21 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
 
         $out .= $this->show_file_courses( $att['att_id'], $course_id );
 
+
+        // $out .= '<div class="ro mb-5">';
+        $out .= '<div class="bg-light p-4 pt-5 pb-5">';
+
+        $out .= '<a href="#" class="mr-3 export-panel"><i class="fa-regular fa-floppy-disk fa-lg"></i></a>';
+        $out .= '<a href="#" class="mr-3 remove-panel"><i class="fa-regular fa-trash-can fa-lg"></i></a>';
+        $out .= '<a href="#" class="mr-3 cancel-panel"><i class="fa-solid fa-angle-up"></i></a>';
+        $out .= '<div  class="mt-3">' . $comment . '</div>';
+
         $out .= '</div>';
+        // $out .= '</div>';
+
+
+        $out .= '</div>';
+
         
         if ( $att['course_id'] == 0 ) $out .= '</div>';
             
