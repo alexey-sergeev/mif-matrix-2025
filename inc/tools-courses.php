@@ -149,7 +149,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
     {
         $out = '';
 
-        $arr = $this->get_file( array( 'ext' => array( 'xls', 'xlsx' ) ) );
+        $arr = $this->get_file( array( 'ext' => array( 'xls', 'xlsx' ), 'orderby' => 'title', 'order' => 'ASC' ) );
         // $arr = $this->get_file();
 
         // p($arr);
@@ -170,8 +170,8 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
             // $arr_info[$key]['id_libs'] = ( $a['is_content_lib'] ) ? ': ' . $this->get_link_lib( $a ) . '' : '';    
 
             $arr_info[$key]['item_1'] = ( $a['is_curriculum'] ) ? 'curriculum-yes' : 'curriculum-no';
-            $arr_info[$key]['item_2'] = ( ! $a['is_content_local'] ) ? 'local-no' : ( ( $a['percent_local'] === 100 ) ? 'local-yes' : 'local-maybe' );
-            $arr_info[$key]['item_3'] = ( ! $a['is_content_lib'] ) ? 'lib-no' : ( ( $a['percent_lib_max'] === 100 ) ? 'lib-yes' : 'lib-maybe' );
+            $arr_info[$key]['item_2'] = ( ! $a['is_content_local'] ) ? 'local-no' : ( ( $a['percent_local'] == 100 ) ? 'local-yes' : 'local-maybe' );
+            $arr_info[$key]['item_3'] = ( ! $a['is_content_lib'] ) ? 'lib-no' : ( ( $a['percent_lib_max'] == 100 ) ? 'lib-yes' : 'lib-maybe' );
             
             $arr_info[$key]['class_1'] = ( $arr_info[$key]['item_1'] === 'curriculum-yes' ) ? 'mr-blue-2' : 'mr-red-2';
             $arr_info[$key]['class_2'] = ( $arr_info[$key]['item_2'] === 'local-no' ) ? 'mr-gray-2'  : ( ( $arr_info[$key]['item_2'] === 'local-yes' ) ? 'mr-green-2' : 'mr-orange-2' );
@@ -187,6 +187,16 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         $out .= '</div>';
         $out .= '</div>';
         
+
+        $out .= '<div class="row">';
+        $out .= '<div class="col p-0">';
+        $out .= '<div class="messages-box"></div>';
+        $out .= '</div>';
+        $out .= '</div>';
+        
+
+
+
         $out .= '<div class="row">';
         $out .= '<div class="col col-1 p-2 pt-4 pb-4 fw-semibold">№</div>';
         $out .= '<div class="col p-2 pt-4 pb-4 fw-semibold">Название дисциплины</div>';
@@ -206,9 +216,9 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
             $out .= '<div class="col p-2"><a href="' .  mif_mr_opop_core::get_opop_url() . 'tools-courses/' . $item->ID . '" class="info">' . $item->post_title . '</a></div>';
             $out .= '<div class="col col-2 p-2 text-center">';
             
-            $out .= '<span class="p-1 mr-1 text-light rounded ' . $arr_info[$key]['class_1'] . '"><i class="fa-solid fa-1 fa-xs"></i></span>';
-            $out .= '<span class="p-1 mr-1 text-light rounded ' . $arr_info[$key]['class_2'] . '"><i class="fa-solid fa-2 fa-xs"></i></span>';
-            $out .= '<span class="p-1 mr-1 text-light rounded ' . $arr_info[$key]['class_3'] . '"><i class="fa-solid fa-3 fa-xs"></i></span>';
+            $out .= '<span class="p-1 mr-1 text-light rounded ' . $arr_info[$key]['class_1'] . ' item-1"><i class="fa-solid fa-1 fa-xs"></i></span>';
+            $out .= '<span class="p-1 mr-1 text-light rounded ' . $arr_info[$key]['class_2'] . ' item-2"><i class="fa-solid fa-2 fa-xs"></i></span>';
+            $out .= '<span class="p-1 mr-1 text-light rounded ' . $arr_info[$key]['class_3'] . ' item-3"><i class="fa-solid fa-3 fa-xs"></i></span>';
             
             $out .= '</div>';
             $out .= '<div class="col col-2 p-2 text-end">';
@@ -248,7 +258,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
             // $out .= '<button type="button" class="btn btn-primary">Экспорт</button>';
             // $out .= '<button type="button" class="btn btn-primary">Сохранить и удалить</button>';
             // $out .= '<button type="button" class="btn btn-secondary">Удалить</button>';
-            $out .= '<a href="#" class="mr-3 export-all"><i class="fa-regular fa-floppy-disk fa-lg"></i>Сохранить и удалить</a>';
+            $out .= '<a href="#" class="mr-3 export-all"><i class="fa-regular fa-floppy-disk fa-lg"></i>Сохранить</a>';
             $out .= '<a href="#" class="remove-all"><i class="fa-regular fa-trash-can fa-lg"></i>Удалить</a>';
             $out .= '</div>';
             $out .= '<div class="col col-2 text-end pr-2"><input class="form-check-input ml-2 mr-1" type="checkbox" value="" name="all"></div>';
@@ -380,11 +390,17 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
                 array( 'lib-maybe', 'mr-orange-2', '3', $this->description['lib-maybe'], '2', $arr['lib-maybe'] ),
                 );
                 
+        $g = '1';
+                
         foreach ( $arr3 as $i ) {
 
-            if ( ! $i[5] ) continue;
+            if ( $g != $i[2] )  $out .= '<div class="pb-4"></div>';
+            $g = $i[2];
 
-            $out .= '<div class="mb-' . $i[4]. '">';
+            // if ( ! $i[5] ) continue;
+            $style = ( ! $i[5] ) ? ' style="display: none;"' : '';
+
+            $out .= '<div class="mb-2"' . $style . '>';
             $out .= '<input class="form-check-input mr-3" type="checkbox" value="' . $i[0] . '" id="' . $i[0] . '" checked>';
             $out .= '<label class="form-check-label" for="' . $i[0] . '">';
             $out .= '<span class="p-1 pl-2 pr-2 mr-1 text-light rounded ' . $i[1] . '"><i class="fa-solid fa-' . $i[2] . ' fa-xs"></i></span> ' . $i[3];
@@ -465,6 +481,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         foreach ( $tree['content']['lib-courses']['data'] as $i ) {
             if ( $i['name'] != $name ) continue;
             if ( $i['from_id'] == mif_mr_opop_core::get_opop_id() ) $f_local = true; else $f_lib = true;
+            // if ( $i['from_id'] == mif_mr_opop_core::get_opop_id() ) $arr['local_course_id'] = $i['comp_id'];
         } 
         
         $arr['is_content_local'] = $f_local;    
@@ -489,7 +506,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
                 
                 
                 $p = $this->get_stats_courses( 
-                        $this->set_courses_form_xls( $att_id ), 
+                        $this->get_courses_form_xls( $att_id ), 
                         $tree['content']['lib-courses']['data'][$i['comp_id']]['data'] );
 
                 if ( $i['from_id'] == mif_mr_opop_core::get_opop_id() ) {
@@ -545,7 +562,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         if ( $att->post_type != 'attachment' ) return;
         if ( ! in_array( mif_mr_functions::get_ext( $att->guid ), array( 'xls', 'xlsx' ) ) ) return;
         
-        $arr = $this->set_courses_form_xls( $att_id );
+        $arr = $this->get_courses_form_xls( $att_id );
         
         // Course 2
 
@@ -653,8 +670,8 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
             $out .= '</div>';
             
             $out .= '<div class="row' . $this->get_diff_courses( $arr, $arr2, $i['key'], $i['key2'], ' mr-yellow' ) . '">';
-            $out .= $this->get_course_part( $arr, 'target' );
-            $out .= $this->get_course_part( $arr2, 'target' );
+            $out .= $this->get_course_part( $arr, $i['key'], $i['key2'] );
+            $out .= $this->get_course_part( $arr2, $i['key'], $i['key2'] );
             $out .= '</div>';
 
 
@@ -839,8 +856,17 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
 
         }
     
+        // if ( $key='parts' && $key2='content') {
+
+        //     p($arr['content']['parts'][0]);
+        //     p($arr2['content']['parts'][0]);
+
+        // }
+
         $s = $this->get_course_part( $arr, $key, $key2 );
         $s2 = $this->get_course_part( $arr2, $key, $key2 );
+        // $s = strim( $this->get_course_part( $arr, $key, $key2 ) );
+        // $s2 = strim( $this->get_course_part( $arr2, $key, $key2 ) );
 
         if ( $s == $s2 ) $res = $no; else $res = $yes;
 
@@ -933,7 +959,9 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
             case 'parts':
 
                 foreach ( $arr['content']['parts'] as $i ) {
-
+                    
+                    if ( preg_match( '/.*\)$/', $i['name'] ) ) $i['name'] .= '.'; // !!!!
+                
                     $out .= '<div class="mb-3 fw-bold">= ' . $i['name'] . '</div>';
                     // $out .= '<div class="mb-3">= ' . $i['name'] . '</div>';
                     if ( $key2 == 'content' ) $out .= '<div class="mb-3">' . $i['content'] . '</div>';
@@ -968,7 +996,9 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
 
                     foreach ( $d['data'] as $i ) {
 
-                        $out .= '<div>' . $i['name'] . ' (' . $i['att']['rating'] . ') (' . $i['att']['cmp'] . ')' . '</div>';
+                        $out .= '<div>' . $i['name'];
+                        if ( preg_match( '/.*\)$/', $i['name'] ) ) $out .= '.'; // !!!!
+                        $out .= ' (' . $i['att']['rating'] . ') (' . $i['att']['cmp'] . ')' . '</div>';
 
                     }
 
@@ -1027,7 +1057,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
     //   
     // 
     
-    public function set_courses_form_xls( $att_id )
+    public function get_courses_form_xls( $att_id )
     {
 
         $m = new mif_mr_xlsx( get_attached_file( $att_id ) );
@@ -1046,9 +1076,10 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
             if ( empty( $m->get( $this->scheme['parts_name'][$i] ) ) ) continue;
 
             $arr['content']['parts'][$i]['name'] = $m->get( $this->scheme['parts_name'][$i] );
-            $arr['content']['parts'][$i] ['cmp']= $m->get( $this->scheme['parts_cmp'][$i] );
-            $arr['content']['parts'][$i] ['hours_raw']= $m->get( $this->scheme['parts_hours'][$i] );
             $arr['content']['parts'][$i]['content'] = $m->get( $this->scheme['parts_content'][$i] );
+            $arr['content']['parts'][$i] ['cmp'] = $m->get( $this->scheme['parts_cmp'][$i] );
+            $arr['content']['parts'][$i] ['hours_raw'] = $m->get( $this->scheme['parts_hours'][$i] );
+            $arr['content']['parts'][$i] ['hours'] = content::get_hours( $m->get( $this->scheme['parts_hours'][$i] ) );
             
             for ( $j = 0; $j < 10; $j++ ) { 
                 
@@ -1153,7 +1184,7 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
 
 
 
-        // p($this->scheme);
+        // p($arr);
 
 
         return $arr;
@@ -1236,11 +1267,12 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         if ( $att['course_id'] == 0 ) $out .= '<div class="row analysis-box" style="display:none;">';
       
         $out .= '<div class="col p-3">';
-        // $out .= $att['att_id'];
+        
+        $out .= '<div class="bg-light border p-3 rounded">';
         $out .= '<div>' . $arr_info['is_curriculum'] . '</div>';
         $out .= '<div>' . $arr_info['is_content_local'] . $arr_info['id_local'] . '</div>';
         $out .= '<div>' . $arr_info['is_content_lib'] . $arr_info['id_libs'] . '</div>';
-        // $out .= '</div>';
+        $out .= '</div>';
         
         // $out .= '<div class="col p-3">';
 
@@ -1258,68 +1290,9 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
         $out .= '</div>';
         // $out .= '</div>';
 
-
         $out .= '</div>';
-
         
         if ( $att['course_id'] == 0 ) $out .= '</div>';
-            
-
-
-
-
-    //     $m = new mif_mr_part_companion();
-    //     $data[0] = $this->get_date_from_plx( $att['key'], $att['att_id'] );
-    //     $data[1] = $m->get_companion_content( $att['key'], $att['opop_id'] );
-    
-    //     $data = $this->analysis_process( $data, $att['method'] );
-
-    //     $one = '<div class="p-1 pt-3 pb-3 bg-light">' . $data[0] . '</div>';
-    //     $two = '<div class="p-1 pt-3 pb-3 bg-light">' . $data[1] . '</div>';
-        
-    //     $out .= '<div class="container mt-5 fullsize-fix">';
-
-    //     $out .= '<div class="row">';
-    //     $out .= '<div class="col d-none d-sm-block mt-5 pr-0 text-end">';
-    //     $out .= '<a href="#" class="text-secondary" id="fullsize">';
-    //     $out .= '<i class="fa-solid fa-expand fa-2x"></i><i class="d-none fa-solid fa-compress fa-2x"></i>';
-    //     $out .= '</a>';
-    //     $out .= '</div>';
-    //     $out .= '</div>';
-
-    //     $out .= '<div class="row">';
-
-    //     $out .= '<div class="col col-6 p-0 pr-2 pt-4 pb-4"><div class="text-center fw-semibold">из файла</div>' . $one. '</div>';
-    //     $out .= '<div class="col col-6 p-0 pl-2 pt-4 pb-4"><div class="text-center fw-semibold">из Matrix</div>' . $two. '</div>';
-
-    //     $out .= '</div>';
-   
-    //     $out .= '<div class="row">';
-
-    //     $out .= '<div class="col p-3 bg-light">';
-    //     $out .= '<a href="#" class="mr-3 save" data-yes="yes">Сохранить</a>';
-    //     $out .= '<a href="#" class="mr-3 cancel-analysis">Отменить</a>';
-    //     $out .= '</div>';
-
-    //     $out .= '<div class="col p-3 bg-light text-end">';
-    //     $out .= '<a href="#" class="mr-3 help"><i class="fa-solid fa-circle-question fa-xl"></i></a>';
-    //     $out .= '</div>';
-
-    //     $out .= '</div>';
-  
-    //     $out .= '<div class="row">';
-
-    //     $out .= '<div class="col bg-light help-box" style="display: none;">';
-    //     $out .= mif_mr_functions::get_callout( 
-    //                 'белые — эти строки доступны одинаково как в первом, так и во втором списке<br />
-    //                  желтые — есть дисциплина, но параметры другие<br />
-    //                  красные — это строки, которые написаны один раз, отсутствуют в другом списке.
-    //                 ', 'info' );;
-    //     $out .= '</div>';
-
-    //     $out .= '</div>';
-  
-    //     $out .= '</div>';
 
         return $out;
     }
@@ -1327,74 +1300,53 @@ class mif_mr_tools_courses extends mif_mr_tools_core {
 
 
 
-    // private function analysis_process( $data = array(), $method = '' )
-    // {
+    // 
+    // Save (export)
+    // 
 
-    //     foreach ( array( 0, 1 ) as $k ) $arr[$k] = array_map( 'strim', explode( "\n", $data[$k] ) );     
+    function export( $att = array() )
+    {
+        global $tree;
         
-    //     foreach ( array( 0, 1 ) as $k ) 
-    //     foreach ( $arr[$k] as $item ) {
+        $out = '';
         
-    //         if ( empty( $method ) ) {
-                
-    //             $p = new parser();
-    //             $d = $p->parse_name( $item );
-                
-    //         } elseif ( $method == 'dots' ) {
-                
-    //             $p = new attributes( $item );
-    //             $a = array_keys( $p->get_arr() );
-    //             $d['name'] = $a[0];
-
-    //         }
-
-    //         // p('$d');
-    //         // p($d);
-
-    //         $a = trim( preg_replace( '/' . $d['name'] . '/', '', $item ) ); 
-    //         $arr2[$k][] = array( $d['name'], $a );       
-            
-    //         $arr3[$k][] = 2;
-
-    //     }
-
-    //     foreach ( $arr2[0] as $k => $i )
-    //     foreach ( $arr2[1] as $k2 => $i2 ) {
+        $arr = $this->get_courses_form_xls( $att['att_id'] );
+        $arr_info = $this->get_info_courses( $att['att_id'] );
         
-    //         if ( $i[0] === $i2[0] ) {
-
-    //             if ( $arr3[0][$k] != 0 ) $arr3[0][$k] = 1;
-    //             if ( $arr3[1][$k2] != 0 ) $arr3[1][$k2] = 1;
-
-    //         }
-            
-    //         if ( $i[0] === $i2[0] && $i[1] === $i2[1] ) {
-                
-    //             $arr3[0][$k] = 0;
-    //             $arr3[1][$k2] = 0;
-            
-    //         }
-
-    //     }
+        $m = new mif_mr_lib_courses();
+        $arr2 = $m->arr_to_text( $arr );
         
-    //     $f = true;
-    //     foreach ( array( 0, 1 ) as $k ) if ( empty( $data[$k]) ) $f = false;
-        
-    //     foreach ( array( 0, 1 ) as $k ) foreach ( $arr[$k] as $key => $item ) {
+        if ( empty( $arr_info['id_local'] ) ) {
             
-    //         $c = '';
-            
-    //         if ( $f && $arr3[$k][$key] === 1 ) $c = ' mr-yellow'; 
-    //         if ( $f && $arr3[$k][$key] === 2 ) $c = ' mr-red'; 
-            
-    //         $arr[$k][$key] = '<div class="pl-3 pr-3 m-1' . $c . '">' . $item . '</div>';
-        
-    //     }
+            $res = $m->companion_insert( array(
+                                            'title' => $arr['name'],
+                                            'data' => $arr2,
+                                            'type'     => 'lib-courses',
+                                            'opop_id'   => $att['opop_id'],
+                                            ) );
 
-    //     foreach ( array( 0, 1 ) as $k ) $data[$k] = implode( "\n", $arr[$k]);
+        } else {
+            
+            $res = $m->save( $arr_info['id_local'], $arr2 );
 
-    //     return $data;
-    // }
+        }
+
+        if ( $res ) {
+
+            $out .= mif_mr_functions::get_callout( 'Сохранено: <span class="fw-semibold">' . $arr['name'] . 
+                                                    '</span> <a href="' .  mif_mr_opop_core::get_opop_url() . 
+                                                    'lib-courses/' . $res . '" target="_blank"><i class="fa-solid fa-arrow-right"></i></a>', 'success' );
+
+        } else {
+
+            $out .= mif_mr_functions::get_callout( 'Какая-то ошибка: <span class="fw-semibold">' . $arr['name'] . '</span>', 'danger' );
+
+        }
+
+        
+
+        return $out;
+    }
 
 
 

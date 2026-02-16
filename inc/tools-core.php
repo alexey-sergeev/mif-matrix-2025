@@ -57,6 +57,9 @@ class mif_mr_tools_core {
             // 'orderby' => 'menu_order',
         );
         
+        if ( ! empty( $att['orderby'] ) ) $args['orderby'] = $att['orderby'];
+        if ( ! empty( $att['order'] ) ) $args['order'] = $att['order'];
+
         $arr = get_posts( $args );
             
         // Удалить из ответа лишние файлы 

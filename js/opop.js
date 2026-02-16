@@ -803,6 +803,8 @@ jQuery( document ).ready( function( jq ) {
     }); 
 
 
+
+
     // All
 
     jq( 'body' ).on( 'click', '.tools input[name=all]', function() {
@@ -810,6 +812,84 @@ jQuery( document ).ready( function( jq ) {
         jq('.select-item.select-yes input[type="checkbox"]', jq(this).closest('.container')).prop('checked', jq(this).is(':checked') );
 
     }); 
+
+
+
+
+    // Save (export)
+
+    jq( 'body' ).on( 'click', '.tools .export', function() {
+        
+        // console.log(jq('.select-item', jq(this).closest('.container')));
+        let elem = jq(this).closest('.select-item');
+
+        jq.ajax( {
+            url: ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'tools',
+                do: 'export',
+                opop: jq( 'input[name=opop]' ).val(),
+                attid: jq( 'input[type="checkbox"]', jq(this).closest('.select-item') ).val(),
+                _wpnonce: jq( 'input[name=_wpnonce]' ).val(),
+            },
+            success: function( response ) {
+
+                if ( response ) {
+
+                    jq( '.item-2', elem ).removeClass('mr-orange-2');
+                    jq( '.item-2', elem ).removeClass('mr-gray-2');
+                    jq( '.item-2', elem ).addClass('mr-green-2');
+                    
+                    elem.removeClass('local-maybe');
+                    elem.addClass('local-yes');
+                    
+                    jq( '#local-yes' ).parent().slideDown();
+                    
+                    jq( 'input[type="checkbox"]', elem ).prop('checked', false );
+
+                    jq( '.messages-box' ).before( response );
+
+                    // console.log( response );
+
+                } else {
+                    
+                    console.log( 'error 13' );
+                    
+                }
+                
+            },
+            error: function( response ) {
+                
+                console.log( response );
+                console.log( 'error 14' );
+                
+            },
+            
+        } );
+
+
+
+
+
+
+        // let f = false;        
+        // jq('.select-item input[type="checkbox"]', jq(this).closest('.container')).each( function() { if ( jq(this).is(':checked') ) f = true; });
+        
+        // if ( f ) {
+            
+            
+        // } else {
+            
+        //     console.log('@@');
+        //     jq( 'input[name="all"]', jq(this).closest('.container') ).focus();
+
+        // }
+        
+        return false;
+
+    }); 
+
 
 
     // Save
@@ -822,11 +902,25 @@ jQuery( document ).ready( function( jq ) {
         
         if ( f ) {
             
-            console.log('@');
-            
+            // console.log('@');
+
+            jq('.select-item .export', jq(this).closest('.container')).each( function() { 
+                
+                let elem = this;
+
+                jq('input[type="checkbox"]', jq(this).closest('.select-item')).each( function() {
+                    
+                    if ( jq(this).is(':checked') ) jq(elem).trigger('click');
+                    // jq(this).prop('checked', false );
+
+                });
+                
+            });
+
+
         } else {
             
-            console.log('@@');
+            // console.log('@@');
             jq( 'input[name="all"]', jq(this).closest('.container') ).focus();
 
         }
@@ -834,6 +928,7 @@ jQuery( document ).ready( function( jq ) {
         return false;
 
     }); 
+
 
 
     // Remove
@@ -845,7 +940,7 @@ jQuery( document ).ready( function( jq ) {
         
         if ( f ) {
             
-            console.log('@1');
+            // console.log('@1');
             
             jq('.select-item .remove', jq(this).closest('.container')).each( function() { 
                 
@@ -924,7 +1019,7 @@ jQuery( document ).ready( function( jq ) {
         } else {
 
             jq('.analysis-box').slideUp( function() { jq('.analysis-box').remove() });
-            console.log('@@');
+            // console.log('@@');
         };    
 
         return false;
@@ -1006,6 +1101,16 @@ jQuery( document ).ready( function( jq ) {
         jq( '.remove', jq(this).closest('.row').prev() ).trigger('click') ;
     
     
+        return false;
+    });  
+
+
+    // export-panel
+
+    jq( 'body' ).on( 'click', '.analysis-box .export-panel', function() {
+    
+        jq( '.export', jq(this).closest('.row').prev() ).trigger('click') ;
+        jq( '.cancel-panel', jq(this).closest('.row') ).trigger('click') ;
         return false;
     });  
 

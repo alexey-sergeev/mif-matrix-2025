@@ -166,7 +166,107 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
         $data = array();
         if ( isset( $tree['content']['lib-courses']['data'][$course_id] ) ) $data = $tree['content']['lib-courses']['data'][$course_id];
         
-        foreach ( $data['data'] as $key => $item ) {
+            $arr2 = $this->arr_to_arr_text( $data['data'] );
+
+        // foreach ( $data['data'] as $key => $item ) {
+                
+        //     $s = '';
+            
+        //     switch ( $key ) {
+                
+        //         case 'content':
+                    
+        //             $s .= $item['target'] . "\n\n";
+                    
+        //             foreach ( $item['parts'] as $item2 ) {
+                        
+        //                 $s .= '= ' . $item2['name'];
+        //                 $s .= ' (' . $item2['cmp'] . ')';
+        //                 $h = $item2['hours'];
+        //                 $s .= ' (' . $h['lec'] . ', ' . $h['lab'] . ', ' . $h['prac'] . ', ' . $h['srs'] . ')';
+        //                 $s .= "\n\n";
+
+        //                 $s .= $item2['content'] . "\n\n";
+                        
+        //                 $arr2 = array();
+        //                 for ( $i=0;  $i < 30;  $i++ ) $arr2[] = '-';
+        //                 foreach ( (array) $item2['outcomes']['z'] as $key3 => $item3 ) $arr2[$key3 * 3] = '- ' . $item3;
+        //                 foreach ( (array) $item2['outcomes']['u'] as $key3 => $item3 ) $arr2[$key3 * 3 + 1] = '- ' . $item3;
+        //                 foreach ( (array) $item2['outcomes']['v'] as $key3 => $item3 ) $arr2[$key3 * 3 + 2] = '- ' . $item3;
+        //                 while ( $arr2[ array_key_last( $arr2 ) ] == '-' ) unset( $arr2[ array_key_last( $arr2 ) ] ); 
+                        
+        //                 $s .= implode( "\n", $arr2 );
+        //                 $s .= "\n\n";
+
+        //             }
+                    
+        //         break;
+                
+        //         case 'evaluations':
+                
+        //             foreach ( $item as $item2 ) {
+                        
+        //                 foreach ( $item2['data'] as $item3 ) {
+                            
+        //                     $s .= $item3['name'];
+        //                     if ( ! empty( $item3['att'] ) ) $s .= ' (' . implode( ") (", $item3['att'] ) . ')';
+        //                     $s .= "\n";
+                            
+        //                 }
+
+        //                 $s .= "\n";
+    
+        //             }
+
+
+        //         break;
+                
+        //         default:
+                
+        //             foreach ( $item as $item2 ) {
+                        
+        //                 $s .= implode( "\n", $item2 );
+        //                 $s .= "\n\n";
+
+        //             }
+                
+        //         break;
+                
+                
+        //     }
+
+        //     $arr[$key] = $s;
+            
+        // }
+
+        // $arr2 = array();
+        
+        // foreach ( $this->index_part as $item ) {
+            
+        //     if ( isset( $arr[$item] ) ) {
+                
+        //         $arr2[$item] = $arr[$item];
+        //         unset( $arr[$item] );
+                
+        //     }
+            
+        // }
+        
+        // $arr2 = array_merge( $arr2, $arr );
+        
+        return apply_filters( 'mif_mr_companion_course_get_sub_arr', $arr2, $course_id );
+    }
+    
+
+
+    //
+    // arr_to_arr_text
+    //
+
+    public function arr_to_arr_text( $data ) 
+    {
+
+        foreach ( $data as $key => $item ) {
                 
             $s = '';
             
@@ -179,11 +279,11 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
                     foreach ( $item['parts'] as $item2 ) {
                         
                         $s .= '= ' . $item2['name'];
+                        if ( preg_match( '/.*\)$/', $item2['name'] ) ) $s .= '.'; // !!!!
                         $s .= ' (' . $item2['cmp'] . ')';
                         $h = $item2['hours'];
                         $s .= ' (' . $h['lec'] . ', ' . $h['lab'] . ', ' . $h['prac'] . ', ' . $h['srs'] . ')';
                         $s .= "\n\n";
-
 
                         $s .= $item2['content'] . "\n\n";
                         
@@ -208,7 +308,11 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
                         foreach ( $item2['data'] as $item3 ) {
                             
                             $s .= $item3['name'];
-                            if ( ! empty( $item3['att'] ) ) $s .= ' (' . implode( ") (", $item3['att'] ) . ')';
+                            
+                            if ( ! empty( $item3['att'] ) ) { 
+                                if ( preg_match( '/.*\)$/', $item3['name'] ) ) $s .= '.'; // !!!!
+                                $s .= ' (' . implode( ") (", $item3['att'] ) . ')';
+                            }
                             $s .= "\n";
                             
                         }
@@ -252,10 +356,44 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
         }
         
         $arr2 = array_merge( $arr2, $arr );
-        
-        return apply_filters( 'mif_mr_companion_course_get_sub_arr', $arr2, $course_id );
-    }
+
+        return apply_filters( 'mif_mr_companion_course_arr_to_arr_text', $arr2, $data );
     
+    }
+
+    
+    
+    //
+    // arr_to_text
+    //
+    
+    public function arr_to_text( $arr ) 
+    {
+        // p($arr);
+        $out = '';
+        
+        // p($this->arr_to_arr_text( $arr ));
+        $arr2 = $this->arr_to_arr_text( $arr );
+
+
+        foreach ( $arr2 as $key => $item ) {
+
+            if ( $key == 'name' ) continue;
+
+            $out .= '== ' . $key . "\n\n";
+            $out .= $item . "\n\n";
+
+        }
+        
+        // $out = implode( "\n\n", $this->arr_to_arr_text( $arr ) );
+        
+        
+        
+        
+        return apply_filters( 'mif_mr_companion_course_arr_to_text', $out, $arr );
+    }
+
+
 
     protected $index_part = array();
     

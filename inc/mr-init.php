@@ -261,7 +261,7 @@ class mif_mr_init extends mif_mr_functions {
                     }     
                 
                     if ( $_REQUEST['do'] == 'info' ) {
-                        
+                        // p($_REQUEST);
                         $m = new mif_mr_tools_courses();
                         echo $m->analysis( array(
                                                 'att_id' => (int) $_REQUEST['attid'],
@@ -269,7 +269,23 @@ class mif_mr_init extends mif_mr_functions {
                                                 ) );
                         
                     }     
-                
+
+                    if ( $_REQUEST['do'] == 'export' ) {
+                        
+                        $m = new mif_mr_tools_courses();
+                        echo $m->export( array(
+                                                // 'opop_title' => sanitize_text_field( $_REQUEST['opop_title'] ),
+                                                // 'explanation' => sanitize_text_field( $_REQUEST['explanation'] ),
+                                                'opop_id' => (int) $_REQUEST['opop'],
+                                                'att_id' => (int) $_REQUEST['attid'],
+                                                // 'key' => sanitize_key( $_REQUEST['key'] ),
+                                                // 'yes' => sanitize_key( $_REQUEST['yes'] ),
+                                                // 'data' => sanitize_textarea_field( $_REQUEST['data'] ),
+                                                ) );
+                        
+                    }     
+
+
                 } 
 
 

@@ -196,6 +196,33 @@ class mif_mr_companion_core {
                                             'opop_id'   => $opop_id,
                                         ) );
 
+        // if ( $res ) {
+            
+        //     global $tree;
+        //     global $mif_mr_opop;
+
+        //     $tree = array();
+        //     $tree = $mif_mr_opop->get_tree();
+            
+        // }
+
+        return $res;
+    }
+
+
+
+
+    public function companion_insert( $att = array() )
+    {
+        // p($att);
+        $res = wp_insert_post( array(
+            'post_title'    => $att['title'],
+            'post_content'  => $att['data'],
+            'post_type'     => $att['type'],
+            'post_status'   => 'publish',
+            'post_parent'   => $att['opop_id'],
+            ) );
+        
         if ( $res ) {
             
             global $tree;
@@ -206,22 +233,6 @@ class mif_mr_companion_core {
             
         }
 
-        return $res;
-    }
-
-
-
-
-    public function companion_insert( $att = array() )
-    {
-        $res = wp_insert_post( array(
-            'post_title'    => $att['title'],
-            'post_content'  => $att['data'],
-            'post_type'     => $att['type'],
-            'post_status'   => 'publish',
-            'post_parent'   => $att['opop_id'],
-            ) );
-        
         return $res;
     }
     

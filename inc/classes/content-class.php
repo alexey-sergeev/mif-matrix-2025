@@ -151,7 +151,7 @@ class content {
     // Записать в массив данные "как есть"
     // 
 
-    private function get_hours( $data )
+    public static function get_hours( $data )
     {
         $raw = array();
         
