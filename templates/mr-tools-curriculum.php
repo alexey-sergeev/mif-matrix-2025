@@ -26,12 +26,9 @@
         <div class="sidebar col-2 pl-5">
             
             <div class="fiksa">
-                
-                <div class="container">
-
-                    @@@
-
-                </div>
+                        
+                <?php mif_mr_show_back( 'tools' ); ?>   
+                <?php mif_mr_remove_all( 'curriculum' ); ?>   
             
             </div>
 

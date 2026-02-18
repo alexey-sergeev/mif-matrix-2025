@@ -339,9 +339,10 @@ class mif_mr_opop extends mif_mr_opop_tree_raw {
 
         $out = '';
 
-        if ( isset( $wp_query->query_vars['id'] ) ) {
+        if ( isset( $wp_query->query_vars['id'] ) || in_array( $type, array( 'tools' ) ) ) {
 
-            $out .= '<div class="pb-4"><a href="' . get_permalink( $this->get_opop_id() ) . $type . '/">← Вернуться к странице раздела</a></div>';
+            // $out .= '<div class="pb-4"><a href="' . get_permalink( $this->get_opop_id() ) . $type . '/">← Вернуться к странице раздела</a></div>';
+            $out .= '<div class="pb-4"><a href="' . mif_mr_opop_core::get_opop_url() . $type . '/">← Вернуться к странице раздела</a></div>';
         
         } 
         

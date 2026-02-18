@@ -27,12 +27,9 @@
             
             <div class="fiksa">
                 
-                <div class="container">
+                <?php mif_mr_show_back( 'tools' ); ?>
+                <?php mif_mr_remove_all( 'courses' ); ?>   
 
-                    @@@
-
-                </div>
-            
             </div>
 
         </div>

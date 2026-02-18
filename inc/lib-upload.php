@@ -188,6 +188,42 @@ class mif_mr_upload {
 
 
 
+
+
+
+
+
+
+
+    // //
+    // // Сохранить файл 
+    // // 
+
+    // public function remove_all( $att = array() )
+    // {
+    //     $res = true;
+
+    //     $args = array(
+    //         'numberposts' => -1,
+    //         'post_parent' => mif_mr_opop_core::get_opop_id(), 
+    //         'post_type' => 'attachment',
+    //         'post_status' => 'inherit',
+    //     );
+        
+    //     $arr = get_posts( $args );
+
+
+
+    
+    //     return $res;
+    // }
+
+
+
+
+
+
+
 }
 
 ?>

@@ -41,6 +41,29 @@ function mif_mr_tools_courses()
 }
 
 
+//
+// Выводит 
+//
+
+function mif_mr_remove_all( $type = 'courses' )
+{
+    if ( $type == 'courses' ) {
+
+        global $mif_mr_tools_courses;
+        echo $mif_mr_tools_courses->remove_all_link( 'courses' );
+
+    }
+
+    if ( $type == 'curriculum' ) {
+
+        global $mif_mr_tools_curriculum;
+        echo $mif_mr_tools_curriculum->remove_all_link( 'curriculum' );
+
+    }
+
+}
+
+
 
 
 ?>
