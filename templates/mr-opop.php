@@ -45,8 +45,8 @@
                 <?php mif_mr_the_menu_item( 'Параметры ОПОП', 'param', 1 ); ?>
                 <?php mif_mr_the_menu_item( 'Атрибуты ОПОП', 'attributes', 1 ); ?>
                 <?php mif_mr_the_menu_item(); ?>
-                <?php mif_mr_the_menu_item( 'Библиотека компетенций', 'lib-competencies', 1 ); ?>
                 <?php mif_mr_the_menu_item( 'Библиотека дисциплин', 'lib-courses', 1 ); ?>
+                <?php mif_mr_the_menu_item( 'Библиотека компетенций', 'lib-competencies', 1 ); ?>
                 <?php mif_mr_the_menu_item( 'Библиотека справочников', 'lib-references', 1 ); ?>
                 <?php mif_mr_the_menu_item(); ?>
                 <?php mif_mr_the_menu_item( 'Инструменты разработки', 'tools', 1 ); ?>

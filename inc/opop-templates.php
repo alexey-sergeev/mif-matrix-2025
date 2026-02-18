@@ -113,6 +113,18 @@ function mif_mr_the_opop_url()
 
 
 
+//
+// Выводит 
+//
+
+function mif_mr_download_link( $type = 'text' )
+{
+    global $mif_mr_opop;
+    echo $mif_mr_opop->get_download_link( $type );
+}
+
+
+
 
 
 // // 

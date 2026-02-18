@@ -266,7 +266,8 @@ class mif_mr_companion_core {
         $data_sub_id = ' data-sub="' . $item['sub_id'] . '"';
         $data_part = ( isset( $item['part'] ) ) ? ' data-part="' . $item['part'] . '"' : '';
         $part = ( isset( $item['part'] ) ) ? $item['part'] : $item['sub_id'];
-        $color = ( isset( $item['color'] ) ) ? $item['color'] : 'mr-gray';
+        // $color = ( isset( $item['color'] ) ) ? $item['color'] : 'mr-gray';
+        $color = ( isset( $item['color'] ) ) ? $item['color'] : 'bg-light';
         $note = ( isset( $item['note'] ) ) ? $item['note'] : '';
 
         $up = ' d-none';
@@ -470,18 +471,19 @@ class mif_mr_companion_core {
         $out .= '</div>';
         
         $out .= '<div class="col-2 col-md-1 pt-3 pb-3 text-end copy-wrapper">';
-        // $out .= '<a href="' . mif_mr_opop_core::get_opop_url() . '' . $att['type']. '/' . $att['comp_id'] . '">' . $att['name'] . '</a>';
-        
-        // $out .= '<span class="bg-secondary text-light rounded pl-3 pr-3 p-1 copy copy-button">' . $att['comp_id'] . '</span>';
         $out .= mif_mr_opop_core::get_span_id( $att['comp_id'] );
         $out .= '</div>';
         
         $out .= '<div class="col-2 col-md-1 pt-3 pb-3 text-end">';
         $out .= ( $att['from_id'] == mif_mr_opop_core::get_opop_id() ||  $att['from_id'] == 0 ) ?
-                '' :
-                '<a href="' .  get_permalink( $att['from_id'] ) . '' . $att['type']. '/' . $att['comp_id'] . '" title="' . 
-                mif_mr_functions::mb_substr( get_the_title( $att['from_id'] ), 20 ) . '">' . $att['from_id'] . '</a>';
+                    '' :
+                    '<a href="' .  get_permalink( $att['from_id'] ) . '' . $att['type']. '/' . $att['comp_id'] . '" title="' . 
+                    mif_mr_functions::mb_substr( get_the_title( $att['from_id'] ), 20 ) . '">' . $att['from_id'] . '</a>';
         $out .= '</div>';
+        
+        // $out .= '<div class="col-1 col-md-1 pt-3 pb-3 text-end copy-wrapper">';
+        // $out .= mif_mr_opop_core::get_a_file( '$url', 'excel' );
+        // $out .= '</div>';
         
         $out .= '</div>';
 
@@ -507,7 +509,11 @@ class mif_mr_companion_core {
         $out .= '<button type="button" class="btn btn-primary new">' . $att['button']. '</button>';
         $out .= '</div>';
         $out .= '<div class="col p-3 bg-light text-end">';
-        $out .= '<a href="#" class="mr-3 help"><i class="fa-solid fa-circle-question fa-xl"></i></a>';
+        // $out .= '<a href="#" class="mr-3 help"><i class="fa-solid fa-circle-question fa-xl"></i></a>';
+        // $out .= '<a href="#" class="mr-3 help"><i class="fa-regular fa-life-ring fa-lg"></i></a>';
+        $out .= '<a href="#" class="mr-3 help"><i class="fa-solid fa-spiral fa-lg"></i></a>';
+        // $out .= '<a href="#" class="mr-3 help"><i class="fa-solid fa-graduation-cap fa-lg"></i></a>';
+        // $out .= '<a href="#" class="mr-3 help"><i class="fa-regular fa-compass fa-lg"></i></a>';
         $out .= '</div>';
         $out .= '</div>';
 
@@ -585,9 +591,11 @@ class mif_mr_companion_core {
 
         if ( isset( $wp_query->query_vars['id'] ) ) {
 
-            $out .= '<div class="mb-4 mt-0 pb-5 pt-5">'; 
-            $out .= '<span class="bg-secondary text-light rounded pl-4 pr-4 p-2">ID: '; 
-            $out .= $wp_query->query_vars['id']; 
+            $out .= '<div class="mt-0 pb-5 pt-5 copy-wrapper">'; 
+            $out .= '<span class="bg-secondary text-light rounded pl-4 pr-4 p-2 copy-button">ID: '; 
+            // $out .= '<span class="bg-secondary text-light rounded pl-4 pr-4 p-2 copy copy-button">ID: '; 
+            $out .= '<span class="copy">' . $wp_query->query_vars['id'] . '</span>'; 
+            // $out .= $wp_query->query_vars['id']; 
             $out .= '</span>'; 
             $out .= '</div>'; 
         

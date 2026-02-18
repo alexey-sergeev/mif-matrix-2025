@@ -263,7 +263,9 @@ jQuery( document ).ready( function( jq ) {
     jq( 'body' ).on( 'click', '#roll-up-all', function() {
         jq( 'a.roll-up', jq(this).closest('.part') ).each( function ( index, elem ) { jq(elem).addClass('d-none'); });
         jq( 'a.roll-down', jq(this).closest('.part') ).each( function ( index, elem ) { jq(elem).removeClass('d-none'); });
-        jq( 'div.coll', jq(this).closest('.part') ).slideUp();
+        jq( 'div.coll', jq(this).closest('.part') ).slideUp(function() {
+            jq( '.coll-ppp', jq(this).closest('.content-ajax') ).show();
+        });
         jq( 'input.coll' ).each( function() { jq(this).attr( 'data-value', 'off' ); });
         return false;
     })
@@ -275,6 +277,7 @@ jQuery( document ).ready( function( jq ) {
         jq( 'a.roll-down', jq(this).closest('.part') ).each( function ( index, elem ) { jq(elem).addClass('d-none'); });
         jq( 'a.roll-up', jq(this).closest('.part') ).each( function ( index, elem ) { jq(elem).removeClass('d-none'); });
         jq( 'div.coll', jq(this).closest('.part') ).slideDown();
+        jq( '.coll-ppp', jq(this).closest('.content-ajax') ).hide();
         jq( 'input.coll' ).each( function() { jq(this).attr( 'data-value', 'on' ); });
         return false;
     })
@@ -283,10 +286,12 @@ jQuery( document ).ready( function( jq ) {
     // 
     
     jq( 'body' ).on( 'click', 'a.roll-up', function() {
-        jq( 'div.coll', jq(this).closest('span') ).slideUp();
-        jq( 'a.roll-up', jq(this).closest('span') ).toggleClass('d-none');
-        jq( 'a.roll-down', jq(this).closest('span') ).toggleClass('d-none');
-        jq( 'input.coll', jq(this).closest('span') ).attr( 'data-value', 'off' );
+        jq( 'div.coll', jq(this).closest('.content-ajax') ).slideUp( function() {
+            jq( '.coll-ppp', jq(this).closest('.content-ajax') ).show();
+        });
+        jq( 'a.roll-up', jq(this).closest('.content-ajax') ).toggleClass('d-none');
+        jq( 'a.roll-down', jq(this).closest('.content-ajax') ).toggleClass('d-none');
+        jq( 'input.coll', jq(this).closest('.content-ajax') ).attr( 'data-value', 'off' );
         return false;
     })
     
@@ -294,10 +299,11 @@ jQuery( document ).ready( function( jq ) {
     // 
     
     jq( 'body' ).on( 'click', 'a.roll-down', function() {
-        jq( 'div.coll', jq(this).closest('span') ).slideDown();
-        jq( 'a.roll-up', jq(this).closest('span') ).toggleClass('d-none');
-        jq( 'a.roll-down', jq(this).closest('span') ).toggleClass('d-none');
-        jq( 'input.coll', jq(this).closest('span') ).attr( 'data-value', 'on' );
+        jq( 'div.coll', jq(this).closest('.content-ajax') ).slideDown();
+        jq( '.coll-ppp', jq(this).closest('.content-ajax') ).hide();
+        jq( 'a.roll-up', jq(this).closest('.content-ajax') ).toggleClass('d-none');
+        jq( 'a.roll-down', jq(this).closest('.content-ajax') ).toggleClass('d-none');
+        jq( 'input.coll', jq(this).closest('.content-ajax') ).attr( 'data-value', 'on' );
         return false;
     })
     

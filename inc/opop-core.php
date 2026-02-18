@@ -297,14 +297,57 @@ class mif_mr_opop_core {
     
 
     //
-    // Получить ID
+    // Получить span ID
     //
 
     public static function get_span_id( $comp_id )
     {
         return '<span class="bg-secondary text-light rounded pl-3 pr-3 p-1 copy copy-button">' . $comp_id . '</span>';
     }
+    
 
+    //
+    // Получить ссылку на файл
+    //
+
+    public static function get_a_file( $url, $type = 'lines' )
+    {
+        return '<a href="' . $url . '" class="mr-gray rounded p-2"><i class="fa-regular fa-file-' . $type . ' fa-lg"></i></a>';
+        // return '<a href="' . $url . '" class="mr-gray rounded p-2"><i class="fa-solid fa-file-' . $type . ' fa-lg"></i></a>';
+    }
+
+
+        
+    
+    //
+    // Показать ссылку на шаблон (д.р.)
+    //
+    
+    public function get_download_link( $type = 'text' )
+    {
+
+        // !!!!!!!
+
+        global $wp_query;
+
+        $out = '';
+
+        if ( isset( $wp_query->query_vars['id'] ) ) {
+
+            if ( $type == 'xls' ) $a = array( '#', 'Шаблон' );
+            if ( $type == 'text' ) $a = array( '#', 'Текст' );
+
+
+            $out .= '<div class="mb-3">'; 
+            $out .= '<a href="' . $a[0]. '"><span class="mr-btn mr-gray"><i class="fa fa-download" aria-hidden="true"></i></span>' . $a[1] . '</a>';
+            $out .= '</div>'; 
+        
+        }
+
+        return apply_filters( 'mif_mr_get_template', $out, $type );
+        
+    }
+    
     
 
     

@@ -107,7 +107,8 @@ class mif_mr_competencies_screen extends mif_mr_lib_competencies {
             // New
 
             if ( $f ) $out .= '<div class="row mb-3 mt-6">';
-            if ( $f ) $out .= '<div class="col mr-gray p-3 fw-bolder text-center">';
+            if ( $f ) $out .= '<div class="col bg-light p-3 fw-bolder text-center">';
+            // if ( $f ) $out .= '<div class="col mr-gray p-3 fw-bolder text-center">';
             if ( $f ) $out .= '<a href="#" class="new"><i class="fa-solid fa-plus fa-xl"></i></a>';
             if ( $f ) $out .= '</div>';
             if ( $f ) $out .= '</div>';
@@ -216,7 +217,8 @@ class mif_mr_competencies_screen extends mif_mr_lib_competencies {
                 $out .= '<div class="col col-2 col-md-1">';
                 $out .= '</div>';
                 
-                $out .= '<div class="col p-1 pl-3 m-3 mr-gray fst-italic">';
+                // $out .= '<div class="col p-1 pl-3 m-3 mr-gray fst-italic">';
+                $out .= '<div class="col p-1 pl-3 m-3 bg-light fst-italic">';
                 $out .= ( isset( $name_indicators[$key4] ) ) ? $name_indicators[$key4] : 'индикатор ' . $key4;
                 $out .= '</div>';
                 

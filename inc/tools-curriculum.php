@@ -212,7 +212,8 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
             $out .= '<div class="row">';
             $out .= '<div class="col col-1 p-2">' . ++$n . '</div>';
             $out .= '<div class="col p-2"><a href="' .  mif_mr_opop_core::get_opop_url() . 'tools-curriculum/' . $item->ID . '">' . $item->post_title . '</a></div>';
-            $out .= '<div class="col col-1 p-2 text-center"><a href="' . $item->guid . '"><i class="fa-regular fa-file-code fa-lg"></i></a></div>';
+            // $out .= '<div class="col col-1 p-2 text-center"><a href="' . $item->guid . '" class="mr-gray rounded p-2"><i class="fa-regular fa-file-code fa-lg"></i></a></div>';
+            $out .= '<div class="col col-1 p-2 text-center">' .  mif_mr_opop_core::get_a_file( $item->guid, 'code' ) . '</div>';
             $out .= '<div class="col col-1 p-2 text-center"><a href="#" class="remove" data-attid="' . $item->ID . '"><i class="fa-regular fa-trash-can fa-lg"></i></a></div>';
             $out .= '</div>';
             

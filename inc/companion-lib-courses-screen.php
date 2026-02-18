@@ -124,7 +124,8 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses {
                                                     'part' => 'evaluations',
                                                     'sub_id' => 'evaluations',
                                                     'data' => $arr['data']['evaluations'],
-                                                    'coll' => $this->coll_on_off( 'evaluations', false ),
+                                                    // 'coll' => $this->coll_on_off( 'evaluations', false ),
+                                                    'coll' => $this->coll_on_off( 'evaluations', empty( $arr['data']['evaluations'] ) ),
                                                 ));
 
                 $out .= $this->get_course_part( array(
@@ -133,7 +134,8 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses {
                                                     'part' => 'indicator',
                                                     'sub_id' => 'content',
                                                     'data' => $arr['data']['content'],
-                                                    'coll' => $this->coll_on_off( 'indicator', false ),
+                                                    // 'coll' => $this->coll_on_off( 'indicator', false ),
+                                                    'coll' => $this->coll_on_off( 'indicator', empty( $arr['data']['content'] ) ),
                                                 ));
 
                 $out .= $this->get_course_part( array(
@@ -142,7 +144,8 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses {
                                                     'part' => 'biblio',
                                                     'sub_id' => 'biblio',
                                                     'data' => $arr['data']['biblio'],
-                                                    'coll' => $this->coll_on_off( 'biblio', false ),
+                                                    // 'coll' => $this->coll_on_off( 'biblio', false ),
+                                                    'coll' => $this->coll_on_off( 'biblio', empty( $arr['data']['biblio'] ) ),
                                                 ));
                 
                 $out .= $this->get_course_part( array(
@@ -151,7 +154,8 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses {
                                                     'part' => 'it',
                                                     'sub_id' => 'it',
                                                     'data' => $arr['data']['it'],
-                                                    'coll' => $this->coll_on_off( 'it', false ),
+                                                    // 'coll' => $this->coll_on_off( 'it', false ),
+                                                    'coll' => $this->coll_on_off( 'it', empty( $arr['data']['it'] ) ),
                                                 ));
 
                 $out .= $this->get_course_part( array(
@@ -160,7 +164,8 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses {
                                                     'part' => 'mto',
                                                     'sub_id' => 'mto',
                                                     'data' => $arr['data']['mto'],
-                                                    'coll' => $this->coll_on_off( 'mto', false ),
+                                                    // 'coll' => $this->coll_on_off( 'mto', false ),
+                                                    'coll' => $this->coll_on_off( 'mto', empty( $arr['data']['mto'] ) ),
                                                 ));
 
                 $out .= $this->get_course_part( array(
@@ -169,7 +174,8 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses {
                                                     'part' => 'authors',
                                                     'sub_id' => 'authors',
                                                     'data' => $arr['data']['authors'],
-                                                    'coll' => $this->coll_on_off( 'authors', false ),
+                                                    // 'coll' => $this->coll_on_off( 'authors', false ),
+                                                    'coll' => $this->coll_on_off( 'authors', empty( $arr['data']['authors'] ) ),
                                                 ));
 
                 $out .= '</div>';
@@ -285,11 +291,15 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses {
 
         $t = apply_filters( 'mif-mr-body-evaluations-text', array( 
                                 'sem' => 'Семестр',
-
                             ) );          
-        $out = '';
-        $style = ( isset( $d['coll'] ) && $d['coll'] == false ) ? ' style="display: none;"' : '';
         
+        $style = ( isset( $d['coll'] ) && $d['coll'] == false ) ? ' style="display: none;"' : '';
+        $style2 = ( isset( $d['coll'] ) && $d['coll'] == true ) ? ' style="display: none;"' : '';
+        
+        $out = '';
+        
+        $out .= '<span class="coll-ppp"' . $style2 . '">. . .</span>';
+
         foreach ( $d['data'] as $item ) {
             
         // Семестр
@@ -299,7 +309,8 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses {
                 $out .= '<div class="row coll"' . $style . '">';
                 $out .= '<div class="col">';
                 
-                $out .= '<p class="mr-gray p-1 pl-3 mt-5"><strong>' . $t['sem'] . ' ' . $item['sem'] + 1 . '</strong></p>';
+                // $out .= '<p class="mr-gray p-1 pl-3 mt-5"><strong>' . $t['sem'] . ' ' . $item['sem'] + 1 . '</strong></p>';
+                $out .= '<p class="bg-light p-1 pl-3 mt-5"><strong>' . $t['sem'] . ' ' . $item['sem'] + 1 . '</strong></p>';
                 
                 $out .= '</div>';
                 $out .= '</div>';
@@ -313,14 +324,15 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses {
                 $out .= '<div class="row coll"' . $style . '">';
                 
                 $out .= '<div class="col">';
-                $out .= '<p class="pl-3">' . $item2['name'] . '</p>';
+                // $out .= '<p class="pl-3">' . $item2['name'] . '</p>';
+                $out .= '<p class="pl-3">' . trim( $item2['name'], '. ' ) . '</p>';
                 $out .= '</div>';
                 
                 $out .= '<div class="col-1">';
                 $out .= $item2['att']['rating'];
                 $out .= '</div>';
                 
-                $out .= '<div class="col-3 col-lg-2">';
+                $out .= '<div class="col-4 col-lg-3">';
                 $out .= $item2['att']['cmp'];
                 $out .= '</div>';
                 
@@ -352,9 +364,15 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses {
                                 'v' => 'владеть', 
                                 'cmp' => ' Компетенции', 
                             ) );          
-        $out = '';
+        
         $style = ( isset( $d['coll'] ) && $d['coll'] == false ) ? ' style="display: none;"' : '';
+        $style2 = ( isset( $d['coll'] ) && $d['coll'] == true ) ? ' style="display: none;"' : '';
+        
         $is_indicator = ( $d['part'] == 'indicator' ) ? true : false;
+        
+        $out = '';
+
+        $out .= '<span class="coll-ppp"' . $style2 . '">. . .</span>';
 
         // Цель освоения дисциплины
         
@@ -384,7 +402,8 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses {
                 $out .= '<div class="row coll"' . $style . '>';
                 $out .= '<div class="col">';
                 
-                $out .= '<p class="mr-gray p-1 pl-3 mt-5"><strong>' . $t['part'] . ' ' . $item['sub_id'] + 1 . '.</strong> ' . $item['name'] . '</p>';
+                // $out .= '<p class="mr-gray p-1 pl-3 mt-5"><strong>' . $t['part'] . ' ' . $item['sub_id'] + 1 . '.</strong> ' . $item['name'] . '</p>';
+                $out .= '<p class="bg-light p-1 pl-3 mt-5"><strong>' . $t['part'] . ' ' . $item['sub_id'] + 1 . '.</strong> ' . $item['name'] . '</p>';
                 
                 if ( ! $is_indicator ) {
                     
@@ -406,6 +425,7 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses {
                 $out .= '</div>';
                 $out .= '</div>';
                 
+
                 // Результаты
                 
                 if ( $is_indicator ) {
@@ -433,17 +453,18 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses {
                         foreach ( (array) $item['outcomes']['v'] as $item2 ) $out .= '<p class="mb-1 pl-3">— ' . $item2 . '</p>';
                    
                     }
+                
                     
                     // Компетенции 
                     
                     $out .= '<div class="pl-3 mt-5">';
                     $out .= '<span class="p-1 pl-4 pr-4 rounded mr-green">' . $t['cmp'] . ': ';
-                $out .= $item['cmp'];
-                $out .= '</span>';
-                $out .= '</div>';
-                
-                $out .= '</div>';
-                $out .= '</div>';
+                    $out .= $item['cmp'];
+                    $out .= '</span>';
+                    $out .= '</div>';
+                    
+                    $out .= '</div>';
+                    $out .= '</div>';
 
                 }
 
@@ -474,6 +495,7 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses {
         ) );
 
         $style = ( isset( $d['coll'] ) && $d['coll'] == false ) ? ' style="display: none;"' : '';
+        $style2 = ( isset( $d['coll'] ) && $d['coll'] == true ) ? ' style="display: none;"' : '';
         
         $ol = 'ol';   
         $li = 'li'; 
@@ -486,6 +508,8 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses {
         }
         
         $out = '';
+
+        $out .= '<span class="coll-ppp"' . $style2 . '">. . .</span>';
         
         foreach ( $t[$d['part']] as $key => $item ) {
             
@@ -566,14 +590,6 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses {
 
         $out .= $this->get_lib_head( array( 'title' => 'Библиотека дисциплин' ) );
         
-        // $out .= '<div class="row">';
-        
-        // $out .= '<div class="col">';
-        // $out .= '<h4 class="border-bottom pb-5"><i class="fa-regular fa-file-lines"></i> Библиотека дисциплин</h4>';
-        // $out .= '</div>';
-        
-        // $out .= '</div>';
-
         foreach ( $index as $i ) {
             
             foreach ( $i as $ii ) {
@@ -586,24 +602,6 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses {
                                                     'from_id' => $item['from_id'],    
                                                     'type' => 'lib-courses',    
                                                 ) );
-                
-
-                // $comp_id_text = ( count( $index[$item['name']] ) > 1 ) ? ' (' . $item['comp_id'] . ')' : '';
-                
-                // $out .= '<div class="row mt-3 mb-3">';
-                
-                // $out .= '<div class="col-10 col-md-11 pt-1 pb-1">';
-                // $out .= '<a href="' . mif_mr_opop_core::get_opop_url() . 'lib-courses/' . $item['comp_id'] . '">' . $item['name'] . $comp_id_text . '</a>';
-                // $out .= '</div>';
-                
-                // $out .= '<div class="col-2 col-md-1 pt-1 pb-1 text-end">';
-                // $out .= ( $item['from_id'] == mif_mr_opop_core::get_opop_id() ||  $item['from_id'] == 0 ) ?
-                //         '' :
-                //         '<a href="' .  get_permalink( $item['from_id'] ) . 'lib-courses/' . $item['comp_id'] . '" title="' . 
-                //         $this->mb_substr( get_the_title( $item['from_id'] ), 20 ) . '">' . $item['from_id'] . '</a>';
-                // $out .= '</div>';
-                
-                // $out .= '</div>';
                 
             }
         
@@ -623,7 +621,43 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses {
         
         return apply_filters( 'mif_mr_show_lib_courses', $out, $opop_id );
     }    
+
+
+
+        
     
+    // //
+    // // Показать ссылку на шаблон
+    // //
+    
+    // public function get_template( $type = 'text' )
+    // {
+    //     global $wp_query;
+
+    //     $out = '';
+
+    //     if ( isset( $wp_query->query_vars['id'] ) ) {
+
+    //         if ( $type == 'xls' ) $a = array( '#', 'Шаблон' );
+    //         if ( $type == 'text' ) $a = array( '#', 'Текст' );
+
+
+    //         $out .= '<div class="mb-3">'; 
+    //         $out .= '<a href="' . $a[0]. '"><span class="mr-btn mr-gray"><i class="fa fa-download" aria-hidden="true"></i></span>' . $a[1] . '</a>';
+    //         $out .= '</div>'; 
+        
+    //     }
+
+    //     return apply_filters( 'mif_mr_get_template', $out );
+        
+    // }
+    
+    
+
+
+
+
+
     
 }
 

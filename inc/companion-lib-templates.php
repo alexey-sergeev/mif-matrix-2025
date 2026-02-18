@@ -127,6 +127,7 @@ function mif_mr_the_edit_link()
 }
 
 
+
 //
 // Выводит 
 //
@@ -135,6 +136,17 @@ function mif_mr_the_remove_link()
 {
     echo mif_mr_companion_core::get_remove_link();
 }
+
+
+// //
+// // Выводит 
+// //
+
+// function mif_mr_the_template( $type = 'text' )
+// {
+//     global $mif_mr_lib_courses;
+//     echo $mif_mr_lib_courses->get_template( $type );
+// }
 
 
 ?>
