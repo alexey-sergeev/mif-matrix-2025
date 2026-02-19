@@ -247,6 +247,65 @@ class mif_mr_functions {
 
 
 
+    //
+    // Показать ссылку на шаблон (д.р.)
+    //
+    
+    public function get_download_link( $type = 'text' )
+    {
+
+        // !!!!!!!
+
+        global $wp_query;
+
+        $out = '';
+
+        if ( isset( $wp_query->query_vars['id'] ) ) {
+
+            if ( $type == 'xls' ) $a = array( 'course-x-tpl', 'Шаблон' );
+            if ( $type == 'text' ) $a = array( 'text-raw', 'Текст' );
+
+
+            $out .= '<div class="mb-3">'; 
+            $out .= '<a href="?download=' . $a[0]. '"><span class="mr-btn mr-gray"><i class="fa fa-download" aria-hidden="true"></i></span>' . $a[1] . '</a>';
+            $out .= '</div>'; 
+        
+        }
+
+        return apply_filters( 'mif_mr_get_template', $out, $type );
+        
+    }
+
+    
+    
+    // //
+    // // 
+    // //
+    
+    // public function make_text_raw()
+    // {
+    //     $arr = array();
+
+    //     $p = get_post( mif_mr_opop_core::get_opop_id() );
+    //     p($p);
+
+
+
+    //     global $wp_query;
+
+
+
+    //     if ( isset( $wp_query->query_vars['id'] ) ) {
+
+
+    //     }
+
+    //     return $res;
+        
+    // }
+
+
+
 }
 
 ?>

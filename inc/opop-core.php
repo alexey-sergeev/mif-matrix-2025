@@ -20,8 +20,8 @@ class mif_mr_opop_core {
     
     function __construct()
     {
-        global $messages;
-        $messages = array();
+        // global $messages;
+        // $messages = array();
         
         // global $tree;
         // $this->save();
@@ -319,32 +319,75 @@ class mif_mr_opop_core {
 
         
     
+    // //
+    // // Показать ссылку на шаблон (д.р.)
+    // //
+    
+    // public function get_download_link( $type = 'text' )
+    // {
+
+    //     // !!!!!!!
+
+    //     global $wp_query;
+
+    //     $out = '';
+
+    //     if ( isset( $wp_query->query_vars['id'] ) ) {
+
+    //         if ( $type == 'xls' ) $a = array( 'course-x-tpl', 'Шаблон' );
+    //         if ( $type == 'text' ) $a = array( 'text-raw', 'Текст' );
+
+
+    //         $out .= '<div class="mb-3">'; 
+    //         $out .= '<a href="?download=' . $a[0]. '"><span class="mr-btn mr-gray"><i class="fa fa-download" aria-hidden="true"></i></span>' . $a[1] . '</a>';
+    //         $out .= '</div>'; 
+        
+    //     }
+
+    //     return apply_filters( 'mif_mr_get_template', $out, $type );
+        
+    // }
+
+    
+    
     //
-    // Показать ссылку на шаблон (д.р.)
+    // Делает файл для выдачи пользователю
     //
     
-    public function get_download_link( $type = 'text' )
+    public function make_text_raw()
     {
-
-        // !!!!!!!
-
         global $wp_query;
-
-        $out = '';
+        // p( $wp_query );
+       
+        $arr = array( 'name' => '', 'path' => '', 'res' => false );
 
         if ( isset( $wp_query->query_vars['id'] ) ) {
 
-            if ( $type == 'xls' ) $a = array( '#', 'Шаблон' );
-            if ( $type == 'text' ) $a = array( '#', 'Текст' );
+            $p = get_post($wp_query->query_vars['id']);
+            $arr['name'] .= mif_mr_functions::mb_substr( $p->post_title, 50 );
+            $arr['name'] .= ' (' . $p->post_type . ', ' . $p->ID . ', ' . mif_mr_functions::mb_substr( $wp_query->query_vars['name'], 20 ) . ')';
+            $arr['name'] .= '.txt';
+            // p($p);
+
+            // $arr['path'] = '/root/1';
+            $arr['path'] = mif_mr_download::get_path_tmp( 'txt' );
+
+            $content = '=== ' . $p->post_title ."\n\n";
+            $content .= $p->post_content;
+
+            $arr['res'] = ( $file = fopen( $arr['path'], 'w') ) ? true : false;
+            if ( $arr['res'] == true ) $arr['res'] = ( fwrite( $file, $content ) ) ? true : false;
+            if ( $arr['res'] == true ) $arr['res'] = ( fclose( $file ) ) ? true : false;
+
+        } else {
+            
+            p('@@');
 
 
-            $out .= '<div class="mb-3">'; 
-            $out .= '<a href="' . $a[0]. '"><span class="mr-btn mr-gray"><i class="fa fa-download" aria-hidden="true"></i></span>' . $a[1] . '</a>';
-            $out .= '</div>'; 
-        
         }
 
-        return apply_filters( 'mif_mr_get_template', $out, $type );
+        // p($arr);
+        return $arr;
         
     }
     

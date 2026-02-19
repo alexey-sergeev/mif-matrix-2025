@@ -14,7 +14,6 @@
             
             <?php mif_mr_show_messages() ?>
             <?php mif_mr_the_course(); ?>
-            <?php // mif_mr_show_courses(); ?>
 
         </div>
         
@@ -36,10 +35,6 @@
         
     </div>
 </div>
-
-
-
-
 
 
 

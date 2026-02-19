@@ -26,12 +26,15 @@ class mif_mr_download {
 
     function force_download()
     {
-        global $post;
-        $opop_id = $post->ID;
+        // !!!!!!
+
+        // global $post;
+
+        // $opop_id = $post->ID;
 
         $item = sanitize_key( $_REQUEST['download'] );
 
-        // Список инвайтов в xlsx
+        // Список  ОПОП
 
         if ( $item == 'opops-list-xlsx' ) {
 
@@ -48,60 +51,78 @@ class mif_mr_download {
             $this->download( $file, $name );
 
         }
+        
+        
+        // Текст как есть
+        
+        if ( $item == 'text-raw' ) {
 
-
-        // // Список инвайтов в docx
-
-        // if ( $item == 'invites-docx' ) {
-
-        //     $blank = dirname( __FILE__ ) . '/../templates/docx/invites.docx';
-        //     $name = __( 'Приглашения', 'mif-qm' ) . ' (' . __( 'тест', 'mif-qm' ) . ' ' . $quiz_id . ').docx';
-
-        //     $invites = new mif_qm_invites_core();
-        //     $arr = $invites->get_docx_arr( $quiz_id );
-
-        //     $docx = new mif_qm_docx_core( $blank );
-        //     $file = $docx->get( $arr );
+            // $upload_dir = (object) wp_upload_dir();
+            // $file = trailingslashit( $upload_dir->path ) . md5( 'serialize( $arr ) . $cell' ) . '.xlsx';
             
-        //     $this->download( $file, $name );
-
-        // }
-
-
-        // // Результаты теста в xlsx
-
-        // if ( $item == 'results-xlsx' || $item == 'results-archive-xlsx' ) {
-
-        //     $blank = dirname( __FILE__ ) . '/../templates/xlsx/results.xlsx';
-
-        //     if ( $item == 'results-archive-xlsx' ) {
-
-        //         $name = __( 'Архив результатов', 'mif-qm' ) . ' (' . __( 'тест', 'mif-qm' ) . ' ' . $quiz_id . ').xlsx';
-        //         $archive = 'achive';
-
-        //     } else {
-
-        //         $name = __( 'Таблица результатов', 'mif-qm' ) . ' (' . __( 'тест', 'mif-qm' ) . ' ' . $quiz_id . ').xlsx';
-        //         $archive = false;
-
-        //     }
-
-
-        //     $results = new mif_qm_process_results();
-        //     $arr = $results->get_xlsx_arr( $quiz_id, $archive );
-
-        //     $xlsx = new mif_qm_xlsx_core( $blank );
-        //     $file = $xlsx->get( $arr, 'B2' );
+            // p($file);
             
-        //     $this->download( $file, $name );
+            // $path = $this->get_path_tmp( 'txt' );
+            
+            // p($post);
+            
+            $m = new mif_mr_opop();
+            $a = $m->make_text_raw();
 
-        // }
+            // p($a);
 
+            if ( $a['res'] ) {
+
+                $this->download( $a['path'], $a['name'] );
+
+            } else {
+                 
+                global $messages;
+                $messages[] = array( 'Какая-то ошибка. Код ошибки: 1902', 'danger' );
+                
+            }
+
+            // p($path);
+
+            // // $blank = dirname( __FILE__ ) . '/../templates/xlsx/default.xlsx';
+            // $blank = dirname( __FILE__ ) . '/../templates/xlsx/opops-list.xlsx';
+            // $name = __( 'Список  ОПОП', 'mif-mr' ) . '.xlsx';
+
+            // $item = new mif_mr_catalog_shortcode();
+            // $arr = $item->get_opops_list_xlsx();
+
+            // $xlsx = new mif_mr_xlsx();
+            // $file = $xlsx->set( $arr, $blank, 'A1' );
+            
+            // $this->download( $file, $name );
+
+        }
 
 
 
 
     }
+
+
+
+
+    //
+    //
+    //
+
+    static function get_path_tmp( $ext = 'txt', $name = NULL )
+    {
+        if ( $name === NULL ) $name = time() . rand();
+
+        // p($name);
+
+        $upload_dir = (object) wp_upload_dir();
+        $path = trailingslashit( $upload_dir->path ) . 'temp_' . md5( $name ) . '.' . $ext;
+
+        return apply_filters( 'mif_mr_get_path_tmp', $path, $ext, $name );
+    }
+
+
 
 
 

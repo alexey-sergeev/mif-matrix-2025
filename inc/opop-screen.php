@@ -248,7 +248,7 @@ class mif_mr_opop extends mif_mr_opop_tree_raw {
 
         $out = '';
 
-        foreach ( $messages as $item ) {
+        foreach ( (array) $messages as $item ) {
 
             $class = 'primary';
             if ( isset( $item[1] ) ) $class = $item[1];
