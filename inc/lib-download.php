@@ -46,26 +46,17 @@ class mif_mr_download {
             $arr = $item->get_opops_list_xlsx();
 
             $xlsx = new mif_mr_xlsx();
-            $file = $xlsx->set( $arr, $blank, 'A1' );
+            $file = $xlsx->make_xlsx_form_arr( $arr, $blank, 'A1' );
             
             $this->download( $file, $name );
 
         }
         
         
-        // Текст как есть
+        // Текст (как есть)
         
         if ( $item == 'text-raw' ) {
 
-            // $upload_dir = (object) wp_upload_dir();
-            // $file = trailingslashit( $upload_dir->path ) . md5( 'serialize( $arr ) . $cell' ) . '.xlsx';
-            
-            // p($file);
-            
-            // $path = $this->get_path_tmp( 'txt' );
-            
-            // p($post);
-            
             $m = new mif_mr_opop();
             $a = $m->make_text_raw();
 
@@ -82,19 +73,17 @@ class mif_mr_download {
                 
             }
 
-            // p($path);
+        }
+        
+        
+        // Шаблон дисциплины
+        
+        if ( $item == 'course-x-tpl' ) {
 
-            // // $blank = dirname( __FILE__ ) . '/../templates/xlsx/default.xlsx';
-            // $blank = dirname( __FILE__ ) . '/../templates/xlsx/opops-list.xlsx';
-            // $name = __( 'Список  ОПОП', 'mif-mr' ) . '.xlsx';
-
-            // $item = new mif_mr_catalog_shortcode();
-            // $arr = $item->get_opops_list_xlsx();
-
-            // $xlsx = new mif_mr_xlsx();
-            // $file = $xlsx->set( $arr, $blank, 'A1' );
+            $m = new mif_mr_opop();
+            $a = $m->make_x_tpl();
             
-            // $this->download( $file, $name );
+            $this->download( $a['path'], $a['name'] );
 
         }
 

@@ -351,7 +351,7 @@ class mif_mr_opop_core {
     
     
     //
-    // Делает файл для выдачи пользователю
+    // Делает файл для выдачи пользователю (text)
     //
     
     public function make_text_raw()
@@ -378,6 +378,39 @@ class mif_mr_opop_core {
             $arr['res'] = ( $file = fopen( $arr['path'], 'w') ) ? true : false;
             if ( $arr['res'] == true ) $arr['res'] = ( fwrite( $file, $content ) ) ? true : false;
             if ( $arr['res'] == true ) $arr['res'] = ( fclose( $file ) ) ? true : false;
+
+        } else {
+            
+            p('@@');
+
+
+        }
+
+        // p($arr);
+        return $arr;
+        
+    }
+    
+    
+    
+    //
+    // Делает шаблон дисциплины для выдачи пользователю (x-tpl)
+    //
+    
+    public function make_x_tpl()
+    {
+        global $wp_query;
+        // p( $wp_query );
+       
+        $arr = array( 'name' => '', 'path' => '', 'res' => false );
+
+        if ( isset( $wp_query->query_vars['id'] ) ) {
+
+            $arr['name'] .= '123.xlsx';
+
+            $m = new mif_mr_xlsx_tpl();
+            $m->arr_to_xlsx( array() );
+            $arr['path'] = $m->make_xlsx();
 
         } else {
             

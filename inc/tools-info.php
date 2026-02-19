@@ -15,7 +15,8 @@ class mif_mr_tools_info extends mif_mr_tools_core {
     {
         parent::__construct();
 
-        add_filter( 'scheme-data-courses', array( $this, 'scheme_data_courses'), 10 );
+        add_filter( 'lib-upload-save-title', array( $this, 'set_save_title'), 10, 2 );
+        // add_filter( 'scheme-data-courses', array( $this, 'scheme_data_courses'), 10 );
 
         $this->scheme = apply_filters( 'scheme-data-courses', array() );
         
@@ -60,8 +61,9 @@ class mif_mr_tools_info extends mif_mr_tools_core {
     
         $arr = array();
 
-        $m = new mif_mr_xlsx( get_attached_file( $att_id ) );
-        $name = $m->get( $this->scheme['name'][0] );
+        $m = new mif_mr_xlsx_tpl( get_attached_file( $att_id ) );
+        $name = $m->get_name_course();
+        // $name = $m->get( $this->scheme['name'][0] );
 
         $arr['title'] = $name;    
         $arr['is_course'] = ( ! empty( $name ) ) ? true : false; // !!!!
@@ -91,7 +93,8 @@ class mif_mr_tools_info extends mif_mr_tools_core {
             if ( $i['name'] == $name ) {
             
                 $p = $this->get_stats_courses( 
-                        $this->get_courses_form_xls( $att_id ), 
+                        // $this->get_courses_form_xls( $att_id ), 
+                        $m->xlsx_to_arr(), 
                         $tree['content']['lib-courses']['data'][$i['comp_id']]['data'] );
 
                 if ( $i['from_id'] == mif_mr_opop_core::get_opop_id() ) {
@@ -120,7 +123,7 @@ class mif_mr_tools_info extends mif_mr_tools_core {
 
 
     // 
-    // Вывести  
+    // Вывести панель
     // 
 
     public function show_file_courses( $att_id, $courses_id = NULL )
@@ -133,7 +136,9 @@ class mif_mr_tools_info extends mif_mr_tools_core {
         if ( $att->post_type != 'attachment' ) return;
         if ( ! in_array( mif_mr_functions::get_ext( $att->guid ), array( 'xls', 'xlsx' ) ) ) return;
         
-        $arr = $this->get_courses_form_xls( $att_id );
+        // $arr = $this->get_courses_form_xls( $att_id );
+        $m = new mif_mr_xlsx_tpl( get_attached_file( $att_id ) );
+        $arr = $m->xlsx_to_arr();
         
         // Course 2
 
@@ -143,8 +148,6 @@ class mif_mr_tools_info extends mif_mr_tools_core {
 
         $from_id = ( $tree['content']['lib-courses']['data'][$courses_id]['from_id'] ) ? $tree['content']['lib-courses']['data'][$courses_id]['from_id'] : NULL;
 
-        $m = new mif_mr_xlsx( get_attached_file( $att_id ) );
-        $c = $m->get( $this->scheme['name'][0] );
 
         //  ## @@@ ### !!!!!!!!!!
         
@@ -415,130 +418,130 @@ class mif_mr_tools_info extends mif_mr_tools_core {
     
     
     
-    // 
-    //   
-    // 
+    // // 
+    // //   
+    // // 
     
-    public function get_courses_form_xls( $att_id )
-    {
+    // public function get_courses_form_xls( $att_id )
+    // {
 
-        $m = new mif_mr_xlsx( get_attached_file( $att_id ) );
-        $arr = array();
+    //     $m = new mif_mr_xlsx_tpl( get_attached_file( $att_id ) );
+    //     $arr = array();
 
-        // Название, Цель
+    //     // Название, Цель
 
-        $arr['name'] = $m->get( $this->scheme['name'][0] );
-        $arr['content']['target'] = $m->get( $this->scheme['target'][0] );
+    //     $arr['name'] = $m->get( $this->scheme['name'][0] );
+    //     $arr['content']['target'] = $m->get( $this->scheme['target'][0] );
 
-        // Разделы
+    //     // Разделы
 
-        for ( $i = 0; $i < 10; $i++ ) { 
+    //     for ( $i = 0; $i < 10; $i++ ) { 
 
-            if ( empty( $m->get( $this->scheme['parts_name'][$i] ) ) ) continue;
+    //         if ( empty( $m->get( $this->scheme['parts_name'][$i] ) ) ) continue;
 
-            $arr['content']['parts'][$i]['name'] = $m->get( $this->scheme['parts_name'][$i] );
-            $arr['content']['parts'][$i]['content'] = $m->get( $this->scheme['parts_content'][$i] );
-            $arr['content']['parts'][$i] ['cmp'] = $m->get( $this->scheme['parts_cmp'][$i] );
-            $arr['content']['parts'][$i] ['hours_raw'] = $m->get( $this->scheme['parts_hours'][$i] );
-            $arr['content']['parts'][$i] ['hours'] = content::get_hours( $m->get( $this->scheme['parts_hours'][$i] ) );
+    //         $arr['content']['parts'][$i]['name'] = $m->get( $this->scheme['parts_name'][$i] );
+    //         $arr['content']['parts'][$i]['content'] = $m->get( $this->scheme['parts_content'][$i] );
+    //         $arr['content']['parts'][$i] ['cmp'] = $m->get( $this->scheme['parts_cmp'][$i] );
+    //         $arr['content']['parts'][$i] ['hours_raw'] = $m->get( $this->scheme['parts_hours'][$i] );
+    //         $arr['content']['parts'][$i] ['hours'] = content::get_hours( $m->get( $this->scheme['parts_hours'][$i] ) );
             
-            for ( $j = 0; $j < 10; $j++ ) { 
+    //         for ( $j = 0; $j < 10; $j++ ) { 
                 
-                if ( isset( $this->scheme['parts_outcomes_z_'.$j][$i] ) ) $arr['content']['parts'][$i]['outcomes']['z'][] = $m->get( $this->scheme['parts_outcomes_z_'.$j][$i] );
-                if ( isset( $this->scheme['parts_outcomes_u_'.$j][$i] ) ) $arr['content']['parts'][$i]['outcomes']['u'][] = $m->get( $this->scheme['parts_outcomes_u_'.$j][$i] );
-                if ( isset( $this->scheme['parts_outcomes_v_'.$j][$i] ) ) $arr['content']['parts'][$i]['outcomes']['v'][] = $m->get( $this->scheme['parts_outcomes_v_'.$j][$i] );
+    //             if ( isset( $this->scheme['parts_outcomes_z_'.$j][$i] ) ) $arr['content']['parts'][$i]['outcomes']['z'][] = $m->get( $this->scheme['parts_outcomes_z_'.$j][$i] );
+    //             if ( isset( $this->scheme['parts_outcomes_u_'.$j][$i] ) ) $arr['content']['parts'][$i]['outcomes']['u'][] = $m->get( $this->scheme['parts_outcomes_u_'.$j][$i] );
+    //             if ( isset( $this->scheme['parts_outcomes_v_'.$j][$i] ) ) $arr['content']['parts'][$i]['outcomes']['v'][] = $m->get( $this->scheme['parts_outcomes_v_'.$j][$i] );
 
-            }
+    //         }
             
-        }
+    //     }
 
-        // Оценочные средства
+    //     // Оценочные средства
             
-        for ( $i = 0; $i < 10; $i++ ) {
+    //     for ( $i = 0; $i < 10; $i++ ) {
 
-            for ( $j = 0; $j < 10; $j++ ) { 
+    //         for ( $j = 0; $j < 10; $j++ ) { 
 
-                if ( empty( $this->scheme['evaluations_name_'.$i][$j] ) ) continue;
-                if ( empty( $m->get( $this->scheme['evaluations_name_'.$i][$j] ) ) ) continue;
+    //             if ( empty( $this->scheme['evaluations_name_'.$i][$j] ) ) continue;
+    //             if ( empty( $m->get( $this->scheme['evaluations_name_'.$i][$j] ) ) ) continue;
                 
-                $arr['evaluations'][$j]['sem'] = $j;
-                if ( isset( $this->scheme['evaluations_name_'.$i][$j] ) ) $arr['evaluations'][$j]['data'][$i]['name'] = $m->get( $this->scheme['evaluations_name_'.$i][$j] );
-                if ( isset( $this->scheme['evaluations_rating_'.$i][$j] ) ) $arr['evaluations'][$j]['data'][$i]['att']['rating'] = $m->get( $this->scheme['evaluations_rating_'.$i][$j] );
-                if ( isset( $this->scheme['evaluations_cmp_'.$i][$j] ) ) $arr['evaluations'][$j]['data'][$i]['att']['cmp'] = $m->get( $this->scheme['evaluations_cmp_'.$i][$j] );
+    //             $arr['evaluations'][$j]['sem'] = $j;
+    //             if ( isset( $this->scheme['evaluations_name_'.$i][$j] ) ) $arr['evaluations'][$j]['data'][$i]['name'] = $m->get( $this->scheme['evaluations_name_'.$i][$j] );
+    //             if ( isset( $this->scheme['evaluations_rating_'.$i][$j] ) ) $arr['evaluations'][$j]['data'][$i]['att']['rating'] = $m->get( $this->scheme['evaluations_rating_'.$i][$j] );
+    //             if ( isset( $this->scheme['evaluations_cmp_'.$i][$j] ) ) $arr['evaluations'][$j]['data'][$i]['att']['cmp'] = $m->get( $this->scheme['evaluations_cmp_'.$i][$j] );
     
-            }
+    //         }
 
-        } 
+    //     } 
 
-        // Литература
+    //     // Литература
 
-        for ( $i = 0; $i < 10; $i++ ) {
+    //     for ( $i = 0; $i < 10; $i++ ) {
 
-            if ( empty( $this->scheme['biblio_basic'][$i] ) ) continue;
-            if ( empty( $m->get( $this->scheme['biblio_basic'][$i] ) ) ) continue;
+    //         if ( empty( $this->scheme['biblio_basic'][$i] ) ) continue;
+    //         if ( empty( $m->get( $this->scheme['biblio_basic'][$i] ) ) ) continue;
             
-            $arr['biblio']['basic'][] = $m->get( $this->scheme['biblio_basic'][$i] );
+    //         $arr['biblio']['basic'][] = $m->get( $this->scheme['biblio_basic'][$i] );
 
-        } 
+    //     } 
 
-        for ( $i = 0; $i < 10; $i++ ) {
+    //     for ( $i = 0; $i < 10; $i++ ) {
             
-            if ( empty( $this->scheme['biblio_additional'][$i] ) ) continue;
-            if ( empty( $m->get( $this->scheme['biblio_additional'][$i] ) ) ) continue;
+    //         if ( empty( $this->scheme['biblio_additional'][$i] ) ) continue;
+    //         if ( empty( $m->get( $this->scheme['biblio_additional'][$i] ) ) ) continue;
             
-            $arr['biblio']['additional'][] = $m->get( $this->scheme['biblio_additional'][$i] );
+    //         $arr['biblio']['additional'][] = $m->get( $this->scheme['biblio_additional'][$i] );
         
-        } 
+    //     } 
         
-        // Информационные технологии
+    //     // Информационные технологии
         
-        for ( $i = 0; $i < 10; $i++ ) {
+    //     for ( $i = 0; $i < 10; $i++ ) {
 
-            if ( empty( $this->scheme['it_inet'][$i] ) ) continue;
-            if ( empty( $m->get( $this->scheme['it_inet'][$i] ) ) ) continue;
+    //         if ( empty( $this->scheme['it_inet'][$i] ) ) continue;
+    //         if ( empty( $m->get( $this->scheme['it_inet'][$i] ) ) ) continue;
             
-            $arr['it']['inet'][] = $m->get( $this->scheme['it_inet'][$i] );
+    //         $arr['it']['inet'][] = $m->get( $this->scheme['it_inet'][$i] );
 
-        } 
+    //     } 
         
-        for ( $i = 0; $i < 10; $i++ ) {
+    //     for ( $i = 0; $i < 10; $i++ ) {
 
-            if ( empty( $this->scheme['it_app'][$i] ) ) continue;
-            if ( empty( $m->get( $this->scheme['it_app'][$i] ) ) ) continue;
+    //         if ( empty( $this->scheme['it_app'][$i] ) ) continue;
+    //         if ( empty( $m->get( $this->scheme['it_app'][$i] ) ) ) continue;
             
-            $arr['it']['app'][] = $m->get( $this->scheme['it_app'][$i] );
+    //         $arr['it']['app'][] = $m->get( $this->scheme['it_app'][$i] );
 
-        } 
+    //     } 
     
-        // Материально-техническое обеспечение
+    //     // Материально-техническое обеспечение
 
-        for ( $i = 0; $i < 10; $i++ ) {
+    //     for ( $i = 0; $i < 10; $i++ ) {
 
-            if ( empty( $this->scheme['mto'][$i] ) ) continue;
-            if ( empty( $m->get( $this->scheme['mto'][$i] ) ) ) continue;
+    //         if ( empty( $this->scheme['mto'][$i] ) ) continue;
+    //         if ( empty( $m->get( $this->scheme['mto'][$i] ) ) ) continue;
             
-            $arr['mto']['mto'][] = $m->get( $this->scheme['mto'][$i] );
+    //         $arr['mto']['mto'][] = $m->get( $this->scheme['mto'][$i] );
 
-        } 
+    //     } 
     
-        // Разработчики
+    //     // Разработчики
 
-        for ( $i = 0; $i < 10; $i++ ) {
+    //     for ( $i = 0; $i < 10; $i++ ) {
 
-            if ( empty( $this->scheme['authors'][$i] ) ) continue;
-            if ( empty( $m->get( $this->scheme['authors'][$i] ) ) ) continue;
+    //         if ( empty( $this->scheme['authors'][$i] ) ) continue;
+    //         if ( empty( $m->get( $this->scheme['authors'][$i] ) ) ) continue;
             
-            $arr['authors']['authors'][] = $m->get( $this->scheme['authors'][$i] );
+    //         $arr['authors']['authors'][] = $m->get( $this->scheme['authors'][$i] );
 
-        } 
+    //     } 
     
 
-        //
-        // guidelines ???? !!!!
-        //
+    //     //
+    //     // guidelines ???? !!!!
+    //     //
 
-        return $arr;
-    }
+    //     return $arr;
+    // }
 
 
         
@@ -635,19 +638,23 @@ class mif_mr_tools_info extends mif_mr_tools_core {
     }
 
 
-        
+
+
     //
-    // Схема данных курсов
+    // Для имени файла
     //
-        
-    function scheme_data_courses( $arr )
+
+    function set_save_title( $title, $tmp_name )
     {
-        $arr = mif_mr_xlsx::scheme_data_courses();
-        return $arr;
+        $m = new mif_mr_xlsx_tpl( $tmp_name );
+        $name = $m->get_name_course();
+        // $name = $m->get( $this->scheme['name'][0] );
+        
+        if ( ! empty( $name ) ) $title = $name;
+        
+        return $title;
     }
-
-
-
+        
 
     protected $scheme = array();
     protected $index = array();

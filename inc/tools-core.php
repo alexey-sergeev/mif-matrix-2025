@@ -82,7 +82,7 @@ class mif_mr_tools_core {
 
 
     //
-    //
+    // Мета-поля
     //
 
     public function get_meta( $type = 'courses' )

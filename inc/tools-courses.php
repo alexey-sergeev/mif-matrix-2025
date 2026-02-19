@@ -15,9 +15,6 @@ class mif_mr_tools_courses extends mif_mr_tools_info {
     {
         parent::__construct();
 
-        // add_filter( 'lib-upload-save-title', array( $this, 'set_save_title'), 10, 2 );
-
-
     }
         
 
@@ -87,8 +84,11 @@ class mif_mr_tools_courses extends mif_mr_tools_info {
 
         // Показать список файлов courses
         
-        $out .= $this->show_list_file_courses();
+        $out .= $this->get_list();
         
+        
+        // Мета-поля
+
         $out .= $this->get_meta( 'courses' );
 
 
@@ -107,12 +107,11 @@ class mif_mr_tools_courses extends mif_mr_tools_info {
     // Вывести  
     // 
 
-    public function show_list_file_courses()
+    public function get_list()
     {
         $out = '';
 
         $arr = $this->get_file( array( 'ext' => array( 'xls', 'xlsx' ), 'orderby' => 'title', 'order' => 'ASC' ) );
-        // $arr = $this->get_file();
 
         // p($arr);
 
@@ -399,19 +398,6 @@ class mif_mr_tools_courses extends mif_mr_tools_info {
 
         return $out;
     }
-
-
-
-    // function set_save_title( $title, $tmp_name )
-    // {
-    //     $m = new mif_mr_xlsx( $tmp_name );
-    //     $name = $m->get( $this->scheme['name'][0] );
-        
-    //     if ( ! empty( $name ) ) $title = $name;
-        
-    //     return $title;
-    // }
-        
 
 
 

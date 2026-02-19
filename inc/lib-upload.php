@@ -97,8 +97,6 @@ class mif_mr_upload {
 
             if ( isset( $att['ext'] ) && ! in_array( $ext, $att['ext'] ) ) {
 
-
-
                 $arr[$key]['status'] = 'warning';
                 $arr[$key]['messages'] = 'Неправильный формат файла';
                 // $arr[$key]['messages'] = 'Неправильный формат файла. Допускается: ' . implode( ', ', $att['ext'] );
