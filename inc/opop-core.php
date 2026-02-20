@@ -400,16 +400,27 @@ class mif_mr_opop_core {
     public function make_x_tpl()
     {
         global $wp_query;
+        global $tree;
         // p( $wp_query );
        
         $arr = array( 'name' => '', 'path' => '', 'res' => false );
 
         if ( isset( $wp_query->query_vars['id'] ) ) {
 
-            $arr['name'] .= '123.xlsx';
+            $arr2 = ( isset( $tree['content']['lib-courses']['data'][$wp_query->query_vars['id']] ) ) ?
+                 $tree['content']['lib-courses']['data'][$wp_query->query_vars['id']] :
+                 array();
+            
+            // p($arr2);
 
-            $m = new mif_mr_xlsx_tpl();
-            $m->arr_to_xlsx( array() );
+            $blank = apply_filters( 'course-x-tpl', dirname( __FILE__ ) . '/../templates/xlsx/course-x-tpl.xlsx' );
+
+            // $arr['name'] .= '123.xlsx';
+            $arr['name'] .= $arr2['name'] . ' (шаблон дисциплины, raw).xlsx';
+
+            $m = new mif_mr_xlsx_tpl( $blank );
+            $m->arr_to_xlsx( $arr2 );
+            $m->сorrection_height();
             $arr['path'] = $m->make_xlsx();
 
         } else {

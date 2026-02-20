@@ -656,7 +656,7 @@ class mif_mr_tools_info extends mif_mr_tools_core {
     }
         
 
-    protected $scheme = array();
+    // protected $scheme = array();
     protected $index = array();
     protected $description = array();
 

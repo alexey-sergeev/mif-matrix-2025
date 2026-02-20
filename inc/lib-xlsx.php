@@ -148,7 +148,24 @@ class mif_mr_xlsx  {
     function set( $cell = 'A1', $data = '' )
     {
         $this->sheet->setCellValue( $cell, $data );
+        $this->sheet->getRowDimension( $this->sheet->getCell( $cell )->getRow() )->setRowHeight( -1 );
+        // $this->sheet->getRowDimension( $this->sheet->getCell( $cell )->getRow() )->setRowHeight( mb_strlen( $data ) * 16 / 48 );
     }
+    
+    
+    
+    //
+    // Коррекция высоты
+    // 
+    
+    function сorrection_height()
+    {
+        $this->sheet->getRowDimension( $this->sheet->getCell( $this->scheme['name'][0] )->getRow() )->setRowHeight( 30 );
+        $this->sheet->getRowDimension( $this->sheet->getCell( $this->scheme['cmp'][0] )->getRow() )->setRowHeight( 25 );
+        $this->sheet->getRowDimension( $this->sheet->getCell( $this->scheme['hours'][0] )->getRow() )->setRowHeight( 25 );
+    }
+
+
 
 
 

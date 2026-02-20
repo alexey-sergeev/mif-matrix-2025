@@ -80,6 +80,8 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses {
         
         global $tree;
         
+        // p( $tree['content']['lib-courses']['data'][$wp_query->query_vars['id']] ); 
+        
         if ( empty( $opop_id ) ) $opop_id = mif_mr_opop_core::get_opop_id();
         if ( empty( $course_id ) ) $course_id = (int) $wp_query->query_vars['id'];
         

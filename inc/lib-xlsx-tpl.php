@@ -37,160 +37,157 @@ class mif_mr_xlsx_tpl extends mif_mr_xlsx {
     
     public function arr_to_xlsx( $arr = array() )
     {
-        // if ( empty( $arr['data'] ) ) return;
+        if ( empty( $arr['data'] ) ) return;
 
-        // $a = (array) $arr['data']; 
-
+        $a = (array) $arr['data']; 
+        // p($arr);
         $arr2 = array();
 
         // p($this->scheme['name'][0]);
 
-        $this->set( $this->scheme['name'][0], 'name' );
+        // $this->set( $this->scheme['name'][0], 'name' );
 
         // f($this->scheme['name'][0]);
 
-        // // Название, Цель
+        // Название, Цель
 
-        // $this->set( $this->scheme['name'][0], $arr['name'] );
-        // $this->set( $this->scheme['target'][0], $a['content']['target'] );
+        $this->set( $this->scheme['name'][0], $arr['name'] );
+        $this->set( $this->scheme['target'][0], $a['content']['target'] );
+        $this->set( $this->scheme['target_max'][0], $a['content']['target'] );
 
-        // // Разделы
+        // Разделы
 
-        // for ( $i = 0; $i < 10; $i++ ) { 
+        for ( $i = 0; $i < 10; $i++ ) { 
 
-        //     // if ( empty( $this->get( $this->scheme['parts_name'][$i] ) ) ) continue;
-
-        //      $this->set( $this->scheme['parts_name'][$i], $a['content']['parts'][$i]['name'] );
-        //      $this->set( $this->scheme['parts_content'][$i], $a['content']['parts'][$i]['content'] );
-        //      $this->set( $this->scheme['parts_cmp'][$i], $a['content']['parts'][$i] ['cmp'] );
-        //      $this->set( $this->scheme['parts_hours'][$i], $a['content']['parts'][$i] ['hours_raw'] );
+            if ( ! empty( $a['content']['parts'][$i]['name'] ) ) $this->set( $this->scheme['parts_name'][$i], $a['content']['parts'][$i]['name'] );
+            if ( ! empty( $a['content']['parts'][$i]['content'] ) ) $this->set( $this->scheme['parts_content'][$i], $a['content']['parts'][$i]['content'] );
+            if ( ! empty( $a['content']['parts'][$i]['cmp'] ) ) $this->set( $this->scheme['parts_cmp'][$i], $a['content']['parts'][$i]['cmp'] );
+            if ( ! empty( $a['content']['parts'][$i]['hours_raw'] ) ) $this->set( $this->scheme['parts_hours'][$i], $a['content']['parts'][$i]['hours_raw'] );
             
-        //     // !!!
-        //     // $arr['content']['parts'][$i] ['hours'] = content::get_hours( $this->get( $this->scheme['parts_hours'][$i] ) );
-            
-        //     for ( $j = 0; $j < 10; $j++ ) { 
+            for ( $j = 0; $j < 2; $j++ ) { 
                 
-        //         // if ( isset( $this->scheme['parts_outcomes_z_'.$j][$i] ) ) 
-        //         $this->set( $this->scheme['parts_outcomes_z_'.$j][$i], $a['content']['parts'][$i]['outcomes']['z'][$j] );
-        //         // if ( isset( $this->scheme['parts_outcomes_u_'.$j][$i] ) ) 
-        //         $this->set( $this->scheme['parts_outcomes_u_'.$j][$i], $a['content']['parts'][$i]['outcomes']['u'][$j]);
-        //         // if ( isset( $this->scheme['parts_outcomes_v_'.$j][$i] ) ) 
-        //         $this->set( $this->scheme['parts_outcomes_v_'.$j][$i], $a['content']['parts'][$i]['outcomes']['v'][$j]);
+                if ( ! empty( $a['content']['parts'][$i]['outcomes']['z'][$j] ) ) 
+                    $this->set( $this->scheme['parts_outcomes_z_'.$j][$i], $a['content']['parts'][$i]['outcomes']['z'][$j] );
+                if ( ! empty( $a['content']['parts'][$i]['outcomes']['u'][$j] ) ) 
+                    $this->set( $this->scheme['parts_outcomes_u_'.$j][$i], $a['content']['parts'][$i]['outcomes']['u'][$j]);
+                if ( ! empty( $a['content']['parts'][$i]['outcomes']['v'][$j] ) ) 
+                    $this->set( $this->scheme['parts_outcomes_v_'.$j][$i], $a['content']['parts'][$i]['outcomes']['v'][$j]);
 
-        //     }
+            }
             
-        // }
+        }
 
-        // // Оценочные средства
+        // Ячейки для выравнивания размеров
+
+        $this->set( $this->scheme['parts_name_max'][0], $this->max( $a['content']['parts'], 'name' ) );
+        $this->set( $this->scheme['parts_content_max'][0], $this->max( $a['content']['parts'], 'content' ) );
+        
+        for ( $j = 0; $j < 2; $j++ ) { 
             
-        // for ( $i = 0; $i < 10; $i++ ) {
+            $this->set( $this->scheme['parts_outcomes_z_' . $j . '_max'][0], $this->max( $a['content']['parts'], 'outcomes', 'z', $j ) );
+            $this->set( $this->scheme['parts_outcomes_u_' . $j . '_max'][0], $this->max( $a['content']['parts'], 'outcomes', 'u', $j ) );
+            $this->set( $this->scheme['parts_outcomes_v_' . $j . '_max'][0], $this->max( $a['content']['parts'], 'outcomes', 'v', $j ) );
 
-        //     for ( $j = 0; $j < 10; $j++ ) { 
+        }
+        
+        // Оценочные средства
+            
+        for ( $i = 0; $i < 10; $i++ ) {
 
-        //         // if ( empty( $this->scheme['evaluations_name_'.$i][$j] ) ) continue;
-        //         // if ( empty( $this->get( $this->scheme['evaluations_name_'.$i][$j] ) ) ) continue;
-                
-        //         // $arr['evaluations'][$j]['sem'] = $j;
-        //         // if ( isset( $this->scheme['evaluations_name_'.$i][$j] ) )
-        //         $this->set( $this->scheme['evaluations_name_'.$i][$j], $a['evaluations'][$j]['data'][$i]['name']);
-        //         // if ( isset( $this->scheme['evaluations_rating_'.$i][$j] ) ) 
-        //         $this->set( $this->scheme['evaluations_rating_'.$i][$j], $a['evaluations'][$j]['data'][$i]['att']['rating']);
-        //         // if ( isset( $this->scheme['evaluations_cmp_'.$i][$j] ) ) 
-        //         $this->set( $this->scheme['evaluations_cmp_'.$i][$j], $a['evaluations'][$j]['data'][$i]['att']['cmp']);
+            for ( $j = 0; $j < 10; $j++ ) { 
+
+                if ( ! empty( $a['evaluations'][$j]['data'][$i]['name'] ) ) 
+                    $this->set( $this->scheme['evaluations_name_'.$i][$j], $a['evaluations'][$j]['data'][$i]['name'] );
+                if ( ! empty( $a['evaluations'][$j]['data'][$i]['att']['rating'] ) )
+                    $this->set( $this->scheme['evaluations_rating_'.$i][$j], $a['evaluations'][$j]['data'][$i]['att']['rating'] );
+                if ( ! empty( $a['evaluations'][$j]['data'][$i]['att']['cmp'] ) )
+                    $this->set( $this->scheme['evaluations_cmp_'.$i][$j], $a['evaluations'][$j]['data'][$i]['att']['cmp'] );
     
-        //     }
+            }
 
-        // } 
+        } 
 
+        // Литература
 
+        for ( $i = 0; $i < 5; $i++ ) {
 
+            if ( empty( $a['biblio']['basic'][$i] ) ) continue;
+            $this->set( $this->scheme['biblio_basic'][$i], $a['biblio']['basic'][$i] ); 
 
+        } 
 
-
-
-
-        // // Литература
-
-        // for ( $i = 0; $i < 10; $i++ ) {
-
-        //     if ( empty( $this->scheme['biblio_basic'][$i] ) ) continue;
-        //     if ( empty( $this->get( $this->scheme['biblio_basic'][$i] ) ) ) continue;
+        for ( $i = 0; $i < 10; $i++ ) {
             
-        //     $arr['biblio']['basic'][] = $this->get( $this->scheme['biblio_basic'][$i] );
+            if ( empty( $a['biblio']['additional'][$i] ) ) continue;
+            $this->set( $this->scheme['biblio_additional'][$i], $a['biblio']['additional'][$i] ); 
 
-        // } 
-
-        // for ( $i = 0; $i < 10; $i++ ) {
-            
-        //     if ( empty( $this->scheme['biblio_additional'][$i] ) ) continue;
-        //     if ( empty( $this->get( $this->scheme['biblio_additional'][$i] ) ) ) continue;
-            
-        //     $arr['biblio']['additional'][] = $this->get( $this->scheme['biblio_additional'][$i] );
+        } 
         
-        // } 
+        // Информационные технологии
         
-        // // Информационные технологии
-        
-        // for ( $i = 0; $i < 10; $i++ ) {
+        for ( $i = 0; $i < 5; $i++ ) {
 
-        //     if ( empty( $this->scheme['it_inet'][$i] ) ) continue;
-        //     if ( empty( $this->get( $this->scheme['it_inet'][$i] ) ) ) continue;
-            
-        //     $arr['it']['inet'][] = $this->get( $this->scheme['it_inet'][$i] );
+            if ( empty( $a['it']['inet'][$i] ) ) continue;
+            $this->set( $this->scheme['it_inet'][$i], $a['it']['inet'][$i] ); 
 
-        // } 
-        
-        // for ( $i = 0; $i < 10; $i++ ) {
+        } 
 
-        //     if ( empty( $this->scheme['it_app'][$i] ) ) continue;
-        //     if ( empty( $this->get( $this->scheme['it_app'][$i] ) ) ) continue;
-            
-        //     $arr['it']['app'][] = $this->get( $this->scheme['it_app'][$i] );
+        for ( $i = 0; $i < 5; $i++ ) {
 
-        // } 
+            if ( empty( $a['it']['app'][$i] ) ) continue;
+            $this->set( $this->scheme['it_app'][$i], $a['it']['app'][$i] ); 
+
+        } 
+
+        // Материально-техническое обеспечение
+
+        for ( $i = 0; $i < 5; $i++ ) {
+
+            if ( empty( $a['mto']['mto'][$i] ) ) continue;
+            $this->set( $this->scheme['mto'][$i], $a['mto']['mto'][$i] ); 
+
+        } 
     
-        // // Материально-техническое обеспечение
+        // Разработчики
 
-        // for ( $i = 0; $i < 10; $i++ ) {
+        for ( $i = 0; $i < 5; $i++ ) {
 
-        //     if ( empty( $this->scheme['mto'][$i] ) ) continue;
-        //     if ( empty( $this->get( $this->scheme['mto'][$i] ) ) ) continue;
-            
-        //     $arr['mto']['mto'][] = $this->get( $this->scheme['mto'][$i] );
+            if ( empty( $a['authors']['authors'][$i] ) ) continue;
+            $this->set( $this->scheme['authors'][$i], $a['authors']['authors'][$i] ); 
 
-        // } 
-    
-        // // Разработчики
+        } 
 
-        // for ( $i = 0; $i < 10; $i++ ) {
-
-        //     if ( empty( $this->scheme['authors'][$i] ) ) continue;
-        //     if ( empty( $this->get( $this->scheme['authors'][$i] ) ) ) continue;
-            
-        //     $arr['authors']['authors'][] = $this->get( $this->scheme['authors'][$i] );
-
+        // Сведения о шаблоне
         
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        $this->set( $this->scheme['opop'][0], get_the_title( $arr['from_id'] ) );
+        $this->set( $this->scheme['opop_url'][0], get_permalink( $arr['from_id'] ) );
 
         return $arr;
     }
 
+
+
+
+    private function max( $a = array(), $k = 'name', $k2 = NULL, $k3 = NULL )
+    {
+        $s = '';
+
+        if ( $k == 'outcomes' ) {
+
+            foreach ( $a as $i ) 
+                if ( ! empty( $i[$k][$k2][$k3] ) ) 
+                    if ( mb_strlen( $s ) < mb_strlen( $i[$k][$k2][$k3] ) ) $s = $i[$k][$k2][$k3];
+
+        } else {
+
+            foreach ( $a as $i ) 
+                if ( ! empty( $i[$k] ) ) 
+                    if ( mb_strlen( $s ) < mb_strlen( $i[$k] ) ) $s = $i[$k];
+
+        }
+        
+        return $s;
+    }
 
 
 
@@ -321,8 +318,6 @@ class mif_mr_xlsx_tpl extends mif_mr_xlsx {
 
 
 
-
-
     //
     // Получить название дисциплины
     // 
@@ -368,7 +363,10 @@ class mif_mr_xlsx_tpl extends mif_mr_xlsx {
 
         $arr["version"][] = "A0";
         $arr["name"][] = "C4";
+        $arr["cmp"][] = "C5";
+        $arr["hours"][] = "C6";
         $arr["target"][] = "C7";
+        $arr["target_max"][] = "AG7";
         $arr["parts_name"][] = "C9";
         $arr["parts_name"][] = "F9";
         $arr["parts_name"][] = "I9";
@@ -379,6 +377,7 @@ class mif_mr_xlsx_tpl extends mif_mr_xlsx {
         $arr["parts_name"][] = "X9";
         $arr["parts_name"][] = "AA9";
         $arr["parts_name"][] = "AD9";
+        $arr["parts_name_max"][] = "AG9";
         $arr["parts_cmp"][] = "C10";
         $arr["parts_cmp"][] = "F10";
         $arr["parts_cmp"][] = "I10";
@@ -409,6 +408,7 @@ class mif_mr_xlsx_tpl extends mif_mr_xlsx {
         $arr["parts_content"][] = "X12";
         $arr["parts_content"][] = "AA12";
         $arr["parts_content"][] = "AD12";
+        $arr["parts_content_max"][] = "AG12";
         $arr["parts_outcomes_z_0"][] = "C13";
         $arr["parts_outcomes_z_0"][] = "F13";
         $arr["parts_outcomes_z_0"][] = "I13";
@@ -419,6 +419,7 @@ class mif_mr_xlsx_tpl extends mif_mr_xlsx {
         $arr["parts_outcomes_z_0"][] = "X13";
         $arr["parts_outcomes_z_0"][] = "AA13";
         $arr["parts_outcomes_z_0"][] = "AD13";
+        $arr["parts_outcomes_z_0_max"][] = "AG13";
         $arr["parts_outcomes_u_0"][] = "C14";
         $arr["parts_outcomes_u_0"][] = "F14";
         $arr["parts_outcomes_u_0"][] = "I14";
@@ -429,6 +430,7 @@ class mif_mr_xlsx_tpl extends mif_mr_xlsx {
         $arr["parts_outcomes_u_0"][] = "X14";
         $arr["parts_outcomes_u_0"][] = "AA14";
         $arr["parts_outcomes_u_0"][] = "AD14";
+        $arr["parts_outcomes_u_0_max"][] = "AG14";
         $arr["parts_outcomes_v_0"][] = "C15";
         $arr["parts_outcomes_v_0"][] = "F15";
         $arr["parts_outcomes_v_0"][] = "I15";
@@ -439,6 +441,7 @@ class mif_mr_xlsx_tpl extends mif_mr_xlsx {
         $arr["parts_outcomes_v_0"][] = "X15";
         $arr["parts_outcomes_v_0"][] = "AA15";
         $arr["parts_outcomes_v_0"][] = "AD15";
+        $arr["parts_outcomes_v_0_max"][] = "AG15";
         $arr["parts_outcomes_z_1"][] = "C16";
         $arr["parts_outcomes_z_1"][] = "F16";
         $arr["parts_outcomes_z_1"][] = "I16";
@@ -449,6 +452,7 @@ class mif_mr_xlsx_tpl extends mif_mr_xlsx {
         $arr["parts_outcomes_z_1"][] = "X16";
         $arr["parts_outcomes_z_1"][] = "AA16";
         $arr["parts_outcomes_z_1"][] = "AD16";
+        $arr["parts_outcomes_z_1_max"][] = "AG16";
         $arr["parts_outcomes_u_1"][] = "C17";
         $arr["parts_outcomes_u_1"][] = "F17";
         $arr["parts_outcomes_u_1"][] = "I17";
@@ -459,6 +463,7 @@ class mif_mr_xlsx_tpl extends mif_mr_xlsx {
         $arr["parts_outcomes_u_1"][] = "X17";
         $arr["parts_outcomes_u_1"][] = "AA17";
         $arr["parts_outcomes_u_1"][] = "AD17";
+        $arr["parts_outcomes_u_1_max"][] = "AG17";
         $arr["parts_outcomes_v_1"][] = "C18";
         $arr["parts_outcomes_v_1"][] = "F18";
         $arr["parts_outcomes_v_1"][] = "I18";
@@ -469,6 +474,7 @@ class mif_mr_xlsx_tpl extends mif_mr_xlsx {
         $arr["parts_outcomes_v_1"][] = "X18";
         $arr["parts_outcomes_v_1"][] = "AA18";
         $arr["parts_outcomes_v_1"][] = "AD18";
+        $arr["parts_outcomes_v_1_max"][] = "AG18";
         $arr["evaluations_name_0"][] = "C22";
         $arr["evaluations_rating_0"][] = "D22";
         $arr["evaluations_cmp_0"][] = "E22";
@@ -714,6 +720,8 @@ class mif_mr_xlsx_tpl extends mif_mr_xlsx {
         $arr["mto"][] = "C75";
         $arr["mto"][] = "C76";
         $arr["mto"][] = "C77";
+        $arr["opop"][] = "C81";
+        $arr["opop_url"][] = "C82";
 
         return $arr;
     }
@@ -721,7 +729,8 @@ class mif_mr_xlsx_tpl extends mif_mr_xlsx {
 
 
 
-    private $scheme = array();
+    // private 
+    protected $scheme = array();
 
 
 }
