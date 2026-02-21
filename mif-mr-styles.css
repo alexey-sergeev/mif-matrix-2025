@@ -1,5 +1,26 @@
 /* Body */
 
+.panel-search {
+    color: #3b4252;
+    text-decoration: none !important;
+    /* font-weight: 600 !important; */
+    /* padding-bottom: 1.5rem !important; */
+}
+
+.panel-search-checked {
+    color: #3b4252;
+    text-decoration: none !important;
+    border-bottom: 2px solid #3b4252;
+    font-weight: 600 !important;
+    /* transition: all 0.4s ease; */
+}
+
+.panel-search:hover,
+.panel-search-checked:hover {
+    color: crimson;
+    border-bottom: 2px solid crimson;
+    /* transition: all 0.4s ease; */
+}
 
 .tie:hover {
     /* background-color: #CED4DA; */
@@ -68,7 +89,7 @@
     /* width: 3em; */
 }
 
-.part .comp input[type=text] {
+.part .comp .vedit input[type=text] {
     width: 5em;
 }
 
@@ -219,6 +240,11 @@ span.copy-button.act {
 
 .mr-h-48 {
     height: 48em !important;
+}
+
+
+.mr-mmw-36 {
+    max-width: 36em !important;
 }
 
 

@@ -18,7 +18,7 @@ class mif_mr_tools_info extends mif_mr_tools_core {
         add_filter( 'lib-upload-save-title', array( $this, 'set_save_title'), 10, 2 );
         // add_filter( 'scheme-data-courses', array( $this, 'scheme_data_courses'), 10 );
 
-        $this->scheme = apply_filters( 'scheme-data-courses', array() );
+        // $this->scheme = apply_filters( 'scheme-data-courses', array() );
         
         $this->index = apply_filters( 'index-tools-courses', array(
                 array( 'title' => 'Цели', 'key' => 'target', 'key2' => NULL, 'return' => ' mr-yellow' ),
@@ -67,7 +67,7 @@ class mif_mr_tools_info extends mif_mr_tools_core {
 
         $arr['title'] = $name;    
         $arr['is_course'] = ( ! empty( $name ) ) ? true : false; // !!!!
-        $arr['is_curriculum'] = ( ! empty( $tree['content']['courses']['index'][$name]) ) ? true : false;
+        $arr['is_curriculum'] = ( ! empty( $tree['content']['courses']['index'][$name] ) ) ? true : false;
      
         $f_local = false;
         $f_lib = false;

@@ -242,7 +242,7 @@ class mif_mr_set_comp extends mif_mr_set_core {
         
         $out = '';
         
-        $out .= '<table>';
+        $out .= '<table class="vedit">';
         
         $out .= '<thead><tr>';
         

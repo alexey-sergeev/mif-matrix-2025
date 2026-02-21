@@ -7,7 +7,7 @@ jQuery( document ).ready( function( jq ) {
     
     // Показать контент
     
-    jq( 'body' ).on( 'click', 'input[type="radio"]', function() {
+    jq( 'body' ).on( 'click', '.nav-tabs input[type="radio"]', function() {
         
         var data = new FormData( jq(this).closest('form').get(0) );
         var div = jq( 'div.content-ajax' );
@@ -1102,11 +1102,7 @@ jQuery( document ).ready( function( jq ) {
     // remove-panel
 
     jq( 'body' ).on( 'click', '.analysis-box .remove-panel', function() {
-    
-        // console.log( jq( '.remove', jq(this).closest('.row').prev() ).html() );
         jq( '.remove', jq(this).closest('.row').prev() ).trigger('click') ;
-    
-    
         return false;
     });  
 
@@ -1114,11 +1110,81 @@ jQuery( document ).ready( function( jq ) {
     // export-panel
 
     jq( 'body' ).on( 'click', '.analysis-box .export-panel', function() {
-    
         jq( '.export', jq(this).closest('.row').prev() ).trigger('click') ;
         jq( '.cancel-panel', jq(this).closest('.row') ).trigger('click') ;
         return false;
     });  
 
     
+
+    // Panel lib courses (search .. )
+
+
+    jq( 'body' ).on( 'click', '.comp .panel-search', function() {
+
+        console.log('@');
+
+        jq( '.panel-search-checked', jq(this).closest('.comp') ).addClass('panel-search');
+        jq( '.panel-search-checked', jq(this).closest('.comp') ).removeClass('panel-search-checked');
+        jq(this).addClass('panel-search-checked');
+
+
+        jq.ajax( {
+            url: ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'lib-courses',
+                do: 'list-upd',
+                criteria: jq(this).attr('data-criteria'),
+                s: jq( 'input[name=courses_search]', jq(this).closest('.comp') ).val(),
+                opop: jq( 'input[name=opop]' ).val(),
+                _wpnonce: jq( 'input[name=_wpnonce]' ).val(),
+            },
+            success: function( response ) {
+                
+                if ( response ) {
+
+                    // console.log( response );
+                    jq( '.list-box').html( response );
+                    
+                } else {
+                    
+                    console.log( 'error 17' );
+                    
+                }
+                
+            },
+            error: function( response ) {
+                
+                console.log( 'error 18' );
+                
+            },
+            
+        } );
+
+
+
+
+        return false;
+    });  
+
+
+
+    // Ввод в строку поиска
+    
+    var search_timeout;
+
+    jq( 'body' ).on( 'input', '.comp input[name=courses_search]', function() {
+        clearTimeout( search_timeout );
+        search_timeout = setTimeout( function() {
+            let elem = jq( '.panel-search-checked', jq('.comp') );
+            console.log(elem);
+            jq( elem ).trigger( 'click' );
+            // jq( '.comp .panel-search' ).trigger( 'click' );
+        }, 800 );
+    } );
+    
+
+
+
 });

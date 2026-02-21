@@ -34,6 +34,7 @@ include_once dirname( __FILE__ ) . '/companion-lib-core.php';
 include_once dirname( __FILE__ ) . '/companion-lib-competencies.php';
 include_once dirname( __FILE__ ) . '/companion-lib-competencies-screen.php';
 include_once dirname( __FILE__ ) . '/companion-lib-courses.php';
+include_once dirname( __FILE__ ) . '/companion-lib-courses-list.php';
 include_once dirname( __FILE__ ) . '/companion-lib-courses-screen.php';
 include_once dirname( __FILE__ ) . '/companion-lib-references.php';
 include_once dirname( __FILE__ ) . '/companion-lib-references-screen.php';
@@ -362,6 +363,16 @@ class mif_mr_init extends mif_mr_types {
                         
                         $m = new mif_mr_lib_courses_screen();
                         echo $m->get_lib_courses( (int) $_REQUEST['opop'] );
+    
+                    } 
+                    
+                    if ( in_array( $_REQUEST['do'], array( 'list-upd' ) ) ) {
+
+                        $m = new mif_mr_lib_courses_screen();
+                        echo $m->get_list_courses( array( 
+                                                        'criteria' => sanitize_key( $_REQUEST['criteria'] ), 
+                                                        's' => sanitize_text_field( $_REQUEST['s'] ),
+                                                    ) );
     
                     } 
                     

@@ -10,7 +10,7 @@
 defined( 'ABSPATH' ) || exit;
 
 
-class mif_mr_lib_courses_screen extends mif_mr_lib_courses {
+class mif_mr_lib_courses_screen extends mif_mr_lib_courses_list {
     
     
     function __construct()
@@ -556,111 +556,76 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses {
     
     
     
-    //
-    // Показать cписок 
-    //
-
-    public function get_lib_courses( $opop_id = NULL )
-    {
-        global $tree;
-        global $wp_query;
-        
-        if ( ! empty( $wp_query->query_vars['id'] ) ) return;
-        
-        if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
-        
-        ####!!!!!
-        
-        $this->create( $opop_id, 'lib-courses' );
-        
-        $arr = array();
-        if ( isset( $tree['content']['lib-courses']['data'] ) ) $arr = $tree['content']['lib-courses']['data'];
-    
-        $index = array();
-        foreach ( $arr as $item ) $index[$item['name']][] = $item['comp_id'];
-        
-        foreach ( $index as $key => $item ) sort( $index[$key] ); 
-        ksort( $index );
-        
-        $f = true;
-        
-        $out = '';
-        
-        $out .= '<div class="content-ajax">';
-        
-        $out .= '<div class="comp container bg-light pt-5 pb-5 pl-4 pr-4 border rounded">';
-
-        $out .= $this->get_lib_head( array( 'title' => 'Библиотека дисциплин' ) );
-        
-        foreach ( $index as $i ) {
-            
-            foreach ( $i as $ii ) {
-                
-                $item = $arr[$ii];
-            
-                $out .= $this->get_lib_body( array( 
-                                                    'comp_id' => $item['comp_id'],    
-                                                    'name' => $item['name'],    
-                                                    'from_id' => $item['from_id'],    
-                                                    'type' => 'lib-courses',    
-                                                ) );
-                
-            }
-        
-        }
-        
-        if ( $f ) $out .= $this->get_lib_create( array(
-                                                    'action' => 'lib-courses',
-                                                    'button' => 'Создать дисциплину',
-                                                    'title' => 'Название дисциплины',
-                                                    'hint_a' => 'Например: Математика, Безопасность жизнедеятельности, Педагогическая практика',
-                                                    'date' => 'Данные',
-                                                    'hint_b' => '<a href="' . '123' . '">Помощь</a>',
-                                                ) );
-    
-        $out .= '</div>';
-        $out .= '</div>';
-        
-        return apply_filters( 'mif_mr_show_lib_courses', $out, $opop_id );
-    }    
-
-
-
-        
-    
     // //
-    // // Показать ссылку на шаблон
+    // // Показать cписок 
     // //
-    
-    // public function get_template( $type = 'text' )
+
+    // public function get_lib_courses( $opop_id = NULL )
     // {
+    //     global $tree;
     //     global $wp_query;
-
+        
+    //     if ( ! empty( $wp_query->query_vars['id'] ) ) return;
+        
+    //     if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
+        
+    //     ####!!!!!
+        
+    //     $this->create( $opop_id, 'lib-courses' );
+        
+    //     $arr = array();
+    //     if ( isset( $tree['content']['lib-courses']['data'] ) ) $arr = $tree['content']['lib-courses']['data'];
+    
+    //     $index = array();
+    //     foreach ( $arr as $item ) $index[$item['name']][] = $item['comp_id'];
+        
+    //     foreach ( $index as $key => $item ) sort( $index[$key] ); 
+    //     ksort( $index );
+        
+    //     $f = true;
+        
     //     $out = '';
+        
+    //     $out .= '<div class="content-ajax">';
+        
+    //     $out .= '<div class="comp container bg-light pt-5 pb-5 pl-4 pr-4 border rounded">';
 
-    //     if ( isset( $wp_query->query_vars['id'] ) ) {
-
-    //         if ( $type == 'xls' ) $a = array( '#', 'Шаблон' );
-    //         if ( $type == 'text' ) $a = array( '#', 'Текст' );
-
-
-    //         $out .= '<div class="mb-3">'; 
-    //         $out .= '<a href="' . $a[0]. '"><span class="mr-btn mr-gray"><i class="fa fa-download" aria-hidden="true"></i></span>' . $a[1] . '</a>';
-    //         $out .= '</div>'; 
+    //     $out .= $this->get_lib_head( array( 'title' => 'Библиотека дисциплин' ) );
+        
+    //     foreach ( $index as $i ) {
+            
+    //         foreach ( $i as $ii ) {
+                
+    //             $item = $arr[$ii];
+            
+    //             $out .= $this->get_lib_body( array( 
+    //                                                 'comp_id' => $item['comp_id'],    
+    //                                                 'name' => $item['name'],    
+    //                                                 'from_id' => $item['from_id'],    
+    //                                                 'type' => 'lib-courses',    
+    //                                             ) );
+                
+    //         }
         
     //     }
-
-    //     return apply_filters( 'mif_mr_get_template', $out );
         
-    // }
+    //     if ( $f ) $out .= $this->get_lib_create( array(
+    //                                                 'action' => 'lib-courses',
+    //                                                 'button' => 'Создать дисциплину',
+    //                                                 'title' => 'Название дисциплины',
+    //                                                 'hint_a' => 'Например: Математика, Безопасность жизнедеятельности, Педагогическая практика',
+    //                                                 'date' => 'Данные',
+    //                                                 'hint_b' => '<a href="' . '123' . '">Помощь</a>',
+    //                                             ) );
     
-    
+    //     $out .= '</div>';
+    //     $out .= '</div>';
+        
+    //     return apply_filters( 'mif_mr_show_lib_courses', $out, $opop_id );
+    // }    
 
 
-
-
-
-    
+   
 }
 
 
