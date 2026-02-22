@@ -372,6 +372,7 @@ class mif_mr_init extends mif_mr_types {
                         echo $m->get_list_courses( array( 
                                                         'criteria' => sanitize_key( $_REQUEST['criteria'] ), 
                                                         's' => sanitize_text_field( $_REQUEST['s'] ),
+                                                        'num' => (int) $_REQUEST['num'],
                                                     ) );
     
                     } 

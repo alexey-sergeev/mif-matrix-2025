@@ -16,6 +16,8 @@ class mif_mr_lib_courses_list extends mif_mr_lib_courses {
     function __construct()
     {
         parent::__construct();
+
+        $this->courses_per_page = apply_filters( 'lib_courses_per_page', 10 );
     }
     
 
@@ -72,6 +74,7 @@ class mif_mr_lib_courses_list extends mif_mr_lib_courses {
         // $out .= $this->get_list_courses( array( 'opop_id' => $opop_id ) );
         
         
+        // $out .= '<div class="loading text-center text-secondary p-6 m-6" style="display: none"><i class="fas fa-spinner fa-3x fa-spin"></i></div>';
         $out .= '<div class="list-box">';
         $out .= $this->get_list_courses();
         $out .= '</div>';
@@ -85,6 +88,9 @@ class mif_mr_lib_courses_list extends mif_mr_lib_courses {
                                                     'hint_b' => '<a href="' . '123' . '">Помощь</a>',
                                                 ) );
     
+
+        // $out .= $this->get_page_numbers();
+
         $out .= '</div>';
         $out .= '</div>';
         
@@ -161,28 +167,53 @@ class mif_mr_lib_courses_list extends mif_mr_lib_courses {
 
         }
 
+        $count = count($arr);
 
-
+        $numbers = ceil( $count / $this->courses_per_page );
+        $current = ( isset( $att['num'] ) ) ? $att['num'] : 0;
+        
         $index = array();
         foreach ( $arr as $item ) $index[$item['name']][] = $item['comp_id'];
         
         foreach ( $index as $key => $item ) sort( $index[$key] ); 
         ksort( $index );
-        
+
+        $arr2 = array();
+        foreach ( $index as $i ) foreach ( $i as $ii ) $arr2[] = $arr[$ii];
+
+        $arr3 = array_chunk( $arr2, $this->courses_per_page );
+        $arr4 = ( $current !== -1 ) ? $arr3[$current] : $arr2;
+
         $out = '';
 
-        foreach ( $index as $i ) {
-            foreach ( $i as $ii ) {
-                $item = $arr[$ii];
-                $out .= $this->get_lib_body( array( 
-                                                    'comp_id' => $item['comp_id'],    
-                                                    'name' => $item['name'],    
-                                                    'from_id' => $item['from_id'],    
-                                                    'type' => 'lib-courses',    
-                                                ) );
-            }
-        }
+        if ( $count !== 0 ) $out .= '<div class="fw-semibold mb-3">Всего: <span class="p-1 pl-3 pr-3 mr-gray rounded">' . $count . '</span></div>';
         
+        // foreach ( $arr3[$current] as $item ) {
+        foreach ( $arr4 as $item ) {
+
+            $is_curriculum = ( ! empty( $tree['content']['courses']['index'][$item['name']] ) ) ? true : false;
+
+            $out .= $this->get_lib_body( array( 
+                                                'comp_id' => $item['comp_id'],    
+                                                'name' => $item['name'],    
+                                                'from_id' => $item['from_id'],    
+                                                'type' => 'lib-courses',  
+                                                'is_curriculum' => $is_curriculum,
+                                            ) );
+
+        }
+
+        if ( $count !== 0 ) $out .= $this->get_page_numbers( $numbers, $current );
+        
+        if ( empty( $out ) ) {
+
+            $out .= '<div class="bg-light p-5 mb-5 text-center">';
+            $out .= '<p class="text-secondary mt-4 mb-0"><i class="fas fa-3x fa-ellipsis-h"></i></p>';
+            $out .= '<p class="mb-5 fw-semibold">' . __( 'Ничего не найдено', 'mif-mr' ) . '</p>';
+            $out .= '</div>';
+
+        }
+
         return apply_filters( 'mif_mr_get_list_courses', $out, $att );
     }    
 
@@ -203,22 +234,6 @@ class mif_mr_lib_courses_list extends mif_mr_lib_courses {
     {
         $out = '';
 
-        // $out .= '<div class="row mb-3 mt-4">';
-        // $out .= '<div class="col text-center">';
-        // $out .= '<button type="button" class="btn btn-primary btn-sm mr-3 mb-3">Все</button>';
-        // $out .= '<button type="button" class="btn btn-outline-primary btn-sm mr-3 mb-3">Полный список</button>';
-        // $out .= '<button type="button" class="btn btn-outline-primary btn-sm mr-3 mb-3">Локальные</button>';
-        // $out .= '<button type="button" class="btn btn-outline-primary btn-sm mr-3 mb-3">Из библиотеки</button>';
-        // $out .= '<button type="button" class="btn btn-outline-primary btn-sm mr-3 mb-3">Входит в план</button>';
-        // $out .= '<button type="button" class="btn btn-outline-primary btn-sm mb-3">Не входит в план</button>';
-    
-        // // $out .= '<span><a href="#">Полный список</a></span>';
-        // // $out .= '<span><a href="#">Локальные</a></span>';
-        // // $out .= '<span><a href="#">Из библиотеки</a></span>';
-        // // $out .= '<span><a href="#">В учебный план</a></span>';
-        // $out .= '</div>';
-        // $out .= '</div>';
-        
         $arr = apply_filters( 'mif_mr_lib_courses_panel_search', array(  
                                                                     array( 'Все', 'all' ),
                                                                     array( 'Локальные', 'local' ),
@@ -238,36 +253,93 @@ class mif_mr_lib_courses_list extends mif_mr_lib_courses {
         $out .= '<div class="col col-md-2"></div>';
         $out .= '</div>';
 
-        
-        $out .= '<div class="row mb-6">';
+        $out .= '<div class="row mb-5">';
         $out .= '<div class="col text-center">';
         
-        // $checked = ' checked';
-        // foreach ( $arr as $a ) {
-
-        //     $out .= '<label class="m-2"><input class="form-check-input mr-1" type="radio" name="r" value="' . $a[1]. '"' . $checked . '>' . $a[0]. '</label>';
-        //     $checked = '';
-        
-        // }
-        
         $checked = '-checked';
+
         foreach ( $arr as $a ) {
-            $out .= '<a class="panel-search' . $checked . ' m-2 pb-1" href="#" data-criteria="' . $a[1]. '">' . $a[0]. '</a>';
+            $out .= '<a class="criteria' . $checked . ' m-2 pb-1" href="#" data-criteria="' . $a[1]. '">' . $a[0]. '</a>';
             $checked = '';
         }
         
-
         $out .= '</div>';
         $out .= '</div>';
         
-
         return apply_filters( 'mif_mr_get_panel_search', $out );
     }
   
     
 
 
+    // 
+    // Получить номера страниц
+    //
 
+    function get_page_numbers( $numbers, $current = 0 )
+    {
+        if ( $numbers <= 1 ) return;
+    
+        $out = '';
+
+        // $arr = apply_filters( 'mif_mr_lib_courses_panel_search', array(  
+        //                                                             array( 'Все', 'all' ),
+        //                                                             array( 'Локальные', 'local' ),
+        //                                                             array( 'Из библиотеки', 'lib' ),
+        //                                                             array( 'Входит в план', 'curriculum' ),
+        //                                                             array( 'Не входит в план', 'not-curriculum' ),
+        //                                                         ) );
+
+        $out .= '<div class="row mb-3 mt-4">';
+        $out .= '<div class="col text-center">';
+
+        for ( $i = 0;  $i < $numbers;  $i++ ) { 
+
+            // $out .= '<span class="m-1 p-1 pr-3 pl-3 rounded bg-secondary text-light">';
+            // $out .= $i + 1;
+            // $out .= '</span>';
+            $class = ( $current == $i ) ? 'bg-primary text-light' : 'mr-gray';
+            $out .= '<a href="#" class="numbers m-1 p-1 pr-3 pl-3 rounded fw-semibold ' . $class . '" data-num="' . $i . '">';
+            $out .= $i + 1;
+            $out .= '</a>';
+
+        }
+
+        $class = ( $current == -1 ) ? 'bg-primary text-light' : 'mr-gray';
+        $out .= '<a href="#" class="numbers m-1 p-1 pr-3 pl-3 rounded fw-semibold ' . $class . '" data-num="-1">';
+        $out .= 'Показать все';
+        $out .= '</a>';
+
+
+
+        // $out .= '<div class="col col-12 col-md-8">';
+        // $out .= '<div class="input-group">';
+        // $out .= '<div class="input-group-text"><i class="fa-solid fa-magnifying-glass fa-sm"></i></div>';
+        // $out .= '<input type="text" class="form-control" name="courses_search" placeholder="Искать дисциплину">';
+        // $out .= '</div>';
+        // $out .= '</div>';
+        // $out .= '<div class="col col-md-2"></div>';
+        // $out .= '</div>';
+
+        // $out .= '<div class="row mb-5">';
+        // $out .= '<div class="col text-center">';
+        
+        // $checked = '-checked';
+
+        // foreach ( $arr as $a ) {
+        //     $out .= '<a class="criteria' . $checked . ' m-2 pb-1" href="#" data-criteria="' . $a[1]. '">' . $a[0]. '</a>';
+        //     $checked = '';
+        // }
+        
+        // $out .= '@@@';
+        $out .= '</div>';
+        $out .= '</div>';
+        
+        return apply_filters( 'mif_mr_get_page_numbers', $out );
+    }
+
+
+    private $courses_per_page;
 
 }
 

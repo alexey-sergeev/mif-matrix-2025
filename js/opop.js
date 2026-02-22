@@ -1120,14 +1120,53 @@ jQuery( document ).ready( function( jq ) {
     // Panel lib courses (search .. )
 
 
-    jq( 'body' ).on( 'click', '.comp .panel-search', function() {
+    jq( 'body' ).on( 'click', '.comp .criteria', function() {
 
-        console.log('@');
+        // console.log('@');
 
-        jq( '.panel-search-checked', jq(this).closest('.comp') ).addClass('panel-search');
-        jq( '.panel-search-checked', jq(this).closest('.comp') ).removeClass('panel-search-checked');
-        jq(this).addClass('panel-search-checked');
+        jq( '.criteria-checked', jq(this).closest('.comp') ).addClass('criteria');
+        jq( '.criteria-checked', jq(this).closest('.comp') ).removeClass('criteria-checked');
+        jq(this).addClass('criteria-checked');
 
+        panel_lib_courses_do( jq(this).attr('data-criteria'), jq( 'input[name=courses_search]', jq(this).closest('.comp') ).val() );
+        
+        return false;
+    });  
+
+
+
+    // Ввод в строку поиска
+    
+    var search_timeout;
+
+    jq( 'body' ).on( 'input', '.comp input[name=courses_search]', function() {
+        clearTimeout( search_timeout );
+        let elem = this;
+        search_timeout = setTimeout( function() {
+            // console.log(jq( '.panel-search-checked', jq('.comp') ).attr('data-criteria'));
+            // console.log(jq(elem).val());
+
+            panel_lib_courses_do( jq( '.criteria-checked', jq('.comp') ).attr('data-criteria'), jq(elem).val() );
+
+        }, 800 );
+    } );
+    
+
+
+    // Page numbers
+
+    jq( 'body' ).on( 'click', '.comp a.numbers', function() {
+        panel_lib_courses_do( jq(this).attr('data-criteria'), jq( 'input[name=courses_search]', jq(this).closest('.comp') ).val(), jq(this).attr('data-num') );
+        return false;
+    });  
+
+
+    
+
+    function panel_lib_courses_do(criteria, search, num = 0) {
+
+        // jq( '.loading', jq('.comp') ).fadeIn('fast');
+        // jq( '.list-box').html( '' );
 
         jq.ajax( {
             url: ajaxurl,
@@ -1135,8 +1174,9 @@ jQuery( document ).ready( function( jq ) {
             data: {
                 action: 'lib-courses',
                 do: 'list-upd',
-                criteria: jq(this).attr('data-criteria'),
-                s: jq( 'input[name=courses_search]', jq(this).closest('.comp') ).val(),
+                criteria: criteria,
+                s: search,
+                num: num,
                 opop: jq( 'input[name=opop]' ).val(),
                 _wpnonce: jq( 'input[name=_wpnonce]' ).val(),
             },
@@ -1145,8 +1185,9 @@ jQuery( document ).ready( function( jq ) {
                 if ( response ) {
 
                     // console.log( response );
+                    // jq( '.loading', jq('.comp') ).fadeOut( 'fast', function() { jq( '.list-box').html( response ); } );
                     jq( '.list-box').html( response );
-                    
+                                        
                 } else {
                     
                     console.log( 'error 17' );
@@ -1163,28 +1204,6 @@ jQuery( document ).ready( function( jq ) {
         } );
 
 
-
-
-        return false;
-    });  
-
-
-
-    // Ввод в строку поиска
-    
-    var search_timeout;
-
-    jq( 'body' ).on( 'input', '.comp input[name=courses_search]', function() {
-        clearTimeout( search_timeout );
-        search_timeout = setTimeout( function() {
-            let elem = jq( '.panel-search-checked', jq('.comp') );
-            console.log(elem);
-            jq( elem ).trigger( 'click' );
-            // jq( '.comp .panel-search' ).trigger( 'click' );
-        }, 800 );
-    } );
-    
-
-
+    }
 
 });

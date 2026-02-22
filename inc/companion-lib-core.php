@@ -466,10 +466,18 @@ class mif_mr_companion_core {
 
         $out .= '<div class="row mt-0 mb-0 tie">';
         
-        $out .= '<div class="col-8 col-md-10 pt-3 pb-3">';
+        $out .= ( isset( $att['is_curriculum'] ) ) ? '<div class="col-7 col-md-9 pt-3 pb-3">' : '<div class="col-8 col-md-10 pt-3 pb-3">';
         $out .= '<a href="' . mif_mr_opop_core::get_opop_url() . '' . $att['type']. '/' . $att['comp_id'] . '">' . $att['name'] . '</a>';
         $out .= '</div>';
         
+        if ( isset( $att['is_curriculum'] ) ) {
+            
+            $out .= '<div class="col-1 col-md-1 pt-3 pb-3 text-end">';
+            $out .= ( $att['is_curriculum'] ) ? '<i class="fa-solid fa-check fa-sm"></i>' : '';
+            $out .= '</div>';
+                    
+        }
+
         $out .= '<div class="col-2 col-md-1 pt-3 pb-3 text-end copy-wrapper">';
         $out .= mif_mr_opop_core::get_span_id( $att['comp_id'] );
         $out .= '</div>';
