@@ -86,6 +86,8 @@ class mif_mr_lib_courses_list extends mif_mr_lib_courses {
                                                     'hint_a' => 'Например: Математика, Безопасность жизнедеятельности, Педагогическая практика',
                                                     'date' => 'Данные',
                                                     'hint_b' => '<a href="' . '123' . '">Помощь</a>',
+                                                    'a' => 'Импорт шаблонов',
+                                                    'url' => mif_mr_opop_core::get_opop_url() . 'tools-courses/',
                                                 ) );
     
 
@@ -242,7 +244,7 @@ class mif_mr_lib_courses_list extends mif_mr_lib_courses {
                                                                     array( 'Не входит в план', 'not-curriculum' ),
                                                                 ) );
 
-        $out .= '<div class="row mb-3 mt-4">';
+        $out .= '<div class="row mb-3 mt-5">';
         $out .= '<div class="col col-md-2"></div>';
         $out .= '<div class="col col-12 col-md-8">';
         $out .= '<div class="input-group">';
@@ -253,7 +255,7 @@ class mif_mr_lib_courses_list extends mif_mr_lib_courses {
         $out .= '<div class="col col-md-2"></div>';
         $out .= '</div>';
 
-        $out .= '<div class="row mb-5">';
+        $out .= '<div class="row mb-6">';
         $out .= '<div class="col text-center">';
         
         $checked = '-checked';

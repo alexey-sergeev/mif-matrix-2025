@@ -415,9 +415,39 @@ class mif_mr_companion_core {
         $out .= '<div class="row">';
         
         $out .= '<div class="col">';
-        $out .= '<h4 class="border-bottom pb-5"><i class="fa-regular fa-file-lines"></i> ' . $att['title']. '</h4>';
+        // $out .= '<h4 class="border-bottom pb-5"><i class="fa-regular fa-file-lines"></i> ' . $att['title']. '</h4>';
+        $out .= '<div class="border-bottom pb-3 mb-3">';
+        
+        $out .= '<div class="row">';
+        $out .= '<div class="col">';
+        $out .= '<h4><i class="fa-regular fa-file-lines"></i> ' . $att['title']. '</h4>';
         $out .= '</div>';
         
+        $out .= '<div class="col text-end">';
+        $out .= '<a href="#" class="mr-3 help"><i class="fa-solid fa-spiral fa-lg"></i></a>';
+        $out .= '</div>';
+        $out .= '</div>';
+        
+        
+        $out .= '</div>';
+        $out .= '</div>';
+        
+        $out .= '</div>';
+
+
+
+        $out .= '<div class="row">';
+
+        $out .= '<div class="col bg-light help-box" style="display: none;">';
+        $out .= mif_mr_functions::get_callout( 
+                    '<span class="bg-secondary text-light rounded pl-3 pr-3 p-1 copy">123</span>
+                    — это идентификатор объекта (cписок компетенций, дисциплина, справочник). 
+                    Если кликнете мышкой по номеру, вы скопируете его в буфера обмена. <br />
+                    <a href="javascript:void(0)">456</a>
+                    — это идентификатор ОПОП, в которой хранится объект. Если он не указан, то сохраняется в текущей ОПОП.
+                    ', 'info' );;
+        $out .= '</div>';
+
         $out .= '</div>';
 
         return apply_filters( 'mif_mr_show_list_compe_head', $out );
@@ -514,30 +544,40 @@ class mif_mr_companion_core {
         
         $out .= '<div class="row mt-5">';
         $out .= '<div class="col">';
-        $out .= '<button type="button" class="btn btn-primary new">' . $att['button']. '</button>';
+        $out .= '<button type="button" class="btn btn-primary new mr-3">' . $att['button']. '</button>';
+        
+        if ( isset( $att['a'] ) ) 
+
+            
+            $out .= '<a href="' . $att['url']. '" class="btn btn-light border mr-text-decoration">' . $att['a'] . '</a>';
+        // $out .= '<button type="button" class="btn btn-light border">' . $att['a'] . '</button>';
+        
+        
+        
         $out .= '</div>';
         $out .= '<div class="col p-3 bg-light text-end">';
-        // $out .= '<a href="#" class="mr-3 help"><i class="fa-solid fa-circle-question fa-xl"></i></a>';
-        // $out .= '<a href="#" class="mr-3 help"><i class="fa-regular fa-life-ring fa-lg"></i></a>';
-        $out .= '<a href="#" class="mr-3 help"><i class="fa-solid fa-spiral fa-lg"></i></a>';
-        // $out .= '<a href="#" class="mr-3 help"><i class="fa-solid fa-graduation-cap fa-lg"></i></a>';
-        // $out .= '<a href="#" class="mr-3 help"><i class="fa-regular fa-compass fa-lg"></i></a>';
+        // // $out .= '<a href="#" class="mr-3 help"><i class="fa-solid fa-circle-question fa-xl"></i></a>';
+        // // $out .= '<a href="#" class="mr-3 help"><i class="fa-regular fa-life-ring fa-lg"></i></a>';
+        // $out .= '<a href="#" class="mr-3 help"><i class="fa-solid fa-spiral fa-lg"></i></a>';
+        // // $out .= '<a href="#" class="mr-3 help"><i class="fa-solid fa-graduation-cap fa-lg"></i></a>';
+        // // $out .= '<a href="#" class="mr-3 help"><i class="fa-regular fa-compass fa-lg"></i></a>';
+        // $out .= '@';
         $out .= '</div>';
         $out .= '</div>';
 
-        $out .= '<div class="row">';
+        // $out .= '<div class="row">';
 
-        $out .= '<div class="col bg-light help-box" style="display: none;">';
-        $out .= mif_mr_functions::get_callout( 
-                    '<span class="bg-secondary text-light rounded pl-3 pr-3 p-1 copy">123</span>
-                    — это идентификатор объекта (cписок компетенций, дисциплина, справочник). 
-                    Если кликнете мышкой по номеру, вы скопируете его в буфера обмена. <br />
-                    <a href="javascript:void(0)">456</a>
-                    — это идентификатор ОПОП, в которой хранится объект. Если он не указан, то сохраняется в текущей ОПОП.
-                    ', 'info' );;
-        $out .= '</div>';
+        // $out .= '<div class="col bg-light help-box" style="display: none;">';
+        // $out .= mif_mr_functions::get_callout( 
+        //             '<span class="bg-secondary text-light rounded pl-3 pr-3 p-1 copy">123</span>
+        //             — это идентификатор объекта (cписок компетенций, дисциплина, справочник). 
+        //             Если кликнете мышкой по номеру, вы скопируете его в буфера обмена. <br />
+        //             <a href="javascript:void(0)">456</a>
+        //             — это идентификатор ОПОП, в которой хранится объект. Если он не указан, то сохраняется в текущей ОПОП.
+        //             ', 'info' );;
+        // $out .= '</div>';
 
-        $out .= '</div>';
+        // $out .= '</div>';
   
 
 
