@@ -152,27 +152,21 @@ class mif_mr_set_core extends mif_mr_table {
     //
     // Возвращает массив из текста (post)
     //
-    // новая::старая::course_id
+    // Дисциплина::course_id
     //
-    // новая == старая          => Дисциплина                          => Дисциплина::Дисциплина
-    // новая == старая, id      => Дисциплина::123                     => Дисциплина::Дисциплина::123
-    // новая != старая          => Дисциплина 1::Дисциплина 2          => Дисциплина 1::Дисциплина 2
-    // новая != старая, id      => Дисциплина 1::Дисциплина 2::123     => Дисциплина 1::Дисциплина 2::123
     // 
 
     public function get_arr_courses( $opop_id = NULL )
     {
+
         if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
         
-        // $this->get_index_comp( $opop_id );
-
         $arr = array();
-
+        
         $text = $this->get_companion_content( 'set-courses', $opop_id );
         
-        // p($text);
-
         // Разбить текст на массив строк
+
         $data = preg_split( '/\\r\\n?|\\n/', $text );
         $data = array_map( 'strim', $data );
         
@@ -180,49 +174,142 @@ class mif_mr_set_core extends mif_mr_table {
             
             $arr2 = explode( '::', $item );
             $arr2 = array_map( 'trim', $arr2 );
-            $arr2[] = '';
-            $arr2[] = '';
 
             if ( empty( $arr2[0] ) ) continue;
-            
-            // p($arr2);
-            
-            if ( is_string( $arr2[0] ) && empty( $arr2[1] ) && empty( $arr2[2] ) ) {
+            if ( empty( $arr2[1] ) ) continue;
+
+            if ( is_string( $arr2[0] ) && is_numeric( $arr2[1] ) ) {
                 
-                $arr[] = array( $arr2[0], $arr2[0], NULL );
-                continue;                
+                $arr[$arr2[0]] = $arr2[1];
                 
             }
-            
-            if ( is_string( $arr2[0] ) && is_numeric( $arr2[1] ) && empty( $arr2[2] ) ) {
-                
-                $arr[] = array( $arr2[0], $arr2[0], $arr2[1] );
-                continue;                
-                
-            }
-            
-            if ( is_string( $arr2[0] ) && is_string( $arr2[1] ) && empty( $arr2[2] ) ) {
-                
-                $arr[] = array( $arr2[0], $arr2[1], NULL );
-                continue;                
-                
-            }
-            
-            if ( is_string( $arr2[0] ) && is_string( $arr2[1] ) && is_numeric( $arr2[2] ) ) {
-               
-                $arr[] = array( $arr2[0], $arr2[1], $arr2[2] );
-                continue;                
-            
-            }
-            
-            // p('err');
 
         }
         
-        // p($arr);
+
+        // if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
+        
+        // $arr = array();
+
+        // $text = $this->get_companion_content( 'set-courses', $opop_id );
+        
+        // // Разбить текст на массив строк
+
+        // $data = preg_split( '/\\r\\n?|\\n/', $text );
+        // $data = array_map( 'strim', $data );
+        
+        // foreach ( $data as $item ) {
+            
+        //     $arr2 = explode( '::', $item );
+        //     $arr2 = array_map( 'trim', $arr2 );
+        //     $arr2[] = '';
+        //     $arr2[] = '';
+
+        //     if ( empty( $arr2[0] ) ) continue;
+            
+        //     if ( is_string( $arr2[0] ) && empty( $arr2[1] ) && empty( $arr2[2] ) ) {
+                
+        //         $arr[] = array( $arr2[0], $arr2[0], NULL );
+        //         continue;                
+                
+        //     }
+            
+        //     if ( is_string( $arr2[0] ) && is_numeric( $arr2[1] ) && empty( $arr2[2] ) ) {
+                
+        //         $arr[] = array( $arr2[0], $arr2[0], $arr2[1] );
+        //         continue;                
+                
+        //     }
+            
+        //     if ( is_string( $arr2[0] ) && is_string( $arr2[1] ) && empty( $arr2[2] ) ) {
+                
+        //         $arr[] = array( $arr2[0], $arr2[1], NULL );
+        //         continue;                
+                
+        //     }
+            
+        //     if ( is_string( $arr2[0] ) && is_string( $arr2[1] ) && is_numeric( $arr2[2] ) ) {
+               
+        //         $arr[] = array( $arr2[0], $arr2[1], $arr2[2] );
+        //         continue;                
+            
+        //     }
+
+        // }
         
         return apply_filters( 'mif_mr_set_core_arr_courses', $arr );
     }
+
+
+
+
+
+
+    // //
+    // // Возвращает массив из текста (post)
+    // //
+    // // новая::старая::course_id
+    // //
+    // // новая == старая          => Дисциплина                          => Дисциплина::Дисциплина
+    // // новая == старая, id      => Дисциплина::123                     => Дисциплина::Дисциплина::123
+    // // новая != старая          => Дисциплина 1::Дисциплина 2          => Дисциплина 1::Дисциплина 2
+    // // новая != старая, id      => Дисциплина 1::Дисциплина 2::123     => Дисциплина 1::Дисциплина 2::123
+    // // 
+
+    // public function get_arr_courses( $opop_id = NULL )
+    // {
+    //     if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
+        
+    //     $arr = array();
+
+    //     $text = $this->get_companion_content( 'set-courses', $opop_id );
+        
+    //     // Разбить текст на массив строк
+
+    //     $data = preg_split( '/\\r\\n?|\\n/', $text );
+    //     $data = array_map( 'strim', $data );
+        
+    //     foreach ( $data as $item ) {
+            
+    //         $arr2 = explode( '::', $item );
+    //         $arr2 = array_map( 'trim', $arr2 );
+    //         $arr2[] = '';
+    //         $arr2[] = '';
+
+    //         if ( empty( $arr2[0] ) ) continue;
+            
+    //         if ( is_string( $arr2[0] ) && empty( $arr2[1] ) && empty( $arr2[2] ) ) {
+                
+    //             $arr[] = array( $arr2[0], $arr2[0], NULL );
+    //             continue;                
+                
+    //         }
+            
+    //         if ( is_string( $arr2[0] ) && is_numeric( $arr2[1] ) && empty( $arr2[2] ) ) {
+                
+    //             $arr[] = array( $arr2[0], $arr2[0], $arr2[1] );
+    //             continue;                
+                
+    //         }
+            
+    //         if ( is_string( $arr2[0] ) && is_string( $arr2[1] ) && empty( $arr2[2] ) ) {
+                
+    //             $arr[] = array( $arr2[0], $arr2[1], NULL );
+    //             continue;                
+                
+    //         }
+            
+    //         if ( is_string( $arr2[0] ) && is_string( $arr2[1] ) && is_numeric( $arr2[2] ) ) {
+               
+    //             $arr[] = array( $arr2[0], $arr2[1], $arr2[2] );
+    //             continue;                
+            
+    //         }
+
+    //     }
+        
+    //     return apply_filters( 'mif_mr_set_core_arr_courses', $arr );
+    // }
     
     
 
@@ -235,102 +322,214 @@ class mif_mr_set_core extends mif_mr_table {
     
     public static function set_courses_to_tree( $t = array() )
     {
-        $arr = array();
+        // global $mif_mr_opop;
+        // $arr = array();
+
+
+        // foreach ( $t['content']['set-courses']['data'] as $key => $item ) {
+            
+        //     if ( is_numeric( $item ) ) {
+           
+        // //         if ( isset( $t['content']['lib-references']['data'][$item] ) )
+        //             $arr[$key] = $t['content']['lib-references']['data'][$item];
+            
+        //     } 
+        
+        // }
+
 
         $arr_raw = $t['content']['courses']['data'];
         $arr_lib = $t['content']['lib-courses']['data'];
         $arr_set = $t['content']['set-courses']['data'];
 
-        // p($arr_raw);
-        // p($arr_lib);
         // p($arr_set);
+        // p($arr_lib);
+
+
+        // $arr_param = $t['param']['parents']['data'];
         
         $index = array();
 
         foreach ( $arr_raw as $key => $item ) 
             if ( isset( $item['courses'] ) )
-                foreach ( $item['courses'] as $key2 => $item2 ) $index[$key2] = array( 'key' => $key, 'name' => $key2 );
+                foreach ( $item['courses'] as $key2 => $item2 ) $index[$key2] = array( 'module' => $key );
+                // foreach ( $item['courses'] as $key2 => $item2 ) $index[$key2] = array( 'key' => $key, 'name' => $key2 );
         
-        // p($index);
-        
-        $index2 = array();
-        $index3 = array();
+        ksort( $index );
 
-        foreach ( $arr_lib as $key => $item ) {
-
-            // p($item);
-            $index2[$item['name']][] = $key;
-            $index3[$item['comp_id']] = $item['from_id'];
-    
-            if ( isset( $index[$item['name']] ) ) {
-                
-                // $index2[$item['name']][] = $key;
-                // $index3[$item['comp_id']] = $item['from_id'];
-                // $index[$item['name']]['name'] = $item['name']; 
-
-                $index[$item['name']]['course_id_all'][] = $item['comp_id']; 
-                // $index[$item['name']]['from_id_all'][] = $item['from_id']; 
-                $index[$item['name']]['course_id'] = $item['comp_id']; 
-                $index[$item['name']]['from_id'] = $item['from_id']; 
-                $index[$item['name']]['auto'] = true; 
-                // continue;
-           
-            }
-
-        }
-
-        // p($index);
-        // p($index2);
-        // p($index3);
-        // p($arr_set);
-        
-        foreach ( $arr_set as $item ) {
-            
-            if ( ! isset( $index[$item[0]] ) ) continue;
-            if ( ! isset( $index2[$item[1]] ) ) continue;
-
-            // $k = 0;
-
-            // if ( isset( $item[2] ) ) {
-
-            //     foreach ( $index2[$item[1]] as $key2 => $item2 ) {
-                    
-                    
-            //         p($item2);
-                    
-            //     }
-            // }
-
-            // p($index[$item[0]]['course_id_all']);
-            // p($index[$item[0]]);
-            // p($index2[$item[1]]);
-
-            // $course_id = ( isset( $item[2] ) ) ? $item[2] : $index2[$item[1]][0]; 
-
-            // $index[$item[0]]['name'] = $item['name']; 
-            $index[$item[0]]['name_old'] = $item[1]; 
-            $index[$item[0]]['course_id_all'] = $index2[$item[1]]; 
-            $index[$item[0]]['course_id'] = ( isset( $item[2] ) ) ? $item[2] : $index2[$item[1]][0]; 
-            // $index[$item[0]]['course_id'] = $course_id; 
-            $index[$item[0]]['from_id'] = ( isset( $index3[$index[$item[0]]['course_id']] ) ) ? $index3[$index[$item[0]]['course_id']] : NULL; 
-            $index[$item[0]]['auto'] = false; 
-
-
-            // if ( isset( $index2[$item[2]] ) ) $index[$item[0]]['course_id'] = $item[2]; 
-
-
-            // p($arr_lib[$item[1]]);
-            // p($item);
-
-        }
-
-        // p($index);
-
+        $arr = array();
+        foreach ( $arr_lib as $key => $item ) $arr[$item['name']][] = array( 'comp_id' => $item['comp_id'], 'from_id' => $item['from_id']  );
 
         // p($arr);
+        // p($mif_mr_opop->current_opop_id);
+        // p($index);
+
+
+     
+
+        // Ручной метод
+        
+        $arr_set_clean = array();
+        
+        foreach ( $arr_set as $key => $item ) {
+
+            if ( empty( $arr_lib[$item] ) ) continue;
+            
+            $arr_set_clean[$key]['name'] = $arr_lib[$item]['name']; 
+            $arr_set_clean[$key]['comp_id'] = $arr_lib[$item]['comp_id']; 
+            $arr_set_clean[$key]['from_id'] = $arr_lib[$item]['from_id'];
+            
+        }
+
+        foreach ( $arr_set_clean as $key => $item ) {
+
+            if ( ! isset( $index[$key] ) ) continue;
+            if ( isset( $index[$key]['course_id'] ) ) continue;
+            $index[$key]['name_old'] = $item['name'];
+            $index[$key]['course_id'] = $item['comp_id'];
+            $index[$key]['from_id'] = $item['from_id'];
+            $index[$key]['method'] = 'manual';
+
+        }
+
+        // Локальные
+
+        foreach ( $arr as $key => $item ) {
+
+            if ( ! isset( $index[$key] ) ) continue;
+            if ( isset( $index[$key]['course_id'] ) ) continue;
+            
+            foreach ( $item as $i ) 
+                if ( $i['from_id'] == get_the_ID() ) {
+                    
+                    $index[$key]['course_id'] = $i['comp_id'];
+                    $index[$key]['from_id'] = $i['from_id'];
+                    $index[$key]['method'] = 'local';
+                    
+                    break;
+                }
+
+        }
+
+        // Из библиотеки
+
+        foreach ( $arr as $key => $item ) {
+
+            if ( ! isset( $index[$key] ) ) continue;
+            if ( isset( $index[$key]['course_id'] ) ) continue;
+
+            foreach ( $item as $i ) 
+                if ( $i['from_id'] != get_the_ID() ) {
+
+                    $index[$key]['course_id'] = $i['comp_id'];
+                    $index[$key]['from_id'] = $i['from_id'];
+                    $index[$key]['method'] = 'lib';
+
+                    break;
+                }
+
+        }
+
+        // count
+
+        foreach ( $arr as $key => $item ) if ( isset( $index[$key] ) ) $index[$key]['count'] = count($item );
+
+
+
+
+        // p($arr_set);
+        
+
+        // $index2 = array();
+        // $index3 = array();
+
+        // foreach ( $arr_lib as $key => $item ) {
+
+        //     $index2[$item['name']][] = $key;
+        //     $index3[$item['comp_id']] = $item['from_id'];
+    
+        //     if ( isset( $index[$item['name']] ) ) {
+                
+        //         $index[$item['name']]['course_id_all'][] = $item['comp_id']; 
+        //         $index[$item['name']]['course_id'] = $item['comp_id']; 
+        //         $index[$item['name']]['from_id'] = $item['from_id']; 
+        //         $index[$item['name']]['auto'] = true; 
+           
+        //     }
+
+        // }
+
+        // foreach ( $arr_set as $item ) {
+            
+        //     if ( ! isset( $index[$item[0]] ) ) continue;
+        //     if ( ! isset( $index2[$item[1]] ) ) continue;
+
+        //     $index[$item[0]]['name_old'] = $item[1]; 
+        //     $index[$item[0]]['course_id_all'] = $index2[$item[1]]; 
+        //     $index[$item[0]]['course_id'] = ( isset( $item[2] ) ) ? $item[2] : $index2[$item[1]][0]; 
+        //     $index[$item[0]]['from_id'] = ( isset( $index3[$index[$item[0]]['course_id']] ) ) ? $index3[$index[$item[0]]['course_id']] : NULL; 
+        //     $index[$item[0]]['auto'] = false; 
+
+        // }
 
         return apply_filters( 'mif_mr_comp_set_comp_to_tree', $index, $t );
     }
+
+
+
+
+    // //
+    // // 
+    // //
+    
+    // public static function set_courses_to_tree( $t = array() )
+    // {
+    //     $arr = array();
+
+    //     $arr_raw = $t['content']['courses']['data'];
+    //     $arr_lib = $t['content']['lib-courses']['data'];
+    //     $arr_set = $t['content']['set-courses']['data'];
+        
+    //     $index = array();
+
+    //     foreach ( $arr_raw as $key => $item ) 
+    //         if ( isset( $item['courses'] ) )
+    //             foreach ( $item['courses'] as $key2 => $item2 ) $index[$key2] = array( 'key' => $key, 'name' => $key2 );
+        
+    //     $index2 = array();
+    //     $index3 = array();
+
+    //     foreach ( $arr_lib as $key => $item ) {
+
+    //         $index2[$item['name']][] = $key;
+    //         $index3[$item['comp_id']] = $item['from_id'];
+    
+    //         if ( isset( $index[$item['name']] ) ) {
+                
+    //             $index[$item['name']]['course_id_all'][] = $item['comp_id']; 
+    //             $index[$item['name']]['course_id'] = $item['comp_id']; 
+    //             $index[$item['name']]['from_id'] = $item['from_id']; 
+    //             $index[$item['name']]['auto'] = true; 
+           
+    //         }
+
+    //     }
+
+    //     foreach ( $arr_set as $item ) {
+            
+    //         if ( ! isset( $index[$item[0]] ) ) continue;
+    //         if ( ! isset( $index2[$item[1]] ) ) continue;
+
+    //         $index[$item[0]]['name_old'] = $item[1]; 
+    //         $index[$item[0]]['course_id_all'] = $index2[$item[1]]; 
+    //         $index[$item[0]]['course_id'] = ( isset( $item[2] ) ) ? $item[2] : $index2[$item[1]][0]; 
+    //         $index[$item[0]]['from_id'] = ( isset( $index3[$index[$item[0]]['course_id']] ) ) ? $index3[$index[$item[0]]['course_id']] : NULL; 
+    //         $index[$item[0]]['auto'] = false; 
+
+    //     }
+
+    //     return apply_filters( 'mif_mr_comp_set_comp_to_tree', $index, $t );
+    // }
 
 
 
@@ -351,7 +550,8 @@ class mif_mr_set_core extends mif_mr_table {
         
         $text = $this->get_companion_content( 'set-references', $opop_id );
         
-       // Разбить текст на массив строк
+        // Разбить текст на массив строк
+
         $data = preg_split( '/\\r\\n?|\\n/', $text );
         $data = array_map( 'strim', $data );
         
@@ -365,16 +565,11 @@ class mif_mr_set_core extends mif_mr_table {
 
             if ( is_string( $arr2[0] ) && is_numeric( $arr2[1] ) ) {
                 
-                // $arr[] = array( $arr2[0], $arr2[1] );
                 $arr[$arr2[0]] = $arr2[1];
                 
             }
 
-            // p($arr2);
         }
-       
-        // p("@@@@");
-        // p($arr);
         
         return apply_filters( 'mif_mr_set_references_arr_comp', $arr );
     }
@@ -391,13 +586,6 @@ class mif_mr_set_core extends mif_mr_table {
         $arr = array();
         
         foreach ( $t['content']['set-references']['data'] as $key => $item ) {
-
-            // if ( is_numeric( $item[1] ) ) {
-           
-            //     if ( isset( $t['content']['lib-references']['data'][$item[1]]['data'] ) )
-            //         $arr[$item[0]] = $t['content']['lib-references']['data'][$item[1]]['data'];
-            
-            // } 
             
             if ( is_numeric( $item ) ) {
            

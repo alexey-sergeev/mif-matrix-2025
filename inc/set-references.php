@@ -97,7 +97,7 @@ class mif_mr_set_references extends mif_mr_set_core {
                 if ( ! empty( $tree['content']['set-references']['data'][$item['name']] ) ) {
 
                     $out .= '<div class="row">';
-                    $out .= '<div class="col p-3 mr-gray">';
+                    $out .= '<div class="col p-3">';
                     $out .= '<span class="fw-bolder">' . $item['title'] . '</span>';
                     $out .= '</div>';
                     $out .= '</div>';
@@ -109,7 +109,7 @@ class mif_mr_set_references extends mif_mr_set_core {
                         // p($reference);
                         // p($references_id);
                         
-                        $out .= '<div class="row mr-gray">';
+                        $out .= '<div class="row bg-light border rounded">';
                         
                         $out .= '<div class="col-10 col-md-11 pt-5 pb-5">';
                         $out .= '<a href="' . mif_mr_opop_core::get_opop_url() . 'lib-references/' . $reference['comp_id'] . '">' . $reference['name'] . '</a>';

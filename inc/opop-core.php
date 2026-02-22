@@ -60,7 +60,8 @@ class mif_mr_opop_core {
                                         ) );
                                         
         $this->current_opop_id = ( isset( $_REQUEST['opop'] ) ) ? (int) $_REQUEST['opop'] : get_the_ID();
-                                        
+        // p('@');                                
+        // p($this->current_opop_id);                                
         // p('$tree');
         // p($tree);
         // p($tree['courses']);
