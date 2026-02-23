@@ -430,7 +430,7 @@ class mif_mr_set_core extends mif_mr_table {
 
         }
 
-        // count
+        // Подсчет варианты
 
         foreach ( $arr as $key => $item ) if ( isset( $index[$key] ) ) $index[$key]['count'] = count($item );
 

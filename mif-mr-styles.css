@@ -33,7 +33,8 @@
 }
 
 
-.striped .row.select-item:nth-child(odd) {
+/* .striped .row.select-item:nth-child(odd) { */
+.striped .row:nth-child(odd) {
 	/* background: #F4F4F4; */
 	background:rgb(248, 249, 250);
 }

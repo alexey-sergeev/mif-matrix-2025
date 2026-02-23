@@ -306,6 +306,52 @@ class mif_mr_opop_core {
         return '<span class="bg-secondary text-light rounded pl-3 pr-3 p-1 copy copy-button">' . $comp_id . '</span>';
     }
     
+    
+
+    //
+    // Получить span метку
+    //
+
+    public static function get_span_label( $label = '1', $color = 'mr-red' )
+    {
+        return '<span class="p-1 pr-2 pl-2 mr-1 text-light rounded ' . $color . ' item-1"><i class="fa-solid fa-' . $label . ' fa-2xs"></i></span>';
+    }
+    
+
+
+    //
+    // Получить меню выбора
+    //
+
+    public static function get_select_menu_show( $arr = array() )
+    {
+        $out = '';
+
+        $g = '1';
+
+        foreach ( $arr as $i ) {
+
+            if ( $g != $i[3] ) $out .= '<div class="pb-4"></div>';
+            $g = $i[3];
+
+            $style = ( ! $i[5] ) ? ' style="display: none;"' : '';
+
+            $out .= '<div class="mb-2"' . $style . '>';
+            $out .= '<input class="form-check-input mr-3" type="checkbox" value="' . $i[0] . '" id="' . $i[0] . '" checked>';
+            // $out .= '<input class="form-check-input mr-3" type="checkbox" value="' . $i[0] . '" id="' . $i[0] . '">';
+            $out .= '<label class="form-check-label" for="' . $i[0] . '">';
+            $out .= '<span class="p-1 pl-2 pr-2 mr-1 text-light rounded ' . $i[1] . '"><i class="fa-solid fa-' . $i[2] . ' fa-xs"></i></span> ' . $i[4];
+            $out .= '</label>';
+            $out .= '</div>';
+
+        }
+
+        return $out;
+    }
+    
+
+
+
 
     //
     // Получить ссылку на файл
@@ -316,6 +362,15 @@ class mif_mr_opop_core {
         return '<a href="' . $url . '" class="mr-gray rounded p-2"><i class="fa-regular fa-file-' . $type . ' fa-lg"></i></a>';
         // return '<a href="' . $url . '" class="mr-gray rounded p-2"><i class="fa-solid fa-file-' . $type . ' fa-lg"></i></a>';
     }
+
+
+
+
+
+
+
+
+
 
 
         

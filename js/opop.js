@@ -792,8 +792,10 @@ jQuery( document ).ready( function( jq ) {
     // tools courses
     // 
 
-    jq( 'body' ).on( 'click', '.tools .select-menu input', function() {
+    jq( 'body' ).on( 'click', '.select-menu input', function() {
         
+        console.log('@');
+
         jq('.select-item', jq(this).closest('.container')).addClass('select-yes');
         jq('.select-item input[type="checkbox"]', jq(this).closest('.container')).prop('checked', false );
         jq('input[name="all"]', jq(this).closest('.container')).prop('checked', false );

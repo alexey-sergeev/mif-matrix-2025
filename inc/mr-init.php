@@ -275,7 +275,7 @@ class mif_mr_init extends mif_mr_types {
                     }     
 
                     if ( $_REQUEST['do'] == 'export' ) {
-                        
+                        // p($_REQUEST);
                         $m = new mif_mr_tools_courses();
                         echo $m->export( array(
                                                 // 'opop_title' => sanitize_text_field( $_REQUEST['opop_title'] ),
