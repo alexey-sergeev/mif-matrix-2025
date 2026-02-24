@@ -794,14 +794,24 @@ jQuery( document ).ready( function( jq ) {
 
     jq( 'body' ).on( 'click', '.select-menu input', function() {
         
-        console.log('@');
+        // console.log('@');
 
         jq('.select-item', jq(this).closest('.container')).addClass('select-yes');
         jq('.select-item input[type="checkbox"]', jq(this).closest('.container')).prop('checked', false );
         jq('input[name="all"]', jq(this).closest('.container')).prop('checked', false );
 
+        let item = {};
         jq('.select-menu input', jq(this).closest('.container')).each( function() { 
-            if ( ! jq(this).is(':checked') ) jq('.select-item.' + jq(this).val(), jq(this).closest('.container')).removeClass('select-yes');
+            item[jq(this).attr('data-item')] = 0;
+        });
+        
+        jq('.select-menu input', jq(this).closest('.container')).each( function() { 
+            if ( jq(this).is(':checked') ) item[jq(this).attr('data-item')] = 1; 
+        });
+
+        jq('.select-menu input', jq(this).closest('.container')).each( function() { 
+            if ( item[jq(this).attr('data-item')] == 1 && ! jq(this).is(':checked') )
+                jq('.select-item.' + jq(this).val(), jq(this).closest('.container')).removeClass('select-yes');
         });
         
         jq('.select-item', jq(this).closest('.container')).each( function() { 
@@ -1207,5 +1217,20 @@ jQuery( document ).ready( function( jq ) {
 
 
     }
+
+
+
+
+
+    // Question
+
+    jq( 'body' ).on( 'click', '.question', function() {
+        jq( '.answer', jq(this).closest('.col') ).slideToggle();
+        return false;
+    });  
+
+
+    
+
 
 });
