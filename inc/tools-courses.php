@@ -129,6 +129,16 @@ class mif_mr_tools_courses extends mif_mr_tools_info {
             $arr_info[$key]['class_2'] = ( $arr_info[$key]['item_2'] === 'local-no' ) ? 'mr-gray-2'  : ( ( $arr_info[$key]['item_2'] === 'local-yes' ) ? 'mr-green-2' : 'mr-orange-2' );
             $arr_info[$key]['class_3'] = ( $arr_info[$key]['item_3'] === 'lib-no' ) ? 'mr-gray-2'  : ( ( $arr_info[$key]['item_3'] === 'lib-yes') ? 'mr-magenta-2' : 'mr-orange-2' );
 
+            $arr_info[$key]['label_1'] = ( $arr_info[$key]['item_1'] === 'curriculum-yes' ) ? '1' : 'o';
+            $arr_info[$key]['label_2'] = ( $arr_info[$key]['item_2'] === 'local-no' ) ? 'o'  : ( ( $arr_info[$key]['item_2'] === 'local-yes' ) ? 'a' : 'a' );
+            $arr_info[$key]['label_3'] = ( $arr_info[$key]['item_3'] === 'lib-no' ) ? 'o'  : ( ( $arr_info[$key]['item_3'] === 'lib-yes') ? 'b' : 'b' );
+
+            $arr_info[$key]['desc_1'] = ( $arr_info[$key]['item_1'] === 'curriculum-yes' ) ? $this->description['curriculum-yes'] : $this->description['curriculum-no'];
+            $arr_info[$key]['desc_2'] = ( $arr_info[$key]['item_2'] === 'local-no' ) ? $this->description['local-no'] : 
+                                                ( ( $arr_info[$key]['item_2'] === 'local-yes' ) ? $this->description['local-yes'] : $this->description['local-maybe'] );
+            $arr_info[$key]['desc_3'] = ( $arr_info[$key]['item_3'] === 'lib-no' ) ? $this->description['lib-no'] : 
+                                                ( ( $arr_info[$key]['item_3'] === 'lib-yes') ? $this->description['lib-yes'] : $this->description['lib-maybe'] );
+
         }
 
         $out .= '<div class="container mt-5">';
@@ -166,9 +176,9 @@ class mif_mr_tools_courses extends mif_mr_tools_info {
             // $out .= '<span class="p-1 mr-1 text-light rounded ' . $arr_info[$key]['class_1'] . ' item-1"><i class="fa-solid fa-1 fa-xs"></i></span>';
             // $out .= '<span class="p-1 mr-1 text-light rounded ' . $arr_info[$key]['class_2'] . ' item-2"><i class="fa-solid fa-2 fa-xs"></i></span>';
             // $out .= '<span class="p-1 mr-1 text-light rounded ' . $arr_info[$key]['class_3'] . ' item-3"><i class="fa-solid fa-3 fa-xs"></i></span>';
-            $out .= mif_mr_opop_core::get_span_label( '1', $arr_info[$key]['class_1'] );
-            $out .= mif_mr_opop_core::get_span_label( '2', $arr_info[$key]['class_2'] );
-            $out .= mif_mr_opop_core::get_span_label( '3', $arr_info[$key]['class_3'] );
+            $out .= mif_mr_opop_core::get_span_label( $arr_info[$key]['label_1'], $arr_info[$key]['class_1'], $arr_info[$key]['desc_1'] );
+            $out .= mif_mr_opop_core::get_span_label( $arr_info[$key]['label_2'], $arr_info[$key]['class_2'], $arr_info[$key]['desc_2'] );
+            $out .= mif_mr_opop_core::get_span_label( $arr_info[$key]['label_3'], $arr_info[$key]['class_3'], $arr_info[$key]['desc_3'] );
             
             $out .= '</div>';
             $out .= '<div class="col col-2 p-2 text-end">';
@@ -322,35 +332,16 @@ class mif_mr_tools_courses extends mif_mr_tools_info {
 
         $arr3 = array(
                     array( 'curriculum-yes', 'mr-blue-2', '1', '1', $this->description['curriculum-yes'], $arr['curriculum-yes'] ),
-                    array( 'curriculum-no', 'mr-red-2', '1', '1', $this->description['curriculum-no'], $arr['curriculum-no'] ),
-                    array( 'local-no', 'mr-gray-2', '2', '2', $this->description['local-no'], $arr['local-no'] ),
-                    array( 'local-yes', 'mr-green-2', '2', '2', $this->description['local-yes'], $arr['local-yes'] ),
-                    array( 'local-maybe', 'mr-orange-2', '2', '2', $this->description['local-maybe'], $arr['local-maybe'] ),
-                    array( 'lib-no', 'mr-gray-2', '3', '3', $this->description['lib-no'],  $arr['lib-no'] ),
-                    array( 'lib-yes', 'mr-magenta-2', '3', '3', $this->description['lib-yes'], $arr['lib-yes'] ),
-                    array( 'lib-maybe', 'mr-orange-2', '3', '3', $this->description['lib-maybe'], $arr['lib-maybe'] ),
+                    array( 'curriculum-no', 'mr-red-2', 'o', '1', $this->description['curriculum-no'], $arr['curriculum-no'] ),
+                    array( 'local-no', 'mr-gray-2', 'o', '2', $this->description['local-no'], $arr['local-no'] ),
+                    array( 'local-yes', 'mr-green-2', 'a', '2', $this->description['local-yes'], $arr['local-yes'] ),
+                    array( 'local-maybe', 'mr-orange-2', 'a', '2', $this->description['local-maybe'], $arr['local-maybe'] ),
+                    array( 'lib-no', 'mr-gray-2', 'o', '3', $this->description['lib-no'],  $arr['lib-no'] ),
+                    array( 'lib-yes', 'mr-magenta-2', 'b', '3', $this->description['lib-yes'], $arr['lib-yes'] ),
+                    array( 'lib-maybe', 'mr-orange-2', 'b', '3', $this->description['lib-maybe'], $arr['lib-maybe'] ),
                 );
 
         $out .= mif_mr_opop_core::get_select_menu_show( $arr3 );        
-
-        // $g = '1';
-        // p($arr3);        
-        // foreach ( $arr3 as $i ) {
-
-        //     if ( $g != $i[2] ) $out .= '<div class="pb-4"></div>';
-        //     $g = $i[2];
-
-        //     // if ( ! $i[5] ) continue;
-        //     $style = ( ! $i[4] ) ? ' style="display: none;"' : '';
-
-        //     $out .= '<div class="mb-2"' . $style . '>';
-        //     $out .= '<input class="form-check-input mr-3" type="checkbox" value="' . $i[0] . '" id="' . $i[0] . '" checked>';
-        //     $out .= '<label class="form-check-label" for="' . $i[0] . '">';
-        //     $out .= '<span class="p-1 pl-2 pr-2 mr-1 text-light rounded ' . $i[1] . '"><i class="fa-solid fa-' . $i[2] . ' fa-xs"></i></span> ' . $i[3];
-        //     $out .= '</label>';
-        //     $out .= '</div>';
-
-        // }
 
         return $out;
     }

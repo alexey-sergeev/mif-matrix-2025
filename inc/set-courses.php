@@ -78,27 +78,27 @@ class mif_mr_set_courses extends mif_mr_set_core {
                 $a[$k]['label_1'] = 'o';
                 $a[$k]['color_1'] = 'mr-red-2';
                 $a[$k]['item_1'] = 'none';
-                $a[$k]['desc_1']['desc'] = $this->description['none'];
+                $a[$k]['desc_1'] = $this->description['none'];
 
                 if ( isset( $i['method'] ) && $i['method'] == 'local' ) {
                     $a[$k]['label_1'] = 'a';
                     $a[$k]['color_1'] = 'mr-green-2';
                     $a[$k]['item_1'] = 'local';
-                    $a[$k]['desc_1']['desc'] = $this->description['local'];
+                    $a[$k]['desc_1'] = $this->description['local'];
                 }
                     
                 if ( isset( $i['method'] ) && $i['method'] == 'lib' ) {
                     $a[$k]['label_1'] = 'b';
                     $a[$k]['color_1'] = 'mr-blue-2';
                     $a[$k]['item_1'] = 'lib';
-                    $a[$k]['desc_1']['desc'] = $this->description['lib'];
+                    $a[$k]['desc_1'] = $this->description['lib'];
                 }
                     
                 if ( isset( $i['method'] ) && $i['method'] == 'manual' ) {
                     $a[$k]['label_1'] = 'p';
                     $a[$k]['color_1'] = 'mr-magenta-2';
                     $a[$k]['item_1'] = 'manual';
-                    $a[$k]['desc_1']['desc'] = $this->description['manual'];
+                    $a[$k]['desc_1'] = $this->description['manual'];
                 }
 
                 // label_2
@@ -106,7 +106,7 @@ class mif_mr_set_courses extends mif_mr_set_core {
                 $a[$k]['label_2'] = '';
                 $a[$k]['color_2'] = '';
                 $a[$k]['item_2'] = 'count-no';
-                $a[$k]['desc_2']['desc'] = '';
+                $a[$k]['desc_2'] = '';
                 // $a[$k]['desc_2']['desc'] = $this->description['count-no'];
                 // $a[$k]['label_2'] = 'o';
                 // $a[$k]['color_2'] = 'mr-gray-2';
@@ -115,7 +115,7 @@ class mif_mr_set_courses extends mif_mr_set_core {
                     $a[$k]['label_2'] = 'm';
                     $a[$k]['color_2'] = 'mr-blue-2';
                     $a[$k]['item_2'] = 'count-yes';
-                    $a[$k]['desc_2']['desc'] = $this->description['count-yes'];
+                    $a[$k]['desc_2'] = $this->description['count-yes'];
                 }
 
                 // label_3
@@ -123,7 +123,7 @@ class mif_mr_set_courses extends mif_mr_set_core {
                 $a[$k]['label_3'] = '';
                 $a[$k]['color_3'] = '';
                 $a[$k]['item_3'] = 'name-old-no';
-                $a[$k]['desc_3']['desc'] = '';
+                $a[$k]['desc_3'] = '';
                 // $a[$k]['desc_3']['desc'] = $this->description['name-old-no'];
                 // $a[$k]['label_3'] = 'o';
                 // $a[$k]['color_3'] = 'mr-gray-2';
@@ -132,7 +132,7 @@ class mif_mr_set_courses extends mif_mr_set_core {
                     $a[$k]['label_3'] = 'e';
                     $a[$k]['color_3'] = 'mr-orange-2';
                     $a[$k]['item_3'] = 'name-old-yes';
-                    $a[$k]['desc_3']['desc'] = $this->description['name-old-yes'];
+                    $a[$k]['desc_3'] = $this->description['name-old-yes'];
                 }
 
             }
@@ -193,9 +193,9 @@ class mif_mr_set_courses extends mif_mr_set_core {
                 $out .= '<div class="col p-2">' . $k . $question . $name_old . '</div>';
 
                 $out .= '<div class="col col-2 p-2">';
-                $out .= mif_mr_opop_core::get_span_label( $a[$k]['label_3'], $a[$k]['color_3'], $a[$k]['desc_3']['desc'] ); 
-                $out .= mif_mr_opop_core::get_span_label( $a[$k]['label_2'], $a[$k]['color_2'], $a[$k]['desc_2']['desc'] ); 
-                $out .= mif_mr_opop_core::get_span_label( $a[$k]['label_1'], $a[$k]['color_1'], $a[$k]['desc_1']['desc'] ); 
+                $out .= mif_mr_opop_core::get_span_label( $a[$k]['label_3'], $a[$k]['color_3'], $a[$k]['desc_3'] ); 
+                $out .= mif_mr_opop_core::get_span_label( $a[$k]['label_2'], $a[$k]['color_2'], $a[$k]['desc_2'] ); 
+                $out .= mif_mr_opop_core::get_span_label( $a[$k]['label_1'], $a[$k]['color_1'], $a[$k]['desc_1'] ); 
                 $out .= '</div>';
                 
                 $out .= '<div class="col col-1 p-2">' . $span_id . '</div>';
