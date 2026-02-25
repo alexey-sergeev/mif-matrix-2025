@@ -59,22 +59,6 @@ class mif_mr_lib_courses_list extends mif_mr_lib_courses {
 
         $out .= $this->get_panel_search();
         
-        // foreach ( $index as $i ) {
-        //     foreach ( $i as $ii ) {
-        //         $item = $arr[$ii];
-        //         $out .= $this->get_lib_body( array( 
-        //                                             'comp_id' => $item['comp_id'],    
-        //                                             'name' => $item['name'],    
-        //                                             'from_id' => $item['from_id'],    
-        //                                             'type' => 'lib-courses',    
-        //                                         ) );
-        //     }
-        // }
-        
-        // $out .= $this->get_list_courses( array( 'opop_id' => $opop_id ) );
-        
-        
-        // $out .= '<div class="loading text-center text-secondary p-6 m-6" style="display: none"><i class="fas fa-spinner fa-3x fa-spin"></i></div>';
         $out .= '<div class="list-box">';
         $out .= $this->get_list_courses();
         $out .= '</div>';

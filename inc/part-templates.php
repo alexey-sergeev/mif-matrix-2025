@@ -74,21 +74,22 @@ function mif_mr_the_link_edit()
 function mif_mr_the_link_edit_visual()
 {
     global $mif_mr_set_comp;
+    global $mif_mr_set_courses;
     // global $mif_mr_set_references;
 
-    // if ( ! empty( $mif_mr_set_comp ) ) {
+    if ( ! empty( $mif_mr_set_comp ) ) {
 
         echo $mif_mr_set_comp->get_link_edit_visual();
         return;
 
-    // }
+    }
 
-    // if ( ! empty( $mif_mr_set_references ) ) {
+    if ( ! empty( $mif_mr_set_courses ) ) {
 
-    //     echo $mif_mr_set_references->get_link_edit_visual();
-    //     return;
+        echo $mif_mr_set_courses->get_link_edit_visual();
+        return;
 
-    // }
+    }
     
 }
 

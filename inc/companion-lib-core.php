@@ -543,47 +543,20 @@ class mif_mr_companion_core {
         $out = '';
         
         $out .= '<div class="row mt-5">';
+
         $out .= '<div class="col">';
         $out .= '<button type="button" class="btn btn-primary new mr-3">' . $att['button']. '</button>';
-        
-        if ( isset( $att['a'] ) ) 
-
-            
-            $out .= '<a href="' . $att['url']. '" class="btn btn-light border mr-text-decoration">' . $att['a'] . '</a>';
-        // $out .= '<button type="button" class="btn btn-light border">' . $att['a'] . '</button>';
-        
-        
-        
-        $out .= '</div>';
-        $out .= '<div class="col p-3 bg-light text-end">';
-        // // $out .= '<a href="#" class="mr-3 help"><i class="fa-solid fa-circle-question fa-xl"></i></a>';
-        // // $out .= '<a href="#" class="mr-3 help"><i class="fa-regular fa-life-ring fa-lg"></i></a>';
-        // $out .= '<a href="#" class="mr-3 help"><i class="fa-solid fa-spiral fa-lg"></i></a>';
-        // // $out .= '<a href="#" class="mr-3 help"><i class="fa-solid fa-graduation-cap fa-lg"></i></a>';
-        // // $out .= '<a href="#" class="mr-3 help"><i class="fa-regular fa-compass fa-lg"></i></a>';
-        // $out .= '@';
-        $out .= '</div>';
+        if ( isset( $att['a'] ) ) $out .= '<a href="' . $att['url']. '" class="btn btn-light border mr-text-decoration">' . $att['a'] . '</a>';
         $out .= '</div>';
 
-        // $out .= '<div class="row">';
-
-        // $out .= '<div class="col bg-light help-box" style="display: none;">';
-        // $out .= mif_mr_functions::get_callout( 
-        //             '<span class="bg-secondary text-light rounded pl-3 pr-3 p-1 copy">123</span>
-        //             — это идентификатор объекта (cписок компетенций, дисциплина, справочник). 
-        //             Если кликнете мышкой по номеру, вы скопируете его в буфера обмена. <br />
-        //             <a href="javascript:void(0)">456</a>
-        //             — это идентификатор ОПОП, в которой хранится объект. Если он не указан, то сохраняется в текущей ОПОП.
-        //             ', 'info' );;
+        // $out .= '<div class="col p-3 bg-light text-end">';
         // $out .= '</div>';
 
-        // $out .= '</div>';
-  
-
+        $out .= '</div>';
 
         $out .= '<div class="row new" style="display: none;">';
         $out .= '<div class="col mt-5">';
-        
+
         $out .= '<div class="mb-3">';
         $out .= '<label class="form-label">' . $att['title']. ':</label>';
         $out .= '<input name="title" class="form-control" autofocus>';
@@ -596,6 +569,7 @@ class mif_mr_companion_core {
         $out .= '<div class="form-text">' . $att['hint_b']. '</div>';
         $out .= '<button type="button" class="btn btn-primary mt-4 mr-3 create">Сохранить <i class="fas fa-spinner fa-spin d-none"></i></button>';
         $out .= '<button type="button" class="btn btn-light border mt-4 mr-3 cancel">Отмена <i class="fas fa-spinner fa-spin d-none"></i></button>';
+        $out .= '</div>';
         
         $out .= '<input type="hidden" name="opop" value="' . mif_mr_opop_core::get_opop_id() . '">';
         $out .= '<input type="hidden" name="action" value="' . $att['action'] . '">';

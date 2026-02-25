@@ -8,8 +8,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
-// class mif_mr_set_core extends mif_mr_part_companion {
-class mif_mr_set_core extends mif_mr_table {
+class mif_mr_set_core extends mif_mr_part_companion {
+// class mif_mr_set_core extends mif_mr_table {
     
     function __construct()
     {
@@ -383,9 +383,13 @@ class mif_mr_set_core extends mif_mr_table {
 
         foreach ( $arr_set_clean as $key => $item ) {
 
+            // p('@');
+            // p($key);
+            // p($item['name']);
+
             if ( ! isset( $index[$key] ) ) continue;
             if ( isset( $index[$key]['course_id'] ) ) continue;
-            $index[$key]['name_old'] = $item['name'];
+            if ( $key != $item['name'] ) $index[$key]['name_old'] = $item['name'];
             $index[$key]['course_id'] = $item['comp_id'];
             $index[$key]['from_id'] = $item['from_id'];
             $index[$key]['method'] = 'manual';
@@ -434,103 +438,8 @@ class mif_mr_set_core extends mif_mr_table {
 
         foreach ( $arr as $key => $item ) if ( isset( $index[$key] ) ) $index[$key]['count'] = count($item );
 
-
-
-
-        // p($arr_set);
-        
-
-        // $index2 = array();
-        // $index3 = array();
-
-        // foreach ( $arr_lib as $key => $item ) {
-
-        //     $index2[$item['name']][] = $key;
-        //     $index3[$item['comp_id']] = $item['from_id'];
-    
-        //     if ( isset( $index[$item['name']] ) ) {
-                
-        //         $index[$item['name']]['course_id_all'][] = $item['comp_id']; 
-        //         $index[$item['name']]['course_id'] = $item['comp_id']; 
-        //         $index[$item['name']]['from_id'] = $item['from_id']; 
-        //         $index[$item['name']]['auto'] = true; 
-           
-        //     }
-
-        // }
-
-        // foreach ( $arr_set as $item ) {
-            
-        //     if ( ! isset( $index[$item[0]] ) ) continue;
-        //     if ( ! isset( $index2[$item[1]] ) ) continue;
-
-        //     $index[$item[0]]['name_old'] = $item[1]; 
-        //     $index[$item[0]]['course_id_all'] = $index2[$item[1]]; 
-        //     $index[$item[0]]['course_id'] = ( isset( $item[2] ) ) ? $item[2] : $index2[$item[1]][0]; 
-        //     $index[$item[0]]['from_id'] = ( isset( $index3[$index[$item[0]]['course_id']] ) ) ? $index3[$index[$item[0]]['course_id']] : NULL; 
-        //     $index[$item[0]]['auto'] = false; 
-
-        // }
-
         return apply_filters( 'mif_mr_comp_set_comp_to_tree', $index, $t );
     }
-
-
-
-
-    // //
-    // // 
-    // //
-    
-    // public static function set_courses_to_tree( $t = array() )
-    // {
-    //     $arr = array();
-
-    //     $arr_raw = $t['content']['courses']['data'];
-    //     $arr_lib = $t['content']['lib-courses']['data'];
-    //     $arr_set = $t['content']['set-courses']['data'];
-        
-    //     $index = array();
-
-    //     foreach ( $arr_raw as $key => $item ) 
-    //         if ( isset( $item['courses'] ) )
-    //             foreach ( $item['courses'] as $key2 => $item2 ) $index[$key2] = array( 'key' => $key, 'name' => $key2 );
-        
-    //     $index2 = array();
-    //     $index3 = array();
-
-    //     foreach ( $arr_lib as $key => $item ) {
-
-    //         $index2[$item['name']][] = $key;
-    //         $index3[$item['comp_id']] = $item['from_id'];
-    
-    //         if ( isset( $index[$item['name']] ) ) {
-                
-    //             $index[$item['name']]['course_id_all'][] = $item['comp_id']; 
-    //             $index[$item['name']]['course_id'] = $item['comp_id']; 
-    //             $index[$item['name']]['from_id'] = $item['from_id']; 
-    //             $index[$item['name']]['auto'] = true; 
-           
-    //         }
-
-    //     }
-
-    //     foreach ( $arr_set as $item ) {
-            
-    //         if ( ! isset( $index[$item[0]] ) ) continue;
-    //         if ( ! isset( $index2[$item[1]] ) ) continue;
-
-    //         $index[$item[0]]['name_old'] = $item[1]; 
-    //         $index[$item[0]]['course_id_all'] = $index2[$item[1]]; 
-    //         $index[$item[0]]['course_id'] = ( isset( $item[2] ) ) ? $item[2] : $index2[$item[1]][0]; 
-    //         $index[$item[0]]['from_id'] = ( isset( $index3[$index[$item[0]]['course_id']] ) ) ? $index3[$index[$item[0]]['course_id']] : NULL; 
-    //         $index[$item[0]]['auto'] = false; 
-
-    //     }
-
-    //     return apply_filters( 'mif_mr_comp_set_comp_to_tree', $index, $t );
-    // }
-
 
 
 

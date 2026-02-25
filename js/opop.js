@@ -82,7 +82,6 @@ jQuery( document ).ready( function( jq ) {
     // new
     
     jq( 'body' ).on( 'click', '.comp a.new', function() {
-        // console.log( '@' );
         jq(this).closest('div.row').before('<span class="new"><span class="content-ajax"><a href="#" class="edit d-none" id="new" data-sub="-1">#</a></span></span>');
         jq('#new').trigger('click');
         return false;
@@ -147,13 +146,14 @@ jQuery( document ).ready( function( jq ) {
         let coll = {};
         jq( 'input.coll' ).each( function() { coll[jq(this).attr( 'data-key' )] = jq(this).attr( 'data-value' ); });
         
-        console.log( action );
-        console.log( action_do );
-        console.log( nonce );
-        console.log( sub_id );
-        console.log( name );
-        console.log( part );
-        console.log( coll );
+        // console.log( action );
+        // console.log( action_do );
+        // console.log( nonce );
+        // console.log( sub_id );
+        // console.log( name );
+        // console.log( part );
+        // console.log( coll );
+        console.log( div.html() );
         
         // let div = jq(elem).closest('span.content-ajax');
         jq( 'i.fa-spinner', jq(elem).closest('button') ).removeClass('d-none');
@@ -180,7 +180,7 @@ jQuery( document ).ready( function( jq ) {
                 if ( response ) {
                     
                     div.replaceWith( response )
-                    console.log( response );
+                    // console.log( response );
                     
                 } else {
                     
@@ -191,7 +191,7 @@ jQuery( document ).ready( function( jq ) {
             },
             error: function( response ) {
                 
-                console.log( response );
+                // console.log( response );
                 console.log( 'error 6' );
                 
             },
@@ -211,6 +211,7 @@ jQuery( document ).ready( function( jq ) {
     // list-comp
     
     jq( 'body' ).on( 'click', '.comp button.new', function() {
+        // console.log('@');
         jq( 'div.new', jq(this).closest('div.container') ).slideToggle();
         return false;
     })

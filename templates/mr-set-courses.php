@@ -26,7 +26,7 @@
                 
                 <div class="container">
                     
-                    <?php // mif_mr_the_link_edit_visual(); ?>
+                    <?php mif_mr_the_link_edit_visual(); ?>
                     <?php mif_mr_the_link_edit() ?>
                     <?php mif_mr_the_link_edit_advanced(); ?>
                     
