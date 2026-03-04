@@ -515,8 +515,10 @@ class mif_mr_companion_core {
         $out .= '<div class="col-2 col-md-1 pt-3 pb-3 text-end">';
         $out .= ( $att['from_id'] == mif_mr_opop_core::get_opop_id() ||  $att['from_id'] == 0 ) ?
                     '' :
-                    '<a href="' .  get_permalink( $att['from_id'] ) . '' . $att['type']. '/' . $att['comp_id'] . '" title="' . 
-                    mif_mr_functions::mb_substr( get_the_title( $att['from_id'] ), 20 ) . '">' . $att['from_id'] . '</a>';
+                    mif_mr_opop_core::get_a_id( $att['from_id'], get_permalink( $att['from_id'] ) . $att['type']. '/' . $att['comp_id'],
+                                                mif_mr_functions::mb_substr( get_the_title( $att['from_id'] ), 20 ) );
+                    // '<a href="' .  get_permalink( $att['from_id'] ) . '' . $att['type']. '/' . $att['comp_id'] . '" title="' . 
+                    // mif_mr_functions::mb_substr( get_the_title( $att['from_id'] ), 20 ) . '">' . $att['from_id'] . '</a>';
         $out .= '</div>';
         
         // $out .= '<div class="col-1 col-md-1 pt-3 pb-3 text-end copy-wrapper">';

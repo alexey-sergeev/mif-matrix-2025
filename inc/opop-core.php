@@ -309,12 +309,23 @@ class mif_mr_opop_core {
     
 
     //
+    // Получить a ID
+    //
+
+    public static function get_a_id( $comp_id, $url, $title = '', $class = 'pl-3 pr-3 p-1' )
+    {
+        return '<a href="' . $url . '" class="mr-gray rounded ' . $class . '" title="' . $title . '">' . $comp_id . '</a>';
+    }
+    
+    
+
+    //
     // Получить span метку
     //
 
-    public static function get_span_label( $label = '1', $color = 'mr-red', $desc = '' )
+    public static function get_span_label( $label = '1', $color = 'mr-red', $desc = '', $class = 'p-1 pr-2 pl-2 mr-1' )
     {
-        return '<span class="p-1 pr-2 pl-2 mr-1 text-light rounded ' . $color . ' item-1" title="' . $desc . '"><i class="fa-solid fa-' . $label . ' fa-2xs"></i></span>';
+        return '<span class="' . $class . ' text-light rounded ' . $color . ' item-1" title="' . $desc . '"><i class="fa-solid fa-' . $label . ' fa-2xs"></i></span>';
     }
     
 

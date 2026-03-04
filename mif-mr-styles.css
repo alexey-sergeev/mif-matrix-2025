@@ -28,9 +28,12 @@
 }
 
 .tie:hover {
-    /* background-color: #CED4DA; */
     background-color: #E9ECEF;
 }
+
+/* .tie:hover a.mr-gray {
+    background-color: #F8F9FA !important;
+} */
 
 
 /* .striped .row.select-item:nth-child(odd) { */
@@ -275,8 +278,8 @@ span.copy-button.act {
 }
 
 .mr-gray {
-    /* background-color: #f4f4f4 !important; */
-    background-color: #E9ECEF !important;
+    background-color: #f0f0f0 !important;
+    /* background-color: #E9ECEF !important; */
 }
 
 .mr-blue {

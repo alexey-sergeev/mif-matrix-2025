@@ -320,7 +320,7 @@ class mif_mr_set_core extends mif_mr_part_companion {
     // 
     //
     
-    public static function set_courses_to_tree( $t = array() )
+    public static function set_courses_to_tree( $t = array(), $opop_id = NULL )
     {
         // global $mif_mr_opop;
         // $arr = array();
@@ -393,8 +393,21 @@ class mif_mr_set_core extends mif_mr_part_companion {
             $index[$key]['course_id'] = $item['comp_id'];
             $index[$key]['from_id'] = $item['from_id'];
             $index[$key]['method'] = 'manual';
+            // $index[$key]['category'] = ( $item['from_id'] == get_the_ID() ) ? 'local' : 'lib';
 
         }
+
+        foreach ( $arr as $key => $item ) {
+
+            if ( ! isset( $index[$key] ) ) continue;
+            if ( ! isset( $index[$key]['method'] ) ) continue;
+            if ( $index[$key]['method'] != 'manual' ) continue;
+
+            // $index[$key]['category'] = ( $index[$key]['from_id'] == get_the_ID() ) ? 'local' : 'missing'; 
+            $index[$key]['category'] = ( $index[$key]['from_id'] == $opop_id ) ? 'local' : 'missing'; 
+            
+        }
+
 
         // Локальные
 
@@ -404,16 +417,19 @@ class mif_mr_set_core extends mif_mr_part_companion {
             if ( isset( $index[$key]['course_id'] ) ) continue;
             
             foreach ( $item as $i ) 
-                if ( $i['from_id'] == get_the_ID() ) {
+                // if ( $i['from_id'] == get_the_ID() ) {
+                if ( $i['from_id'] == $opop_id ) {
                     
                     $index[$key]['course_id'] = $i['comp_id'];
                     $index[$key]['from_id'] = $i['from_id'];
                     $index[$key]['method'] = 'local';
+                    $index[$key]['category'] = 'local';
                     
                     break;
                 }
 
         }
+
 
         // Из библиотеки
 
@@ -423,20 +439,24 @@ class mif_mr_set_core extends mif_mr_part_companion {
             if ( isset( $index[$key]['course_id'] ) ) continue;
 
             foreach ( $item as $i ) 
-                if ( $i['from_id'] != get_the_ID() ) {
+                // if ( $i['from_id'] != get_the_ID() ) {
+                if ( $i['from_id'] != $opop_id ) {
 
                     $index[$key]['course_id'] = $i['comp_id'];
                     $index[$key]['from_id'] = $i['from_id'];
                     $index[$key]['method'] = 'lib';
+                    $index[$key]['category'] = 'lib';
 
                     break;
                 }
 
         }
 
-        // Подсчет варианты
 
-        foreach ( $arr as $key => $item ) if ( isset( $index[$key] ) ) $index[$key]['count'] = count($item );
+        // Подсчет вариантов
+
+        foreach ( $arr as $key => $item ) if ( isset( $index[$key] ) ) $index[$key]['count'] = count( $item );
+
 
         return apply_filters( 'mif_mr_comp_set_comp_to_tree', $index, $t );
     }

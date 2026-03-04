@@ -18,6 +18,8 @@ class mif_mr_set_courses extends mif_mr_set_core {
                 'none' => 'Не закреплена',
                 'local'=> 'Автоматически (локальная)', 
                 'lib' => 'Автоматически (из библиотеки)', 
+                'cat-local'=> 'Локальная', 
+                'cat-lib' => 'Из библиотеки', 
                 'manual' => 'Ручной метод',
                 'count-yes' => 'Существуют другие варианты',
                 'count-no' => 'Единственный вариант в библиотеке',
@@ -76,94 +78,75 @@ class mif_mr_set_courses extends mif_mr_set_core {
         } else {
             
             $arr = $tree['content']['courses']['index'];
-            // ksort( $arr );
-            // p($arr);
 
-            $a = array();
+            // $a = array();
 
-            foreach ( $arr as $k => $i ) {
+            // foreach ( $arr as $k => $i ) {
 
-                // label_1
+            //     // label_1
+            //     $a[$k]['label_1'] = 'o';
+            //     $a[$k]['color_1'] = 'mr-red-2';
+            //     $a[$k]['item_1'] = 'none';
+            //     $a[$k]['desc_1'] = $this->description['none'];
 
-                $a[$k]['label_1'] = 'o';
-                $a[$k]['color_1'] = 'mr-red-2';
-                $a[$k]['item_1'] = 'none';
-                $a[$k]['desc_1'] = $this->description['none'];
-
-                if ( isset( $i['method'] ) && $i['method'] == 'local' ) {
-                    $a[$k]['label_1'] = 'a';
-                    $a[$k]['color_1'] = 'mr-green-2';
-                    $a[$k]['item_1'] = 'local';
-                    $a[$k]['desc_1'] = $this->description['local'];
-                }
+            //     if ( isset( $i['method'] ) && $i['method'] == 'local' ) {
+            //         $a[$k]['label_1'] = 'a';
+            //         $a[$k]['color_1'] = 'mr-green-2';
+            //         $a[$k]['item_1'] = 'local';
+            //         $a[$k]['desc_1'] = $this->description['local'];
+            //     }
                     
-                if ( isset( $i['method'] ) && $i['method'] == 'lib' ) {
-                    $a[$k]['label_1'] = 'b';
-                    $a[$k]['color_1'] = 'mr-blue-2';
-                    $a[$k]['item_1'] = 'lib';
-                    $a[$k]['desc_1'] = $this->description['lib'];
-                }
+            //     if ( isset( $i['method'] ) && $i['method'] == 'lib' ) {
+            //         $a[$k]['label_1'] = 'b';
+            //         $a[$k]['color_1'] = 'mr-blue-2';
+            //         $a[$k]['item_1'] = 'lib';
+            //         $a[$k]['desc_1'] = $this->description['lib'];
+            //     }
                     
-                if ( isset( $i['method'] ) && $i['method'] == 'manual' ) {
-                    $a[$k]['label_1'] = 'p';
-                    $a[$k]['color_1'] = 'mr-magenta-2';
-                    $a[$k]['item_1'] = 'manual';
-                    $a[$k]['desc_1'] = $this->description['manual'];
-                }
+            //     if ( isset( $i['method'] ) && $i['method'] == 'manual' ) {
+            //         $a[$k]['label_1'] = 'p';
+            //         $a[$k]['color_1'] = 'mr-magenta-2';
+            //         $a[$k]['item_1'] = 'manual';
+            //         $a[$k]['desc_1'] = $this->description['manual'];
+            //     }
 
-                // label_2
+            //     // label_2
 
-                $a[$k]['label_2'] = '';
-                $a[$k]['color_2'] = '';
-                $a[$k]['item_2'] = 'count-no';
-                $a[$k]['desc_2'] = '';
-                // $a[$k]['desc_2']['desc'] = $this->description['count-no'];
-                // $a[$k]['label_2'] = 'o';
-                // $a[$k]['color_2'] = 'mr-gray-2';
+            //     $a[$k]['label_2'] = '';
+            //     $a[$k]['color_2'] = '';
+            //     $a[$k]['item_2'] = 'count-no';
+            //     $a[$k]['desc_2'] = '';
+            //     // $a[$k]['desc_2']['desc'] = $this->description['count-no'];
+            //     // $a[$k]['label_2'] = 'o';
+            //     // $a[$k]['color_2'] = 'mr-gray-2';
                 
-                if ( isset( $i['count'] ) && $i['count'] > 1 ) {
-                    $a[$k]['label_2'] = 'm';
-                    $a[$k]['color_2'] = 'mr-blue-2';
-                    $a[$k]['item_2'] = 'count-yes';
-                    $a[$k]['desc_2'] = $this->description['count-yes'];
-                }
+            //     if ( isset( $i['count'] ) && $i['count'] > 1 ) {
+            //         $a[$k]['label_2'] = 'm';
+            //         $a[$k]['color_2'] = 'mr-blue-2';
+            //         $a[$k]['item_2'] = 'count-yes';
+            //         $a[$k]['desc_2'] = $this->description['count-yes'];
+            //     }
 
-                // label_3
+            //     // label_3
 
-                $a[$k]['label_3'] = '';
-                $a[$k]['color_3'] = '';
-                $a[$k]['item_3'] = 'name-old-no';
-                $a[$k]['desc_3'] = '';
-                // $a[$k]['desc_3']['desc'] = $this->description['name-old-no'];
-                // $a[$k]['label_3'] = 'o';
-                // $a[$k]['color_3'] = 'mr-gray-2';
+            //     $a[$k]['label_3'] = '';
+            //     $a[$k]['color_3'] = '';
+            //     $a[$k]['item_3'] = 'name-old-no';
+            //     $a[$k]['desc_3'] = '';
+            //     // $a[$k]['desc_3']['desc'] = $this->description['name-old-no'];
+            //     // $a[$k]['label_3'] = 'o';
+            //     // $a[$k]['color_3'] = 'mr-gray-2';
                 
-                if ( isset( $i['name_old'] ) && $i['name_old'] != $k ) {
-                    $a[$k]['label_3'] = 'e';
-                    $a[$k]['color_3'] = 'mr-orange-2';
-                    $a[$k]['item_3'] = 'name-old-yes';
-                    $a[$k]['desc_3'] = $this->description['name-old-yes'];
-                }
+            //     if ( isset( $i['name_old'] ) && $i['name_old'] != $k ) {
+            //         $a[$k]['label_3'] = 'e';
+            //         $a[$k]['color_3'] = 'mr-orange-2';
+            //         $a[$k]['item_3'] = 'name-old-yes';
+            //         $a[$k]['desc_3'] = $this->description['name-old-yes'];
+            //     }
 
-            }
+            // }
 
-
-            // $arr2 = array(
-            //             array( 'none', 'mr-red-2', 'o', '1', $this->description['none'], true ),
-            //             array( 'local', 'mr-green-2', 'a', '1', $this->description['local'], true ),
-            //             array( 'lib', 'mr-blue-2', 'b', '1', $this->description['lib'], true ),
-            //             array( 'manual', 'mr-magenta-2', 'o', '1', $this->description['manual'], true ), 
-            //             array( 'count-yes', 'mr-blue-2', 'p', '2', $this->description['count-yes'], true ),
-            //             array( 'count-no', 'mr-gray-2', 'o', '2', $this->description['count-no'], true ),
-            //             array( 'name-old-yes', 'mr-orange-2', 'e', '3', $this->description['name-old-yes'], true ), 
-            //             array( 'name-old-no', 'mr-gray-2', 'o', '3', $this->description['name-old-no'], true ),
-            //             );
-
-                     
-            // foreach ($this->description as $k => $d ) $arr2[] = array( $k, 'mr-gray-2', '1', $d, true );
-
-            // p($arr2);
-
+            $a = $this->get_select_info();
 
 
             $out = '';
@@ -196,7 +179,9 @@ class mif_mr_set_courses extends mif_mr_set_core {
 
                 // $course_id = ( isset( $i['course_id'] ) ) ? $i['course_id'] : '';
                 $course_id_manual = ( isset( $i['method'] ) && $i['method'] == 'manual' ) ? $i['course_id'] : '';
-                $span_id = ( isset( $i['course_id'] ) ) ? mif_mr_opop_core::get_span_id( $i['course_id'] ) : '';
+                // $span_id = ( isset( $i['course_id'] ) ) ? mif_mr_opop_core::get_span_id( $i['course_id'] ) : '';
+                // $span_id = ( isset( $i['course_id'] ) ) ? '<a href="' . mif_mr_opop_core::get_opop_url() . 'lib-courses/' . $i['course_id'] . '" class="rounded mr-gray p-1 pr-3 pl-3">' . $i['course_id'] . '</a>' : '';
+                $span_id = ( isset( $i['course_id'] ) ) ? mif_mr_opop_core::get_a_id( $i['course_id'], mif_mr_opop_core::get_opop_url() . 'lib-courses/' . $i['course_id'] ) : '';
                 $question = ( isset( $i['name_old'] ) ) ? '<span class="question rounded-circle mr-gray ml-2 p-1 pr-2 pl-2"><i class="fa-solid fa-question fa-xs"></i></span>' : '';
                 $name_old = ( isset( $i['name_old'] ) ) ? '<div class="answer" style="display: none;"><div class="p-2 mt-3 mb-3 mr-gray"><i>Старое название: ' . $i['name_old'] . '</i></div></div>' : '';
 
@@ -234,15 +219,116 @@ class mif_mr_set_courses extends mif_mr_set_core {
 
         }
         
-        
-
-
-
-        
         return apply_filters( 'mif_mr_show_set_courses', $out );
     }
     
+
     
+
+
+    //
+    // Получить меню выбора
+    //
+
+    public function get_select_info()
+    {
+        global $tree;
+
+        $arr = $tree['content']['courses']['index'];
+        $a = array();
+        // p($arr);
+        foreach ( $arr as $k => $i ) {
+
+            // // label
+            
+            // $a[$k]['label'] = 'o';
+            // $a[$k]['color'] = 'mr-red-2';
+            // $a[$k]['item'] = 'none';
+            // $a[$k]['desc'] = $this->description['none'];
+
+            // if ( isset( $i['category'] ) && $i['category'] == 'local' ) {
+            //     $a[$k]['label'] = 'a';
+            //     $a[$k]['color'] = 'mr-green-2';
+            //     $a[$k]['item'] = 'local';
+            //     $a[$k]['desc'] = $this->description['cat-local'];
+            // }
+                
+            // if ( isset( $i['category'] ) && $i['category'] == 'lib' ) {
+            //     $a[$k]['label'] = 'b';
+            //     $a[$k]['color'] = 'mr-blue-2';
+            //     $a[$k]['item'] = 'lib';
+            //     $a[$k]['desc'] = $this->description['cat-lib'];
+            // }
+                
+            // label_1
+
+            $a[$k]['label_1'] = 'o';
+            $a[$k]['color_1'] = 'mr-red-2';
+            $a[$k]['item_1'] = 'none';
+            $a[$k]['desc_1'] = $this->description['none'];
+
+            if ( isset( $i['method'] ) && $i['method'] == 'local' ) {
+                $a[$k]['label_1'] = 'a';
+                $a[$k]['color_1'] = 'mr-green-2';
+                $a[$k]['item_1'] = 'local';
+                $a[$k]['desc_1'] = $this->description['local'];
+            }
+                
+            if ( isset( $i['method'] ) && $i['method'] == 'lib' ) {
+                $a[$k]['label_1'] = 'b';
+                $a[$k]['color_1'] = 'mr-blue-2';
+                $a[$k]['item_1'] = 'lib';
+                $a[$k]['desc_1'] = $this->description['lib'];
+            }
+                
+            if ( isset( $i['method'] ) && $i['method'] == 'manual' ) {
+                $a[$k]['label_1'] = 'p';
+                $a[$k]['color_1'] = 'mr-magenta-2';
+                $a[$k]['item_1'] = 'manual';
+                $a[$k]['desc_1'] = $this->description['manual'];
+            }
+
+            // label_2
+
+            $a[$k]['label_2'] = '';
+            $a[$k]['color_2'] = '';
+            $a[$k]['item_2'] = 'count-no';
+            $a[$k]['desc_2'] = '';
+            // $a[$k]['desc_2']['desc'] = $this->description['count-no'];
+            // $a[$k]['label_2'] = 'o';
+            // $a[$k]['color_2'] = 'mr-gray-2';
+            
+            if ( isset( $i['count'] ) && $i['count'] > 1 ) {
+                $a[$k]['label_2'] = 'm';
+                $a[$k]['color_2'] = 'mr-blue-2';
+                $a[$k]['item_2'] = 'count-yes';
+                $a[$k]['desc_2'] = $this->description['count-yes'];
+            }
+
+            // label_3
+
+            $a[$k]['label_3'] = '';
+            $a[$k]['color_3'] = '';
+            $a[$k]['item_3'] = 'name-old-no';
+            $a[$k]['desc_3'] = '';
+            // $a[$k]['desc_3']['desc'] = $this->description['name-old-no'];
+            // $a[$k]['label_3'] = 'o';
+            // $a[$k]['color_3'] = 'mr-gray-2';
+            
+            if ( isset( $i['name_old'] ) && $i['name_old'] != $k ) {
+                $a[$k]['label_3'] = 'e';
+                $a[$k]['color_3'] = 'mr-orange-2';
+                $a[$k]['item_3'] = 'name-old-yes';
+                $a[$k]['desc_3'] = $this->description['name-old-yes'];
+            }
+
+        }
+
+        return apply_filters( 'mif_mr_get_select_info', $a, $arr );
+    }
+     
+
+
     
 
     //
