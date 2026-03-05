@@ -301,9 +301,9 @@ class mif_mr_opop_core {
     // Получить span ID
     //
 
-    public static function get_span_id( $comp_id )
+    public static function get_span_id( $comp_id, $class = 'bg-secondary' )
     {
-        return '<span class="bg-secondary text-light rounded pl-3 pr-3 p-1 copy copy-button">' . $comp_id . '</span>';
+        return '<span class="' . $class . ' text-light rounded pl-3 pr-3 p-1 copy copy-button">' . $comp_id . '</span>';
     }
     
     
@@ -483,7 +483,14 @@ class mif_mr_opop_core {
             $blank = apply_filters( 'course-x-tpl', dirname( __FILE__ ) . '/../templates/xlsx/course-x-tpl.xlsx' );
 
             // $arr['name'] .= '123.xlsx';
-            $arr['name'] .= $arr2['name'] . ' (шаблон дисциплины, raw).xlsx';
+            // $name = $arr2['name'];
+            // if ( isset( $_REQUEST['name'] ) ) $name = sanitize_text_field( $_REQUEST['name'] );
+            
+            if ( empty( $arr2['name'] ) && isset( $_REQUEST['name'] ) ) $arr2['name'] = sanitize_text_field( $_REQUEST['name'] );
+            if ( empty( $arr2['data'] ) && isset( $_REQUEST['name'] ) ) $arr2['data'] = array('data'=>array()); // !!!!
+
+            // $arr['name'] .= $name . ' (шаблон дисциплины).xlsx';
+            $arr['name'] .= $arr2['name'] . ' (шаблон дисциплины).xlsx';
 
             $m = new mif_mr_xlsx_tpl( $blank );
             $m->arr_to_xlsx( $arr2 );

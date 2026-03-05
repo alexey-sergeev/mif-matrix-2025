@@ -153,7 +153,7 @@ class mif_mr_lib_courses_list extends mif_mr_lib_courses {
 
         }
 
-        $count = count($arr);
+        $count = count( $arr );
 
         $numbers = ceil( $count / $this->courses_per_page );
         $current = ( isset( $att['num'] ) ) ? $att['num'] : 0;
@@ -170,6 +170,9 @@ class mif_mr_lib_courses_list extends mif_mr_lib_courses {
         $arr3 = array_chunk( $arr2, $this->courses_per_page );
         $arr4 = ( $current !== -1 ) ? $arr3[$current] : $arr2;
 
+        $index2 = array();
+        foreach ( $tree['content']['courses']['index'] as $i ) if ( isset( $i['course_id'] ) ) $index2[$i['course_id']] = true;
+
         $out = '';
 
         if ( $count !== 0 ) $out .= '<div class="fw-semibold mb-3">Всего: <span class="p-1 pl-3 pr-3 mr-gray rounded">' . $count . '</span></div>';
@@ -178,6 +181,7 @@ class mif_mr_lib_courses_list extends mif_mr_lib_courses {
         foreach ( $arr4 as $item ) {
 
             $is_curriculum = ( ! empty( $tree['content']['courses']['index'][$item['name']] ) ) ? true : false;
+            $is_employ = ( ! empty( $index2[$item['comp_id']] ) ) ? true : false;
 
             $out .= $this->get_lib_body( array( 
                                                 'comp_id' => $item['comp_id'],    
@@ -185,6 +189,7 @@ class mif_mr_lib_courses_list extends mif_mr_lib_courses {
                                                 'from_id' => $item['from_id'],    
                                                 'type' => 'lib-courses',  
                                                 'is_curriculum' => $is_curriculum,
+                                                'is_employ' => $is_employ,
                                             ) );
 
         }

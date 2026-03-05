@@ -44,16 +44,18 @@ class mif_mr_xlsx_tpl extends mif_mr_xlsx {
         $arr2 = array();
 
         // p($this->scheme['name'][0]);
-
         // $this->set( $this->scheme['name'][0], 'name' );
-
         // f($this->scheme['name'][0]);
+
+        // $name = $arr['name'];
+        // if ( isset( $_REQUEST['name'] ) ) $name = sanitize_text_field( $_REQUEST['name'] );
 
         // Название, Цель
 
         $this->set( $this->scheme['name'][0], $arr['name'] );
-        $this->set( $this->scheme['target'][0], $a['content']['target'] );
-        $this->set( $this->scheme['target_max'][0], $a['content']['target'] );
+        // $this->set( $this->scheme['name'][0], $name );
+        if ( ! empty( $a['content']['target'] ) ) $this->set( $this->scheme['target'][0], $a['content']['target'] );
+        if ( ! empty( $a['content']['target'] ) ) $this->set( $this->scheme['target_max'][0], $a['content']['target'] );
 
         // Разделы
 
@@ -79,8 +81,8 @@ class mif_mr_xlsx_tpl extends mif_mr_xlsx {
 
         // Ячейки для выравнивания размеров
 
-        $this->set( $this->scheme['parts_name_max'][0], $this->max( $a['content']['parts'], 'name' ) );
-        $this->set( $this->scheme['parts_content_max'][0], $this->max( $a['content']['parts'], 'content' ) );
+        if ( ! empty( $a['content']['parts'] ) ) $this->set( $this->scheme['parts_name_max'][0], $this->max( $a['content']['parts'], 'name' ) );
+        if ( ! empty( $a['content']['parts'] ) ) $this->set( $this->scheme['parts_content_max'][0], $this->max( $a['content']['parts'], 'content' ) );
         
         for ( $j = 0; $j < 2; $j++ ) { 
             

@@ -79,6 +79,18 @@ class mif_mr_courses extends mif_mr_table {
         
         $a = $tree['content']['courses']['index'];
         // p($a[$key2]);
+        // p($courses_arr[$key]['courses'][$key2]['unit']);
+
+        $making = ( in_array( $courses_arr[$key]['courses'][$key2]['unit'], array( 'ЭК', 'ЗЧ', 'ЗЧО', 'К', 'КР', 'КРП', 'ГИА' ) )  ) ? false : true;
+
+        $course_id = ( isset( $a[$key2]['course_id'] ) ) ? $a[$key2]['course_id'] : 0;
+        $link = mif_mr_opop_core::get_opop_url() . 'lib-courses/' . $course_id;
+        
+        
+        // p($making);
+
+
+
 
         // // Ссылка 
 
@@ -87,7 +99,7 @@ class mif_mr_courses extends mif_mr_table {
 
         // %
 
-        $text = '<span class="mr-green rounded pl-2 pr-2 p-1">100</span>';
+        $text = ( $making ) ? '<span class="mr-green rounded pl-2 pr-2 p-1">100</span>' : '';
         $arr[] = $this->add_to_col( $text, array('elem' => 'td', 'class' => '', 'title' => '') );
 
         // НС
@@ -119,26 +131,31 @@ class mif_mr_courses extends mif_mr_table {
         
         // Шаблон
 
-        $text = '<a href="#" class="mr-gray rounded p-1" title="Шаблон дисциплины"><i class="fa-regular fa-file-excel"></i></a>';
+        $name_new_course = ( isset( $a[$key2]['course_id'] ) ) ? '' : '&name=' . urlencode( $key2 );
+
+        $text = ( $making ) ? '<a href="' . $link . '?download=course-x-tpl' . $name_new_course . '" class="mr-gray rounded p-1" title="Шаблон дисциплины"><i class="fa-regular fa-file-excel"></i></a>' : '';
         $arr[] = $this->add_to_col( $text, array('elem' => 'td', 'class' => '', 'title' => '') );
         
-        // Шаблон плюс
+        // // Шаблон плюс
         
-        $text = '<a href="#" class="mr-gray rounded p-1" title="Шаблон (компетенции плюс)"><i class="fa-regular fa-file-excel"></i></a>';
-        $arr[] = $this->add_to_col( $text, array('elem' => 'td', 'class' => '', 'title' => '') );
+        // $text = ( $making ) ? '<a href="#" class="mr-gray rounded p-1" title="Шаблон (компетенции плюс)"><i class="fa-regular fa-file-excel"></i></a>' : '';
+        // $arr[] = $this->add_to_col( $text, array('elem' => 'td', 'class' => '', 'title' => '') );
         
         // Ссылка 
 
         $text = '';
+
         if ( isset( $a[$key2]['course_id'] ) ) {
-            $text = mif_mr_opop_core::get_a_id( $a[$key2]['course_id'], 
-                                                mif_mr_opop_core::get_opop_url() . 'lib-courses/' . $a[$key2]['course_id'], 
-                                                'Ссылка на библиотеку', 'p-1 pl-2 pr-2' );
+            $text = ( $making ) ? mif_mr_opop_core::get_a_id( $a[$key2]['course_id'], 
+                                                // mif_mr_opop_core::get_opop_url() . 'lib-courses/' . $a[$key2]['course_id'] . '?back=courses', 
+                                                $link . '?back=courses', 
+                                                'Ссылка на библиотеку', 'p-1 pl-2 pr-2' ) : '';
         } else {
 
-            $text = mif_mr_opop_core::get_a_id( '<i class="fa-regular fa-file-lines"></i><i class="fa-solid fa-arrow-right"></i>', 
-                                                mif_mr_opop_core::get_opop_url() . 'lib-courses/', 
-                                                'Создать и перейти', 'p-1' );
+            $text = ( $making ) ? mif_mr_opop_core::get_a_id( '<i class="fa-regular fa-file-lines"></i><i class="fa-solid fa-arrow-right"></i>', 
+                                                // mif_mr_opop_core::get_opop_url() . 'lib-courses/0?back=courses&title=' . urlencode( $key2 ), 
+                                                $link . '?back=courses&title=' . urlencode( $key2 ), 
+                                                'Создать и перейти', 'p-1' ) : '';
 
         }
 
@@ -157,15 +174,15 @@ class mif_mr_courses extends mif_mr_table {
         $arr[] = $this->add_to_col( 'Компетенции', array('elem' => 'th' ) );
         $arr[] = $this->add_to_col( 'Каф.', array('elem' => 'th' ) );
         $arr[] = $this->add_to_col( '', array('elem' => 'th' ) );
-        $arr[] = $this->add_to_col( '', array('elem' => 'th' ) );
-        $arr[] = $this->add_to_col( '', array('elem' => 'th' ) );
+        // $arr[] = $this->add_to_col( '', array('elem' => 'th' ) );
+        $arr[] = $this->add_to_col( 'Raw', array('elem' => 'th' ) );
         return $arr;
     }
 
 
     public function filter_tbody_colspan( $n )
     {
-        return $n + 7;
+        return $n + 6;
     }
 
 

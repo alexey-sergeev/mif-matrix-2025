@@ -77,7 +77,7 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses_list {
         global $wp_query;
 
         if ( isset( $_REQUEST['sub'] ) ) $this->save_part( sanitize_key( $_REQUEST['sub'] ), $course_id, $opop_id, true );
-        
+
         global $tree;
         
         // p( $tree['content']['lib-courses']['data'][$wp_query->query_vars['id']] ); 
@@ -85,9 +85,22 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses_list {
         if ( empty( $opop_id ) ) $opop_id = mif_mr_opop_core::get_opop_id();
         if ( empty( $course_id ) ) $course_id = (int) $wp_query->query_vars['id'];
         
+        $out = '';
+        
+        if ( $course_id == 0 ) {
+            
+            $res = $this->create( $opop_id, 'lib-courses' );
+            $back = ( isset( $_REQUEST['back'] ) ) ? '?back=' . sanitize_key( $_REQUEST['back'] ) : '';
+            $out .= '<script> window.location.href = "' . mif_mr_opop_core::get_opop_url() . 'lib-courses/' . $res . $back . '"; </script>';
+
+        }
+
+        $name_new = array();
+        foreach ( $tree['content']['courses']['index'] as $k => $i ) if ( isset( $i['name_old'] ) ) $name_new[$i['course_id']] = $k;
+
+        // p($index);
         // p($arr);
         
-        $out = '';
         $f = true;
         
         $out .= '<div class="content-ajax">';
@@ -99,6 +112,13 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses_list {
             
             $out .= '<h4 class="mb-4 mt-0 pb-5 pt-5 bg-body fiksa">' . $arr['name'] . '</h4>';
             
+
+            if ( isset( $name_new[$course_id] ) ) $out .= mif_mr_functions::get_callout( 
+                   '<span class="fw-bolder">' . $name_new[$course_id] . '</span> (это указано в учебном плане)', 'warning' );
+                //    'В учебном плане это называется: <b>' . $name_new[$course_id] . '</b>', 'warning' );
+
+
+
             if ( isset( $_REQUEST['edit'] ) ) {
 
                 $out .= $this->get_edit( $course_id );

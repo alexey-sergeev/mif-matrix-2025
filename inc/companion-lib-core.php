@@ -445,7 +445,7 @@ class mif_mr_companion_core {
                     Если кликнете мышкой по номеру, вы скопируете его в буфера обмена. <br />
                     <a href="javascript:void(0)">456</a>
                     — это идентификатор ОПОП, в которой хранится объект. Если он не указан, то сохраняется в текущей ОПОП.
-                    ', 'info' );;
+                    ', 'info' );
         $out .= '</div>';
 
         $out .= '</div>';
@@ -509,7 +509,9 @@ class mif_mr_companion_core {
         }
 
         $out .= '<div class="col-2 col-md-1 pt-3 pb-3 text-end copy-wrapper">';
-        $out .= mif_mr_opop_core::get_span_id( $att['comp_id'] );
+        $out .= ( isset( $att['is_employ'] ) && $att['is_employ'] ) ? 
+                    mif_mr_opop_core::get_span_id( $att['comp_id'], 'mr-green-2' ) :
+                    mif_mr_opop_core::get_span_id( $att['comp_id']);
         $out .= '</div>';
         
         $out .= '<div class="col-2 col-md-1 pt-3 pb-3 text-end">';
