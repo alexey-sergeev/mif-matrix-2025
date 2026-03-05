@@ -10,9 +10,10 @@ defined( 'ABSPATH' ) || exit;
 
 include_once dirname( __FILE__ ) . '/opop-core.php';
 include_once dirname( __FILE__ ) . '/opop-tree-raw.php';
+include_once dirname( __FILE__ ) . '/opop-tree-clean.php';
 include_once dirname( __FILE__ ) . '/opop-templates.php';
 
-class mif_mr_opop extends mif_mr_opop_tree_raw {
+class mif_mr_opop extends mif_mr_opop_tree_clean {
     
 
     function __construct()

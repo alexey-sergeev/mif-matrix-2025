@@ -23,42 +23,42 @@ class mif_mr_opop_tree_raw extends mif_mr_opop_core {
         // echo $_REQUEST['opop'];
 
         global $tree;
-        $tree = $this->get_tree(); 
+        $tree = $this->get_tree_raw(); 
 
         // p($tree);
     }
     
 
-    // 
-    // Tree
-    // 
+    // // 
+    // // Tree
+    // // 
     
-    public function get_tree()
-    {
-        $t = $this->get_tree_clean(); 
-        return apply_filters( 'mif_mr_core_opop_get_tree', $t );
-    }
+    // public function get_tree()
+    // {
+    //     $t = $this->get_tree_clean(); 
+    //     return apply_filters( 'mif_mr_core_opop_get_tree', $t );
+    // }
     
     
     
-    // 
-    // Tree clean
-    // 
+    // // 
+    // // Tree clean
+    // // 
     
-    public function get_tree_clean()
-    {
+    // public function get_tree_clean()
+    // {
         
-        $t = $this->get_tree_raw(); 
+    //     $t = $this->get_tree_raw(); 
         
-        // $t['content']['competencies']['from_id'] = $this->get_opop_id();
-        // $t['content']['competencies']['data'] = mif_mr_comp::set_comp_to_tree( $t );
+    //     // $t['content']['competencies']['from_id'] = $this->get_opop_id();
+    //     // $t['content']['competencies']['data'] = mif_mr_comp::set_comp_to_tree( $t );
         
-        $t['content']['courses']['index'] = mif_mr_set_core::set_courses_to_tree( $t, $this->opop_id );
-        $t['content']['competencies']['data'] = mif_mr_set_core::set_comp_to_tree( $t );
-        $t['content']['references']['data'] = mif_mr_set_core::set_references_to_tree( $t );
+    //     $t['content']['courses']['index'] = mif_mr_set_core::set_courses_to_tree( $t, $this->opop_id );
+    //     $t['content']['competencies']['data'] = mif_mr_set_core::set_comp_to_tree( $t );
+    //     $t['content']['references']['data'] = mif_mr_set_core::set_references_to_tree( $t );
         
-        return apply_filters( 'mif_mr_core_opop_get_tree_clean', $t );
-    }
+    //     return apply_filters( 'mif_mr_core_opop_get_tree_clean', $t );
+    // }
 
 
 
@@ -124,7 +124,10 @@ class mif_mr_opop_tree_raw extends mif_mr_opop_core {
         }
 
 
-
+        $t['content']['courses']['index'] = mif_mr_set_core::set_courses_to_tree( $t, $this->opop_id );
+        $t['content']['competencies']['data'] = mif_mr_set_core::set_comp_to_tree( $t );
+        $t['content']['references']['data'] = mif_mr_set_core::set_references_to_tree( $t );
+        
 
         return apply_filters( 'mif_mr_core_opop_get_tree_raw', $t );
     }
