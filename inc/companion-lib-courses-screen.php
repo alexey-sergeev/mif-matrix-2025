@@ -438,7 +438,8 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses_list {
                     $out .= '<span title="Лек." class="hint">' . $item['hours']['lec'] . '</span>, ';
                     $out .= '<span title="Лаб." class="hint">' . $item['hours']['lab'] . '</span>, ';
                     $out .= '<span title="Прак." class="hint">' . $item['hours']['prac'] . '</span>, ';
-                    $out .= '<span title="СРС." class="hint">' . $item['hours']['srs'] . '</span>)';
+                    $out .= '<span title="СРС" class="hint">' . $item['hours']['srs'] . '</span>, ';
+                    $out .= '<span title="Кон." class="hint">' . $item['hours']['exam'] . '</span>)';
                     $out .= '</span>';
                     $out .= '</div>';
                     

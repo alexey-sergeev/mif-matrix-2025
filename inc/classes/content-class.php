@@ -161,7 +161,8 @@ class content {
         $raw['lec'] = ( isset( $h[0] ) ) ? (int) $h[0] : 1;
         $raw['lab'] = ( isset( $h[1] ) ) ? (int) $h[1] : $raw['lec'];
         $raw['prac'] = ( isset( $h[2] ) ) ? (int) $h[2] : $raw['lab'];
-        $raw['srs'] = ( isset( $h[3] ) ) ? (int) $h[3] : $raw['prac'];
+        $raw['srs'] = ( isset( $h[3] ) ) ? (int) $h[3] : $raw['prac'] + $raw['lab'] + $raw['lec'];
+        $raw['exam'] = ( isset( $h[4] ) ) ? (int) $h[4] : 0;
 
         return $raw;
     }
