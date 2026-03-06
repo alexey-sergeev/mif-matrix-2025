@@ -54,26 +54,32 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
         $arr = array();
         
         foreach ( $tree['content']['courses']['index'] as $key => $item ) {
-            
+        // foreach ( $tree['content']['courses']['index'] as $item ) {
+
             if ( empty( $item['course_id'] ) ) continue;
             
+            $key2 = $item['course_id'];
+
             $c = new cmp( ( isset( $tree['content']['matrix']['data'][$key] ) ) ? $tree['content']['matrix']['data'][$key] : '' );
             // $k = $item['course_id'];
 
-            $arr[$key]['course_id'] = $item['course_id'];
-            // $arr[$key]['name'] = $key;
+            $arr[$key2]['course_id'] = $item['course_id'];
+            $arr[$key2]['name'] = $key;
             // $arr[$key]['cmp'] = $c->get_cmp( $tree['content']['matrix']['data'][$key], 'full' );
-            $arr[$key]['cmp'] = ( isset( $tree['content']['matrix']['data'][$key] ) ) ? $c->get_cmp( $tree['content']['matrix']['data'][$key] ) : '';
-            $arr[$key]['semesters'] = ( isset( $tree['content']['curriculum']['data'][$key]['semesters'] ) ) ? $tree['content']['curriculum']['data'][$key]['semesters'] : '';
-            $arr[$key]['course_stat'] = ( isset( $tree['content']['curriculum']['data'][$key]['course_stat'] ) ) ?  $tree['content']['curriculum']['data'][$key]['course_stat'] : '';
+            $arr[$key2]['cmp'] = ( isset( $tree['content']['matrix']['data'][$key] ) ) ? $c->get_cmp( $tree['content']['matrix']['data'][$key] ) : '';
+            $arr[$key2]['semesters'] = ( isset( $tree['content']['curriculum']['data'][$key]['semesters'] ) ) ? $tree['content']['curriculum']['data'][$key]['semesters'] : '';
+            $arr[$key2]['semesters_num'] = ( isset( $tree['content']['curriculum']['data'][$key]['semesters'] ) ) ? implode( ', ', array_keys( $tree['content']['curriculum']['data'][$key]['semesters'] ) ) : '';
+            $arr[$key2]['hours'] = ( isset( $tree['content']['curriculum']['data'][$key]['course_stat'] ) ) ?  $tree['content']['curriculum']['data'][$key]['course_stat'] : '';
+            $arr[$key2]['hours_raw'] = ( isset( $tree['content']['curriculum']['data'][$key]['course_stat'] ) ) ?  $this->get_hours_raw( $tree['content']['curriculum']['data'][$key]['course_stat'] ) : '';
             
+
             $d = $tree['content']['lib-courses']['data'][$item['course_id']]['data'];
 
 
             // Содержание
 
-            $arr[$key]['data']['content']['target'] = ( isset( $d['content']['target'] ) ) ? $d['content']['target'] : '';
-            $arr[$key]['data']['content']['parts'] = array();
+            $arr[$key2]['data']['content']['target'] = ( isset( $d['content']['target'] ) ) ? $d['content']['target'] : '';
+            $arr[$key2]['data']['content']['parts'] = array();
 
             if ( isset( $d['content']['parts'] ) ) {
 
@@ -84,12 +90,12 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
                     // p($k);
                     // p($i);
                 
-                    $arr[$key]['data']['content']['parts'][$k]['name'] = $i['name'];
-                    $arr[$key]['data']['content']['parts'][$k]['cmp'] = $c->get_cmp( $i['cmp'] );
-                    $arr[$key]['data']['content']['parts'][$k]['content'] = $i['content'];
-                    $arr[$key]['data']['content']['parts'][$k]['outcomes'] = $i['outcomes'];
-                    $arr[$key]['data']['content']['parts'][$k]['hours'] = $hours_arr[$k];
-                    $arr[$key]['data']['content']['parts'][$k]['hours_raw'] = implode( ', ', $hours_arr[$k] );
+                    $arr[$key2]['data']['content']['parts'][$k]['name'] = $i['name'];
+                    $arr[$key2]['data']['content']['parts'][$k]['cmp'] = $c->get_cmp( $i['cmp'] );
+                    $arr[$key2]['data']['content']['parts'][$k]['content'] = $i['content'];
+                    $arr[$key2]['data']['content']['parts'][$k]['outcomes'] = $i['outcomes'];
+                    $arr[$key2]['data']['content']['parts'][$k]['hours'] = $hours_arr[$k];
+                    $arr[$key2]['data']['content']['parts'][$k]['hours_raw'] = implode( ', ', $hours_arr[$k] );
 
                 }
             
@@ -98,11 +104,11 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
             // Оценочные средства
 
-            $arr[$key]['data']['evaluations'] = array();
+            $arr[$key2]['data']['evaluations'] = array();
 
             $n = 0;
 
-            foreach ( (array) $arr[$key]['semesters'] as $k => $i ) {
+            foreach ( (array) $arr[$key2]['semesters'] as $k => $i ) {
 
                 $rating = 0;
                 $cmp_arr = array();
@@ -113,7 +119,7 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
                         $cmp = $c->get_cmp( $i2['att']['cmp'] );
 
-                        $arr[$key]['data']['evaluations'][$k]['data'][] = array(
+                        $arr[$key2]['data']['evaluations'][$k]['data'][] = array(
                             'name' => $i2['name'],
                             'att' => array( 
                                 'rating' => $i2['att']['rating'],
@@ -126,8 +132,8 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
                         
                     }
 
-                    $arr[$key]['data']['evaluations'][$k]['stat']['rating'] = $rating;
-                    $arr[$key]['data']['evaluations'][$k]['stat']['cmp'] = $c->get_cmp( implode( ', ', $cmp_arr ) );
+                    $arr[$key2]['data']['evaluations'][$k]['stat']['rating'] = $rating;
+                    $arr[$key2]['data']['evaluations'][$k]['stat']['cmp'] = $c->get_cmp( implode( ', ', $cmp_arr ) );
 
                 } 
 
@@ -145,11 +151,11 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
             // p($item);
 
-            $arr[$key]['data']['biblio'] = $d['biblio'];
-            $arr[$key]['data']['it'] = $d['it'];
-            $arr[$key]['data']['mto'] = $d['mto'];
-            $arr[$key]['data']['guidelines'] = $d['guidelines'];
-            $arr[$key]['data']['authors'] = $d['authors'];
+            $arr[$key2]['data']['biblio'] = $d['biblio'];
+            $arr[$key2]['data']['it'] = $d['it'];
+            $arr[$key2]['data']['mto'] = $d['mto'];
+            $arr[$key2]['data']['guidelines'] = $d['guidelines'];
+            $arr[$key2]['data']['authors'] = $d['authors'];
 
         }
 
@@ -159,6 +165,14 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
         return apply_filters( 'mif_mr_core_opop_make_courses_clean', $arr );
     }
 
+
+
+
+    private function get_hours_raw( $a ) 
+    {
+        if ( isset( $a['att'] ) ) unset( $a['att'] );
+        return implode( ', ', $a );
+    }
 
 
 

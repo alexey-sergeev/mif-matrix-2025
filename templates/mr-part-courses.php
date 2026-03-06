@@ -16,7 +16,7 @@
     <div class="row">
         
             <?php mif_mr_show_panel( 'courses' ); ?>
-            <?php mif_mr_the_courses(); ?>
+            <?php mif_mr_the_list_courses(); ?>
     
     </div>
   

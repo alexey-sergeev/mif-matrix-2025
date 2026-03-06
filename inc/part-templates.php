@@ -209,10 +209,10 @@ function mif_mr_the_form_end()
 // Выводит 
 //
 
-function mif_mr_the_courses()
+function mif_mr_the_list_courses()
 {
     global $mif_mr_courses;
-    echo $mif_mr_courses->get_courses();
+    echo $mif_mr_courses->get_list_courses();
 }
 
 

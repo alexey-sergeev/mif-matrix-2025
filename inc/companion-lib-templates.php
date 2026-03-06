@@ -24,10 +24,20 @@ defined( 'ABSPATH' ) || exit;
 // Выводит 
 //
 
-function mif_mr_the_course()
+function mif_mr_the_course( $type = 'lib-courses' )
 {
-    global $mif_mr_lib_courses;
-    echo $mif_mr_lib_courses->get_course();
+    if ( $type == 'lib-courses' ) {
+
+        global $mif_mr_lib_courses;
+        echo $mif_mr_lib_courses->get_course();
+        
+    } elseif ( $type == 'courses' ) {
+        
+        global $mif_mr_courses;
+        echo $mif_mr_courses->get_course();    
+    
+    }
+
 }
 
 

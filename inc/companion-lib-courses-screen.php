@@ -28,13 +28,13 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses_list {
     
     public function the_show()
     {
-        if ( $template = locate_template( 'mr-course.php' ) ) {
+        if ( $template = locate_template( 'mr-lib-course.php' ) ) {
            
             load_template( $template, false );
             
         } else {
             
-            load_template( dirname( __FILE__ ) . '/../templates/mr-course.php', false );
+            load_template( dirname( __FILE__ ) . '/../templates/mr-lib-course.php', false );
 
         }
         

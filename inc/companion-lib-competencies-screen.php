@@ -28,13 +28,13 @@ class mif_mr_competencies_screen extends mif_mr_lib_competencies {
 
     public function the_show()
     {
-        if ( $template = locate_template( 'mr-competencies.php' ) ) {
+        if ( $template = locate_template( 'mr-lib-competencies.php' ) ) {
            
             load_template( $template, false );
 
         } else {
 
-            load_template( dirname( __FILE__ ) . '/../templates/mr-competencies.php', false );
+            load_template( dirname( __FILE__ ) . '/../templates/mr-lib-competencies.php', false );
 
         }
     }

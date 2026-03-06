@@ -18,8 +18,8 @@ include_once dirname( __FILE__ ) . '/part-core.php';
 include_once dirname( __FILE__ ) . '/part-companion.php';
 include_once dirname( __FILE__ ) . '/part-table.php';
 include_once dirname( __FILE__ ) . '/part-templates.php';
-
 include_once dirname( __FILE__ ) . '/part-param.php';
+include_once dirname( __FILE__ ) . '/part-courses-list.php';
 include_once dirname( __FILE__ ) . '/part-courses.php';
 include_once dirname( __FILE__ ) . '/part-matrix.php';
 include_once dirname( __FILE__ ) . '/part-curriculum.php';

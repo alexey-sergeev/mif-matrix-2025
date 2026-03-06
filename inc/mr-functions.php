@@ -267,7 +267,7 @@ class mif_mr_functions {
 
 
             $out .= '<div class="mb-3">'; 
-            $out .= '<a href="?download=' . $a[0]. '"><span class="mr-btn mr-gray"><i class="fa fa-download" aria-hidden="true"></i></span>' . $a[1] . '</a>';
+            $out .= '<a href="?download=' . $a[0]. '"><span class="mr-btn mr-gray rounded"><i class="fa fa-download" aria-hidden="true"></i></span>' . $a[1] . '</a>';
             $out .= '</div>'; 
         
         }

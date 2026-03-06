@@ -156,7 +156,7 @@ class mif_mr_lib_courses_list extends mif_mr_lib_courses {
         $count = count( $arr );
 
         $numbers = ceil( $count / $this->courses_per_page );
-        $current = ( isset( $att['num'] ) ) ? $att['num'] : 0;
+        $current = ( isset( $att['num'] ) ) ? $att['num'] : -1;
         
         $index = array();
         foreach ( $arr as $item ) $index[$item['name']][] = $item['comp_id'];
@@ -178,7 +178,7 @@ class mif_mr_lib_courses_list extends mif_mr_lib_courses {
         if ( $count !== 0 ) $out .= '<div class="fw-semibold mb-3">Всего: <span class="p-1 pl-3 pr-3 mr-gray rounded">' . $count . '</span></div>';
         
         // foreach ( $arr3[$current] as $item ) {
-        foreach ( $arr4 as $item ) {
+        foreach ( (array) $arr4 as $item ) {
 
             $is_curriculum = ( ! empty( $tree['content']['courses']['index'][$item['name']] ) ) ? true : false;
             $is_employ = ( ! empty( $index2[$item['comp_id']] ) ) ? true : false;
