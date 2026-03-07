@@ -20,132 +20,132 @@ defined( 'ABSPATH' ) || exit;
 // }
 
 
-//
-// Выводит 
-//
+// //
+// // Выводит 
+// //
 
-function mif_mr_the_course( $type = 'lib-courses' )
-{
-    if ( $type == 'lib-courses' ) {
+// function mif_mr_the_course( $type = 'lib-courses' )
+// {
+//     if ( $type == 'lib-courses' ) {
 
-        global $mif_mr_lib_courses;
-        echo $mif_mr_lib_courses->get_course();
+//         global $mif_mr_lib_courses;
+//         echo $mif_mr_lib_courses->get_course();
         
-    } elseif ( $type == 'courses' ) {
+//     } elseif ( $type == 'courses' ) {
         
-        global $mif_mr_courses;
-        echo $mif_mr_courses->get_course();    
+//         global $mif_mr_courses;
+//         echo $mif_mr_courses->get_course();    
     
-    }
+//     }
 
-}
-
-
-//
-// Выводит 
-//
-
-function mif_mr_the_lib_courses()
-{
-    global $mif_mr_lib_courses;
-    echo $mif_mr_lib_courses->get_lib_courses();
-}
+// }
 
 
-//
-// Выводит 
-//
+// //
+// // Выводит 
+// //
 
-function mif_mr_the_lib_references()
-{
-    global $mif_mr_lib_references;
-    echo $mif_mr_lib_references->get_lib_references();
-}
-
-
-//
-// Выводит 
-//
-
-function mif_mr_show_courses()
-{
-    global $mif_mr_lib_courses;
-    echo $mif_mr_lib_courses->show_courses();
-}
-
-//
-// Выводит 
-//
-
-function mif_mr_show_references()
-{
-    global $mif_mr_lib_references;
-    echo $mif_mr_lib_references->show_references();
-}
+// function mif_mr_the_lib_courses()
+// {
+//     global $mif_mr_lib_courses;
+//     echo $mif_mr_lib_courses->get_lib_courses();
+// }
 
 
-//
-// Выводит 
-//
+// //
+// // Выводит 
+// //
 
-function mif_mr_show_lib_comp()
-{
-    global $mif_mr_comp;
-    echo $mif_mr_comp->show_lib_comp();
-}
-
-
-
-//
-// Выводит 
-//
-
-function mif_mr_show_comp()
-{
-    global $mif_mr_comp;
-    echo $mif_mr_comp->show_comp();
-}
+// function mif_mr_the_lib_references()
+// {
+//     global $mif_mr_lib_references;
+//     echo $mif_mr_lib_references->get_lib_references();
+// }
 
 
-//
-// Выводит 
-//
+// //
+// // Выводит 
+// //
 
-function mif_mr_the_comp_id()
-{
-    echo mif_mr_companion_core::show_comp_id();
-}
+// function mif_mr_show_courses()
+// {
+//     global $mif_mr_lib_courses;
+//     echo $mif_mr_lib_courses->show_courses();
+// }
+
+// //
+// // Выводит 
+// //
+
+// function mif_mr_show_references()
+// {
+//     global $mif_mr_lib_references;
+//     echo $mif_mr_lib_references->show_references();
+// }
 
 
-//
-// Выводит 
-//
+// //
+// // Выводит 
+// //
 
-function mif_mr_the_advanced_edit_link()
-{
-    echo mif_mr_companion_core::get_advanced_edit_link();
-}
-
-
-//
-// Выводит 
-//
-
-function mif_mr_the_edit_link()
-{
-    echo mif_mr_companion_core::get_edit_link();
-}
+// function mif_mr_show_lib_comp()
+// {
+//     global $mif_mr_comp;
+//     echo $mif_mr_comp->show_lib_comp();
+// }
 
 
 
-//
-// Выводит 
-//
+// //
+// // Выводит 
+// //
 
-function mif_mr_the_remove_link()
-{
-    echo mif_mr_companion_core::get_remove_link();
-}
+// function mif_mr_show_comp()
+// {
+//     global $mif_mr_comp;
+//     echo $mif_mr_comp->show_comp();
+// }
+
+
+// //
+// // Выводит 
+// //
+
+// function mif_mr_the_comp_id()
+// {
+//     echo mif_mr_companion_core::show_comp_id();
+// }
+
+
+// //
+// // Выводит 
+// //
+
+// function mif_mr_the_advanced_edit_link()
+// {
+//     echo mif_mr_companion_core::get_advanced_edit_link();
+// }
+
+
+// //
+// // Выводит 
+// //
+
+// function mif_mr_the_edit_link()
+// {
+//     echo mif_mr_companion_core::get_edit_link();
+// }
+
+
+
+// //
+// // Выводит 
+// //
+
+// function mif_mr_the_remove_link()
+// {
+//     echo mif_mr_companion_core::get_remove_link();
+// }
 
 
 // //

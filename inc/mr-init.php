@@ -17,7 +17,7 @@ include_once dirname( __FILE__ ) . '/opop-screen.php';
 include_once dirname( __FILE__ ) . '/part-core.php';
 include_once dirname( __FILE__ ) . '/part-companion.php';
 include_once dirname( __FILE__ ) . '/part-table.php';
-include_once dirname( __FILE__ ) . '/part-templates.php';
+// include_once dirname( __FILE__ ) . '/part-templates.php';
 include_once dirname( __FILE__ ) . '/part-param.php';
 include_once dirname( __FILE__ ) . '/part-courses-list.php';
 include_once dirname( __FILE__ ) . '/part-courses.php';
@@ -38,13 +38,13 @@ include_once dirname( __FILE__ ) . '/companion-lib-courses-list.php';
 include_once dirname( __FILE__ ) . '/companion-lib-courses-screen.php';
 include_once dirname( __FILE__ ) . '/companion-lib-references.php';
 include_once dirname( __FILE__ ) . '/companion-lib-references-screen.php';
-include_once dirname( __FILE__ ) . '/companion-lib-templates.php';
+// include_once dirname( __FILE__ ) . '/companion-lib-templates.php';
 
 include_once dirname( __FILE__ ) . '/tools-core.php';
 include_once dirname( __FILE__ ) . '/tools-curriculum.php';
 include_once dirname( __FILE__ ) . '/tools-info.php';
 include_once dirname( __FILE__ ) . '/tools-courses.php';
-include_once dirname( __FILE__ ) . '/tools-templates.php';
+// include_once dirname( __FILE__ ) . '/tools-templates.php';
 
 include_once dirname( __FILE__ ) . '/lib-download.php';
 include_once dirname( __FILE__ ) . '/lib-upload.php';
