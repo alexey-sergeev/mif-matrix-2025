@@ -65,24 +65,64 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
             $arr[$key2]['course_id'] = $item['course_id'];
             $arr[$key2]['name'] = $key;
-            // $arr[$key]['cmp'] = $c->get_cmp( $tree['content']['matrix']['data'][$key], 'full' );
-            $arr[$key2]['cmp'] = ( isset( $tree['content']['matrix']['data'][$key] ) ) ? $c->get_cmp( $tree['content']['matrix']['data'][$key] ) : '';
-            $arr[$key2]['semesters'] = ( isset( $tree['content']['curriculum']['data'][$key]['semesters'] ) ) ? $tree['content']['curriculum']['data'][$key]['semesters'] : '';
-            $arr[$key2]['exam'] = ( isset( $tree['content']['curriculum']['data'][$key]['semesters'] ) ) ? $this->get_exam( $tree['content']['curriculum']['data'][$key]['semesters'] ) : '';
-            $arr[$key2]['hours'] = ( isset( $tree['content']['curriculum']['data'][$key]['course_stat'] ) ) ?  $tree['content']['curriculum']['data'][$key]['course_stat'] : '';
-            $arr[$key2]['hours_z'] = ( isset( $tree['content']['curriculum']['data'][$key]['course_stat'] ) ) ?  $this->get_hours_z( $tree['content']['curriculum']['data'][$key]['course_stat'] ) : '';
-            $arr[$key2]['hours_ze'] = ( isset( $tree['content']['curriculum']['data'][$key]['course_stat'] ) ) ?  $this->get_hours_ze( $tree['content']['curriculum']['data'][$key]['course_stat'] ) : '';
-            $arr[$key2]['hours_raw'] = ( isset( $tree['content']['curriculum']['data'][$key]['course_stat'] ) ) ?  $this->get_hours_raw( $tree['content']['curriculum']['data'][$key]['course_stat'] ) : '';
-            
-            $d = $tree['content']['lib-courses']['data'][$item['course_id']]['data'];
-            
-            $arr[$key2]['outcomes']['z'] = $this->get_outcomes( $d, 'z' );
-            $arr[$key2]['outcomes']['u'] = $this->get_outcomes( $d, 'u' );
-            $arr[$key2]['outcomes']['v'] = $this->get_outcomes( $d, 'v' );
-            
-            
+
+
+            // Компетенции
+
+            if ( ( isset( $tree['content']['matrix']['data'][$key] ) ) ) {
+
+                $arr[$key2]['cmp'] = $tree['content']['matrix']['data'][$key];
+                $arr[$key2]['cmp_raw'] = $c->get_cmp( $tree['content']['matrix']['data'][$key] );
+
+                foreach ( $tree['content']['matrix']['data'][$key] as $i ) {
+
+                    $arr[$key2]['cmp_descr'][] = ( isset( $tree['content']['competencies']['data'][$i] ) ) ?
+                            array( 
+                                'name' => $tree['content']['competencies']['data'][$i]['name'],
+                                'descr' => $tree['content']['competencies']['data'][$i]['descr'],
+                                'category' => $tree['content']['competencies']['data'][$i]['category'],
+                                ) :
+                            array( 'name' => '', 'descr' => '', 'category' => '' );
+                }
+
+
+            }
             
 
+            // Семестры (академические часы, конроль)
+
+            if ( isset( $tree['content']['curriculum']['data'][$key]['semesters'] ) ) {
+
+                $arr[$key2]['semesters'] = $tree['content']['curriculum']['data'][$key]['semesters'];
+                $arr[$key2]['exam'] = $this->get_exam( $tree['content']['curriculum']['data'][$key]['semesters'] );
+
+            }
+
+
+            // Cтатистика по всем семестрам 
+            
+            if ( isset( $tree['content']['curriculum']['data'][$key]['course_stat'] ) ) {
+
+                $arr[$key2]['hours'] = $tree['content']['curriculum']['data'][$key]['course_stat'];
+                $arr[$key2]['hours_z'] = $this->get_hours_z( $tree['content']['curriculum']['data'][$key]['course_stat'] );
+                $arr[$key2]['hours_ze'] = $this->get_hours_ze( $tree['content']['curriculum']['data'][$key]['course_stat'] );
+                $arr[$key2]['hours_raw'] = $this->get_hours_raw( $tree['content']['curriculum']['data'][$key]['course_stat'] );
+                
+            }
+
+
+            // Сводные индикаторы
+
+            $d = $tree['content']['lib-courses']['data'][$item['course_id']]['data'];
+            
+            if ( ! empty( $dd = $this->get_outcomes( $d, 'z' ) ) ) $arr[$key2]['outcomes']['z'] = $dd;
+            if ( ! empty( $dd = $this->get_outcomes( $d, 'u' ) ) ) $arr[$key2]['outcomes']['u'] = $dd;
+            if ( ! empty( $dd = $this->get_outcomes( $d, 'v' ) ) ) $arr[$key2]['outcomes']['v'] = $dd;
+            
+            // $arr[$key2]['outcomes']['z'] = $this->get_outcomes( $d, 'z' );
+            // $arr[$key2]['outcomes']['u'] = $this->get_outcomes( $d, 'u' );
+            // $arr[$key2]['outcomes']['v'] = $this->get_outcomes( $d, 'v' );
+            
 
             // Содержание
 
