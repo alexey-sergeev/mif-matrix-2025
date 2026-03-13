@@ -74,8 +74,10 @@ class mif_mr_courses extends mif_mr_courses_list {
     
         global $tree;
         $arr = $tree['content']['courses']['clean'][$course_id];
+        $err = $tree['content']['courses']['errors'][$course_id];
 
-        // p($arr);
+        p($arr);
+        // p($err);
 
         $out = '';
         $n = 1;
@@ -83,45 +85,45 @@ class mif_mr_courses extends mif_mr_courses_list {
         $out .= '<div class="container">';
         
         $out .= $this->row( $arr['name'], 'fw-bolder text-center mr-gray p-3' );
-        $out .= $this->row( '<b>Компетенции: </b>' . $this->span( $this->q( $arr['cmp_raw'] ) ), 'mt-4' );
-        $out .= $this->row( '<b>Академические часы: </b>' . $this->span( $arr['hours_raw'] ) . ' (лек, лаб, пр, СРС, кон)');
-        $out .= $this->row( '<b>Зачетных единиц: </b>' . $this->span( $arr['hours_ze'] ) );
-        $out .= $this->row( '<b>Семестры: </b>' . $this->span( $arr['exam'] ) );
+        $out .= $this->row( '<b>Компетенции: </b>' . $this->span( $this->q( $arr['meta']['cmp_raw'] ) ), 'mt-4' );
+        $out .= $this->row( '<b>Академические часы: </b>' . $this->span( $this->q( $arr['meta']['hours_raw'] ) ) . ' (лек, лаб, пр, СРС, кон)');
+        $out .= $this->row( '<b>Зачетных единиц: </b>' . $this->span(  $this->q( $arr['meta']['hours_ze'] ) ) );
+        $out .= $this->row( '<b>Семестры: </b>' . $this->span(  $this->q( $arr['meta']['exam'] ) ) );
 
 
         // Цель освоения дисциплины
 
-        $out .= $this->row( $n++ . '. Цель освоения дисциплины', 'fw-bolder mr-gray p-2 mt-6' );
+        $out .= $this->row( $n++ . '. Цель освоения дисциплины', 'fw-bolder p-2 mt-6', $err['data']['content']['target']['total'], 'mr-gray' );
         $out .= $this->row( $this->qqq( $arr['data']['content']['target'] ), 'mt-4' );
 
 
         // Планируемые результаты обучения
 
-        $out .= $this->row( $n++ . '. Планируемые результаты обучения', 'fw-bolder mr-gray p-2 mt-6' );
+        $out .= $this->row( $n++ . '. Планируемые результаты обучения', 'fw-bolder p-2 mt-6', $err['meta']['total'], 'mr-gray'  );
         $out .= $this->row( '<b>В результате освоения дисциплины выпускник должен обладать следующими компетенциями:</b>', 'mt-3' );
         
         $m = 1;
 
-        foreach ( $arr['cmp_descr'] as $i ) 
+        foreach ( $arr['meta']['cmp_descr'] as $i ) 
             $out .= $this->row( $m++ .'. ' . $this->qqq( $i['descr'] ) . ' (' . $this->qqq( $i['name'] ) . ').' ) ;
         
         $out .= $this->row( '<b>В результате изучения дисциплины обучающийся должен:</b>', 'mt-5' );
         
-        if ( ! empty( $arr['outcomes'] ) ) {
+        if ( ! empty( $arr['meta']['outcomes'] ) ) {
             
-            if ( ! empty( $arr['outcomes']['z'] ) ) {
+            if ( ! empty( $arr['meta']['outcomes']['z'] ) ) {
                 $out .= $this->row( '<i>знать:</i>', 'mt-3' );
-                $out .= $this->row( $this->mdash( $arr['outcomes']['z'] ) );
+                $out .= $this->row( $this->mdash( $arr['meta']['outcomes']['z'] ) );
             }
 
-            if ( ! empty( $arr['outcomes']['u'] ) ) {
+            if ( ! empty( $arr['meta']['outcomes']['u'] ) ) {
                 $out .= $this->row( '<i>уметь:</i>', 'mt-3' );
-                $out .= $this->row( $this->mdash( $arr['outcomes']['u'] ) );
+                $out .= $this->row( $this->mdash( $arr['meta']['outcomes']['u'] ) );
             }
 
-            if ( ! empty( $arr['outcomes']['z'] ) ) {
+            if ( ! empty( $arr['meta']['outcomes']['z'] ) ) {
                 $out .= $this->row( '<i>владеть:</i>', 'mt-3' );
-                $out .= $this->row( $this->mdash( $arr['outcomes']['v'] ) );
+                $out .= $this->row( $this->mdash( $arr['meta']['outcomes']['v'] ) );
             }
 
         } else {
@@ -133,7 +135,7 @@ class mif_mr_courses extends mif_mr_courses_list {
 
         // Содержание дисциплины
 
-        $out .= $this->row( $n++ . '. Содержание дисциплины', 'fw-bolder mr-gray p-2 mt-6' );
+        $out .= $this->row( $n++ . '. Содержание дисциплины', 'fw-bolder p-2 mt-6', $err['data']['content']['parts']['total'], 'mr-gray' );
 
         if ( ! empty( $arr['data']['content']['parts'] ) ) {
 
@@ -141,8 +143,8 @@ class mif_mr_courses extends mif_mr_courses_list {
                 
                 $out .= $this->row( '<b>Раздел ' . $k+1 . '.</b> ' . $i['name'], 'mt-5' );
                 $out .= $this->row( $i['content'], 'mt-3' );
-                $out .= $this->row( '<b>Трудоемкость: </b>' . $this->span( $i['hours_raw'], 'Лек, лаб, пр, СРС, кон' ) . ' ' . 
-                                    $this->span( $i['hours_z'], 'Всего' ), 'mt-3 mb-3' );
+                $out .= $this->row( '<b>Трудоемкость: </b>' . $this->span(  $this->q( $i['hours_raw'], 'Лек, лаб, пр, СРС, кон' ) ) . ' ' . 
+                                    $this->span(  $this->q( $i['hours_z'], 'Всего' ) ), 'mt-3 mb-3' );
                 
             }
                     
@@ -155,15 +157,15 @@ class mif_mr_courses extends mif_mr_courses_list {
         
         if ( isset( $arr['data']['content']['parts_stat']['hours_raw'] ) )
             $out .= $this->row( '<b>ИТОГО по дисциплине: </b>' . 
-                        $this->span( $arr['data']['content']['parts_stat']['hours_raw'], 'Лек, лаб, пр, СРС, кон' ) . ' ' .
-                        $this->span( $arr['data']['content']['parts_stat']['hours_z'], 'Всего' ) . ' ' .
-                        $this->span( $arr['data']['content']['parts_stat']['hours_ze'], 'Зачетных единиц' ) 
+                        $this->span( $this->q( $arr['data']['content']['parts_stat']['hours_raw'], 'Лек, лаб, пр, СРС, кон' ) ) . ' ' .
+                        $this->span( $this->q( $arr['data']['content']['parts_stat']['hours_z'], 'Всего' ) ) . ' ' .
+                        $this->span( $this->q( $arr['data']['content']['parts_stat']['hours_ze'], 'Зачетных единиц' ) ) 
                     );
         
         
         // Оценочные средства
 
-        $out .= $this->row( $n++ . '. Оценочные средства', 'fw-bolder mr-gray p-2 mt-6' );
+        $out .= $this->row( $n++ . '. Оценочные средства', 'fw-bolder p-2 mt-6', $err['data']['evaluations']['total'], 'mr-gray' );
         
         if ( ! empty( $arr['data']['evaluations'] ) ) {
 
@@ -193,7 +195,7 @@ class mif_mr_courses extends mif_mr_courses_list {
 
         // Индикаторы
 
-        $out .= $this->row( $n++ . '. Индикаторы', 'fw-bolder mr-gray p-2 mt-6' );
+        $out .= $this->row( $n++ . '. Индикаторы', 'fw-bolder p-2 mt-6', $err['data']['content']['indicator']['total'], 'mr-gray' );
         
         if ( ! empty( $arr['data']['content']['parts'] ) ) {
             
@@ -224,7 +226,7 @@ class mif_mr_courses extends mif_mr_courses_list {
 
         // Литература
 
-        $out .= $this->row( $n++ . '. Литература', 'fw-bolder mr-gray p-2 mt-6' );
+        $out .= $this->row( $n++ . '. Литература', 'fw-bolder p-2 mt-6', $err['data']['biblio']['total'], 'mr-gray' );
         $out .= $this->row( '<b>Основная литература</b> ', 'mt-4' );
         // if ( isset( $arr['data']['biblio']['basic'] ) ) $out .= $this->row(  $this->ol( $arr['data']['biblio']['basic'] ) );
         $out .= $this->row( ( isset( $arr['data']['biblio']['basic'] ) ) ? $this->ol( $arr['data']['biblio']['basic'] ) : $this->qqq(''), 'mt-3'  );
@@ -234,7 +236,7 @@ class mif_mr_courses extends mif_mr_courses_list {
 
         // Информационные технологии
 
-        $out .= $this->row( $n++ . '. Информационные технологии', 'fw-bolder mr-gray p-2 mt-6' );
+        $out .= $this->row( $n++ . '. Информационные технологии', 'fw-bolder p-2 mt-6', $err['data']['it']['total'], 'mr-gray' );
         $out .= $this->row( '<b>Информационно-справочные и образовательные ресурсы Интернета</b> ', 'mt-4' );
         // if ( isset( $arr['data']['it']['inet'] ) ) $out .= $this->row(  $this->ol( $arr['data']['it']['inet'] ) );
         $out .= $this->row( ( isset( $arr['data']['it']['inet'] ) ) ? $this->ol( $arr['data']['it']['inet'] ) : $this->qqq(''), 'mt-3'  );
@@ -244,13 +246,13 @@ class mif_mr_courses extends mif_mr_courses_list {
 
         // Материально-техническое обеспечение
 
-        $out .= $this->row( $n++ . '. Материально-техническое обеспечение', 'fw-bolder mr-gray p-2 mt-6' );
+        $out .= $this->row( $n++ . '. Материально-техническое обеспечение', 'fw-bolder p-2 mt-6', $err['data']['mto']['total'], 'mr-gray' );
         // if ( isset( $arr['data']['mto']['mto'] ) ) $out .= $this->row(  $this->ol( $arr['data']['mto']['mto'] ) );
         $out .= $this->row( ( isset( $arr['data']['mto']['mto'] ) ) ? $this->ol( $arr['data']['mto']['mto'] ) : $this->qqq(''), 'mt-3'  );
 
         // Разработчики
 
-        $out .= $this->row( $n++ . '. Разработчики', 'fw-bolder mr-gray p-2 mt-6' );
+        $out .= $this->row( $n++ . '. Разработчики', 'fw-bolder p-2 mt-6', $err['data']['authors']['total'], 'mr-gray' );
         // if ( isset( $arr['data']['authors']['authors'] ) ) $out .= $this->row( $this->p( $arr['data']['authors']['authors'] ), 'mt-3' );
         $out .= $this->row( ( isset( $arr['data']['authors']['authors'] ) ) ? $this->p( $arr['data']['authors']['authors'] ) : $this->qqq(''), 'mt-3' );
         
@@ -288,7 +290,8 @@ class mif_mr_courses extends mif_mr_courses_list {
 
     private function q( $s )
     {
-        return ( $s ) ? $s : '?';
+        // return ( $s ) ? $s : '?';
+        return ( $s ) ? '<span class="p-1 pl-3 pr-3 rounded mr-gray">' . $s . '</span>' : '<span class="p-1 pl-3 pr-3 rounded mr-red">?</span>';
     }
     
     
@@ -301,22 +304,43 @@ class mif_mr_courses extends mif_mr_courses_list {
 
     private function span( $text, $t = '', $c = '' )
     {
-        return '<span class="p-1 pl-3 pr-3 rounded mr-gray ' . $c. '" title="' . $t . '">' . $text . '</span>';
+        // return '<span class="p-1 pl-3 pr-3 rounded mr-gray ' . $c. '" title="' . $t . '">' . $text . '</span>';
+        return '<span class="rounded mr-gray ' . $c. '" title="' . $t . '">' . $text . '</span>';
     }
 
 
-    private function row( $t, $cc = '', $rc = '' )
+    private function row( $t, $cc = '', $e = false, $c = '' )
     {
+        // p($e);
+        // $color = ( isset( $e ) && $e == true ) ? 'mr-red' : $c;
+        $color = ( $e ) ? 'mr-red' : $c;
+
+        // p($color);
+
+
         $out = '';
 
-        $out .= '<div class="row ' . $rc . '">';
-        $out .= '<div class="col p-1 ' . $cc . '">';
+        $out .= '<div class="row">';
+        $out .= '<div class="col p-1 ' . $cc . ' ' . $color . '">';
         $out .= $t;
         $out .= '</div>';
         $out .= '</div>';
 
         return $out;
     }
+
+    // private function row( $t, $cc = '', $rc = '' )
+    // {
+    //     $out = '';
+
+    //     $out .= '<div class="row ' . $rc . '">';
+    //     $out .= '<div class="col p-1 ' . $cc . '">';
+    //     $out .= $t;
+    //     $out .= '</div>';
+    //     $out .= '</div>';
+
+    //     return $out;
+    // }
 
 
     private function col( $t, $cc = '' )

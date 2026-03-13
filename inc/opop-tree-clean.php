@@ -16,8 +16,12 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
     {
         parent::__construct();
 
-        global $tree;
-        $tree = $this->get_tree_clean( $tree ); 
+        $this->get_tree_clean(); 
+
+        // global $tree;
+        // $tree = $this->get_tree_clean( $tree ); 
+        // $tree = $this->get_tree_errors( $tree ); 
+        // $tree = $this->get_tree_errors_total( $tree ); 
 
         // p($tree);
     }
@@ -29,15 +33,45 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
     // Tree clean
     // 
     
-    public function get_tree_clean( $t = array() )
+    public function get_tree_clean()
     {
-        
-        $t['content']['courses']['clean'] = $this->make_courses_clean();
-        
+        global $tree;
 
-
-        return apply_filters( 'mif_mr_core_opop_get_tree_clean', $t );
+        $tree['content']['courses']['clean'] = $this->make_courses_clean();
+        $tree['content']['courses']['errors'] = $this->make_courses_errors();
+        
+        return;
     }
+
+
+    
+    // // 
+    // // Tree clean
+    // // 
+    
+    // public function get_tree_clean( &$t = array() )
+    // {
+        
+    //     $t['content']['courses']['clean'] = $this->make_courses_clean();
+        
+    //     return apply_filters( 'mif_mr_core_opop_get_tree_clean', $t );
+    // }
+
+
+    
+
+    // // 
+    // // Tree errors
+    // // 
+    
+    // public function get_tree_errors( &$t = array() )
+    // {
+        
+    //     $t['content']['courses']['errors'] = $this->make_courses_errors();
+        
+    //     return apply_filters( 'mif_mr_core_opop_get_tree_errors', $t );
+    // }
+
 
 
 
@@ -49,8 +83,6 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
     {
         global $tree;
 
-        
-        
         $arr = array();
         
         foreach ( $tree['content']['courses']['index'] as $key => $item ) {
@@ -71,12 +103,12 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
             if ( ( isset( $tree['content']['matrix']['data'][$key] ) ) ) {
 
-                $arr[$key2]['cmp'] = $tree['content']['matrix']['data'][$key];
-                $arr[$key2]['cmp_raw'] = $c->get_cmp( $tree['content']['matrix']['data'][$key] );
+                $arr[$key2]['meta']['cmp'] = $tree['content']['matrix']['data'][$key];
+                $arr[$key2]['meta']['cmp_raw'] = $c->get_cmp( $tree['content']['matrix']['data'][$key] );
 
                 foreach ( $tree['content']['matrix']['data'][$key] as $i ) {
 
-                    $arr[$key2]['cmp_descr'][] = ( isset( $tree['content']['competencies']['data'][$i] ) ) ?
+                    $arr[$key2]['meta']['cmp_descr'][] = ( isset( $tree['content']['competencies']['data'][$i] ) ) ?
                             array( 
                                 'name' => $tree['content']['competencies']['data'][$i]['name'],
                                 'descr' => $tree['content']['competencies']['data'][$i]['descr'],
@@ -93,8 +125,8 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
             if ( isset( $tree['content']['curriculum']['data'][$key]['semesters'] ) ) {
 
-                $arr[$key2]['semesters'] = $tree['content']['curriculum']['data'][$key]['semesters'];
-                $arr[$key2]['exam'] = $this->get_exam( $tree['content']['curriculum']['data'][$key]['semesters'] );
+                $arr[$key2]['meta']['semesters'] = $tree['content']['curriculum']['data'][$key]['semesters'];
+                $arr[$key2]['meta']['exam'] = $this->get_exam( $tree['content']['curriculum']['data'][$key]['semesters'] );
 
             }
 
@@ -103,10 +135,10 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
             
             if ( isset( $tree['content']['curriculum']['data'][$key]['course_stat'] ) ) {
 
-                $arr[$key2]['hours'] = $tree['content']['curriculum']['data'][$key]['course_stat'];
-                $arr[$key2]['hours_z'] = $this->get_hours_z( $tree['content']['curriculum']['data'][$key]['course_stat'] );
-                $arr[$key2]['hours_ze'] = $this->get_hours_ze( $tree['content']['curriculum']['data'][$key]['course_stat'] );
-                $arr[$key2]['hours_raw'] = $this->get_hours_raw( $tree['content']['curriculum']['data'][$key]['course_stat'] );
+                $arr[$key2]['meta']['hours'] = $tree['content']['curriculum']['data'][$key]['course_stat'];
+                $arr[$key2]['meta']['hours_z'] = $this->get_hours_z( $tree['content']['curriculum']['data'][$key]['course_stat'] );
+                $arr[$key2]['meta']['hours_ze'] = $this->get_hours_ze( $tree['content']['curriculum']['data'][$key]['course_stat'] );
+                $arr[$key2]['meta']['hours_raw'] = $this->get_hours_raw( $tree['content']['curriculum']['data'][$key]['course_stat'] );
                 
             }
 
@@ -115,9 +147,9 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
             $d = $tree['content']['lib-courses']['data'][$item['course_id']]['data'];
             
-            if ( ! empty( $dd = $this->get_outcomes( $d, 'z' ) ) ) $arr[$key2]['outcomes']['z'] = $dd;
-            if ( ! empty( $dd = $this->get_outcomes( $d, 'u' ) ) ) $arr[$key2]['outcomes']['u'] = $dd;
-            if ( ! empty( $dd = $this->get_outcomes( $d, 'v' ) ) ) $arr[$key2]['outcomes']['v'] = $dd;
+            if ( ! empty( $dd = $this->get_outcomes( $d, 'z' ) ) ) $arr[$key2]['meta']['outcomes']['z'] = $dd;
+            if ( ! empty( $dd = $this->get_outcomes( $d, 'u' ) ) ) $arr[$key2]['meta']['outcomes']['u'] = $dd;
+            if ( ! empty( $dd = $this->get_outcomes( $d, 'v' ) ) ) $arr[$key2]['meta']['outcomes']['v'] = $dd;
             
             // $arr[$key2]['outcomes']['z'] = $this->get_outcomes( $d, 'z' );
             // $arr[$key2]['outcomes']['u'] = $this->get_outcomes( $d, 'u' );
@@ -172,7 +204,7 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
             $n = 0;
             $cmp_total_arr = array();
 
-            foreach ( (array) $arr[$key2]['semesters'] as $k => $i ) {
+            foreach ( (array) $arr[$key2]['meta']['semesters'] as $k => $i ) {
 
                 $rating = 0;
                 $cmp_arr = array();
@@ -232,6 +264,315 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
         return apply_filters( 'mif_mr_core_opop_make_courses_clean', $arr );
     }
 
+
+
+
+    // 
+    // Поиск ошибок
+    // 
+    
+    private function make_courses_errors()
+    {
+        global $tree;
+
+        $err = array();
+        
+        foreach ( $tree['content']['courses']['index'] as $key => $item ) {
+            
+            if ( empty( $item['course_id'] ) ) continue;
+            
+            $key2 = $item['course_id'];
+            $arr = $tree['content']['courses']['clean'][$key2];
+
+
+            // Цель освоения дисциплины
+
+            $err[$key2]['data']['content']['target']['errors'][] = $this->is_empty( $arr['data']['content']['target'] );
+
+
+
+            // Планируемые результаты обучения
+
+            foreach ( $arr['meta']['cmp_descr'] as $k => $i ) {
+                $err[$key2]['meta']['errors']['cmp_descr'][$k]['name'][] = $this->is_empty( $i['name'] );
+                $err[$key2]['meta']['errors']['cmp_descr'][$k]['descr'][] = $this->is_empty( $i['descr'] );
+                $err[$key2]['meta']['errors']['cmp_descr'][$k]['category'][] = $this->is_empty( $i['category'] );
+
+
+            }
+            
+            $err[$key2]['meta']['errors']['outcomes'][] = $this->is_empty( $arr['outcomes'] );
+
+
+            // Содержание дисциплины
+
+            if ( ! empty( $arr['data']['content']['parts'] ) ) {
+
+                foreach ( $arr['data']['content']['parts'] as $k => $i ) {
+                    
+                    $err[$key2]['data']['content']['parts']['errors'][$k]['name'][] = $this->is_empty( $i['name'] );
+                    $err[$key2]['data']['content']['parts']['errors'][$k]['content'][] = $this->is_empty( $i['content'] );
+
+                }
+                        
+            } else {
+                
+                $err[$key2]['data']['content']['parts']['errors'][] = $this->is_empty( $arr['data']['content']['parts'] );
+
+            }
+            
+            
+            // Оценочные средства
+
+            if ( ! empty( $arr['data']['evaluations'] ) ) {
+
+                foreach ( $arr['data']['evaluations'] as $k => $i ) {
+
+                    foreach ( $i['data'] as $k2 => $i2 ) {
+
+                        $err[$key2]['data']['evaluations']['errors'][$k]['data'][$k2]['name'][] = $this->is_empty( $i2['name'] );
+                        $err[$key2]['data']['evaluations']['errors'][$k]['data'][$k2]['att']['rating'][] = $this->is_empty( $i2['att']['rating'] );
+                        $err[$key2]['data']['evaluations']['errors'][$k]['data'][$k2]['att']['cmp'][] = $this->is_empty( $i2['att']['cmp'] );
+
+                    }
+
+                }
+
+            } else {
+                
+                $err[$key2]['data']['evaluations']['errors'][] = $this->is_empty( $arr['data']['evaluations'] );
+
+            }
+
+
+            // Индикаторы
+            
+            if ( ! empty( $arr['data']['content']['parts'] ) ) {
+
+                foreach ( $arr['data']['content']['parts'] as $k => $i ) {
+                    
+                    $err[$key2]['data']['content']['indicator']['errors'][$k]['outcomes'][] = $this->is_empty( $i['outcomes'] );
+                    $err[$key2]['data']['content']['indicator']['errors'][$k]['cmp'][] = $this->is_empty( $i['cmp'] );
+
+                }
+                        
+            } else {
+                
+                $err[$key2]['data']['content']['indicator']['errors'][] = $this->is_empty( $arr['data']['content']['parts'] );
+
+            }
+
+
+            // Литература
+
+            $err[$key2]['data']['biblio']['errors']['basic'][] = $this->is_empty( $arr['data']['biblio']['basic'] );
+            $err[$key2]['data']['biblio']['errors']['additional'][] = $this->is_empty( $arr['data']['biblio']['additional'] );
+
+
+            // Информационные технологии
+            
+            $err[$key2]['data']['it']['errors']['inet'][] = $this->is_empty( $arr['data']['it']['inet'] );
+            $err[$key2]['data']['it']['errors']['app'][] = $this->is_empty( $arr['data']['it']['app'] );
+            
+            
+            // Материально-техническое обеспечение
+            
+            $err[$key2]['data']['mto']['errors']['mto'][] = $this->is_empty( $arr['data']['mto']['mto'] );
+            
+
+            // Разработчики
+            
+            $err[$key2]['data']['authors']['errors']['authors'][] = $this->is_empty( $arr['data']['authors']['authors'] );
+
+
+            // Итого
+
+            // $index = array( '', );
+
+            $err[$key2]['meta']['total'] = $this->total( $err[$key2]['meta'] );
+            
+            $err[$key2]['data']['content']['target']['total'] = $this->total( $err[$key2]['data']['content']['target'] );
+            $err[$key2]['data']['content']['parts']['total'] = $this->total( $err[$key2]['data']['content']['parts'] );
+            $err[$key2]['data']['content']['indicator']['total'] = $this->total( $err[$key2]['data']['content']['indicator'] );
+            
+            $err[$key2]['data']['evaluations']['total'] = $this->total( $err[$key2]['data']['evaluations'] );
+            
+            $err[$key2]['data']['biblio']['total'] = $this->total( $err[$key2]['data']['biblio'] );
+            $err[$key2]['data']['it']['total'] = $this->total( $err[$key2]['data']['it'] );
+            $err[$key2]['data']['mto']['total'] = $this->total( $err[$key2]['data']['mto'] );
+            $err[$key2]['data']['authors']['total'] = $this->total( $err[$key2]['data']['authors'] );
+
+        }
+
+
+        // p($err);
+
+        return apply_filters( 'mif_mr_core_opop_make_courses_errors', $err );
+    }
+
+
+
+    private function total( $arr )
+    {
+        // $res = true;
+        $sum = 0;
+
+        // p($arr);
+
+        array_walk_recursive( $arr, function( $item ) use ( &$sum ) { $sum += $item; } );
+
+        // foreach ( $arr as $i ) {
+
+        // p( $sum );
+
+        // }
+
+
+        return ( $sum == 0 ) ? false : true;
+    }
+
+
+    // // 
+    // // Поиск ошибок (итого)
+    // // 
+    
+    // private function make_courses_errors_total()
+    // {
+    //     global $tree;
+
+    //     $err = array();
+        
+        
+    //     foreach ( $tree['content']['courses']['index'] as $key => $item ) {
+            
+    //         if ( empty( $item['course_id'] ) ) continue;
+            
+    //         $key2 = $item['course_id'];
+    //         $arr = $tree['content']['courses']['clean'][$key2];
+
+
+    //         // Цель освоения дисциплины
+
+    //         $err[$key2]['data']['content']['target']['errors'][] = $this->is_empty( $arr['data']['content']['target'] );
+
+
+
+    //         // Планируемые результаты обучения
+
+    //         foreach ( $arr['meta']['cmp_descr'] as $k => $i ) {
+    //             $err[$key2]['meta']['cmp_descr'][$k]['name']['errors'][] = $this->is_empty( $i['name'] );
+    //             $err[$key2]['meta']['cmp_descr'][$k]['descr']['errors'][] = $this->is_empty( $i['descr'] );
+    //             $err[$key2]['meta']['cmp_descr'][$k]['category']['errors'][] = $this->is_empty( $i['category'] );
+
+
+    //         }
+            
+    //         $err[$key2]['meta']['outcomes']['errors'][] = $this->is_empty( $arr['outcomes'] );
+
+
+    //         // Содержание дисциплины
+
+    //         if ( ! empty( $arr['data']['content']['parts'] ) ) {
+
+    //             foreach ( $arr['data']['content']['parts'] as $k => $i ) {
+                    
+    //                 $err[$key2]['data']['content']['parts'][$k]['name']['errors'][] = $this->is_empty( $i['name'] );
+    //                 $err[$key2]['data']['content']['parts'][$k]['content']['errors'][] = $this->is_empty( $i['content'] );
+
+    //             }
+                        
+    //         } else {
+                
+    //             $err[$key2]['data']['content']['parts']['errors'][] = $this->is_empty( $arr['data']['content']['parts'] );
+
+    //         }
+            
+            
+    //         // Оценочные средства
+
+    //         if ( ! empty( $arr['data']['evaluations'] ) ) {
+
+    //             foreach ( $arr['data']['evaluations'] as $k => $i ) {
+
+    //                 foreach ( $i['data'] as $k2 => $i2 ) {
+
+    //                     $err[$key2]['data']['evaluations'][$k]['data'][$k2]['name']['errors'][] = $this->is_empty( $i2['name'] );
+    //                     $err[$key2]['data']['evaluations'][$k]['data'][$k2]['att']['rating']['errors'][] = $this->is_empty( $i2['att']['rating'] );
+    //                     $err[$key2]['data']['evaluations'][$k]['data'][$k2]['att']['cmp']['errors'][] = $this->is_empty( $i2['att']['cmp'] );
+
+    //                 }
+
+    //             }
+
+    //         } else {
+                
+    //             $err[$key2]['data']['evaluations']['errors'][] = $this->is_empty( $arr['data']['evaluations'] );
+
+    //         }
+
+
+    //         // // Индикаторы
+
+
+            
+    //         if ( ! empty( $arr['data']['content']['parts'] ) ) {
+
+    //             foreach ( $arr['data']['content']['parts'] as $k => $i ) {
+                    
+    //                 $err[$key2]['data']['content']['indicator'][$k]['outcomes']['errors'][] = $this->is_empty( $i['outcomes'] );
+    //                 $err[$key2]['data']['content']['indicator'][$k]['cmp']['errors'][] = $this->is_empty( $i['cmp'] );
+
+    //             }
+                        
+    //         } else {
+                
+    //             $err[$key2]['data']['content']['indicator']['errors'][] = $this->is_empty( $arr['data']['content']['parts'] );
+
+    //         }
+
+
+    //         // Литература
+
+    //         $err[$key2]['data']['biblio']['basic']['errors'][] = $this->is_empty( $arr['data']['biblio']['basic'] );
+    //         $err[$key2]['data']['biblio']['additional']['errors'][] = $this->is_empty( $arr['data']['biblio']['additional'] );
+
+
+    //         // Информационные технологии
+            
+    //         $err[$key2]['data']['it']['inet']['errors'][] = $this->is_empty( $arr['data']['ip']['inet'] );
+    //         $err[$key2]['data']['it']['app']['errors'][] = $this->is_empty( $arr['data']['ip']['app'] );
+            
+            
+    //         // Материально-техническое обеспечение
+            
+    //         $err[$key2]['data']['mto']['mto']['errors'][] = $this->is_empty( $arr['data']['mto']['mto'] );
+            
+
+    //         // Разработчики
+            
+    //         $err[$key2]['data']['authors']['authors']['errors'][] = $this->is_empty( $arr['data']['authors']['authors'] );
+
+    //        }
+
+
+    //     // p($err);
+
+    //     return apply_filters( 'mif_mr_core_opop_make_courses_errors', $err );
+    // }
+
+
+
+
+
+
+
+
+
+
+    private function is_empty( &$a ) 
+    {
+        return empty( $a ) ? 1 : 0;
+    }
 
 
 

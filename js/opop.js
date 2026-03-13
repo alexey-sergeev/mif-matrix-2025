@@ -153,7 +153,7 @@ jQuery( document ).ready( function( jq ) {
         // console.log( name );
         // console.log( part );
         // console.log( coll );
-        console.log( div.html() );
+        // console.log( div.html() );
         
         // let div = jq(elem).closest('span.content-ajax');
         jq( 'i.fa-spinner', jq(elem).closest('button') ).removeClass('d-none');

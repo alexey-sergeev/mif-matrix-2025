@@ -71,7 +71,7 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses_list {
     //
     // Показать дисциплину
     //
-    
+                    
     public function get_course( $course_id = NULL, $opop_id = NULL )
     { 
         global $wp_query;

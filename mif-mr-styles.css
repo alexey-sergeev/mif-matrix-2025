@@ -265,6 +265,15 @@ span.copy-button.act {
 
 /* Цвета */
 
+.mr-gray {
+    background-color: #f0f0f0 !important;
+    /* background-color: #E9ECEF !important; */
+}
+
+.mr-white {
+background-color: #FFFFFF !important;
+}
+
 .mr-red {
     background-color: #ffc2cc !important;
 }
@@ -277,18 +286,10 @@ span.copy-button.act {
     background-color: #bbffbb !important;
 }
 
-.mr-gray {
-    background-color: #f0f0f0 !important;
-    /* background-color: #E9ECEF !important; */
-}
-
 .mr-blue {
     background-color: #ddeeff !important;
 }
 
-.mr-white {
-    background-color: #FFFFFF !important;
-}
 
 
 /* Цвета 2 */

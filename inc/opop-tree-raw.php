@@ -23,7 +23,7 @@ class mif_mr_opop_tree_raw extends mif_mr_opop_core {
         // echo $_REQUEST['opop'];
 
         global $tree;
-        $tree = $this->get_tree_raw(); 
+        $tree = $this->get_tree(); 
 
         // p($tree);
     }
@@ -66,7 +66,7 @@ class mif_mr_opop_tree_raw extends mif_mr_opop_core {
     // Tree RAW
     // 
     
-    public function get_tree_raw()
+    public function get_tree()
     {
         // global $post;
         // global $tree;
