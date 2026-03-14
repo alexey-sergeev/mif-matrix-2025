@@ -301,7 +301,7 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
             }
             
-            $err[$key2]['meta']['errors']['outcomes'][] = $this->is_empty( $arr['outcomes'] );
+            $err[$key2]['meta']['errors']['outcomes'][] = $this->is_empty( $arr['meta']['outcomes'] );
 
 
             // Содержание дисциплины
@@ -389,18 +389,49 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
             // $index = array( '', );
 
-            $err[$key2]['meta']['total'] = $this->total( $err[$key2]['meta'] );
+            $b = array();
+
+            $b[] = $this->total( $err[$key2]['meta'] );
+            $err[$key2]['meta']['total'] = $b[array_key_last( $b )];
+
+            $b[] = $this->total( $err[$key2]['data']['content']['target'] );
+            $err[$key2]['data']['content']['target']['total'] = $b[array_key_last( $b )];
             
-            $err[$key2]['data']['content']['target']['total'] = $this->total( $err[$key2]['data']['content']['target'] );
-            $err[$key2]['data']['content']['parts']['total'] = $this->total( $err[$key2]['data']['content']['parts'] );
-            $err[$key2]['data']['content']['indicator']['total'] = $this->total( $err[$key2]['data']['content']['indicator'] );
+            $b[] = $this->total( $err[$key2]['data']['content']['parts'] );
+            $err[$key2]['data']['content']['parts']['total'] = $b[array_key_last( $b )];
             
-            $err[$key2]['data']['evaluations']['total'] = $this->total( $err[$key2]['data']['evaluations'] );
+            $b[] = $this->total( $err[$key2]['data']['content']['indicator'] );
+            $err[$key2]['data']['content']['indicator']['total'] = $b[array_key_last( $b )];
             
-            $err[$key2]['data']['biblio']['total'] = $this->total( $err[$key2]['data']['biblio'] );
-            $err[$key2]['data']['it']['total'] = $this->total( $err[$key2]['data']['it'] );
-            $err[$key2]['data']['mto']['total'] = $this->total( $err[$key2]['data']['mto'] );
-            $err[$key2]['data']['authors']['total'] = $this->total( $err[$key2]['data']['authors'] );
+            $b[] = $this->total( $err[$key2]['data']['evaluations'] );
+            $err[$key2]['data']['evaluations']['total'] = $b[array_key_last( $b )];
+            
+            $b[] = $this->total( $err[$key2]['data']['biblio'] );
+            $err[$key2]['data']['biblio']['total'] = $b[array_key_last( $b )];
+            
+            $b[] = $this->total( $err[$key2]['data']['it'] );
+            $err[$key2]['data']['it']['total'] = $b[array_key_last( $b )];
+            
+            $b[] = $this->total( $err[$key2]['data']['mto'] );
+            $err[$key2]['data']['mto']['total'] = $b[array_key_last( $b )];
+            
+            $b[] = $this->total( $err[$key2]['data']['authors'] );
+            $err[$key2]['data']['authors']['total'] = $b[array_key_last( $b )];
+
+            // p( count( $b) );
+            
+            // $bb = array();
+            // foreach ( $b as $i ) $bb[] = ( empty( $i) ) ? 1 : 0;
+            
+            $p = 0;
+            foreach ( $b as $i ) if ( empty( $i) ) $p++;
+
+            $tree['content']['courses']['clean'][$key2]['percent'] = round( 100 * $p / count( $b ) );
+            
+            // p( $tree['content']['courses']['clean'][$key2]['percent'] );
+        
+
+            // p( round( 100 * $p / count( $b ) ) );
 
         }
 
@@ -414,21 +445,19 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
     private function total( $arr )
     {
-        // $res = true;
-        $sum = 0;
+        // $sum = 0;
+        // array_walk_recursive( $arr, function( $item ) use ( &$sum ) { $sum += $item; } );
+        // return ( $sum == 0 ) ? false : true;
+        
+        $res = array();
+        
+        array_walk_recursive( $arr, function( $item ) use ( &$res ) { $res[] = $item; } );
+        $res = array_unique( $res );
+        $res = array_diff( $res, array( 0 ) );
 
-        // p($arr);
+        // p( $res );
 
-        array_walk_recursive( $arr, function( $item ) use ( &$sum ) { $sum += $item; } );
-
-        // foreach ( $arr as $i ) {
-
-        // p( $sum );
-
-        // }
-
-
-        return ( $sum == 0 ) ? false : true;
+        return $res;
     }
 
 

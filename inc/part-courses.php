@@ -76,7 +76,7 @@ class mif_mr_courses extends mif_mr_courses_list {
         $arr = $tree['content']['courses']['clean'][$course_id];
         $err = $tree['content']['courses']['errors'][$course_id];
 
-        p($arr);
+        // p($arr);
         // p($err);
 
         $out = '';
@@ -100,6 +100,7 @@ class mif_mr_courses extends mif_mr_courses_list {
         // Планируемые результаты обучения
 
         $out .= $this->row( $n++ . '. Планируемые результаты обучения', 'fw-bolder p-2 mt-6', $err['meta']['total'], 'mr-gray'  );
+        // $out .= $this->row( $n++ . '. Планируемые результаты обучения', 'fw-bolder mr-gray p-2 mt-6' );
         $out .= $this->row( '<b>В результате освоения дисциплины выпускник должен обладать следующими компетенциями:</b>', 'mt-3' );
         
         $m = 1;
@@ -313,7 +314,8 @@ class mif_mr_courses extends mif_mr_courses_list {
     {
         // p($e);
         // $color = ( isset( $e ) && $e == true ) ? 'mr-red' : $c;
-        $color = ( $e ) ? 'mr-red' : $c;
+        $color = ( ! empty( $e ) ) ? 'mr-red' : $c;
+        // $mes = ( ! empty( $e ) ) ? implode( ', ', $e ) : '';
 
         // p($color);
 
@@ -324,6 +326,15 @@ class mif_mr_courses extends mif_mr_courses_list {
         $out .= '<div class="col p-1 ' . $cc . ' ' . $color . '">';
         $out .= $t;
         $out .= '</div>';
+        
+        if ( ! empty( $e ) ) {
+
+            $out .= '<div class="col col-1 p-1 ' . $cc . ' ' . $color . '">';
+            $out .= implode( ', ', $e );
+            $out .= '</div>';
+            
+        }
+
         $out .= '</div>';
 
         return $out;

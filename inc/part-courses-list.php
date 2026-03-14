@@ -105,9 +105,13 @@ class mif_mr_courses_list extends mif_mr_table {
         $making = ( in_array( $courses_arr[$key]['courses'][$key2]['unit'], array( 'ЭК', 'ЗЧ', 'ЗЧО', 'К', 'КР', 'КРП', 'ГИА' ) )  ) ? false : true;
 
         $course_id = ( isset( $a[$key2]['course_id'] ) ) ? $a[$key2]['course_id'] : 0;
-        $link = mif_mr_opop_core::get_opop_url() . 'lib-courses/' . $course_id;
+        $link_lib = mif_mr_opop_core::get_opop_url() . 'lib-courses/' . $course_id;
+        $link_clean = ( isset( $a[$key2]['course_id'] ) ) ? mif_mr_opop_core::get_opop_url() . 'courses/' . $a[$key2]['course_id'] : '';
         
+        $percent = ( isset( $tree['content']['courses']['clean'][$course_id]['percent'] ) ) ? $tree['content']['courses']['clean'][$course_id]['percent'] : 0;
+        $percent_color = ( $percent == 100 ) ? 'mr-green' : 'mr-red';
         
+
         // p($making);
 
 
@@ -120,7 +124,7 @@ class mif_mr_courses_list extends mif_mr_table {
 
         // %
 
-        $text = ( $making ) ? '<span class="mr-green rounded pl-2 pr-2 p-1">100</span>' : '';
+        $text = ( $making ) ? '<span class="' . $percent_color . ' rounded pl-2 pr-2 p-1">' .   $percent   . '</span>' : '';
         $arr[] = $this->add_to_col( $text, array('elem' => 'td', 'class' => '', 'title' => '') );
 
         // НС
@@ -154,12 +158,13 @@ class mif_mr_courses_list extends mif_mr_table {
 
         $name_new_course = ( isset( $a[$key2]['course_id'] ) ) ? '' : '&name=' . urlencode( $key2 );
 
-        $text = ( $making ) ? '<a href="' . $link . '?download=course-x-tpl' . $name_new_course . '" class="mr-gray rounded p-1" title="Шаблон дисциплины"><i class="fa-regular fa-file-excel"></i></a>' : '';
+        $text = ( $making ) ? '<a href="' . $link_lib . '?download=course-x-tpl' . $name_new_course . '" class="mr-gray rounded p-1" title="Шаблон дисциплины"><i class="fa-regular fa-file-excel"></i></a>' : '';
         $arr[] = $this->add_to_col( $text, array('elem' => 'td', 'class' => '', 'title' => '') );
         
         // Ссылка (clean) 
         
-        $text = ( isset( $a[$key2]['course_id'] ) ) ? '<a href="' . mif_mr_opop_core::get_opop_url() . 'courses/' . $a[$key2]['course_id'] . '" class="mr-gray rounded p-1" title="Смотреть дисциплину"><i class="fa-solid fa-caret-right"></i></a>' : '';
+        // $text = ( isset( $a[$key2]['course_id'] ) ) ? '<a href="' . mif_mr_opop_core::get_opop_url() . 'courses/' . $a[$key2]['course_id'] . '" class="mr-gray rounded p-1" title="Смотреть дисциплину"><i class="fa-solid fa-caret-right"></i></a>' : '';
+        $text = ( isset( $a[$key2]['course_id'] ) ) ? '<a href="' . $link_clean . '" class="mr-gray rounded p-1" title="Смотреть дисциплину"><i class="fa-solid fa-caret-right"></i></a>' : '';
         $arr[] = $this->add_to_col( $text, array('elem' => 'td', 'class' => '', 'title' => '') );
         
         // Ссылка на библиотеку 
@@ -169,13 +174,13 @@ class mif_mr_courses_list extends mif_mr_table {
         if ( isset( $a[$key2]['course_id'] ) ) {
             $text = ( $making ) ? mif_mr_opop_core::get_a_id( $a[$key2]['course_id'], 
                                                 // mif_mr_opop_core::get_opop_url() . 'lib-courses/' . $a[$key2]['course_id'] . '?back=courses', 
-                                                $link . '?back=courses', 
+                                                $link_lib . '?back=courses', 
                                                 'Ссылка на библиотеку', 'p-1 pl-2 pr-2' ) : '';
         } else {
 
             $text = ( $making ) ? mif_mr_opop_core::get_a_id( '<i class="fa-regular fa-file-lines"></i><i class="fa-solid fa-arrow-right"></i>', 
                                                 // mif_mr_opop_core::get_opop_url() . 'lib-courses/0?back=courses&title=' . urlencode( $key2 ), 
-                                                $link . '?back=courses&title=' . urlencode( $key2 ), 
+                                                $link_lib . '?back=courses&title=' . urlencode( $key2 ), 
                                                 'Создать и перейти', 'p-1' ) : '';
 
         }
