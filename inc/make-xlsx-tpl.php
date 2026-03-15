@@ -28,8 +28,6 @@ class mif_mr_xlsx_tpl extends mif_mr_xlsx {
     }
 
 
-
-
    
     // 
     // Перевести массив в файл xlsx  
@@ -164,11 +162,17 @@ class mif_mr_xlsx_tpl extends mif_mr_xlsx {
         $this->set( $this->scheme['opop'][0], get_the_title( $arr['from_id'] ) );
         $this->set( $this->scheme['opop_url'][0], get_permalink( $arr['from_id'] ) );
 
-        return $arr;
+        // Коррекция высоты и получить готовый xlsx-файл
+
+        $this->сorrection_height();
+        $path = $this->make_xlsx();
+
+        return $path;
     }
 
 
 
+    
 
     private function max( $a = array(), $k = 'name', $k2 = NULL, $k3 = NULL )
     {
@@ -191,6 +195,21 @@ class mif_mr_xlsx_tpl extends mif_mr_xlsx {
         return $s;
     }
 
+
+
+
+    
+    
+    // //
+    // // Коррекция высоты
+    // // 
+    
+    // private function сorrection_height()
+    // {
+    //     $this->sheet->getRowDimension( $this->sheet->getCell( $this->scheme['name'][0] )->getRow() )->setRowHeight( 30 );
+    //     $this->sheet->getRowDimension( $this->sheet->getCell( $this->scheme['cmp'][0] )->getRow() )->setRowHeight( 25 );
+    //     $this->sheet->getRowDimension( $this->sheet->getCell( $this->scheme['hours'][0] )->getRow() )->setRowHeight( 25 );
+    // }
 
 
    

@@ -22,13 +22,13 @@ require dirname( __FILE__ ) . '/../vendor/autoload.php';
 
 
 
-class mif_mr_docx_core  {
+class mif_mr_docx {
 
     private $blank = '';
 
     function __construct( $blank = '' )
     {
-        $this->blank = dirname( __FILE__ ) . '/../xlsx/default.docx';
+        $this->blank = dirname( __FILE__ ) . '/../docx/default.docx';
         if ( $blank ) $this->blank = $blank; 
 
     }
@@ -42,6 +42,7 @@ class mif_mr_docx_core  {
 
     function get( $arr = array() )
     {
+        // p($this->blank );
 
         $templateProcessor = new \PhpOffice\PhpWord\TemplateProcessor( $this->blank );
 
@@ -71,12 +72,10 @@ class mif_mr_docx_core  {
 
         $upload_dir = (object) wp_upload_dir();
         $file = trailingslashit( $upload_dir->path ) . md5( serialize( $arr ) ) . '.docx';        
+        $file = $this->blank;
 
         $templateProcessor->saveAs( $file );
 
-
-        // $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter( $phpWord, 'Word2007' );
-        // $objWriter->save( $file );
 
         return $file;
     }

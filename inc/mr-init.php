@@ -49,9 +49,10 @@ include_once dirname( __FILE__ ) . '/tools-courses.php';
 include_once dirname( __FILE__ ) . '/lib-download.php';
 include_once dirname( __FILE__ ) . '/lib-upload.php';
 include_once dirname( __FILE__ ) . '/lib-xlsx.php';
-include_once dirname( __FILE__ ) . '/lib-xlsx-tpl.php';
-// include_once dirname( __FILE__ ) . '/lib-docx-core.php';
+include_once dirname( __FILE__ ) . '/lib-docx.php';
 
+include_once dirname( __FILE__ ) . '/make-xlsx-tpl.php';
+include_once dirname( __FILE__ ) . '/make-docx-program.php';
 
 include_once dirname( __FILE__ ) . '/classes/modules-class.php';
 include_once dirname( __FILE__ ) . '/classes/matrix-class.php';

@@ -169,19 +169,19 @@ class mif_mr_xlsx  {
 
 
 
-    //
-    // Получить из файла данные
-    // 
-    // 
+    // //
+    // // Получить из файла данные
+    // // 
+    // // 
 
-    function get_courses( $path )
-    {
-        $arr = $this->get( $path );
+    // function get_courses( $path )
+    // {
+    //     $arr = $this->get( $path );
 
-        p($arr);
+    //     p($arr);
 
-        return $arr;
-    }
+    //     return $arr;
+    // }
 
 
     private $spreadsheet;

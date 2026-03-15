@@ -450,7 +450,6 @@ class mif_mr_opop_core {
             
             p('@@');
 
-
         }
 
         // p($arr);
@@ -464,7 +463,7 @@ class mif_mr_opop_core {
     // Делает шаблон дисциплины для выдачи пользователю (x-tpl)
     //
     
-    public function make_x_tpl()
+    public function make_xlsx_tpl()
     {
         global $wp_query;
         global $tree;
@@ -493,14 +492,61 @@ class mif_mr_opop_core {
             $arr['name'] .= $arr2['name'] . ' (шаблон дисциплины).xlsx';
 
             $m = new mif_mr_xlsx_tpl( $blank );
-            $m->arr_to_xlsx( $arr2 );
-            $m->сorrection_height();
-            $arr['path'] = $m->make_xlsx();
+            // $m->arr_to_xlsx( $arr2 );
+            // $m->сorrection_height();
+            // $arr['path'] = $m->make_xlsx();
+            $arr['path'] = $m->arr_to_xlsx( $arr2 );
+            // $m->сorrection_height();
+            // $m->make_xlsx();
 
         } else {
             
             p('@@');
 
+
+        }
+
+        // p($arr);
+        return $arr;
+        
+    }
+    
+    
+    
+    //
+    // Делает программу дисциплины для выдачи пользователю (d-program)
+    //
+    
+    public function make_docx_program()
+    {
+        global $wp_query;
+        global $tree;
+       
+        $arr = array( 'name' => '', 'path' => '', 'res' => false );
+
+        if ( isset( $wp_query->query_vars['id'] ) ) {
+
+            $arr2 = ( isset( $tree['content']['courses']['clean'][$wp_query->query_vars['id']] ) ) ?
+                 $tree['content']['courses']['clean'][$wp_query->query_vars['id']] :
+                 array();
+
+            $blank = dirname( __FILE__ ) . '/../templates/docx/program.docx';
+
+            // if ( empty( $arr2['name'] ) && isset( $_REQUEST['name'] ) ) $arr2['name'] = sanitize_text_field( $_REQUEST['name'] );
+            // if ( empty( $arr2['data'] ) && isset( $_REQUEST['name'] ) ) $arr2['data'] = array('data'=>array()); // !!!!
+
+            $arr['name'] .= $arr2['name'] . ' (программа дисциплины).docx';
+            // $arr['name'] .= '123 (программа дисциплины).docx';
+
+            $m = new mif_mr_docx_program( $blank );
+            // $m->arr_to_xlsx( $arr2 );
+            // $m->сorrection_height();
+            $arr['path'] = $m->arr_to_docx( $arr2 );
+            // $arr['path'] = $m->get( array( 'name' => '123', 'target' => '456' ) );
+
+        } else {
+            
+            p('@@');
 
         }
 

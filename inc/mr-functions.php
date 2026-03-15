@@ -262,7 +262,9 @@ class mif_mr_functions {
 
         if ( isset( $wp_query->query_vars['id'] ) ) {
 
-            if ( $type == 'xls' ) $a = array( 'course-x-tpl', 'Шаблон' );
+            if ( $type == 'x-tpl' ) $a = array( 'course-x-tpl', 'Шаблон' );
+            // if ( $type == 'program' ) $a = array( 'course-x-tpl', 'Программа' );
+            if ( $type == 'program' ) $a = array( 'course-d-program', 'Прог-ма' );
             if ( $type == 'text' ) $a = array( 'text-raw', 'Текст' );
 
 

@@ -81,11 +81,25 @@ class mif_mr_download {
         if ( $item == 'course-x-tpl' ) {
 
             $m = new mif_mr_opop();
-            $a = $m->make_x_tpl();
+            // $m = new mif_mr_xlsx_tpl();
+            $a = $m->make_xlsx_tpl();
             
             $this->download( $a['path'], $a['name'] );
 
         }
+        
+        
+        // Программа дисциплины
+        
+        if ( $item == 'course-d-program' ) {
+
+            $m = new mif_mr_opop();
+            $a = $m->make_docx_program();
+            // p($a);
+            $this->download( $a['path'], $a['name'] );
+
+        }
+        
 
 
 
@@ -123,16 +137,17 @@ class mif_mr_download {
     {
         if ( empty( $file ) ) return;
 
+
+
         if ( file_exists( $file ) ) {
 
             if ( ob_get_level() ) ob_end_clean();
 
         } else {
-
+          
             return;
 
         }
-
         $content_types = array(
             'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
             'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',

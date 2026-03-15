@@ -26,7 +26,7 @@
                 <?php mif_mr_the_edit_link(); ?>
                 <?php mif_mr_the_advanced_edit_link(); ?>
                 <?php mif_mr_the_remove_link(); ?>
-                <?php mif_mr_download_link( 'xls' ); ?>
+                <?php mif_mr_download_link( 'x-tpl' ); ?>
                 <?php mif_mr_download_link( 'text' ); ?>
             
             </div>
