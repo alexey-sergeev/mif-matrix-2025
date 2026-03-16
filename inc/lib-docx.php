@@ -40,7 +40,7 @@ class mif_mr_docx {
     //  $arr - данные, которые надо вставить в шаблон
     // 
 
-    function get( $arr = array() )
+    function make_docx( $arr = array() )
     {
         // p($this->blank );
 
@@ -70,9 +70,11 @@ class mif_mr_docx {
 
         }
 
-        $upload_dir = (object) wp_upload_dir();
-        $file = trailingslashit( $upload_dir->path ) . md5( serialize( $arr ) ) . '.docx';        
-        $file = $this->blank;
+        // $upload_dir = (object) wp_upload_dir();
+        // $file = trailingslashit( $upload_dir->path ) . md5( serialize( $arr ) ) . '.docx';        
+        // $file = $this->blank;
+
+        $file = mif_mr_download::get_path_tmp( 'docx' );
 
         $templateProcessor->saveAs( $file );
 

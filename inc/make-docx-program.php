@@ -27,18 +27,90 @@ class mif_mr_docx_program extends mif_mr_docx {
     function arr_to_docx( $arr )
     {
 
-        p($arr);
+        // p($arr);
 
-        
+        $a['name'] = $arr['name'];
+        $a['target'] = $this->p( $arr['data']['content']['target'] );
+        $a['cmp_total'] = $this->cmp( $arr['meta']['cmp_descr'] );
+        $a['outcomes_z_total'] = $this->ul( $arr['meta']['outcomes']['z'] );
+        $a['outcomes_u_total'] = $this->ul( $arr['meta']['outcomes']['u'] );
+        $a['outcomes_v_total'] = $this->ul( $arr['meta']['outcomes']['v'] );
+        $a['biblio_basic'] = $this->ol( $arr['data']['biblio']['basic'] );
+        $a['biblio_additional'] = $this->ol( $arr['data']['biblio']['additional'] );
+        $a['it_inet'] = $this->ol( $arr['data']['it']['inet'] );
+        $a['it_app'] = $this->ol( $arr['data']['it']['app'] );
+        $a['mto'] = $this->ol( $arr['data']['mto']['mto'] );
+        $a['authors'] = $this->dl( $arr['data']['authors']['authors'] );
+        // $a[''] = $arr[''];
+        // $a[''] = $arr[''];
+        // $a[''] = $arr[''];
+        // $a[''] = $arr[''];
+        // $a[''] = $arr[''];
+        // $a[''] = $arr[''];
+        // $a[''] = $arr[''];
+        // $a[''] = $arr[''];
+        // $a[''] = $arr[''];
 
 
 
-        $path = $this->get( array( 'name' => '123', 'target' => '456' ) );
+
+
+        $path = $this->make_docx( $a );
 
         return $path;
 
     }
 
+
+
+    private function p( $t )
+    {
+        return trim( $t, $this->p ) . '.';
+    }
+
+
+
+    private function cmp( $a )
+    {
+        $b = array();
+        foreach ( $a as $i ) $b[] = "</w:t></w:r><w:r><w:tab/></w:r><w:r><w:t>– " . mb_lcfirst( trim( $i['descr'], $this->p ) ) . ' (' . $i['name'] . ')';
+        $s = implode( ";\n\n", $b ) . '.';
+        return $s;
+    }
+
+
+
+    private function ul( $a )
+    {
+        $b = array();
+        foreach ( $a as $i ) $b[] = "</w:t></w:r><w:r><w:tab/></w:r><w:r><w:t>– " . mb_lcfirst( trim( $i, $this->p ) );
+        $s = implode( ";\n", $b ) . '.';
+        return $s;
+    }
+
+
+
+    private function ol( $a )
+    {
+        $b = array();
+        foreach ( $a as $k => $i ) $b[] = "</w:t></w:r><w:r><w:tab/></w:r><w:r><w:t>" . $k+1 . '. ' . mb_ucfirst( trim( $i, $this->p ) ) . '.';
+        $s = implode( "\n", $b );
+        return $s;
+    }
+
+
+
+    private function dl( $a )
+    {
+        $b = array();
+        foreach ( $a as $i ) $b[] = mb_ucfirst( trim( $i, $this->p ) );
+        $s = implode( ",\n", $b ) . '.';
+        return $s;
+    }
+
+
+
+    private $p = ';:,.? ';
 
    
     // // 
