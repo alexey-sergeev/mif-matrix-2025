@@ -30,6 +30,7 @@ class mif_mr_docx_program extends mif_mr_docx {
         // p($arr);
 
         $a['name'] = $arr['name'];
+        $a['place'] = $this->course_place( $arr );
         $a['target'] = $this->p( $arr['data']['content']['target'] );
         $a['cmp_total'] = $this->cmp( $arr['meta']['cmp_descr'] );
         $a['outcomes_z_total'] = $this->ul( $arr['meta']['outcomes']['z'] );
@@ -41,7 +42,21 @@ class mif_mr_docx_program extends mif_mr_docx {
         $a['it_app'] = $this->ol( $arr['data']['it']['app'] );
         $a['mto'] = $this->ol( $arr['data']['mto']['mto'] );
         $a['authors'] = $this->dl( $arr['data']['authors']['authors'] );
-        // $a[''] = $arr[''];
+        $a['parts_content'] = $this->parts_content( $arr['data']['content']['parts'] );
+        $a['parts_hours'] = $this->parts_hours( $arr['data']['content']['parts'] );
+        
+
+// $a[] = [
+//  ['userId' => 1, 'userName' => 'Batman', 'userAddress' => 'Gotham City'],
+//  ['userId' => 2, 'userName' => 'Superman', 'userAddress' => 'Metropolis']
+// ];
+
+                    // $a['parts'] = array(
+                    //     array( 'parts' => 'Мари', 'invite_code' => '1234-567', 'site' => 'http://qm.vspu.ru', 'invite' => 'gfhfgh' ),
+                    //     array( 'parts' => 'Максим', 'invite_code' => '9876-543', 'site' => 'http://qm.vspu.ru', 'invite' => 'gjhg' ),
+                    //     array( 'parts' => 'Мирон', 'invite_code' => '1029-384', 'site' => 'http://qm.vspu.ru', 'invite' => 'xcxzc' ),
+                    // );
+        
         // $a[''] = $arr[''];
         // $a[''] = $arr[''];
         // $a[''] = $arr[''];
@@ -52,7 +67,7 @@ class mif_mr_docx_program extends mif_mr_docx {
         // $a[''] = $arr[''];
 
 
-
+        // p($a);
 
 
         $path = $this->make_docx( $a );
@@ -61,6 +76,129 @@ class mif_mr_docx_program extends mif_mr_docx {
 
     }
 
+
+
+
+// function __course_prev_next( $course_data, $tree, $tpl = 'annotation' )
+// {
+//     $out = '';
+    
+//     $tpl = ( $tpl == 'program' ) ? '\t' : '';
+    
+//     $msg1 = 'Для освоения дисциплины «';
+//     $msg11 = 'Для прохождения практики «';
+//     $msg2 = '» обучающиеся используют знания, умения, способы деятельности и установки, сформированные в ходе ';
+//     $msg3 = 'изучения дисциплин ';
+//     $msg31 = 'изучения дисциплины ';
+//     $msg4 = 'прохождения практик ';
+//     $msg41 = 'прохождения практики ';
+    
+//     $course_prev_arr = __course_prev_next_array( $course_data['course'], $tree, 'prev', 'course' );
+//     $practice_prev_arr = __course_prev_next_array( $course_data['course'], $tree, 'prev', 'practice' );
+    
+//     if ( $course_prev_arr ) $course_prev = implode( ', ', (array)$course_prev_arr);
+//     if ( $practice_prev_arr ) $practice_prev = implode( ', ', (array)$practice_prev_arr);
+// //    print_r($practice_prev);
+
+//     $unit = $course_data['unit'];
+
+//     if ( $course_prev || $practice_prev ) {
+//         $tmp_msg = ( $unit == 'practice' ) ? $msg11 : $msg1; 
+//         $out .= $tmp_msg . $course_data['course'] . $msg2;
+//         if ( $course_prev ) if ( count($course_prev_arr) == 1 ) { $out .= $msg31 . $course_prev; } else { $out .= $msg3 . $course_prev; };
+//         if ( $course_prev && $practice_prev ) $out .= ', '; 
+//         if ( $practice_prev ) if ( count($practice_prev_arr) == 1 ) { $out .= $msg41 . $practice_prev; } else { $out .= $msg4 . $practice_prev; }; 
+//         $out .= '.'; 
+//     }
+    
+//     // print_r($out);
+    
+    
+//     $msg5 = 'Освоение данной дисциплины является необходимой основой для ';
+//     $msg51 = 'Прохождение данной практики является необходимой основой для ';
+//     $msg6 = 'последующего изучения дисциплин ';
+//     $msg61 = 'последующего изучения дисциплины ';
+//     $msg7 = 'прохождения практик ';
+//     $msg71 = 'прохождения практики ';
+     
+//     $course_next_arr = __course_prev_next_array( $course_data['course'], $tree, 'next', 'course' );
+//     $practice_next_arr = __course_prev_next_array( $course_data['course'], $tree, 'next', 'practice' );
+    
+//     if ( $course_next_arr ) $course_next = implode( ', ', (array)$course_next_arr);
+//     if ( $practice_next_arr ) $practice_next = implode( ', ', (array)$practice_next_arr);
+
+//     if ( $course_next || $practice_next ) {
+//         if ( $out ) $out .= '\n' . $tpl;
+//         $tmp_msg = ( $unit == 'practice' ) ? $msg51 : $msg5; 
+//         $out .= $tmp_msg;
+//         if ( $course_next ) if ( count($course_next_arr) == 1 ) { $out .= $msg61 . $course_next; } else { $out .= $msg6 . $course_next; }; 
+//         if ( $course_next && $practice_next ) $out .= ', '; 
+//         if ( $practice_next ) if ( count($practice_next_arr) == 1 ) { $out .= $msg71 . $practice_next; } else { $out .= $msg7 . $practice_next; }; 
+//         $out .= '.'; 
+//     }
+    
+//     return $out;
+// }
+
+
+
+
+    private function course_place( &$arr )
+    {
+        $msg1 = '';
+        $msg2 = '';
+        
+        if ( $arr['unit'] == 'ОД' ) $msg1 = ' относится к базовой части блока дисциплин'; 
+        if ( $arr['unit'] == 'ВД' ) $msg1 = ' относится к вариативной части блока дисциплин'; 
+        if ( ! empty( $arr['module'] ) ) $msg2 = ' и расположена в модуле «' . $arr['module'] . '»'; 
+        // if ( $course_data['alternative'] ) $msg2 = ' и является дисциплиной по выбору'; 
+
+        $out = 'Дисциплина «' . $arr['name'] . '»' . $msg1 . $msg2 . '.';    
+
+        return $out;
+    }
+
+
+
+    private function parts_hours( $a )
+    {
+        $b = array();
+
+        foreach ( $a as $k => $i ) {
+
+            $b[] = array( 
+                'parts_hours' => $k + 1,
+                'parts_name' => $i['name'],
+                'lec' => $i['hours']['lec'],
+                'lab' => $i['hours']['lab'],
+                'prac' => $i['hours']['prac'],
+                'srs' => $i['hours']['srs'],
+                'exam' => $i['hours']['exam'],
+                'all' => $i['hours_z'],
+            );
+
+        }
+
+        return $b;
+    }
+
+
+    private function parts_content( $a )
+    {
+        $b = array();
+
+        foreach ( $a as $k => $i ) {
+
+            $b[] = array( 
+                'parts_content' => $k + 1,
+                'parts_name' => $i['name'],
+                'data' => $i['content'],
+            );
+
+        }
+
+        return $b;
+    }
 
 
     private function p( $t )

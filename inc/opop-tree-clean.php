@@ -97,6 +97,12 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
             $arr[$key2]['course_id'] = $item['course_id'];
             $arr[$key2]['name'] = $key;
+            
+            $p = new parser();
+            $arr[$key2]['module'] = ( $item['module'] != $p->default_name ) ? $item['module'] : '';
+            $arr[$key2]['unit'] = $item['unit'];
+            $arr[$key2]['code'] = $item['code'];
+            $arr[$key2]['kaf'] = $item['kaf'];
 
 
             // Компетенции
@@ -459,6 +465,64 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
         return $res;
     }
+
+
+
+
+
+
+// function __course_prev_next_array( $course, $tree, $prev_next = 'prev', $unit = 'course' )
+// {
+//     foreach ( $tree as $key => $value ) 
+//         if ( $value['course'] == $course ) { 
+//             $course_id = $key;
+//             break;
+//         }     
+
+//     if ( is_array($tree[$course_id]['curriculum']) ) {
+//         $first_semester = 0;
+//         $last_semester = 0;
+//         foreach ( $tree[$course_id]['curriculum'] as $key => $value ) {
+//             $first_semester = $key;
+//             break;        
+//         }
+//         foreach ( $tree[$course_id]['curriculum'] as $key => $value ) {
+//             $last_semester = $key;
+//         }
+//     } else {
+//         return false;
+//     }
+    
+//     $competence = $tree[$course_id]['competence'];
+
+    
+//     $arr_out = array();
+    
+//     foreach ( $tree as $item ) {
+
+//         if ( $item['course'] == $tree[$course_id]['course'] ) continue;
+//         if ( $unit == 'course' && !( $item['unit'] == 'base' || $item['unit'] == 'variable' ) ) continue;
+//         if ( $unit == 'practice' && $item['unit'] != 'practice' ) continue;
+
+//         if ( !competence_filter( $competence, $item['competence'] ) ) continue; 
+
+//         $l_prev = false;
+//         $l_next = false;
+//         if ( is_array( $item['curriculum'] ) ) {
+//             foreach ( $item['curriculum'] as $key => $value ) {
+//                 if ( $key < $last_semester ) $l_prev = true;
+//                 if ( $key > $first_semester ) $l_next = true;
+//             }
+//         }
+        
+//         if ( ($l_prev && $prev_next == 'prev') || ($l_next && $prev_next == 'next') )  $arr_out[] = ___quotes( $item['course'] );  
+        
+//     }
+    
+// // print_r($arr_out);
+//     return $arr_out;
+// }
+
 
 
     // // 

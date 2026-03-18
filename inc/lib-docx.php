@@ -42,24 +42,13 @@ class mif_mr_docx {
 
     function make_docx( $arr = array() )
     {
-        // p($this->blank );
+        // $templateProcessor = new \PhpOffice\PhpWord\TemplateProcessor( $this->blank );
+        $templateProcessor = new mif_TemplateProcessor( $this->blank );
 
-        $templateProcessor = new \PhpOffice\PhpWord\TemplateProcessor( $this->blank );
-
-        // $arr = array(
-        //     'testname' => 'Название теста',
-        //     'time' => '12.02.2020 14:36',
-        //     'fullname' => array(
-        //                 array( 'fullname' => 'Мари', 'invite_code' => '1234-567', 'site' => 'http://qm.vspu.ru' ),
-        //                 array( 'fullname' => 'Максим', 'invite_code' => '9876-543', 'site' => 'http://qm.vspu.ru' ),
-        //                 array( 'fullname' => 'Мирон', 'invite_code' => '1029-384', 'site' => 'http://qm.vspu.ru' ),
-        //             )
-        //     );
-            
         foreach ( $arr as $key => $item ) {
 
             if ( is_array( $item ) ) {
-
+                
                 $templateProcessor->cloneRowAndSetValues( $key, $item );
 
             } else {
@@ -69,10 +58,6 @@ class mif_mr_docx {
             }
 
         }
-
-        // $upload_dir = (object) wp_upload_dir();
-        // $file = trailingslashit( $upload_dir->path ) . md5( serialize( $arr ) ) . '.docx';        
-        // $file = $this->blank;
 
         $file = mif_mr_download::get_path_tmp( 'docx' );
 

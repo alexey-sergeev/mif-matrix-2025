@@ -50,6 +50,7 @@ include_once dirname( __FILE__ ) . '/lib-download.php';
 include_once dirname( __FILE__ ) . '/lib-upload.php';
 include_once dirname( __FILE__ ) . '/lib-xlsx.php';
 include_once dirname( __FILE__ ) . '/lib-docx.php';
+include_once dirname( __FILE__ ) . '/lib-processor.php';
 
 include_once dirname( __FILE__ ) . '/make-xlsx-tpl.php';
 include_once dirname( __FILE__ ) . '/make-docx-program.php';

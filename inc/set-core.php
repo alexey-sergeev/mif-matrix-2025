@@ -352,7 +352,7 @@ class mif_mr_set_core extends mif_mr_part_companion {
 
         foreach ( $arr_raw as $key => $item ) 
             if ( isset( $item['courses'] ) )
-                foreach ( $item['courses'] as $key2 => $item2 ) $index[$key2] = array( 'module' => $key );
+                foreach ( $item['courses'] as $key2 => $item2 ) $index[$key2] = array( 'module' => $key, 'unit' => $item2['unit'], 'code' => $item2['code'], 'kaf' => $item2['kaf'] );
                 // foreach ( $item['courses'] as $key2 => $item2 ) $index[$key2] = array( 'key' => $key, 'name' => $key2 );
         
         ksort( $index );
