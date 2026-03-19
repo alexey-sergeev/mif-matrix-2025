@@ -132,6 +132,7 @@ class curriculum {
             if ( isset( $arr[3] ) && is_numeric( $arr[3] ) ) $sem['prac'] = $arr[3];
             if ( isset( $arr[4] ) && is_numeric( $arr[4] ) ) $sem['srs'] = $arr[4];
             if ( isset( $arr[5] ) && is_numeric( $arr[5] ) ) $sem['exam'] = $arr[5];
+            // $sem['aud'] = $arr[1] + $arr[2] + $arr[3];
 
             // Дополнительные атрибуты (промежуточная аттестация или др.)
 

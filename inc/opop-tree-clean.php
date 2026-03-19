@@ -107,6 +107,8 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
             // Компетенции
 
+            // $arr[$key2]['meta']['cmp_descr'] = array();
+
             if ( ( isset( $tree['content']['matrix']['data'][$key] ) ) ) {
 
                 $arr[$key2]['meta']['cmp'] = $tree['content']['matrix']['data'][$key];
@@ -132,6 +134,7 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
             if ( isset( $tree['content']['curriculum']['data'][$key]['semesters'] ) ) {
 
                 $arr[$key2]['meta']['semesters'] = $tree['content']['curriculum']['data'][$key]['semesters'];
+                $arr[$key2]['meta']['semesters_stat'] = $this->get_semesters_stat( $tree['content']['curriculum']['data'][$key]['semesters'] );
                 $arr[$key2]['meta']['exam'] = $this->get_exam( $tree['content']['curriculum']['data'][$key]['semesters'] );
 
             }
@@ -142,8 +145,11 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
             if ( isset( $tree['content']['curriculum']['data'][$key]['course_stat'] ) ) {
 
                 $arr[$key2]['meta']['hours'] = $tree['content']['curriculum']['data'][$key]['course_stat'];
-                $arr[$key2]['meta']['hours_z'] = $this->get_hours_z( $tree['content']['curriculum']['data'][$key]['course_stat'] );
-                $arr[$key2]['meta']['hours_ze'] = $this->get_hours_ze( $tree['content']['curriculum']['data'][$key]['course_stat'] );
+
+                $arr[$key2]['meta']['hours_stat']['hours'] = $this->get_hours_z( $tree['content']['curriculum']['data'][$key]['course_stat'] );
+                $arr[$key2]['meta']['hours_stat']['hours_ze'] = $this->get_hours_ze( $tree['content']['curriculum']['data'][$key]['course_stat'] );
+                // $arr[$key2]['meta']['hours_z'] = $this->get_hours_z( $tree['content']['curriculum']['data'][$key]['course_stat'] );
+                // $arr[$key2]['meta']['hours_ze'] = $this->get_hours_ze( $tree['content']['curriculum']['data'][$key]['course_stat'] );
                 $arr[$key2]['meta']['hours_raw'] = $this->get_hours_raw( $tree['content']['curriculum']['data'][$key]['course_stat'] );
                 
             }
@@ -299,14 +305,18 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
             // Планируемые результаты обучения
 
-            foreach ( $arr['meta']['cmp_descr'] as $k => $i ) {
-                $err[$key2]['meta']['errors']['cmp_descr'][$k]['name'][] = $this->is_empty( $i['name'] );
-                $err[$key2]['meta']['errors']['cmp_descr'][$k]['descr'][] = $this->is_empty( $i['descr'] );
-                $err[$key2]['meta']['errors']['cmp_descr'][$k]['category'][] = $this->is_empty( $i['category'] );
+            if ( ! empty( $arr['meta']['cmp_descr'] ) ) {
+                
+                foreach ( $arr['meta']['cmp_descr'] as $k => $i ) {
 
+                    $err[$key2]['meta']['errors']['cmp_descr'][$k]['name'][] = $this->is_empty( $i['name'] );
+                    $err[$key2]['meta']['errors']['cmp_descr'][$k]['descr'][] = $this->is_empty( $i['descr'] );
+                    $err[$key2]['meta']['errors']['cmp_descr'][$k]['category'][] = $this->is_empty( $i['category'] );
 
-            }
+                }
             
+            }
+
             $err[$key2]['meta']['errors']['outcomes'][] = $this->is_empty( $arr['meta']['outcomes'] );
 
 
@@ -708,6 +718,30 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
         return implode( ', ', $b );
     }
 
+
+
+
+    // private function get_hours_aud( $a ) 
+    // {
+    //     return $a['lec'] + $a['lab'] + $a['prac'];
+    // }
+
+
+
+
+    private function get_semesters_stat( $a ) 
+    {
+        $b = array();
+
+        foreach ( $a as $k => $i ) {
+
+            if ( isset( $i['att'] ) ) unset( $i['att'] );
+            $b[$k] = array( 'hours' => array_sum( $i ), 'hours_ze' => array_sum( $i ) / 36 );
+
+        }
+
+        return $b;
+    }
 
 
 

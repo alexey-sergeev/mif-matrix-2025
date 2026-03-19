@@ -44,21 +44,34 @@ class mif_mr_docx_program extends mif_mr_docx {
         $a['authors'] = $this->dl( $arr['data']['authors']['authors'] );
         $a['parts_content'] = $this->parts_content( $arr['data']['content']['parts'] );
         $a['parts_hours'] = $this->parts_hours( $arr['data']['content']['parts'] );
+       
+        // 4. Объём дисциплины и виды учебной работы
+        $a['all_aud'] = $this->all_aud( $arr['meta']['hours'] );
+        $a['all_lec'] = ( $m = $arr['meta']['hours']['lec'] != 0 ) ? $m : '–';
+        $a['all_prac'] = ( $m = $arr['meta']['hours']['prac'] != 0 ) ? $m : '–';
+        $a['all_lab'] = ( $m = $arr['meta']['hours']['lab'] != 0 ) ? $m : '–';
+        $a['all_srs'] = ( $m = $arr['meta']['hours']['srs'] != 0 ) ? $m : '–';
+        $a['all_exam'] = ( $m = $arr['meta']['hours']['exam'] != 0 ) ? $m : '–';
+        $a['all_hours'] = $arr['meta']['hours_stat']['hours'];
+        $a['all_ze'] = $arr['meta']['hours_stat']['hours_ze'];
+        
+        $a['sem_list'] = $this->sem_list( $arr['meta']['semesters'] );
+        $a['sem_aud'] = $this->sem_aud( $arr['meta']['semesters'] );
+        $a['sem_lec'] = $this->sem_hours( $arr['meta']['semesters'], 'lec' );
+        $a['sem_prac'] = $this->sem_hours( $arr['meta']['semesters'], 'prac' );
+        $a['sem_lab'] = $this->sem_hours( $arr['meta']['semesters'], 'lab' );
+        $a['sem_srs'] = $this->sem_hours( $arr['meta']['semesters'], 'srs' );
+        $a['sem_exam'] = $this->sem_hours( $arr['meta']['semesters'], 'exam' );
+        
+        $a['sem_hours'] = $this->sem_stat( $arr['meta']['semesters_stat'], 'hours' );
+        $a['sem_ze'] = $this->sem_stat( $arr['meta']['semesters_stat'], 'hours_ze' );
+        $a['sem_exam_name'] = $this->sem_exam_name( $arr['meta']['semesters'] );
+        // p($arr['meta']['semesters']);
+        // $a['sem_hours'] = $arr[''];
+        // $a['sem_ze'] = $arr[''];
+        // $a['sem_exam'] = $arr[''];
         
 
-// $a[] = [
-//  ['userId' => 1, 'userName' => 'Batman', 'userAddress' => 'Gotham City'],
-//  ['userId' => 2, 'userName' => 'Superman', 'userAddress' => 'Metropolis']
-// ];
-
-                    // $a['parts'] = array(
-                    //     array( 'parts' => 'Мари', 'invite_code' => '1234-567', 'site' => 'http://qm.vspu.ru', 'invite' => 'gfhfgh' ),
-                    //     array( 'parts' => 'Максим', 'invite_code' => '9876-543', 'site' => 'http://qm.vspu.ru', 'invite' => 'gjhg' ),
-                    //     array( 'parts' => 'Мирон', 'invite_code' => '1029-384', 'site' => 'http://qm.vspu.ru', 'invite' => 'xcxzc' ),
-                    // );
-        
-        // $a[''] = $arr[''];
-        // $a[''] = $arr[''];
         // $a[''] = $arr[''];
         // $a[''] = $arr[''];
         // $a[''] = $arr[''];
@@ -75,6 +88,71 @@ class mif_mr_docx_program extends mif_mr_docx {
         return $path;
 
     }
+
+
+
+    private function all_aud( $a )
+    {
+        return $a['lec'] + $a['lab'] + $a['prac'];
+    }
+
+
+
+
+    private function sem_exam_name( $a )
+    {
+        ksort( $a );
+
+        $b = array();
+        foreach ( $a as $i ) $b[] = ( ! empty( $i['att'] ) ) ? implode( ', ', $i['att'] ) : '–'; 
+
+        return implode( ' / ', $b );
+    }
+
+
+
+    private function sem_stat( $a, $k )
+    {
+        ksort( $a );
+
+        $b = array();
+        foreach ( $a as $i ) $b[] = ( $i[$k] != 0 ) ? $i[$k] : '–'; 
+
+        return implode( ' / ', $b );
+    }
+
+
+
+    private function sem_aud( $a )
+    {
+        ksort( $a );
+
+        $b = array();
+        foreach ( $a as $i ) $b[] = $i['lec'] + $i['lab'] + $i['prac']; 
+
+        return implode( ' / ', $b );
+    }
+
+
+
+    private function sem_hours( $a, $k )
+    {
+        ksort( $a );
+
+        $b = array();
+        foreach ( $a as $i ) $b[] =  ( $i[$k] != 0 ) ? $i[$k] : '–'; 
+
+        return implode( ' / ', $b );
+    }
+
+
+
+    private function sem_list( $a )
+    {
+        ksort( $a );
+        return implode( ' / ', array_keys( $a ) );
+    }
+
 
 
 

@@ -87,7 +87,7 @@ class mif_mr_courses extends mif_mr_courses_list {
         $out .= $this->row( $arr['name'], 'fw-bolder text-center mr-gray p-3' );
         $out .= $this->row( '<b>Компетенции: </b>' . $this->span( $this->q( $arr['meta']['cmp_raw'] ) ), 'mt-4' );
         $out .= $this->row( '<b>Академические часы: </b>' . $this->span( $this->q( $arr['meta']['hours_raw'] ) ) . ' (лек, лаб, пр, СРС, кон)');
-        $out .= $this->row( '<b>Зачетных единиц: </b>' . $this->span(  $this->q( $arr['meta']['hours_ze'] ) ) );
+        $out .= $this->row( '<b>Зачетных единиц: </b>' . $this->span(  $this->q( $arr['meta']['hours_stat']['hours_ze'] ) ) );
         $out .= $this->row( '<b>Семестры: </b>' . $this->span(  $this->q( $arr['meta']['exam'] ) ) );
 
 
