@@ -33,6 +33,7 @@ class mif_mr_docx_program extends mif_mr_docx {
         $a['place'] = $this->course_place( $arr );
         $a['target'] = $this->p( $arr['data']['content']['target'] );
         $a['cmp_total'] = $this->cmp( $arr['meta']['cmp_descr'] );
+        $a['prev_next'] = $this->prev_next( $arr );
         $a['outcomes_z_total'] = $this->ul( $arr['meta']['outcomes']['z'] );
         $a['outcomes_u_total'] = $this->ul( $arr['meta']['outcomes']['u'] );
         $a['outcomes_v_total'] = $this->ul( $arr['meta']['outcomes']['v'] );
@@ -46,6 +47,7 @@ class mif_mr_docx_program extends mif_mr_docx {
         $a['parts_hours'] = $this->parts_hours( $arr['data']['content']['parts'] );
        
         // 4. Объём дисциплины и виды учебной работы
+
         $a['all_aud'] = $this->all_aud( $arr['meta']['hours'] );
         $a['all_lec'] = ( $m = $arr['meta']['hours']['lec'] != 0 ) ? $m : '–';
         $a['all_prac'] = ( $m = $arr['meta']['hours']['prac'] != 0 ) ? $m : '–';
@@ -66,6 +68,7 @@ class mif_mr_docx_program extends mif_mr_docx {
         $a['sem_hours'] = $this->sem_stat( $arr['meta']['semesters_stat'], 'hours' );
         $a['sem_ze'] = $this->sem_stat( $arr['meta']['semesters_stat'], 'hours_ze' );
         $a['sem_exam_name'] = $this->sem_exam_name( $arr['meta']['semesters'] );
+
         // p($arr['meta']['semesters']);
         // $a['sem_hours'] = $arr[''];
         // $a['sem_ze'] = $arr[''];
@@ -157,66 +160,78 @@ class mif_mr_docx_program extends mif_mr_docx {
 
 
 
-// function __course_prev_next( $course_data, $tree, $tpl = 'annotation' )
-// {
-//     $out = '';
-    
-//     $tpl = ( $tpl == 'program' ) ? '\t' : '';
-    
-//     $msg1 = 'Для освоения дисциплины «';
-//     $msg11 = 'Для прохождения практики «';
-//     $msg2 = '» обучающиеся используют знания, умения, способы деятельности и установки, сформированные в ходе ';
-//     $msg3 = 'изучения дисциплин ';
-//     $msg31 = 'изучения дисциплины ';
-//     $msg4 = 'прохождения практик ';
-//     $msg41 = 'прохождения практики ';
-    
-//     $course_prev_arr = __course_prev_next_array( $course_data['course'], $tree, 'prev', 'course' );
-//     $practice_prev_arr = __course_prev_next_array( $course_data['course'], $tree, 'prev', 'practice' );
-    
-//     if ( $course_prev_arr ) $course_prev = implode( ', ', (array)$course_prev_arr);
-//     if ( $practice_prev_arr ) $practice_prev = implode( ', ', (array)$practice_prev_arr);
-// //    print_r($practice_prev);
+    private function prev_next( $a )
+    {
+        $out = '';
+        
+        $prev = ( ! empty( $a['meta']['prev_next']['prev'] ) ) ? '«' . implode( '», «', $a['meta']['prev_next']['prev'] ) . '»' : '';
+        $next = ( ! empty( $a['meta']['prev_next']['next'] ) ) ? '«' . implode( '», «', $a['meta']['prev_next']['next'] ) . '»' : '';
 
-//     $unit = $course_data['unit'];
+        if ( ! empty( $prev ) ) 
+            $out .= 'Для освоения дисциплины «' . $a['name'] . 
+                    '» обучающиеся используют знания, умения, способы деятельности и установки, сформированные в ходе ' .
+                    $prev . '. ';
+        
+        if ( ! empty( $next ) ) 
+            $out .= 'Освоение данной дисциплины является необходимой основой для последующего изучения дисциплин ' . $next . '.';
 
-//     if ( $course_prev || $practice_prev ) {
-//         $tmp_msg = ( $unit == 'practice' ) ? $msg11 : $msg1; 
-//         $out .= $tmp_msg . $course_data['course'] . $msg2;
-//         if ( $course_prev ) if ( count($course_prev_arr) == 1 ) { $out .= $msg31 . $course_prev; } else { $out .= $msg3 . $course_prev; };
-//         if ( $course_prev && $practice_prev ) $out .= ', '; 
-//         if ( $practice_prev ) if ( count($practice_prev_arr) == 1 ) { $out .= $msg41 . $practice_prev; } else { $out .= $msg4 . $practice_prev; }; 
-//         $out .= '.'; 
-//     }
-    
-//     // print_r($out);
-    
-    
-//     $msg5 = 'Освоение данной дисциплины является необходимой основой для ';
-//     $msg51 = 'Прохождение данной практики является необходимой основой для ';
-//     $msg6 = 'последующего изучения дисциплин ';
-//     $msg61 = 'последующего изучения дисциплины ';
-//     $msg7 = 'прохождения практик ';
-//     $msg71 = 'прохождения практики ';
-     
-//     $course_next_arr = __course_prev_next_array( $course_data['course'], $tree, 'next', 'course' );
-//     $practice_next_arr = __course_prev_next_array( $course_data['course'], $tree, 'next', 'practice' );
-    
-//     if ( $course_next_arr ) $course_next = implode( ', ', (array)$course_next_arr);
-//     if ( $practice_next_arr ) $practice_next = implode( ', ', (array)$practice_next_arr);
+        
+    //     $tpl = ( $tpl == 'program' ) ? '\t' : '';
+        
+        // $msg1 = 'Для освоения дисциплины «';
+    //     $msg11 = 'Для прохождения практики «';
+    //     $msg2 = '» обучающиеся используют знания, умения, способы деятельности и установки, сформированные в ходе ';
+    //     $msg3 = 'изучения дисциплин ';
+    //     $msg31 = 'изучения дисциплины ';
+    //     $msg4 = 'прохождения практик ';
+    //     $msg41 = 'прохождения практики ';
+        
+    //     $course_prev_arr = __course_prev_next_array( $course_data['course'], $tree, 'prev', 'course' );
+    //     $practice_prev_arr = __course_prev_next_array( $course_data['course'], $tree, 'prev', 'practice' );
+        
+    //     if ( $course_prev_arr ) $course_prev = implode( ', ', (array)$course_prev_arr);
+    //     if ( $practice_prev_arr ) $practice_prev = implode( ', ', (array)$practice_prev_arr);
+    // //    print_r($practice_prev);
 
-//     if ( $course_next || $practice_next ) {
-//         if ( $out ) $out .= '\n' . $tpl;
-//         $tmp_msg = ( $unit == 'practice' ) ? $msg51 : $msg5; 
-//         $out .= $tmp_msg;
-//         if ( $course_next ) if ( count($course_next_arr) == 1 ) { $out .= $msg61 . $course_next; } else { $out .= $msg6 . $course_next; }; 
-//         if ( $course_next && $practice_next ) $out .= ', '; 
-//         if ( $practice_next ) if ( count($practice_next_arr) == 1 ) { $out .= $msg71 . $practice_next; } else { $out .= $msg7 . $practice_next; }; 
-//         $out .= '.'; 
-//     }
-    
-//     return $out;
-// }
+    //     $unit = $course_data['unit'];
+
+    //     if ( $course_prev || $practice_prev ) {
+    //         $tmp_msg = ( $unit == 'practice' ) ? $msg11 : $msg1; 
+    //         $out .= $tmp_msg . $course_data['course'] . $msg2;
+    //         if ( $course_prev ) if ( count($course_prev_arr) == 1 ) { $out .= $msg31 . $course_prev; } else { $out .= $msg3 . $course_prev; };
+    //         if ( $course_prev && $practice_prev ) $out .= ', '; 
+    //         if ( $practice_prev ) if ( count($practice_prev_arr) == 1 ) { $out .= $msg41 . $practice_prev; } else { $out .= $msg4 . $practice_prev; }; 
+    //         $out .= '.'; 
+    //     }
+        
+    //     // print_r($out);
+        
+        
+    //     $msg5 = 'Освоение данной дисциплины является необходимой основой для ';
+    //     $msg51 = 'Прохождение данной практики является необходимой основой для ';
+    //     $msg6 = 'последующего изучения дисциплин ';
+    //     $msg61 = 'последующего изучения дисциплины ';
+    //     $msg7 = 'прохождения практик ';
+    //     $msg71 = 'прохождения практики ';
+        
+    //     $course_next_arr = __course_prev_next_array( $course_data['course'], $tree, 'next', 'course' );
+    //     $practice_next_arr = __course_prev_next_array( $course_data['course'], $tree, 'next', 'practice' );
+        
+    //     if ( $course_next_arr ) $course_next = implode( ', ', (array)$course_next_arr);
+    //     if ( $practice_next_arr ) $practice_next = implode( ', ', (array)$practice_next_arr);
+
+    //     if ( $course_next || $practice_next ) {
+    //         if ( $out ) $out .= '\n' . $tpl;
+    //         $tmp_msg = ( $unit == 'practice' ) ? $msg51 : $msg5; 
+    //         $out .= $tmp_msg;
+    //         if ( $course_next ) if ( count($course_next_arr) == 1 ) { $out .= $msg61 . $course_next; } else { $out .= $msg6 . $course_next; }; 
+    //         if ( $course_next && $practice_next ) $out .= ', '; 
+    //         if ( $practice_next ) if ( count($practice_next_arr) == 1 ) { $out .= $msg71 . $practice_next; } else { $out .= $msg7 . $practice_next; }; 
+    //         $out .= '.'; 
+    //     }
+        
+        return $out;
+    }
 
 
 

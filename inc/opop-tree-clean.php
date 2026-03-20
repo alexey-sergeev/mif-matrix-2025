@@ -129,6 +129,11 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
             }
             
 
+            // Список дисциплин который связывает по критерии компетенции
+
+            $arr[$key2]['meta']['prev_next'] = $this->get_prev_next( $key );
+            
+
             // Семестры (академические часы, конроль)
 
             if ( isset( $tree['content']['curriculum']['data'][$key]['semesters'] ) ) {
@@ -481,57 +486,46 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
 
 
-// function __course_prev_next_array( $course, $tree, $prev_next = 'prev', $unit = 'course' )
-// {
-//     foreach ( $tree as $key => $value ) 
-//         if ( $value['course'] == $course ) { 
-//             $course_id = $key;
-//             break;
-//         }     
+    private function get_prev_next( $current_course )
+    {
+        global $tree;
 
-//     if ( is_array($tree[$course_id]['curriculum']) ) {
-//         $first_semester = 0;
-//         $last_semester = 0;
-//         foreach ( $tree[$course_id]['curriculum'] as $key => $value ) {
-//             $first_semester = $key;
-//             break;        
-//         }
-//         foreach ( $tree[$course_id]['curriculum'] as $key => $value ) {
-//             $last_semester = $key;
-//         }
-//     } else {
-//         return false;
-//     }
-    
-//     $competence = $tree[$course_id]['competence'];
+        $a = array( 'prev' => NULL, 'next' => NULL );
 
-    
-//     $arr_out = array();
-    
-//     foreach ( $tree as $item ) {
+        // p($course_name);
 
-//         if ( $item['course'] == $tree[$course_id]['course'] ) continue;
-//         if ( $unit == 'course' && !( $item['unit'] == 'base' || $item['unit'] == 'variable' ) ) continue;
-//         if ( $unit == 'practice' && $item['unit'] != 'practice' ) continue;
+        if ( empty( $tree['content']['matrix']['data'][$current_course] ) ) return;
 
-//         if ( !competence_filter( $competence, $item['competence'] ) ) continue; 
+        $cmp_arr = $tree['content']['matrix']['data'][$current_course];
 
-//         $l_prev = false;
-//         $l_next = false;
-//         if ( is_array( $item['curriculum'] ) ) {
-//             foreach ( $item['curriculum'] as $key => $value ) {
-//                 if ( $key < $last_semester ) $l_prev = true;
-//                 if ( $key > $first_semester ) $l_next = true;
-//             }
-//         }
+        $courses = array();
+
+        foreach ( $cmp_arr as $cmp )
+            foreach ( $tree['content']['matrix']['data'] as $course => $i ) 
+                if ( isset( $tree['content']['courses']['index'][$course] ) && 
+                        ! in_array( $tree['content']['courses']['index'][$course]['unit'], array( 'ЭК', 'ЗЧ', 'ЗЧО' ) ) && in_array( $cmp, $i ) ) $courses[] = $course;
         
-//         if ( ($l_prev && $prev_next == 'prev') || ($l_next && $prev_next == 'next') )  $arr_out[] = ___quotes( $item['course'] );  
+        // p($tree['content']['courses']['index'][$course]);
+            
+        $courses = array_unique( $courses );
+        $courses = array_values( $courses );
         
-//     }
-    
-// // print_r($arr_out);
-//     return $arr_out;
-// }
+        $semesters = array();
+        foreach ( $courses as $course ) $semesters[] = array( 'name' => $course,
+                                                               'sem' => array_keys( $tree['content']['curriculum']['data'][$course]['semesters'] ) );
+
+        foreach ( $semesters as $k => $i ) sort( $semesters[$k]['sem'] );
+
+        $cc = array_keys( $tree['content']['curriculum']['data'][$current_course]['semesters'] );
+        sort($cc);
+        
+        foreach ( $courses as $key => $course ) if ( $semesters[$key]['sem'][0] < $cc[0] ) $a['prev'][] = $course;
+        foreach ( $courses as $key => $course ) if ( $semesters[$key]['sem'][array_key_last($semesters[$key]['sem'])] > $cc[array_key_last($cc)] ) $a['next'][] = $course; 
+ 
+        // p($a);
+        
+        return $a;
+    }
 
 
 
