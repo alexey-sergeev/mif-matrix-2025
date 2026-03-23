@@ -134,6 +134,11 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
             $arr[$key2]['meta']['prev_next'] = $this->get_prev_next( $key );
             
 
+            // Этапы формирования компетенций 
+            
+            $arr[$key2]['meta']['stage'] = $this->get_stage( $key );
+            
+
             // Семестры (академические часы, конроль)
 
             if ( isset( $tree['content']['curriculum']['data'][$key]['semesters'] ) ) {
@@ -486,18 +491,60 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
 
 
-    private function get_prev_next( $current_course )
+    private function get_stage( $current_course )
     {
         global $tree;
-
-        $a = array( 'prev' => NULL, 'next' => NULL );
-
-        // p($course_name);
 
         if ( empty( $tree['content']['matrix']['data'][$current_course] ) ) return;
 
         $cmp_arr = $tree['content']['matrix']['data'][$current_course];
+        
+        $a = array();
 
+        foreach ( $cmp_arr as $cmp ) {
+
+            $a[$cmp] = array( '1' => NULL, '2' => NULL, '3' => NULL );
+
+            foreach ( $tree['content']['courses']['index'] as $course => $item  ) {
+
+                if ( empty( $tree['content']['matrix']['data'][$course] ) ) continue;
+
+                if ( in_array( $cmp, $tree['content']['matrix']['data'][$course] ) ) {
+
+                    if ( in_array( $item['unit'], array( 'ОД' ) ) ) $a[$cmp]['1'][] = $course;
+                    if ( in_array( $item['unit'], array( 'ВД' ) ) ) $a[$cmp]['2'][] = $course;
+                    if ( in_array( $item['unit'], array( 'УП', 'ПП', 'НИР' ) ) ) $a[$cmp]['3'][] = $course;
+
+                    // p($cmp);
+                    // p($course);
+                    // p($item['unit']);
+                    // p($tree['content']['matrix']['data'][$course]);
+
+                }
+
+            }
+
+        }
+
+
+        // p($current_course);
+        // p($a);
+        
+        return $a;
+    }
+
+
+
+
+    private function get_prev_next( $current_course )
+    {
+        global $tree;
+
+        if ( empty( $tree['content']['matrix']['data'][$current_course] ) ) return;
+
+        $cmp_arr = $tree['content']['matrix']['data'][$current_course];
+        
+        $a = array( 'prev' => NULL, 'next' => NULL );
         $courses = array();
 
         foreach ( $cmp_arr as $cmp )

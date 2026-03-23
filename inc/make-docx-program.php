@@ -45,9 +45,9 @@ class mif_mr_docx_program extends mif_mr_docx {
         $a['authors'] = $this->dl( $arr['data']['authors']['authors'] );
         $a['parts_content'] = $this->parts_content( $arr['data']['content']['parts'] );
         $a['parts_hours'] = $this->parts_hours( $arr['data']['content']['parts'] );
-       
+        
         // 4. Объём дисциплины и виды учебной работы
-
+        
         $a['all_aud'] = $this->all_aud( $arr['meta']['hours'] );
         $a['all_lec'] = ( $m = $arr['meta']['hours']['lec'] != 0 ) ? $m : '–';
         $a['all_prac'] = ( $m = $arr['meta']['hours']['prac'] != 0 ) ? $m : '–';
@@ -68,7 +68,17 @@ class mif_mr_docx_program extends mif_mr_docx {
         $a['sem_hours'] = $this->sem_stat( $arr['meta']['semesters_stat'], 'hours' );
         $a['sem_ze'] = $this->sem_stat( $arr['meta']['semesters_stat'], 'hours_ze' );
         $a['sem_exam_name'] = $this->sem_exam_name( $arr['meta']['semesters'] );
-
+        $a['sem_exam_name'] = $this->sem_exam_name( $arr['meta']['semesters'] );
+        
+        // ФОС
+        $a['stage_cmp'] = $this->stage_cmp( $arr['meta']['stage'] );
+        $a['parts_outcomes'] = $this->parts_outcomes( $arr['data']['content']['parts'] );
+        $a['evaluations'] = $this->evaluations( $arr['data']['evaluations'] );
+        $a['evaluations_list'] = $this->evaluations_list( $arr['data']['evaluations'] );
+        $a['cmp_indicators'] = $this->cmp_indicators( $arr['meta']['cmp'] );
+        
+        
+        
         // p($arr['meta']['semesters']);
         // $a['sem_hours'] = $arr[''];
         // $a['sem_ze'] = $arr[''];
@@ -154,6 +164,101 @@ class mif_mr_docx_program extends mif_mr_docx {
     {
         ksort( $a );
         return implode( ' / ', array_keys( $a ) );
+    }
+
+
+
+    private function evaluations_list( $a )
+    {
+        $b = array();
+        $n = 1;
+        
+        foreach ( $a as $sem => $data ) 
+            foreach ( $data['data'] as $item ) $b[] = $item['name'];
+
+        $b = array_unique( $b );
+        sort( $b );
+        
+        return $this->ol2( $b );
+    }
+
+
+
+    private function evaluations( $a )
+    {
+        $b = array();
+        $n = 1;
+        
+        foreach ( $a as $sem => $data ) 
+            foreach ( $data['data'] as $item ) 
+                $b[] = array( 
+                        'evaluations' => $n++, 
+                        'evaluations_name' => $item['name'], 
+                        'evaluations_rating' => $item['att']['rating'], 
+                        'evaluations_cmp' => $item['att']['cmp'], 
+                        'evaluations_sem' => $sem, 
+                        );
+        
+        return $b;
+    }
+
+
+
+    private function cmp_indicators( $a )
+    {
+        global $tree;
+
+        $name_indicators = apply_filters( 'mif-mr-name-indicators', array( 'знать', 'уметь' ) );
+
+        $b = array();
+        $c = array();
+        
+        foreach ( $a as $cmp ) {
+            
+            // if ( empty( $tree['content']['competencies']['data'][$cmp]['indicators'][0] ) ) continue;
+            
+            // $d = '';
+            $d = array();
+
+            // p($tree['content']['competencies']['data']);
+            // p($tree['content']['competencies']['data'][$cmp]['indicators']);
+          
+            foreach( $tree['content']['competencies']['data'][$cmp]['indicators'] as $key => $item ) $c[$key] = $this->ol2( $item );
+                // p($item);
+                // p($c);
+            
+            foreach( $c as $k => $i ) {
+            
+                $d[$k] = ( isset( $name_indicators[$k] ) ) ? mb_ucfirst( $name_indicators[$k] ) : 'Индикатор ' . $k;
+                $d[$k] .= ":\n" . $i;
+            
+            }
+
+            $b[] = array( 
+                            'cmp_indicators' => $cmp, 
+                            'cmp_data' => implode( "\n", $d ), 
+                        );
+
+        }
+        // p($a);
+
+        return $b;
+    }
+
+
+
+    private function stage_cmp( $a )
+    {
+        $b = array();
+        
+        foreach ( $a as $cmp => $item ) $b[] = array( 
+                                                'stage_cmp' => $cmp, 
+                                                'stage_1' => ( ! empty( $item[1][0] ) ) ? implode( ', ', $item[1] ) : '–',
+                                                'stage_2' => ( ! empty( $item[2][0] ) ) ? implode( ', ', $item[2] ) : '–',
+                                                'stage_3' => ( ! empty( $item[3][0] ) ) ? implode( ', ', $item[3] ) : '–',
+                                                );
+        
+        return $b;
     }
 
 
@@ -253,6 +358,32 @@ class mif_mr_docx_program extends mif_mr_docx {
 
 
 
+    private function parts_outcomes( $a )
+    {
+        $b = array();
+
+        foreach ( $a as $k => $i ) {
+
+            $d = array();
+
+            if ( ! empty( $i['outcomes']['z'] ) ) $d[] = 'знать:' . "\n" . $this->ul2( $i['outcomes']['z'] );
+            if ( ! empty( $i['outcomes']['u'] ) ) $d[] = 'уметь:' . "\n" . $this->ul2( $i['outcomes']['u'] );
+            if ( ! empty( $i['outcomes']['v'] ) ) $d[] = 'владеть:' . "\n" . $this->ul2( $i['outcomes']['v'] );
+        
+            $b[] = array( 
+                'parts_outcomes' => $k + 1,
+                'parts_name' => $i['name'],
+                'parts_cmp' => $i['cmp'],
+                'parts_data' => implode( "\n", $d ),
+            );
+
+        }
+
+        return $b;
+    }
+
+
+
     private function parts_hours( $a )
     {
         $b = array();
@@ -285,7 +416,7 @@ class mif_mr_docx_program extends mif_mr_docx {
             $b[] = array( 
                 'parts_content' => $k + 1,
                 'parts_name' => $i['name'],
-                'data' => $i['content'],
+                'parts_data' => $i['content'],
             );
 
         }
@@ -320,11 +451,30 @@ class mif_mr_docx_program extends mif_mr_docx {
     }
 
 
+    private function ul2( $a )
+    {
+        $b = array();
+        foreach ( $a as $i ) $b[] = "– " . mb_lcfirst( trim( $i, $this->p ) );
+        $s = implode( ";\n", $b ) . ';';
+        return $s;
+    }
+
+
 
     private function ol( $a )
     {
         $b = array();
         foreach ( $a as $k => $i ) $b[] = "</w:t></w:r><w:r><w:tab/></w:r><w:r><w:t>" . $k+1 . '. ' . mb_ucfirst( trim( $i, $this->p ) ) . '.';
+        $s = implode( "\n", $b );
+        return $s;
+    }
+
+
+
+    private function ol2( $a )
+    {
+        $b = array();
+        foreach ( $a as $k => $i ) $b[] = $k+1 . '. ' . mb_ucfirst( trim( $i, $this->p ) );
         $s = implode( "\n", $b );
         return $s;
     }
