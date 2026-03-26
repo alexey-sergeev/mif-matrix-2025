@@ -70,11 +70,16 @@ class mif_mr_courses extends mif_mr_courses_list {
     public function get_course()
     {
         global $wp_query;
-        $course_id = $wp_query->query_vars['id'];
+        // $course_id = $wp_query->query_vars['id'];
     
         global $tree;
-        $arr = $tree['content']['courses']['clean'][$course_id];
-        $err = $tree['content']['courses']['errors'][$course_id];
+
+        $key = $tree['content']['courses']['index_by_id'][$wp_query->query_vars['id']]; 
+
+        $arr = $tree['content']['courses']['clean'][$key];
+        $err = $tree['content']['courses']['errors'][$key];
+        // $arr = $tree['content']['courses']['clean'][$course_id];
+        // $err = $tree['content']['courses']['errors'][$course_id];
 
         // p($arr);
         // p($err);

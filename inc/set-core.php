@@ -320,7 +320,7 @@ class mif_mr_set_core extends mif_mr_part_companion {
     // 
     //
     
-    public static function set_courses_to_tree( $t = array(), $opop_id = NULL )
+    public static function set_courses_index( $t = array(), $opop_id = NULL )
     {
         // global $mif_mr_opop;
         // $arr = array();
@@ -464,7 +464,26 @@ class mif_mr_set_core extends mif_mr_part_companion {
         foreach ( $arr as $key => $item ) if ( isset( $index[$key] ) ) $index[$key]['count'] = count( $item );
 
 
-        return apply_filters( 'mif_mr_comp_set_comp_to_tree', $index, $t );
+        return apply_filters( 'mif_mr_courses_index', $index, $t );
+    }
+
+
+
+    //
+    // 
+    //
+    
+    public static function set_courses_index_by_id( $t = array() )
+    {
+
+        // p($t['content']['courses']['index']);
+
+        $index = array();
+
+        foreach ( $t['content']['courses']['index'] as $k => $i )
+            if ( isset( $i['course_id'] ) ) $index[$i['course_id']] = $k;
+
+        return apply_filters( 'mif_mr_courses_index_by_id', $index, $t );
     }
 
 

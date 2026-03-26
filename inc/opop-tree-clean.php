@@ -90,8 +90,8 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
             if ( empty( $item['course_id'] ) ) continue;
 
-            $key2 = $item['course_id'];
-            // $key2 = $key;
+            // $key2 = $item['course_id'];
+            $key2 = $key;
 
             $c = new cmp( ( isset( $tree['content']['matrix']['data'][$key] ) ) ? $tree['content']['matrix']['data'][$key] : '' );
             // $k = $item['course_id'];
@@ -306,7 +306,8 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
             
             if ( empty( $item['course_id'] ) ) continue;
             
-            $key2 = $item['course_id'];
+            // $key2 = $item['course_id'];
+            $key2 = $key;
             $arr = $tree['content']['courses']['clean'][$key2];
 
 

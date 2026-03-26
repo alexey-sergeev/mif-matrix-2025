@@ -534,8 +534,12 @@ class mif_mr_opop_core {
         
         if ( ! empty( $course_id ) || ! empty( $course_name ) ) {
 
-            $arr2 = ( isset( $tree['content']['courses']['clean'][$course_id] ) ) ?
-                 $tree['content']['courses']['clean'][$course_id] :
+
+            $key = $tree['content']['courses']['index_by_id'][$course_id]; 
+
+
+            $arr2 = ( isset( $tree['content']['courses']['clean'][$key] ) ) ?
+                 $tree['content']['courses']['clean'][$key] :
                  array();
 
             $blank = dirname( __FILE__ ) . '/../templates/docx/program.docx';
