@@ -74,7 +74,7 @@ class mif_mr_courses extends mif_mr_courses_list {
     
         global $tree;
 
-        $key = $tree['content']['courses']['index_by_id'][$wp_query->query_vars['id']]; 
+        $key = $tree['content']['courses']['index'][$wp_query->query_vars['id']]; 
 
         $arr = $tree['content']['courses']['clean'][$key];
         $err = $tree['content']['courses']['errors'][$key];

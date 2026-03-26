@@ -122,12 +122,12 @@ class mif_mr_lib_courses_list extends mif_mr_lib_courses {
                     
                 case 'curriculum': 
                     
-                    foreach ( $arr as $k => $i ) if ( empty( $tree['content']['courses']['index'][$i['name']] ) ) unset( $arr[$k] );
+                    foreach ( $arr as $k => $i ) if ( empty( $tree['content']['courses']['complete'][$i['name']] ) ) unset( $arr[$k] );
                     break;
 
                 case 'not-curriculum': 
                     
-                    foreach ( $arr as $k => $i ) if ( ! empty( $tree['content']['courses']['index'][$i['name']] ) ) unset( $arr[$k] );
+                    foreach ( $arr as $k => $i ) if ( ! empty( $tree['content']['courses']['complete'][$i['name']] ) ) unset( $arr[$k] );
                     break;
 
                 // default:
@@ -171,7 +171,7 @@ class mif_mr_lib_courses_list extends mif_mr_lib_courses {
         $arr4 = ( $current !== -1 ) ? $arr3[$current] : $arr2;
 
         $index2 = array();
-        foreach ( $tree['content']['courses']['index'] as $i ) if ( isset( $i['course_id'] ) ) $index2[$i['course_id']] = true;
+        foreach ( $tree['content']['courses']['complete'] as $i ) if ( isset( $i['course_id'] ) ) $index2[$i['course_id']] = true;
 
         $out = '';
 
@@ -180,7 +180,7 @@ class mif_mr_lib_courses_list extends mif_mr_lib_courses {
         // foreach ( $arr3[$current] as $item ) {
         foreach ( (array) $arr4 as $item ) {
 
-            $is_curriculum = ( ! empty( $tree['content']['courses']['index'][$item['name']] ) ) ? true : false;
+            $is_curriculum = ( ! empty( $tree['content']['courses']['complete'][$item['name']] ) ) ? true : false;
             $is_employ = ( ! empty( $index2[$item['comp_id']] ) ) ? true : false;
 
             $out .= $this->get_lib_body( array( 

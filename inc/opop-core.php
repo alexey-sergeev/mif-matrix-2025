@@ -535,7 +535,7 @@ class mif_mr_opop_core {
         if ( ! empty( $course_id ) || ! empty( $course_name ) ) {
 
 
-            $key = $tree['content']['courses']['index_by_id'][$course_id]; 
+            $key = $tree['content']['courses']['index'][$course_id]; 
 
 
             $arr2 = ( isset( $tree['content']['courses']['clean'][$key] ) ) ?

@@ -79,7 +79,7 @@ class mif_mr_main extends mif_mr_table {
     {
         global $tree;
         
-        $a = $tree['content']['courses']['index'];
+        $a = $tree['content']['courses']['complete'];
         // p($a[$key2]);
         // // p($courses_arr[$key]['courses'][$key2]['unit']);
 

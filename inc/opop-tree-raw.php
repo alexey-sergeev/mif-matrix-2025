@@ -53,7 +53,7 @@ class mif_mr_opop_tree_raw extends mif_mr_opop_core {
     //     // $t['content']['competencies']['from_id'] = $this->get_opop_id();
     //     // $t['content']['competencies']['data'] = mif_mr_comp::set_comp_to_tree( $t );
         
-    //     $t['content']['courses']['index'] = mif_mr_set_core::set_courses_to_tree( $t, $this->opop_id );
+    //     $t['content']['courses']['complete'] = mif_mr_set_core::set_courses_to_tree( $t, $this->opop_id );
     //     $t['content']['competencies']['data'] = mif_mr_set_core::set_comp_to_tree( $t );
     //     $t['content']['references']['data'] = mif_mr_set_core::set_references_to_tree( $t );
         
@@ -124,8 +124,8 @@ class mif_mr_opop_tree_raw extends mif_mr_opop_core {
         }
 
 
-        $t['content']['courses']['index'] = mif_mr_set_core::set_courses_index( $t, $this->opop_id );
-        $t['content']['courses']['index_by_id'] = mif_mr_set_core::set_courses_index_by_id( $t );
+        $t['content']['courses']['complete'] = mif_mr_set_core::set_courses_complete( $t, $this->opop_id );
+        $t['content']['courses']['index'] = mif_mr_set_core::set_courses_index( $t );
         $t['content']['competencies']['data'] = mif_mr_set_core::set_comp_to_tree( $t );
         $t['content']['references']['data'] = mif_mr_set_core::set_references_to_tree( $t );
         

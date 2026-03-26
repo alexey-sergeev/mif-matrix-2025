@@ -96,7 +96,7 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses_list {
         }
 
         $name_new = array();
-        foreach ( $tree['content']['courses']['index'] as $k => $i ) if ( isset( $i['name_old'] ) ) $name_new[$i['course_id']] = $k;
+        foreach ( $tree['content']['courses']['complete'] as $k => $i ) if ( isset( $i['name_old'] ) ) $name_new[$i['course_id']] = $k;
 
         // p($index);
         // p($arr);

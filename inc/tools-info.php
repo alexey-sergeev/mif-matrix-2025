@@ -67,7 +67,7 @@ class mif_mr_tools_info extends mif_mr_tools_core {
 
         $arr['title'] = $name;    
         $arr['is_course'] = ( ! empty( $name ) ) ? true : false; // !!!!
-        $arr['is_curriculum'] = ( ! empty( $tree['content']['courses']['index'][$name] ) ) ? true : false;
+        $arr['is_curriculum'] = ( ! empty( $tree['content']['courses']['complete'][$name] ) ) ? true : false;
      
         $f_local = false;
         $f_lib = false;

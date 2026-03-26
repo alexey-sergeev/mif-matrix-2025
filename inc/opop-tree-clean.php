@@ -85,8 +85,8 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
         $arr = array();
         
-        foreach ( $tree['content']['courses']['index'] as $key => $item ) {
-        // foreach ( $tree['content']['courses']['index'] as $item ) {
+        foreach ( $tree['content']['courses']['complete'] as $key => $item ) {
+        // foreach ( $tree['content']['courses']['complete'] as $item ) {
 
             if ( empty( $item['course_id'] ) ) continue;
 
@@ -302,7 +302,7 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
         $err = array();
         
-        foreach ( $tree['content']['courses']['index'] as $key => $item ) {
+        foreach ( $tree['content']['courses']['complete'] as $key => $item ) {
             
             if ( empty( $item['course_id'] ) ) continue;
             
@@ -509,7 +509,7 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
             $a[$cmp] = array( '1' => NULL, '2' => NULL, '3' => NULL );
 
-            foreach ( $tree['content']['courses']['index'] as $course => $item  ) {
+            foreach ( $tree['content']['courses']['complete'] as $course => $item  ) {
 
                 if ( empty( $tree['content']['matrix']['data'][$course] ) ) continue;
 
@@ -553,10 +553,10 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
         foreach ( $cmp_arr as $cmp )
             foreach ( $tree['content']['matrix']['data'] as $course => $i ) 
-                if ( isset( $tree['content']['courses']['index'][$course] ) && 
-                        ! in_array( $tree['content']['courses']['index'][$course]['unit'], array( 'ЭК', 'ЗЧ', 'ЗЧО' ) ) && in_array( $cmp, $i ) ) $courses[] = $course;
+                if ( isset( $tree['content']['courses']['complete'][$course] ) && 
+                        ! in_array( $tree['content']['courses']['complete'][$course]['unit'], array( 'ЭК', 'ЗЧ', 'ЗЧО' ) ) && in_array( $cmp, $i ) ) $courses[] = $course;
         
-        // p($tree['content']['courses']['index'][$course]);
+        // p($tree['content']['courses']['complete'][$course]);
             
         $courses = array_unique( $courses );
         $courses = array_values( $courses );
@@ -591,7 +591,7 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
     //     $err = array();
         
         
-    //     foreach ( $tree['content']['courses']['index'] as $key => $item ) {
+    //     foreach ( $tree['content']['courses']['complete'] as $key => $item ) {
             
     //         if ( empty( $item['course_id'] ) ) continue;
             
@@ -880,7 +880,7 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
     //     // $t['content']['competencies']['from_id'] = $this->get_opop_id();
     //     // $t['content']['competencies']['data'] = mif_mr_comp::set_comp_to_tree( $t );
         
-    //     $t['content']['courses']['index'] = mif_mr_set_core::set_courses_to_tree( $t, $this->opop_id );
+    //     $t['content']['courses']['complete'] = mif_mr_set_core::set_courses_to_tree( $t, $this->opop_id );
     //     $t['content']['competencies']['data'] = mif_mr_set_core::set_comp_to_tree( $t );
     //     $t['content']['references']['data'] = mif_mr_set_core::set_references_to_tree( $t );
         

@@ -77,7 +77,7 @@ class mif_mr_set_courses extends mif_mr_set_core {
         
         } else {
             
-            $arr = $tree['content']['courses']['index'];
+            $arr = $tree['content']['courses']['complete'];
 
             // $a = array();
 
@@ -234,7 +234,7 @@ class mif_mr_set_courses extends mif_mr_set_core {
     {
         global $tree;
 
-        $arr = $tree['content']['courses']['index'];
+        $arr = $tree['content']['courses']['complete'];
         $a = array();
         // p($arr);
         foreach ( $arr as $k => $i ) {
