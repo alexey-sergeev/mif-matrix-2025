@@ -88,7 +88,8 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
         foreach ( $tree['content']['courses']['complete'] as $key => $item ) {
         // foreach ( $tree['content']['courses']['complete'] as $item ) {
 
-            if ( empty( $item['course_id'] ) ) continue;
+            // if ( empty( $item['course_id'] ) ) continue;
+            $is_course = ( empty( $item['course_id'] ) ) ? false : true;
 
             // $key2 = $item['course_id'];
             $key2 = $key;
@@ -96,7 +97,7 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
             $c = new cmp( ( isset( $tree['content']['matrix']['data'][$key] ) ) ? $tree['content']['matrix']['data'][$key] : '' );
             // $k = $item['course_id'];
 
-            $arr[$key2]['course_id'] = $item['course_id'];
+            $arr[$key2]['course_id'] = ( isset( $item['course_id'] ) ) ? $item['course_id'] : NULL;
             $arr[$key2]['name'] = $key;
             
             $p = new parser();
@@ -168,7 +169,7 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
             // Сводные индикаторы
 
-            $d = $tree['content']['lib-courses']['data'][$item['course_id']]['data'];
+            $d = ( $is_course ) ? $tree['content']['lib-courses']['data'][$item['course_id']]['data'] : array();
             
             $arr[$key2]['meta']['outcomes'] = array( 'z' => NULL, 'u' => NULL, 'v' => NULL );
 
@@ -275,11 +276,11 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
             // p($item);
 
-            $arr[$key2]['data']['biblio'] = $d['biblio'];
-            $arr[$key2]['data']['it'] = $d['it'];
-            $arr[$key2]['data']['mto'] = $d['mto'];
-            $arr[$key2]['data']['guidelines'] = $d['guidelines'];
-            $arr[$key2]['data']['authors'] = $d['authors'];
+            $arr[$key2]['data']['biblio'] = ( $is_course ) ? $d['biblio'] : array();
+            $arr[$key2]['data']['it'] = ( $is_course ) ? $d['it'] : array();
+            $arr[$key2]['data']['mto'] = ( $is_course ) ? $d['mto'] : array();
+            $arr[$key2]['data']['guidelines'] = ( $is_course ) ? $d['guidelines'] : array();
+            $arr[$key2]['data']['authors'] = ( $is_course ) ? $d['authors'] : array();
 
         }
 
