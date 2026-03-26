@@ -106,7 +106,7 @@ class mif_mr_set_comp extends mif_mr_set_core {
                 
                 if ( empty( $item ) ) continue;
                 
-                $out .= '<span>';
+                $out .= '<span class="content-ajax">';
                 $out .= mif_mr_competencies_screen::get_sub_head( array( 'name' => $data[$item[0]]['category'] ) );
                 foreach ( $item as $item2 ) $out .= mif_mr_competencies_screen::get_item_body( $data[$item2] );
                 $out .= '</span>';

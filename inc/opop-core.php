@@ -524,25 +524,25 @@ class mif_mr_opop_core {
        
         $arr = array( 'name' => '', 'path' => '', 'res' => false );
 
-        if ( isset( $wp_query->query_vars['id'] ) ) {
+        $course_id = NULL;
 
-            $arr2 = ( isset( $tree['content']['courses']['clean'][$wp_query->query_vars['id']] ) ) ?
-                 $tree['content']['courses']['clean'][$wp_query->query_vars['id']] :
+        if ( isset( $_REQUEST['course'] ) ) 
+            if ( is_numeric( $_REQUEST['course'] ) ) $course_id = (int) $_REQUEST['course'];
+            else $course_name = sanitize_text_field( $_REQUEST['course'] );
+
+        if ( isset( $wp_query->query_vars['id'] ) ) $course_id = $wp_query->query_vars['id'];
+        
+        if ( ! empty( $course_id ) || ! empty( $course_name ) ) {
+
+            $arr2 = ( isset( $tree['content']['courses']['clean'][$course_id] ) ) ?
+                 $tree['content']['courses']['clean'][$course_id] :
                  array();
 
             $blank = dirname( __FILE__ ) . '/../templates/docx/program.docx';
-
-            // if ( empty( $arr2['name'] ) && isset( $_REQUEST['name'] ) ) $arr2['name'] = sanitize_text_field( $_REQUEST['name'] );
-            // if ( empty( $arr2['data'] ) && isset( $_REQUEST['name'] ) ) $arr2['data'] = array('data'=>array()); // !!!!
+            $m = new mif_mr_docx_program( $blank );
 
             $arr['name'] .= $arr2['name'] . ' (программа дисциплины).docx';
-            // $arr['name'] .= '123 (программа дисциплины).docx';
-
-            $m = new mif_mr_docx_program( $blank );
-            // $m->arr_to_xlsx( $arr2 );
-            // $m->сorrection_height();
             $arr['path'] = $m->arr_to_docx( $arr2 );
-            // $arr['path'] = $m->get( array( 'name' => '123', 'target' => '456' ) );
 
         } else {
             

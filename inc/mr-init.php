@@ -19,6 +19,7 @@ include_once dirname( __FILE__ ) . '/part-companion.php';
 include_once dirname( __FILE__ ) . '/part-table.php';
 // include_once dirname( __FILE__ ) . '/part-templates.php';
 include_once dirname( __FILE__ ) . '/part-param.php';
+include_once dirname( __FILE__ ) . '/part-main.php';
 include_once dirname( __FILE__ ) . '/part-courses-list.php';
 include_once dirname( __FILE__ ) . '/part-courses.php';
 include_once dirname( __FILE__ ) . '/part-matrix.php';
@@ -101,6 +102,8 @@ class mif_mr_init extends mif_mr_types {
         add_action( 'wp_ajax_catalog', array( $this, 'ajax' ) );
         add_action( 'wp_ajax_nopriv_catalog', array( $this, 'ajax' ) );
 
+        add_action( 'wp_ajax_main', array( $this, 'ajax' ) );
+        add_action( 'wp_ajax_nopriv_main', array( $this, 'ajax' ) );
         add_action( 'wp_ajax_courses', array( $this, 'ajax' ) );
         add_action( 'wp_ajax_nopriv_courses', array( $this, 'ajax' ) );
         add_action( 'wp_ajax_matrix', array( $this, 'ajax' ) );
@@ -205,10 +208,17 @@ class mif_mr_init extends mif_mr_types {
                 // p( $tree['main'] );
 
                 
+                if ( $_REQUEST['action'] == 'main' ) {
+                    
+                    $m = new mif_mr_main();
+                    echo $m->get_main();
+                
+                } 
+    
                 if ( $_REQUEST['action'] == 'courses' ) {
                     
                     $m = new mif_mr_courses();
-                    echo $m->get_courses();
+                    echo $m->get_list_courses();
                 
                 } 
     

@@ -335,6 +335,16 @@ function mif_mr_the_list_courses()
     echo $mif_mr_courses->get_list_courses();
 }
 
+//
+// Выводит 
+//
+
+function mif_mr_the_main()
+{
+    global $mif_mr_main;
+    echo $mif_mr_main->get_main();
+}
+
 
 //
 // Выводит 

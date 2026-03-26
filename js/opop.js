@@ -264,7 +264,8 @@ jQuery( document ).ready( function( jq ) {
     jq( 'body' ).on( 'click', '#roll-up-all', function() {
         jq( 'a.roll-up', jq(this).closest('.part') ).each( function ( index, elem ) { jq(elem).addClass('d-none'); });
         jq( 'a.roll-down', jq(this).closest('.part') ).each( function ( index, elem ) { jq(elem).removeClass('d-none'); });
-        jq( 'div.coll', jq(this).closest('.part') ).slideUp(function() {
+        // jq( 'div.coll', jq(this).closest('.part') ).slideUp( function() {
+        jq( 'div.coll', jq(this).closest('.container') ).slideUp( function() {
             jq( '.coll-ppp', jq(this).closest('.content-ajax') ).show();
         });
         jq( 'input.coll' ).each( function() { jq(this).attr( 'data-value', 'off' ); });
@@ -277,7 +278,8 @@ jQuery( document ).ready( function( jq ) {
     jq( 'body' ).on( 'click', '#roll-down-all', function() {
         jq( 'a.roll-down', jq(this).closest('.part') ).each( function ( index, elem ) { jq(elem).addClass('d-none'); });
         jq( 'a.roll-up', jq(this).closest('.part') ).each( function ( index, elem ) { jq(elem).removeClass('d-none'); });
-        jq( 'div.coll', jq(this).closest('.part') ).slideDown();
+        // jq( 'div.coll', jq(this).closest('.part') ).slideDown();
+        jq( 'div.coll', jq(this).closest('.container') ).slideDown();
         jq( '.coll-ppp', jq(this).closest('.content-ajax') ).hide();
         jq( 'input.coll' ).each( function() { jq(this).attr( 'data-value', 'on' ); });
         return false;

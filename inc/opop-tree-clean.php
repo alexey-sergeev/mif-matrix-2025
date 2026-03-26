@@ -89,8 +89,9 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
         // foreach ( $tree['content']['courses']['index'] as $item ) {
 
             if ( empty( $item['course_id'] ) ) continue;
-            
+
             $key2 = $item['course_id'];
+            // $key2 = $key;
 
             $c = new cmp( ( isset( $tree['content']['matrix']['data'][$key] ) ) ? $tree['content']['matrix']['data'][$key] : '' );
             // $k = $item['course_id'];
@@ -169,6 +170,8 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
             $d = $tree['content']['lib-courses']['data'][$item['course_id']]['data'];
             
+            $arr[$key2]['meta']['outcomes'] = array( 'z' => NULL, 'u' => NULL, 'v' => NULL );
+
             if ( ! empty( $dd = $this->get_outcomes( $d, 'z' ) ) ) $arr[$key2]['meta']['outcomes']['z'] = $dd;
             if ( ! empty( $dd = $this->get_outcomes( $d, 'u' ) ) ) $arr[$key2]['meta']['outcomes']['u'] = $dd;
             if ( ! empty( $dd = $this->get_outcomes( $d, 'v' ) ) ) $arr[$key2]['meta']['outcomes']['v'] = $dd;

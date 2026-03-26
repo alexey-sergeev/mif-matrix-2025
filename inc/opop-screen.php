@@ -223,13 +223,18 @@ class mif_mr_opop extends mif_mr_opop_tree_clean {
                 p('====== 2 ======');
                 foreach ( $tree['content'] as $k => $i ) p($k);
 
-
                 p($tree);
+
             break;
             
             default:
-                p('home');
-                break;
+                // p('home');
+                
+                global $mif_mr_main;
+                $mif_mr_main = new mif_mr_main();
+                $mif_mr_main->the_show();
+                
+            break;
         
         }
 
