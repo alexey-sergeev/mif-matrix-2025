@@ -153,7 +153,7 @@ class mif_mr_docx_program extends mif_mr_docx {
         ksort( $a );
 
         $b = array();
-        foreach ( $a as $i ) $b[] =  ( $i[$k] != 0 ) ? $i[$k] : '–'; 
+        foreach ( $a as $i ) $b[] = ( isset( $i[$k] ) && $i[$k] != 0 ) ? $i[$k] : '–'; 
 
         return implode( ' / ', $b );
     }
@@ -427,16 +427,21 @@ class mif_mr_docx_program extends mif_mr_docx {
 
     private function p( $t )
     {
-        return trim( $t, $this->p ) . '.';
+        $s = trim( $t, $this->p );
+        if ( ! empty( $s ) ) $s .= '.';
+        // return trim( $t, $this->p ) . '.';
+        return $s;
     }
 
 
 
     private function cmp( $a )
-    {
+    {   
         $b = array();
-        foreach ( $a as $i ) $b[] = "</w:t></w:r><w:r><w:tab/></w:r><w:r><w:t>– " . mb_lcfirst( trim( $i['descr'], $this->p ) ) . ' (' . $i['name'] . ')';
-        $s = implode( ";\n\n", $b ) . '.';
+        foreach ( $a as $i ) 
+            if ( ! empty( $i['descr'] ) ) 
+                $b[] = "</w:t></w:r><w:r><w:tab/></w:r><w:r><w:t>– " . mb_lcfirst( trim( $i['descr'], $this->p ) ) . ' (' . $i['name'] . ')';
+        $s = ( ! empty( $b ) ) ? implode( ";\n\n", $b ) . '.' : '';
         return $s;
     }
 
@@ -446,7 +451,7 @@ class mif_mr_docx_program extends mif_mr_docx {
     {
         $b = array();
         foreach ( $a as $i ) $b[] = "</w:t></w:r><w:r><w:tab/></w:r><w:r><w:t>– " . mb_lcfirst( trim( $i, $this->p ) );
-        $s = implode( ";\n", $b ) . '.';
+        $s = ( ! empty( $b ) ) ? implode( ";\n", $b ) . '.' : '';
         return $s;
     }
 
@@ -455,14 +460,14 @@ class mif_mr_docx_program extends mif_mr_docx {
     {
         $b = array();
         foreach ( $a as $i ) $b[] = "– " . mb_lcfirst( trim( $i, $this->p ) );
-        $s = implode( ";\n", $b ) . ';';
+        $s = ( ! empty( $b ) ) ? implode( ";\n", $b ) . ';' : '';
         return $s;
     }
 
 
 
     private function ol( $a )
-    {
+    {   
         $b = array();
         foreach ( $a as $k => $i ) $b[] = "</w:t></w:r><w:r><w:tab/></w:r><w:r><w:t>" . $k+1 . '. ' . mb_ucfirst( trim( $i, $this->p ) ) . '.';
         $s = implode( "\n", $b );
@@ -485,7 +490,7 @@ class mif_mr_docx_program extends mif_mr_docx {
     {
         $b = array();
         foreach ( $a as $i ) $b[] = mb_ucfirst( trim( $i, $this->p ) );
-        $s = implode( ",\n", $b ) . '.';
+        $s = ( ! empty( $b ) ) ? implode( ",\n", $b ) . '.' : '';
         return $s;
     }
 

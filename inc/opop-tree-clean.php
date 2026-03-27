@@ -276,11 +276,11 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
             // p($item);
 
-            $arr[$key2]['data']['biblio'] = ( $is_course ) ? $d['biblio'] : array();
-            $arr[$key2]['data']['it'] = ( $is_course ) ? $d['it'] : array();
-            $arr[$key2]['data']['mto'] = ( $is_course ) ? $d['mto'] : array();
+            $arr[$key2]['data']['biblio'] = ( $is_course ) ? $d['biblio'] : array( 'basic' => NULL, 'additional' => NULL );
+            $arr[$key2]['data']['it'] = ( $is_course ) ? $d['it'] : array( 'inet' => NULL, 'app' => NULL );
+            $arr[$key2]['data']['mto'] = ( $is_course ) ? $d['mto'] : array( 'mto' => NULL );
             $arr[$key2]['data']['guidelines'] = ( $is_course ) ? $d['guidelines'] : array();
-            $arr[$key2]['data']['authors'] = ( $is_course ) ? $d['authors'] : array();
+            $arr[$key2]['data']['authors'] = ( $is_course ) ? $d['authors'] : array( 'authors' => NULL );
 
         }
 
