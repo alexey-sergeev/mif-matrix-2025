@@ -7,16 +7,20 @@
     
 </div>  
 
-
-
 <div class="p-4 pr-5 pl-5 bg-light mt-4 border border-light">
 
     <div class="fw-semibold"><?php mif_mr_the_menu_item( 'Импорт учебного плана', 'tools-curriculum' ); ?></div> 
-
     <div class="mt-2">
-
         Загрузка учебного плана (в формате xml) для автоматического извлечения данных о дисциплинах, компетенциях, семестрах и часах.
-    
+    </div>
+
+</div>  
+
+<div class="p-4 pr-5 pl-5 bg-light mt-4 border border-light">
+
+    <div class="fw-semibold"><?php mif_mr_the_menu_item( 'Импорт шаблонов учебных дисциплин', 'tools-courses' ); ?></div> 
+    <div class="mt-2">
+        Загрузка Excel-шаблонов дисциплин для обновления данных ОПОП.
     </div>
 
 </div>  
@@ -24,12 +28,9 @@
 
 <div class="p-4 pr-5 pl-5 bg-light mt-4 border border-light">
 
-    <div class="fw-semibold"><?php mif_mr_the_menu_item( 'Импорт шаблонов учебных дисциплин', 'tools-courses' ); ?></div> 
-
+    <div class="fw-semibold"><?php mif_mr_the_menu_item( 'Загрузка docx-шаблонов', 'tools-file' ); ?></div> 
     <div class="mt-2">
-
-        Загрузка Excel-шаблонов дисциплин для обновления данных ОПОП.
-    
+        Загрузка шаблонов docx для создания документов (учебные программы, фонды оценочных средств, программы формирования компетенций и др.)
     </div>
 
 </div>  

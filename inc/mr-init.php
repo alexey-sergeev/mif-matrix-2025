@@ -45,6 +45,7 @@ include_once dirname( __FILE__ ) . '/tools-core.php';
 include_once dirname( __FILE__ ) . '/tools-curriculum.php';
 include_once dirname( __FILE__ ) . '/tools-info.php';
 include_once dirname( __FILE__ ) . '/tools-courses.php';
+include_once dirname( __FILE__ ) . '/tools-file.php';
 // include_once dirname( __FILE__ ) . '/tools-templates.php';
 
 include_once dirname( __FILE__ ) . '/lib-download.php';
@@ -273,6 +274,21 @@ class mif_mr_init extends mif_mr_types {
                                                 // 'data' => sanitize_textarea_field( $_REQUEST['data'] ),
                                                 // 'data' => $_REQUEST['data'],
                                                 ) );
+                        
+                    }     
+                
+                    if ( $_REQUEST['do'] == 'reload' ) {
+                        // p($_REQUEST);
+                        $m = new mif_mr_tools_core();
+                        echo $m->reload_box( (int) $_REQUEST['attid'] );
+                        
+
+
+                        // $m = new mif_mr_tools_courses();
+                        // echo $m->analysis( array(
+                        //                         'att_id' => (int) $_REQUEST['attid'],
+                        //                         'course_id' => (int) $_REQUEST['courseid'],
+                        //                         ) );
                         
                     }     
                 

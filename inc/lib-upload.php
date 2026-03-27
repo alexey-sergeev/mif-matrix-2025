@@ -23,6 +23,7 @@ class mif_mr_upload {
     }
 
 
+
     public static function form_upload( $args = array( 'url' => '', 'multiple' => false ) )
     {
         
@@ -44,10 +45,19 @@ class mif_mr_upload {
 
         }
         
-        $out .= '<div class="mt-4">Максимальный размер загружаемого файла: ' . ini_get('upload_max_filesize') . '</div>'; 
+        if ( empty( $args['no_max_filesize'] ) ) $out .= '<div class="mt-4">Максимальный размер загружаемого файла: ' . ini_get('upload_max_filesize') . '</div>'; 
         if ( isset( $args['multiple'] ) && $args['multiple'] == true ) $out .= '<div class="mt-0">Количество одновременно загружаемых файлов : ' . ini_get('max_file_uploads') . '</div>'; 
         
-        $out .= '<div class="mt-5"><input type="submit" name="submit" value="Загрузить" class="btn btn-primary "></div>';
+        if ( isset( $args['do'] ) ) $out .= '<input type="hidden" name="do" value="' . $args['do'] . '">';
+        if ( isset( $args['attid'] ) ) $out .= '<input type="hidden" name="attid" value="' . $args['attid'] . '">';
+        
+        $submit = ( isset( $args['submit'] ) ) ? $args['submit'] : 'Загрузить';
+
+        $out .= '<div class="mt-5">';
+        $out .= '<input type="submit" name="submit" value="' . $submit . '" class="btn btn-primary mr-3">';
+        // $out .= '<input type="button" value="Отмена" class="btn btn-light mt-6 mb-6 mr-3">';
+        if ( isset( $args['cancel'] ) ) $out .= '<input type="button" value="Отмена" class="cancel btn btn-light border">';
+        $out .= '</div>';
 
         $out .= '</form>';
         $out .= '</div>';
@@ -55,9 +65,6 @@ class mif_mr_upload {
         return $out;
   
     }
-
-
-
 
 
 
@@ -72,6 +79,8 @@ class mif_mr_upload {
         // p($_FILES);
         // p($_REQUEST);
     
+        // !!!!!!
+
         if ( ! isset( $_REQUEST['submit'] ) ) return;
         if ( ! isset( $_FILES['file']['error'] ) ) return;
         if ( ! is_array( $_FILES['file']['error'] ) ) return;
@@ -157,6 +166,126 @@ class mif_mr_upload {
         // p($arr);
         
         return $arr;
+    }
+
+
+
+
+    //
+    // Обновить файл 
+    // 
+
+    public function reload( $att = array() )
+    {
+        // p($_FILES);
+    //     // p($_REQUEST);
+    
+        // !!!!!!
+
+        if ( ! isset( $_REQUEST['submit'] ) ) return;
+        if ( ! ( isset( $_REQUEST['do'] ) && $_REQUEST['do'] == 'reload' ) ) return;
+        if ( ! isset( $_FILES['file']['error'] ) ) return;
+
+
+        $res = $this->proceeding_upload( $_FILES['file']['error'] );
+
+        if ( $res == 'file' ) {
+
+            $file = array(  
+                'name' => $_FILES['file']['name'],
+                'tmp_name' => $_FILES['file']['tmp_name'],
+                'error' => $_FILES['file']['error'],
+                'size' => $_FILES['file']['size'],
+            );
+        
+
+            $results = wp_handle_sideload( $file, array( 'test_form' => false ) );
+
+            p($results);
+
+        }
+
+
+    //     $arr = array();
+
+    //     foreach ( $_FILES['file']['name'] as $key => $item ) {
+
+    //         if ( empty( $item ) ) continue; 
+        
+    //         $arr[$key]['name'] = $item;
+            
+
+    //         $ext = mif_mr_functions::get_ext( $item );
+
+    //         // $a = explode( '.', $item );
+    //         // $ext = array_pop( $a );
+
+    //         // p($item);
+    //         // p($att);
+    //         // p($ext);
+
+    //         if ( isset( $att['ext'] ) && ! in_array( $ext, $att['ext'] ) ) {
+
+    //             $arr[$key]['status'] = 'warning';
+    //             $arr[$key]['messages'] = 'Неправильный формат файла';
+    //             // $arr[$key]['messages'] = 'Неправильный формат файла. Допускается: ' . implode( ', ', $att['ext'] );
+
+    //             continue;
+
+    //         } 
+                
+    //         $res = $this->proceeding_upload( $_FILES['file']['error'][$key] );
+
+    //         if ( $res == 'file' ) {
+
+    //             require_once( ABSPATH . 'wp-admin/includes/image.php' );
+    //             require_once( ABSPATH . 'wp-admin/includes/file.php' );
+    //             require_once( ABSPATH . 'wp-admin/includes/media.php' );
+
+    //             // $id = media_handle_upload( 'file', mif_mr_opop_core::get_opop_id(), array( 'post_title' => mif_mr_opop_core::get_opop_title() . ' - ' . $item ) );
+                
+    //             $file = array(  
+    //                 'name' => $_FILES['file']['name'][$key],
+    //                 'tmp_name' => $_FILES['file']['tmp_name'][$key],
+    //                 'error' => $_FILES['file']['error'][$key],
+    //                 'size' => $_FILES['file']['size'][$key],
+    //             );
+
+    //             // p($_FILES['file']['tmp_name'][$key]);
+
+    //             $title = apply_filters( 'lib-upload-save-title', NULL, $_FILES['file']['tmp_name'][$key] );
+    //             $id = media_handle_sideload( $file, mif_mr_opop_core::get_opop_id(), $title );
+
+    //             // p($id);
+                
+    //             if ( is_wp_error( $id ) ) {
+           
+    //                 $arr[$key]['status'] = 'danger';
+    //                 // $arr[$key]['messages'] = '???';
+    //                 $arr[$key]['messages'] = implode( '; ', $id->errors['upload_error'] );
+    //                 // p(is_wp_error($id));
+                
+    //             } else {
+
+    //                 $arr[$key]['status'] = 'success';
+    //                 $arr[$key]['messages'] = 'Сохранено';
+    //                 // $arr[$key]['messages'] = 'Ок!';
+    //                 $arr[$key]['id'] = $id;
+                
+    //             }
+
+    //         } else {
+
+    //             $arr[$key]['status'] = 'danger';
+    //             $arr[$key]['messages'] = $res;
+
+    //         }
+
+    //     }
+
+    //     // p($arr);
+        
+        return;
     }
 
 

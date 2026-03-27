@@ -988,6 +988,74 @@ jQuery( document ).ready( function( jq ) {
 
 
 
+
+    jq( 'body' ).on( 'click', '.reload-box .cancel', function() {
+        jq(this).closest('.reload-box').slideUp( function() { jq(this).remove() } );
+        return false;
+    }); 
+
+
+
+    jq( 'body' ).on( 'click', '.tools .reload', function() {
+        
+        // console.log('@@@');
+        let elem = jq( '.col', jq(this).closest('.row') ).parent();
+        // let attid = jq(this).attr( 'data-attid' );    
+        // console.log(attid);
+
+        if ( ! elem.next().hasClass('reload-box') ) {
+            
+            // console.log('@@');
+
+            jq.ajax( {
+                url: ajaxurl,
+                type: 'POST',
+                data: {
+                    action: 'tools',
+                    do: 'reload',
+                    // attid: attid,
+                    attid: jq(this).attr( 'data-attid' ),
+                    opop: jq( 'input[name=opop]' ).val(),
+                    // attid: jq( 'input[type="checkbox"]', jq(this).closest('.select-item') ).val(),
+                    _wpnonce: jq( 'input[name=_wpnonce]' ).val(),
+                },
+                success: function( response ) {
+                    
+                    if ( response ) {
+    
+                        // jq('.analysis-box').remove();
+                        elem.after( response );
+                        elem.next("div").slideDown();
+                        // console.log( response );
+                        
+                    } else {
+                        
+                        console.log( 'error 19' );
+                        
+                    }
+                    
+                },
+                error: function( response ) {
+                    
+                    console.log( 'error 20' );
+                    
+                },
+                
+            } );
+            
+        } else {
+            
+            // console.log('@@@');
+            jq( '.cancel', elem.next() ).trigger('click') ;
+
+        };    
+
+        return false;
+
+    }); 
+
+
+
     // Info (analysis)
 
     jq( 'body' ).on( 'click', '.tools .info', function() {

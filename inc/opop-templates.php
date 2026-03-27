@@ -446,6 +446,16 @@ function mif_mr_tools_courses()
     echo $mif_mr_tools_courses->get_tools_courses();
 }
 
+//
+// Выводит 
+//
+
+function mif_mr_tools_file()
+{
+    global $mif_mr_tools_file;
+    echo $mif_mr_tools_file->get_tools_file();
+}
+
 
 //
 // Выводит 
