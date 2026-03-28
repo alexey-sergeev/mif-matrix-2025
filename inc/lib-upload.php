@@ -201,35 +201,15 @@ class mif_mr_upload {
             $att_id = (int) $_REQUEST['attid'];
             $res2 = move_uploaded_file( $_FILES['file']['tmp_name'], get_attached_file( $att_id ) );
 
-            $att = get_post( $att_id );
+            // $att = get_post( $att_id );
 
-            global $messages;
-            $messages[] = ( $res2 ) ? array( 'Обновлено: <b>' . $att->post_title . '</b>', 'success' ) : array( 'Какая-то ошибка. Код ошибки: 28030', 'danger' );
-
-
-
-
-
-//             if ( $res2 ) {
-
-// out .= mif_mr_functions::get_callout( 
-//                 'Данные от страницы «<a href="' . get_the_permalink($from_id) . '">' . get_the_title($from_id) . '</a>»: <pre>' . $text . '</pre>', 
-//                 'warning' );
-
-//                 p('@');
-                
-//             } else {
-                
-//                 p('@@');
-
-//             }
-
+            // global $messages;
+            // // $messages[] = ( $res2 ) ? array( 'Обновлено: <b>' . $att->post_title . '</b>', 'success' ) : array( 'Какая-то ошибка. Код ошибки: 28030', 'danger' );
+            // $messages[] = ( $res2 ) ? array( $att->post_title . ' — <b>Обновлено</b>', 'success' ) : array( 'Какая-то ошибка. Код ошибки: 28030', 'danger' );
             
         }
 
-
-        
-        return;
+        return $res2;
     }
 
 

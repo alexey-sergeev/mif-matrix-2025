@@ -145,37 +145,17 @@ class mif_mr_tools_core {
         // !!!!!!!
 
         if ( ! ( isset( $_REQUEST['do'] ) && $_REQUEST['do'] == 'reload' ) ) return;
+        if ( empty( $_REQUEST['attid'] )) return;
 
         $m = new mif_mr_upload();
         $res = $m->reload(); 
 
-
-
-        // p( $_REQUEST);
-
-        $out = '';
-
-        // $out .= '<div class="reload-box" style="display:none;">';
-        // $out .= '<div class="p-0 pb-6 pt-3">';
-        // // $out .= $attid;  
+        $att = get_post( (int) $_REQUEST['attid'] );
         
-        // $out .= mif_mr_upload::form_upload( array(
-        //                         'cancel' => true,
-        //                         'attid' => $attid,
-        //                         'url' => 'tools-file',
-        //                         'no_max_filesize' => true, 
-        //                         'submit' => 'Обновить' 
-        //                     ) );
-            
-        // $out .= '</div>';
-        // $out .= '</div>';
+        global $messages;
+        $messages[] = ( $res ) ? array( $att->post_title . ' — <b>Обновлено</b>', 'success' ) : array( 'Какая-то ошибка. Код ошибки: 28030', 'danger' );
 
-        // // $out .= '<input type="hidden" name="_wpnonce" value="' . wp_create_nonce( 'mif-mr' ) . '" />';  
-        // // $out .= '<input type="hidden" name="opop" value="' . mif_mr_opop_core::get_opop_id() . '" />';  
-        // // $out .= '<input type="hidden" name="type" value="' . $type . '" />';  
-        // // $out .= '<input type="hidden" name="opop_title" value="' . mif_mr_opop_core::get_opop_title() . '" />';  
-        
-        return $out;
+        return;
     }
 
 

@@ -15,7 +15,7 @@ class mif_mr_tools_file extends mif_mr_tools_core {
     {
         parent::__construct();
         
-        // add_filter( 'lib-upload-save-title', array( $this, 'set_save_title'), 10, 2 );
+        add_filter( 'lib-upload-save-title', array( $this, 'set_save_title' ), 10, 2 );
 
     }
         
@@ -72,7 +72,8 @@ class mif_mr_tools_file extends mif_mr_tools_core {
         // Показать форму
 
         $out .= mif_mr_upload::form_upload( array( 
-                            'text' => 'Загрузите шаблон в формате docx', 
+                            'text' => 'Загрузите шаблон в формате docx',
+                            'title_placeholder' => 'Название', 
                             // 'title_placeholder' => 'Название плана', 
                             'url' => 'tools-file',
                             'multiple' => true  
@@ -479,24 +480,10 @@ class mif_mr_tools_file extends mif_mr_tools_core {
 
 
 
-    // function set_save_title( $title, $tmp_name )
-    // {
-
-    //     libxml_use_internal_errors( true );
-        
-    //     if ( simplexml_load_file( $tmp_name ) !== false ) {
-            
-    //         $plx = new plx( $tmp_name );
-    //         $arr = $plx->get_att_arr();
-            
-    //         $title = $arr['Титул'] . ', ' . $arr['Год начала подготовки'] . ', ' . $arr['Форма обучения']; 
-            
-    //     }
-        
-    //     libxml_use_internal_errors( false );
-
-    //     return $title;
-    // }
+    function set_save_title( $title, $tmp_name )
+    {
+        return ( ! empty( $_REQUEST['title'] ) ) ? sanitize_text_field( $_REQUEST['title'] ) : NULL;
+    }
 
 
 }
