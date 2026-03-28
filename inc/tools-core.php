@@ -107,6 +107,8 @@ class mif_mr_tools_core {
     {
         // !!!!!!!
 
+        // p( get_post($attid) );
+
         $out = '';
 
         $out .= '<div class="reload-box" style="display:none;">';
