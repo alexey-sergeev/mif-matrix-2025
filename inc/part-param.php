@@ -65,6 +65,38 @@ class mif_mr_param  extends mif_mr_part_core {
 
 
     // 
+    // Параметры для шаблонов
+    // 
+    
+    public function get_item_templates()
+    {
+        global $tree;
+        
+        if ( isset( $_REQUEST['edit'] ) ) return $this->get_edit_textarea( 'templates', 'param' );
+
+        $out = '';
+        $out .= '<div class="col-12 p-2">';
+        
+        if ( isset( $tree['param']['templates']['data_att'] ) ) {
+            
+            foreach ( (array) $tree['param']['templates']['data_att'] as $item ) 
+                $out .= $item['name'] . ' <span class="bg-body-secondary p-0 pl-2 pr-2">(' . $item['att'][0] . ')</span><br />';
+
+        } else {
+            
+            $out .= 'none';
+            
+        }
+        
+        $out .= '</div>';
+        
+        return apply_filters( 'mif_mr_part_get_item_templates', $out );
+    }
+    
+
+
+
+    // 
     // Родительские ОПОП
     // 
     
@@ -76,21 +108,12 @@ class mif_mr_param  extends mif_mr_part_core {
 
         $out = '';
         
-        if ( isset( $tree['param']['parents']['data'] ) ) {
+        if ( isset( $tree['param']['parents']['data_att'] ) ) {
             
-            foreach ( (array) $tree['param']['parents']['data'] as $item ) {
+            foreach ( (array) $tree['param']['parents']['data_att'] as $item ) {
 
-                if ( preg_match( '/^#.*/', $item ) ) continue;                 
-                preg_match_all( '/\d+|\(.*\)/', $item, $m );
-
-                $arr = $m[0];
-
-                if ( empty( $m[0] ) ) continue;
-
-                $out .= '<div class="col-12 bg-light p-2 mt-3 border border-light">' . $this->get_link_post( $arr[0], 'opop' ) . '</div>';
-            
-                unset( $arr[0] );
-                foreach ( $arr as $item2 ) $out .= '<div class="col-12 p-2">' . $item2 . '</div>';
+                $out .= '<div class="col-12 bg-light p-2 mt-3 border border-light">' . $this->get_link_post( $item['name'], 'opop' ) . '</div>';
+                foreach ( $item ['att'] as $item2 ) $out .= '<div class="col-12 p-2">' . $item2 . '</div>';
 
             }
 
@@ -102,6 +125,47 @@ class mif_mr_param  extends mif_mr_part_core {
 
         return apply_filters( 'mif_mr_part_get_item_parents', $out );
     }
+    
+
+
+    // // 
+    // // Родительские ОПОП
+    // // 
+    
+    // public function get_item_parents2()
+    // {
+    //     global $tree;
+        
+    //     if ( isset( $_REQUEST['edit'] ) ) return $this->get_edit_textarea( 'parents', 'param' );
+
+    //     $out = '';
+        
+    //     if ( isset( $tree['param']['parents']['data'] ) ) {
+            
+    //         foreach ( (array) $tree['param']['parents']['data'] as $item ) {
+
+    //             if ( preg_match( '/^#.*/', $item ) ) continue;                 
+    //             preg_match_all( '/\d+|\(.*\)/', $item, $m );
+
+    //             $arr = $m[0];
+
+    //             if ( empty( $m[0] ) ) continue;
+
+    //             $out .= '<div class="col-12 bg-light p-2 mt-3 border border-light">' . $this->get_link_post( $arr[0], 'opop' ) . '</div>';
+            
+    //             unset( $arr[0] );
+    //             foreach ( $arr as $item2 ) $out .= '<div class="col-12 p-2">' . $item2 . '</div>';
+
+    //         }
+
+    //     } else {
+            
+    //         $out .= '<div class="col-12 p-2">none</div>';
+
+    //     }
+
+    //     return apply_filters( 'mif_mr_part_get_item_parents', $out );
+    // }
     
 
    

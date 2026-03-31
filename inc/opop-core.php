@@ -170,6 +170,21 @@ class mif_mr_opop_core {
                             // p($item2);
                         }
                         
+                        $p = new parser();
+                        
+                        foreach ( $t[$main_key][$key]['data'] as $key3 => $item3 ) {
+                            
+                            $a = $p->parse_name( $item3 );
+
+                            if ( empty( $a['att'] ) ) continue; 
+
+                            $t[$main_key][$key]['data_att'][$key3] = array( 
+                                                    'name' => $a['name'],
+                                                    'att' => $a['att'],
+                                                );
+
+                        } 
+
                         // p($m2[0]);
                         
                     } else {
