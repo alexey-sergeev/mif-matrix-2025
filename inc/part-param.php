@@ -75,21 +75,25 @@ class mif_mr_param  extends mif_mr_part_core {
         if ( isset( $_REQUEST['edit'] ) ) return $this->get_edit_textarea( 'templates', 'param' );
 
         $out = '';
-        $out .= '<div class="col-12 p-2">';
         
         if ( isset( $tree['param']['templates']['data_att'] ) ) {
             
-            foreach ( (array) $tree['param']['templates']['data_att'] as $item ) 
-                $out .= $item['name'] . ' <span class="bg-body-secondary p-0 pl-2 pr-2">(' . $item['att'][0] . ')</span><br />';
+            foreach ( (array) $tree['param']['templates']['data_att'] as $item ) {
+
+                $out .= '<div class="col-12 bg-light p-2 mt-3 border border-light fw-semibold">' . $item['name'] . '</div>';
+                $out .= '<div class="col-12 p-2">Внутреннее имя: <span class="fw-semibold">' . $item['att'][0] . '</span></div>';
+                if ( isset( $item['att'][1] ) ) $out .= '<div class="col-12 p-2">Параметры: <span class="fw-semibold">' . $item['att'][1] . '</span></div>';
+
+                // foreach ( $item ['att'] as $item2 ) $out .= '<div class="col-12 p-2">' . $item2 . '</div>';
+
+            }
 
         } else {
             
-            $out .= 'none';
-            
+            $out .= '<div class="col-12 p-2">none</div>';
+
         }
-        
-        $out .= '</div>';
-        
+
         return apply_filters( 'mif_mr_part_get_item_templates', $out );
     }
     
