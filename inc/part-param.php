@@ -80,11 +80,29 @@ class mif_mr_param  extends mif_mr_part_core {
             
             foreach ( (array) $tree['param']['templates']['data_att'] as $item ) {
 
+                $name = ( isset( $item['name'] ) ) ? $item['name'] : '';
+                $slug = ( isset( $item['att'][0] ) ) ? $item['att'][0] : '';
+                $param = ( isset( $item['att'][1] ) ) ? $item['att'][1] : '';
+
+                if ( isset( $tree['templates'][$slug]['data']['url'] ) ) {
+                    
+                    $slug = '<a href="' . $tree['templates'][$slug]['data']['url'] . 
+                        // '"><span class="mr-btn mr-gray rounded p-0 pl-1 pr-1 m-0 mr-2"><i class="fa fa-download" aria-hidden="true"></i></span>' . $slug . '</a>';
+                        '"><span class="mr-btn mr-gray rounded p-0 pl-1 pr-1 m-0 mr-1"><i class="fa-regular fa-file-lines" aria-hidden="true"></i></span>' . $slug . '</a>';
+                
+                } else {
+                    
+                    $slug = '<span class="mr-btn mr-red rounded p-0 pl-3 pr-3 m-0">' . $slug . '</span> — не найдено.' .
+                    ' <a href="' . mif_mr_opop_core::get_opop_url() . 'tools-templates/">Загрузить →</a>'; 
+                
+                }
+
+
                 $out .= '<div class="col-11 bg-light p-2 mt-4 border border-light fw-semibold">' . $item['name'] . '</div>';
                 $out .= '<div class="col-1 bg-light p-2 mt-4 border border-light fw-semibold text-center text-black-50">' . 
                         $this->get_from_id( $item['att'][0], 'templates' ) . '</div>';
-                $out .= '<div class="col-12 p-2">Внутреннее имя: <span class="fw-semibold">' . $item['att'][0] . '</span></div>';
-                if ( isset( $item['att'][1] ) ) $out .= '<div class="col-12 p-2">Параметры: <span class="fw-semibold">' . $item['att'][1] . '</span></div>';
+                if ( ! empty( $slug ) ) $out .= '<div class="col-12 mt-3">' . $slug . '</div>';
+                if ( ! empty( $param ) ) $out .= '<div class="col-12 mt-3">Параметры: <span class="fw-semibold">' . $param . '</span></div>';
 
                 // foreach ( $item ['att'] as $item2 ) $out .= '<div class="col-12 p-2">' . $item2 . '</div>';
 
