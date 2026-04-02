@@ -61,7 +61,7 @@
     <div class="row mt-4 border bg-body-secondary fw-semibold text-center">
         <div class="col-1 p-2"></div>
         <div class="col-10 p-2">Параметры для шаблонов</div>
-        <div class="col-1 p-2 text-black-50"><?php mif_mr_the_from_id('templates'); ?></div>
+        <div class="col-1 p-2"></div>
     </div>
     
     <?php mif_mr_show_explanation('templates'); ?>

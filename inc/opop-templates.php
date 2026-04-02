@@ -462,10 +462,10 @@ function mif_mr_tools_courses()
 // Выводит 
 //
 
-function mif_mr_tools_file()
+function mif_mr_tools_templates()
 {
-    global $mif_mr_tools_file;
-    echo $mif_mr_tools_file->get_tools_file();
+    global $mif_mr_tools_templates;
+    echo $mif_mr_tools_templates->get_tools_templates();
 }
 
 

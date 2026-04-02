@@ -204,6 +204,9 @@ class mif_mr_opop_core {
             }
             
 
+            $t['templates'] = $this->get_templates( $opop_id );
+
+
             wp_cache_set( 'get_param_and_meta', $t, $opop_id );
 
         }
@@ -212,7 +215,44 @@ class mif_mr_opop_core {
     }
     
     
+
+
+
+        // 
+    // 
+    // 
     
+    protected function get_templates( $opop_id )
+    {
+        $t = array();
+        // $data = array();
+
+        $opop_id = (int) $opop_id;
+
+        // p($opop_id);
+        $arr = mif_mr_tools_core::get_file( array( 'ext' => array( 'docx' ), 'opop_id' => $opop_id ) ); // !!!
+        // p($arr);
+
+
+        foreach ( $arr as $a ) {
+        
+            $t[$a->post_title] = array( 
+                                    'from_id' => $opop_id,
+                                    'data' => array( 
+                                        'att_id' => $a->ID,
+                                        'url' => $a->guid,
+                                        'path' => get_attached_file( $a->ID ),
+                                    )   
+                            );
+        
+        }
+
+        // p($opop_id);
+        // p($t);
+
+        return apply_filters( 'mif_mr_core_opop_get_templates', $t, $opop_id );
+    }
+       
    
     // // 
     // // 
@@ -286,6 +326,7 @@ class mif_mr_opop_core {
     {
         global $tree;
         return $tree['main']['id'];
+        // return get_the_ID();
     }
 
 

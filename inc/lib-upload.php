@@ -133,7 +133,7 @@ class mif_mr_upload {
 
                 // p($_FILES['file']['tmp_name'][$key]);
 
-                $title = apply_filters( 'lib-upload-save-title', NULL, $_FILES['file']['tmp_name'][$key] );
+                $title = apply_filters( 'lib-upload-save-title', NULL, $_FILES['file']['tmp_name'][$key], $_FILES['file']['name'][$key] );
                 $id = media_handle_sideload( $file, mif_mr_opop_core::get_opop_id(), $title );
 
                 // p($id);

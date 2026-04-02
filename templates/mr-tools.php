@@ -28,7 +28,7 @@
 
 <div class="p-4 pr-5 pl-5 bg-light mt-4 border border-light">
 
-    <div class="fw-semibold"><?php mif_mr_the_menu_item( 'Загрузка docx-шаблонов', 'tools-file' ); ?></div> 
+    <div class="fw-semibold"><?php mif_mr_the_menu_item( 'Загрузка docx-шаблонов', 'tools-templates' ); ?></div> 
     <div class="mt-2">
         Загрузка шаблонов docx для создания документов (учебные программы, фонды оценочных средств, программы формирования компетенций и др.)
     </div>

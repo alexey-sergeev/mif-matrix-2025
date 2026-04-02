@@ -15,7 +15,7 @@
             <!-- <div class="container"> -->
             <div>
                 
-                <?php mif_mr_tools_file();
+                <?php mif_mr_tools_templates();
                 // mif_mr_form_upload( 'Загрузите файл учебного плана в формате XML', 'tools-curriculum' ); 
                 // ?>
                 

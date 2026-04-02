@@ -46,20 +46,25 @@ class mif_mr_tools_core {
     // Получить файлы 
     //    
 
-    public function get_file( $att = array() )
+    public static function get_file( $att = array() )
     {
         // global $post;
 
+        $opop_id = ( isset( $att['opop_id'] ) ) ? $att['opop_id'] : mif_mr_opop_core::get_opop_id();
+
+        // p($opop_id );
+
         $args = array(
             'numberposts' => -1,
-            'post_parent' => mif_mr_opop_core::get_opop_id(), 
+            'post_parent' => $opop_id, 
             'post_type' => 'attachment',
             // 'order' => 'ASC',
             'order' => 'DESC',
             'post_status' => 'inherit',
             // 'orderby' => 'menu_order',
         );
-        
+
+        // P(mif_mr_opop_core::get_opop_id());
         if ( ! empty( $att['orderby'] ) ) $args['orderby'] = $att['orderby'];
         if ( ! empty( $att['order'] ) ) $args['order'] = $att['order'];
 

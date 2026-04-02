@@ -215,11 +215,11 @@ class mif_mr_opop extends mif_mr_opop_tree_clean {
             break;
             
             
-            case 'tools-file':
+            case 'tools-templates':
 
-                global $mif_mr_tools_file;
-                $mif_mr_tools_file = new mif_mr_tools_file();
-                $mif_mr_tools_file->the_show();
+                global $mif_mr_tools_templates;
+                $mif_mr_tools_templates = new mif_mr_tools_templates();
+                $mif_mr_tools_templates->the_show();
 
             break;
             

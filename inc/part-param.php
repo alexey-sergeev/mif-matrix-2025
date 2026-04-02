@@ -80,7 +80,9 @@ class mif_mr_param  extends mif_mr_part_core {
             
             foreach ( (array) $tree['param']['templates']['data_att'] as $item ) {
 
-                $out .= '<div class="col-12 bg-light p-2 mt-3 border border-light fw-semibold">' . $item['name'] . '</div>';
+                $out .= '<div class="col-11 bg-light p-2 mt-4 border border-light fw-semibold">' . $item['name'] . '</div>';
+                $out .= '<div class="col-1 bg-light p-2 mt-4 border border-light fw-semibold text-center text-black-50">' . 
+                        $this->get_from_id( $item['att'][0], 'templates' ) . '</div>';
                 $out .= '<div class="col-12 p-2">Внутреннее имя: <span class="fw-semibold">' . $item['att'][0] . '</span></div>';
                 if ( isset( $item['att'][1] ) ) $out .= '<div class="col-12 p-2">Параметры: <span class="fw-semibold">' . $item['att'][1] . '</span></div>';
 
