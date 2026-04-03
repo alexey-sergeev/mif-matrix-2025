@@ -15,6 +15,13 @@ class mif_mr_part_core {
     function __construct()
     {
 
+        $this->templates_place = apply_filters( 'mif-mr-templates-place', array( 
+                                                                    'a', 
+                                                                    'b', 'b0', 'b1', 'b2', 'b3', 'b4', 'b5', 'b6', 'b7', 'b8',  
+                                                                    'c', 'c0', 'c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'c7', 'c8' 
+                                                                    ) );
+
+
     }
    
     
@@ -384,6 +391,10 @@ class mif_mr_part_core {
     {
         return preg_replace( '/@/', '', $s );
     }
+
+
+
+    public $templates_place = array();
 
 }
 
