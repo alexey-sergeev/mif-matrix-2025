@@ -97,14 +97,13 @@ class mif_mr_main extends mif_mr_table {
 
             foreach ( $item as $i ) {
 
-                if ( ! in_array( $courses_arr[$key]['courses'][$key2]['unit'], explode( ', ', $i['param'] ) ) ) continue;
+                if ( ! in_array( $courses_arr[$key]['courses'][$key2]['unit'], array_map( 'trim', explode( ',', $i['param'] ) ) ) ) continue;
 
-                $text = '<a href="?download=course-d-' . $i['slug'] . '&course=' . $course . 
-                                        '"><span class="mr-btn mr-gray rounded p-0 pl-1 pr-1 m-0"><i class="fa-regular fa-file-lines" aria-hidden="true"></i></span></a>';
+                $text = '<span class="mr-btn mr-gray rounded p-0 pl-1 pr-1 m-0"><i class="fa-regular fa-file-lines" aria-hidden="true"></i></span>';
+                if ( ! empty( $i['file'] ) ) $text = '<a href="?download=course-d-' . $i['slug'] . '&course=' . $course . '">' . $text . '</a>';
 
                 break;
 
-                // p($item);
             }
 
 
@@ -158,6 +157,7 @@ class mif_mr_main extends mif_mr_table {
                     'name' => $item['name'],
                     'slug' => $item['att'][0],
                     'param' => $item['att'][2],
+                    'file' => ( isset( $tree['templates'][$item['att'][0]]['data']['path'] ) ) ? $tree['templates'][$item['att'][0]]['data']['path'] : '',
 
                 );
 
