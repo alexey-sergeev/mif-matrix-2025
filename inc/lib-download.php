@@ -91,10 +91,11 @@ class mif_mr_download {
         
         // Программа дисциплины
         
-        if ( $item == 'course-d-program' ) {
+        // if ( $item == 'course-d-program' ) {
+        if ( preg_match( '/^course-d-/', $item ) ) {
 
             $m = new mif_mr_opop();
-            $a = $m->make_docx_program();
+            $a = $m->make_docx_program( $item );
             // p($a);
             $this->download( $a['path'], $a['name'] );
 

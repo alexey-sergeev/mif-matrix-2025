@@ -39,46 +39,45 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
         $tree['content']['courses']['clean'] = $this->make_courses_clean();
         $tree['content']['courses']['errors'] = $this->make_courses_errors();
+        $tree['templates'] = $this->make_templates_clean();
         
+
+
         return;
     }
 
 
     
-    // // 
-    // // Tree clean
-    // // 
-    
-    // public function get_tree_clean( &$t = array() )
-    // {
-        
-    //     $t['content']['courses']['clean'] = $this->make_courses_clean();
-        
-    //     return apply_filters( 'mif_mr_core_opop_get_tree_clean', $t );
-    // }
-
-
-    
-
-    // // 
-    // // Tree errors
-    // // 
-    
-    // public function get_tree_errors( &$t = array() )
-    // {
-        
-    //     $t['content']['courses']['errors'] = $this->make_courses_errors();
-        
-    //     return apply_filters( 'mif_mr_core_opop_get_tree_errors', $t );
-    // }
-
 
 
 
     // 
-    // Сделать дисциплины чистыми
+    // Сделать templates чистыми
     // 
     
+    private function make_templates_clean()
+    {
+        global $tree;
+
+        $arr = $tree['templates'];
+
+        // p($arr);
+
+        foreach( $tree['param']['templates']['data_att'] as $i ) {
+
+            if ( empty( $tree['templates'][$i['att'][0]] ) ) continue;
+            $arr[$i['att'][0]]['data']['name'] = $i['name'];
+
+        };
+
+        // p($arr);
+
+        return apply_filters( 'mif_mr_core_opop_make_templates_clean', $arr );
+    }
+
+
+
+
     private function make_courses_clean()
     {
         global $tree;

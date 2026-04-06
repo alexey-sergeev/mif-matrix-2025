@@ -573,10 +573,15 @@ class mif_mr_opop_core {
     // Делает программу дисциплины для выдачи пользователю (d-program)
     //
     
-    public function make_docx_program()
+    public function make_docx_program( $type )
     {
         global $wp_query;
         global $tree;
+        
+        preg_match( '/(^course-d-)(.*)/', $type, $a );
+        $type = $a[2];
+
+        if ( empty( $tree['templates'][$type] ) ) return;
        
         $arr = array( 'name' => '', 'path' => '', 'res' => false );
 
@@ -603,10 +608,18 @@ class mif_mr_opop_core {
                  $tree['content']['courses']['clean'][$key] :
                  array();
 
-            $blank = dirname( __FILE__ ) . '/../templates/docx/program.docx';
+            // p($tree['templates'][$type]);
+
+            $blank = $tree['templates'][$type]['data']['path'];
+            
+            $text = ( ! empty( $tree['templates'][$type]['data']['name'] ) ) ?
+                    ' (' . mb_strtolower( $tree['templates'][$type]['data']['name'] ) . ')' :
+                    '';
+
+            // $blank = dirname( __FILE__ ) . '/../templates/docx/program.docx';
             $m = new mif_mr_docx_program( $blank );
 
-            $arr['name'] .= $arr2['name'] . ' (программа дисциплины).docx';
+            $arr['name'] .= $arr2['name'] . $text . '.docx';
             $arr['path'] = $m->arr_to_docx( $arr2 );
 
         } else {
@@ -617,6 +630,7 @@ class mif_mr_opop_core {
 
         // p($arr);
         return $arr;
+        // return ;
         
     }
     
