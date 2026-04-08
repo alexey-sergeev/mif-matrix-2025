@@ -124,7 +124,7 @@ class mif_mr_tools_core {
                                 'do' => 'reload',
                                 'cancel' => true,
                                 'attid' => $attid,
-                                'url' => 'tools-file',
+                                'url' => 'tools-templates', // !!!
                                 'no_max_filesize' => true, 
                                 'submit' => 'Обновить' 
                             ) );
