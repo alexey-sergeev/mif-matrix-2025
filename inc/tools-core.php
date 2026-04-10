@@ -51,17 +51,24 @@ class mif_mr_tools_core {
         // global $post;
 
         $opop_id = ( isset( $att['opop_id'] ) ) ? $att['opop_id'] : mif_mr_opop_core::get_opop_id();
+        $type = ( isset( $att['type'] ) ) ? $att['type'] : '';
 
+        // p($type );
         // p($opop_id );
 
         $args = array(
             'numberposts' => -1,
             'post_parent' => $opop_id, 
-            'post_type' => 'attachment',
+            // 'post_type' => 'attachment',
+            'post_type' => 'file',
             // 'order' => 'ASC',
             'order' => 'DESC',
-            'post_status' => 'inherit',
-            // 'orderby' => 'menu_order',
+            'post_status' => 'publish',
+            'tax_query' => array( array(
+                                    'taxonomy' => 'file_type',
+                                    'field' => 'name',
+                                    'terms' => $type
+                                ) ),   
         );
 
         // P(mif_mr_opop_core::get_opop_id());
@@ -70,17 +77,19 @@ class mif_mr_tools_core {
 
         $arr = get_posts( $args );
             
-        // Удалить из ответа лишние файлы 
-        
-        if ( isset( $att['ext'] ) ) {
-        
-            foreach ( $arr as $key => $item ) {
-                $arr_tmp = explode( '.', $item->guid );
-                $ext = array_pop( $arr_tmp );
-                if ( ! in_array( $ext, (array) $att['ext'] ) ) unset( $arr[$key] );
-            }
+        // p($arr);
 
-        }
+        // // Удалить из ответа лишние файлы 
+        
+        // if ( isset( $att['ext'] ) ) {
+        
+        //     foreach ( $arr as $key => $item ) {
+        //         $arr_tmp = explode( '.', $item->guid );
+        //         $ext = array_pop( $arr_tmp );
+        //         if ( ! in_array( $ext, (array) $att['ext'] ) ) unset( $arr[$key] );
+        //     }
+
+        // }
 
         return $arr;
     }
@@ -173,8 +182,11 @@ class mif_mr_tools_core {
     {
         // !!!!!!!
 
-        $res = ( wp_delete_attachment( $attid, true ) === false ) ? false : true;
-        return $res;
+        // $res = ( wp_delete_attachment( $attid, true ) === false ) ? false : true;
+        
+        // $
+        $m = new mif_mr_upload();
+        return $m->remove( $attid );
     }
 
 
@@ -202,7 +214,8 @@ class mif_mr_tools_core {
 
         foreach ( $arr as $a ) {
 
-            if ( wp_delete_attachment( $a->ID, true ) === false ) $res = false;
+            if ( $m->remove( $a->ID ) === false ) $res = false;
+            // if ( wp_delete_attachment( $a->ID, true ) === false ) $res = false;
 
         }
         

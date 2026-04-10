@@ -230,7 +230,8 @@ class mif_mr_opop_core {
         $opop_id = (int) $opop_id;
 
         // p($opop_id);
-        $arr = mif_mr_tools_core::get_file( array( 'ext' => array( 'docx' ), 'opop_id' => $opop_id ) ); // !!!
+        // $arr = mif_mr_tools_core::get_file( array( 'ext' => array( 'docx' ), 'opop_id' => $opop_id ) ); // !!!
+        $arr = mif_mr_tools_core::get_file( array( 'type' => 'templates', 'opop_id' => $opop_id ) ); // !!!
         // p($arr);
 
 

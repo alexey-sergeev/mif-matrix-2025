@@ -78,6 +78,7 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
                             'text' => 'Загрузите файл учебного плана в формате XML', 
                             // 'title_placeholder' => 'Название плана', 
                             'url' => 'tools-curriculum',
+                            'type' => 'curriculum',
                             'multiple' => true  
                         ) );
         

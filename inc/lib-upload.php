@@ -16,6 +16,9 @@ class mif_mr_upload {
     function __construct()
     {
 
+        $this->uploads_dir = apply_filters( 'lib-upload-uploads-dir',  ( (object) wp_upload_dir() )->basedir . '/opop_data/' . mif_mr_opop_core::get_opop_id() . '/');
+        // p($this->uploads_dir);
+
         // if ( empty( $_REQUEST['download'] ) ) return;
 
         // $this->force_download();
@@ -50,6 +53,7 @@ class mif_mr_upload {
         
         if ( isset( $args['do'] ) ) $out .= '<input type="hidden" name="do" value="' . $args['do'] . '">';
         if ( isset( $args['attid'] ) ) $out .= '<input type="hidden" name="attid" value="' . $args['attid'] . '">';
+        if ( isset( $args['type'] ) ) $out .= '<input type="hidden" name="type" value="' . $args['type'] . '">';
         
         $submit = ( isset( $args['submit'] ) ) ? $args['submit'] : 'Загрузить';
 
@@ -93,7 +97,6 @@ class mif_mr_upload {
             if ( empty( $item ) ) continue; 
         
             $arr[$key]['name'] = $item;
-            
 
             $ext = mif_mr_functions::get_ext( $item );
 
@@ -118,40 +121,88 @@ class mif_mr_upload {
 
             if ( $res == 'file' ) {
 
-                require_once( ABSPATH . 'wp-admin/includes/image.php' );
-                require_once( ABSPATH . 'wp-admin/includes/file.php' );
-                require_once( ABSPATH . 'wp-admin/includes/media.php' );
+                // require_once( ABSPATH . 'wp-admin/includes/image.php' );
+                // require_once( ABSPATH . 'wp-admin/includes/file.php' );
+                // require_once( ABSPATH . 'wp-admin/includes/media.php' );
 
-                // $id = media_handle_upload( 'file', mif_mr_opop_core::get_opop_id(), array( 'post_title' => mif_mr_opop_core::get_opop_title() . ' - ' . $item ) );
+                // // $id = media_handle_upload( 'file', mif_mr_opop_core::get_opop_id(), array( 'post_title' => mif_mr_opop_core::get_opop_title() . ' - ' . $item ) );
                 
-                $file = array(  
-                    'name' => $_FILES['file']['name'][$key],
-                    'tmp_name' => $_FILES['file']['tmp_name'][$key],
-                    'error' => $_FILES['file']['error'][$key],
-                    'size' => $_FILES['file']['size'][$key],
-                );
+                // $file = array(  
+                //     'name' => $_FILES['file']['name'][$key],
+                //     'tmp_name' => $_FILES['file']['tmp_name'][$key],
+                //     'error' => $_FILES['file']['error'][$key],
+                //     'size' => $_FILES['file']['size'][$key],
+                // );
 
-                // p($_FILES['file']['tmp_name'][$key]);
+                // // p($_FILES['file']['tmp_name'][$key]);
+
+                // $title = apply_filters( 'lib-upload-save-title', NULL, $_FILES['file']['tmp_name'][$key], $_FILES['file']['name'][$key] );
+                // $id = media_handle_sideload( $file, mif_mr_opop_core::get_opop_id(), $title );
+                
+                // $file = array(  
+                //     'name' => $_FILES['file']['name'][$key],
+                //     'tmp_name' => $_FILES['file']['tmp_name'][$key],
+                //     'error' => $_FILES['file']['error'][$key],
+                //     'size' => $_FILES['file']['size'][$key],
+                // );
 
                 $title = apply_filters( 'lib-upload-save-title', NULL, $_FILES['file']['tmp_name'][$key], $_FILES['file']['name'][$key] );
-                $id = media_handle_sideload( $file, mif_mr_opop_core::get_opop_id(), $title );
+                // $id = media_handle_sideload( $file, mif_mr_opop_core::get_opop_id(), $title );
 
-                // p($id);
+                $type = ( isset( $_REQUEST['type'] ) ) ? sanitize_key( $_REQUEST['type'] ) : '';
                 
-                if ( is_wp_error( $id ) ) {
-           
-                    $arr[$key]['status'] = 'danger';
-                    // $arr[$key]['messages'] = '???';
-                    $arr[$key]['messages'] = implode( '; ', $id->errors['upload_error'] );
-                    // p(is_wp_error($id));
+                $uploads_dir = $this->uploads_dir;
+                if ( ! empty( $type ) ) $uploads_dir .= $type . '/';
+
+                $res3 = true;
+                if ( ! is_dir( $uploads_dir ) ) $res3 = mkdir( $uploads_dir, 0755, true );
+
+                if ( $res3 ) {
+
+                    $file_name = wp_unique_filename( $uploads_dir, $_FILES['file']['name'][$key] );
+                    $res2 = move_uploaded_file( $_FILES['file']['tmp_name'][$key], $uploads_dir . $file_name );
+                    
+                    if ( $res2 ) {
+                        
+                        $file_path = ( ! empty( $type ) ) ? $type . '/' . $file_name : $file_name;
+
+                        $file_id = wp_insert_post( array(
+                            'post_title' => $title,
+                            'post_content' => $file_path,
+                            'post_type' => 'file',
+                            'post_status' => 'publish',
+                            'tax_input' => array( 'file_type' => $type ),
+                            // 'post_mime_type' => $type,
+                            'post_parent' => mif_mr_opop_core::get_opop_id(),
+                        ) );
+        
+                        // p(get_post($file_id));
+                        
+                        if ( ! is_wp_error( $file_id ) ) {
+
+                            $arr[$key]['status'] = 'success';
+                            $arr[$key]['messages'] = 'Сохранено';
+                            $arr[$key]['id'] = $file_id;
+
+                        } else {
+                        
+                            $arr[$key]['status'] = 'danger';
+                            $arr[$key]['messages'] = $file_id->get_error_message();
+                        
+                        }
+
+                    } else {
+
+                        $arr[$key]['status'] = 'danger';
+                        $arr[$key]['messages'] = 'Какая-то ошибка. Код: 10040';
+
+                    }
                 
                 } else {
 
-                    $arr[$key]['status'] = 'success';
-                    $arr[$key]['messages'] = 'Сохранено';
-                    // $arr[$key]['messages'] = 'Ок!';
-                    $arr[$key]['id'] = $id;
-                
+                    $arr[$key]['status'] = 'danger';
+                    $arr[$key]['messages'] = 'Какая-то ошибка. Код: 10041';
+
                 }
 
             } else {
@@ -187,29 +238,46 @@ class mif_mr_upload {
         if ( ! ( isset( $_REQUEST['do'] ) && $_REQUEST['do'] == 'reload' ) ) return;
         if ( ! isset( $_FILES['file']['error'] ) ) return;
 
-        $res = $this->proceeding_upload( $_FILES['file']['error'] );
+        $id = (int) $_REQUEST['attid'];
 
-        if ( $res == 'file' ) {
+        if ( mif_mr_functions::get_ext( $_FILES['file']['name'] ) != 
+                mif_mr_functions::get_ext( $this->get_path( $id ) ) ) return false;
 
-            $file = array(  
-                'name' => $_FILES['file']['name'],
-                'tmp_name' => $_FILES['file']['tmp_name'],
-                'error' => $_FILES['file']['error'],
-                'size' => $_FILES['file']['size'],
-            );
+        $res = move_uploaded_file( $_FILES['file']['tmp_name'], $this->get_path( $id ) );
+
+
+        // $res = $this->proceeding_upload( $_FILES['file']['error'] );
+
+        // if ( $res == 'file' ) {
+
+        //     $file = array(  
+        //         'name' => $_FILES['file']['name'],
+        //         'tmp_name' => $_FILES['file']['tmp_name'],
+        //         'error' => $_FILES['file']['error'],
+        //         'size' => $_FILES['file']['size'],
+        //     );
         
-            $att_id = (int) $_REQUEST['attid'];
-            $res2 = move_uploaded_file( $_FILES['file']['tmp_name'], get_attached_file( $att_id ) );
+        //     $att_id = (int) $_REQUEST['attid'];
+        //     $res2 = move_uploaded_file( $_FILES['file']['tmp_name'], get_attached_file( $att_id ) );
 
-            // $att = get_post( $att_id );
+        // }
 
-            // global $messages;
-            // // $messages[] = ( $res2 ) ? array( 'Обновлено: <b>' . $att->post_title . '</b>', 'success' ) : array( 'Какая-то ошибка. Код ошибки: 28030', 'danger' );
-            // $messages[] = ( $res2 ) ? array( $att->post_title . ' — <b>Обновлено</b>', 'success' ) : array( 'Какая-то ошибка. Код ошибки: 28030', 'danger' );
-            
-        }
+        return $res;
+    }
 
-        return $res2;
+
+
+    //
+    //  Удалить файл 
+    // 
+
+    public function remove( $id )
+    {
+        // !!!!!!
+
+        unlink( $this->get_path( $id ) );
+        $res = wp_delete_post( $id, true );
+        return ( empty( $res ) ) ? false : true;
     }
 
 
@@ -230,7 +298,7 @@ class mif_mr_upload {
             case 0: $out .= 'file'; break;  
             case 1: $out .= 'Размер файла превышает допустимое значение'; break;  
             case 4: $out .= 'Файл не был загружен'; break;  
-            default: $out .='Какая-то ошибка. Код: 06020'; break;  
+            default: $out .= 'Какая-то ошибка. Код: 06020'; break;  
 
         }  
 
@@ -239,6 +307,19 @@ class mif_mr_upload {
 
 
 
+    public function get_path( $id )
+    {
+        $file = get_post( $id );
+        return $this->uploads_dir . '/' . $file->post_content;
+    }
+
+
+
+
+
+
+
+    private $uploads_dir = '';
 
 
 

@@ -76,6 +76,7 @@ class mif_mr_tools_templates extends mif_mr_tools_core {
                             // 'title_placeholder' => 'Название', 
                             // 'title_placeholder' => 'Название плана', 
                             'url' => 'tools-templates',
+                            'type' => 'templates',
                             'multiple' => true  
                         ) );
         
@@ -111,7 +112,8 @@ class mif_mr_tools_templates extends mif_mr_tools_core {
         $out = '';
 
         // $arr = $this->get_file_curriculum();
-        $arr = $this->get_file( array( 'ext' => array( 'docx' ) ) );
+        // $arr = $this->get_file( array( 'ext' => array( 'docx' ) ) );
+        $arr = $this->get_file( array( 'type' => 'templates' ) );
 
         // p($arr);
 
@@ -128,7 +130,7 @@ class mif_mr_tools_templates extends mif_mr_tools_core {
         $out .= '<div class="striped">';
         
         foreach ( $arr as $item ) {
-            
+
             $out .= '<div class="row">';
             $out .= '<div class="col col-1 p-2">' . ++$n . '</div>';
             // $out .= '<div class="col p-2">' . $item->post_title . '</div>';
