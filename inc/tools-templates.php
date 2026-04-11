@@ -135,7 +135,8 @@ class mif_mr_tools_templates extends mif_mr_tools_core {
             $out .= '<div class="col col-1 p-2">' . ++$n . '</div>';
             // $out .= '<div class="col p-2">' . $item->post_title . '</div>';
             $out .= '<div class="col p-2"><a href="' .  $item->guid . '">' . $item->post_title . '</a></div>';
-            $out .= '<div class="col col-1 p-2 text-center">' .  mif_mr_opop_core::get_a_file( $item->guid, 'lines' ) . '</div>';
+            $out .= '<div class="col col-1 p-2 text-center">' .  
+                    mif_mr_opop_core::get_a_file( mif_mr_opop_core::get_opop_url() . '/file/' . $item->ID, 'lines' ) . '</div>';
             // $out .= '<div class="col col-1 p-2 text-center">' .  mif_mr_opop_core::get_a_file( $item->guid, 'word' ) . '</div>';
             $out .= '<div class="col col-2 p-2 text-center">';
             $out .= '<a href="#" class="m-3 reload" data-attid="' . $item->ID . '"><i class="fa-solid fa-repeat fa-lg"></i></a>';

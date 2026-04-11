@@ -78,7 +78,8 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
                             'text' => 'Загрузите файл учебного плана в формате XML', 
                             // 'title_placeholder' => 'Название плана', 
                             'url' => 'tools-curriculum',
-                            'type' => 'curriculum',
+                            // 'type' => 'curriculum',
+                            'type' => 'plx',
                             'multiple' => true  
                         ) );
         
@@ -113,13 +114,15 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
         $att = get_post( $att_id );
         
         if ( empty( $att ) ) return;
-        if ( $att->post_type != 'attachment' ) return;
-        if ( mif_mr_functions::get_ext( $att->guid ) != 'plx' ) return;
+        if ( $att->post_type != 'file' ) return;
+        if ( mif_mr_functions::get_ext( $this->get_path( $att_id ) ) != 'plx' ) return;
 
         // $ext = explode( '.', $att->guid );
         // if ( array_pop( $ext ) != 'plx' ) return;
         
-        $plx = new plx( get_attached_file( $att_id ) );
+        // $plx = new plx( get_attached_file( $att_id ) );
+        // $m = new mif_mr_upload();
+        $plx = new plx( $this->get_path( $att_id ) );
         if ( empty( $plx->get_att() ) ) return mif_mr_functions::get_callout( 'План не обнаружен', 'danger' ); 
             
         // p($plx);
@@ -192,7 +195,8 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
         $out = '';
 
         // $arr = $this->get_file_curriculum();
-        $arr = $this->get_file( array( 'ext' => array( 'plx' ) ) );
+        // $arr = $this->get_file( array( 'ext' => array( 'plx' ) ) );
+        $arr = $this->get_file( array( 'type' => 'plx' ) );
 
         // p($arr);
 
@@ -459,7 +463,9 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
 
     private function get_date_from_plx( $type, $att_id )
     {
-        $plx = new plx( get_attached_file( $att_id ) );
+        // $plx = new plx( get_attached_file( $att_id ) );
+        // $m = new mif_mr_upload();
+        $plx = new plx( $this->get_path( $att_id ) );
 
         switch ( $type ) {  
             case 'courses': $data = $plx->get_courses(); break;  

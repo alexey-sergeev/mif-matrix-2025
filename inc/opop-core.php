@@ -231,9 +231,10 @@ class mif_mr_opop_core {
 
         // p($opop_id);
         // $arr = mif_mr_tools_core::get_file( array( 'ext' => array( 'docx' ), 'opop_id' => $opop_id ) ); // !!!
-        $arr = mif_mr_tools_core::get_file( array( 'type' => 'templates', 'opop_id' => $opop_id ) ); // !!!
+        $arr = mif_mr_tools_core::get_file( array( 'type' => 'templates', 'opop_id' => $opop_id ) ); 
         // p($arr);
 
+        $m = new mif_mr_upload();
 
         foreach ( $arr as $a ) {
         
@@ -242,7 +243,8 @@ class mif_mr_opop_core {
                                     'data' => array( 
                                         'att_id' => $a->ID,
                                         'url' => $a->guid,
-                                        'path' => get_attached_file( $a->ID ),
+                                        // 'path' => get_attached_file( $a->ID ),
+                                        'path' => $m->get_path( $a->ID ),
                                     )   
                             );
         
@@ -326,7 +328,8 @@ class mif_mr_opop_core {
     public static function get_opop_id()
     {
         global $tree;
-        return $tree['main']['id'];
+        $opop_id = ( isset( $tree['main']['id'] ) ) ? $tree['main']['id'] : get_the_ID();
+        return $opop_id;
         // return get_the_ID();
     }
 

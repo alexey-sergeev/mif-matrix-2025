@@ -16,7 +16,8 @@ class mif_mr_upload {
     function __construct()
     {
 
-        $this->uploads_dir = apply_filters( 'lib-upload-uploads-dir',  ( (object) wp_upload_dir() )->basedir . '/opop_data/' . mif_mr_opop_core::get_opop_id() . '/');
+        // $this->uploads_dir = apply_filters( 'lib-upload-uploads-dir',  ( (object) wp_upload_dir() )->basedir . '/opop_data/' . mif_mr_opop_core::get_opop_id() . '/');
+        $this->uploads_dir = apply_filters( 'lib-upload-uploads-dir',  ( (object) wp_upload_dir() )->basedir . '/opop_data/' . mif_mr_opop_core::get_opop_id() . '/' );
         // p($this->uploads_dir);
 
         // if ( empty( $_REQUEST['download'] ) ) return;
@@ -172,7 +173,7 @@ class mif_mr_upload {
                             'post_type' => 'file',
                             'post_status' => 'publish',
                             'tax_input' => array( 'file_type' => $type ),
-                            // 'post_mime_type' => $type,
+                            'post_mime_type' => $_FILES['file']['type'][$key],
                             'post_parent' => mif_mr_opop_core::get_opop_id(),
                         ) );
         
@@ -310,7 +311,21 @@ class mif_mr_upload {
     public function get_path( $id )
     {
         $file = get_post( $id );
-        return $this->uploads_dir . '/' . $file->post_content;
+        return $this->uploads_dir . $file->post_content;
+    }
+
+
+    public function get_name( $id )
+    {
+        $file = get_post( $id );
+        return $file->post_title . '.' . mif_mr_functions::get_ext( $file->post_content );
+    }
+
+
+    public function get_type( $id )
+    {
+        $file = get_post( $id );
+        return $file->post_mime_type;
     }
 
 

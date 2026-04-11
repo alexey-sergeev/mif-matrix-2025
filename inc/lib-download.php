@@ -15,10 +15,14 @@ class mif_mr_download {
     
     function __construct()
     {
+        global $wp_query;
 
-        if ( empty( $_REQUEST['download'] ) ) return;
+        // p($wp_query->query);
+        // p($wp_query->query['part']);
+        // p($_REQUEST);
 
-        $this->force_download();
+        if ( isset( $wp_query->query['part'] ) && $wp_query->query['part'] === 'file' ) $this->file_download( $wp_query->query['id'] );
+        if ( ! empty( $_REQUEST['download'] ) ) $this->force_download();
 
     }
 
@@ -101,10 +105,26 @@ class mif_mr_download {
 
         }
         
+    }
 
 
 
 
+    function file_download( $id )
+    {
+        // !!!!!!
+
+        // p(get_post($id));
+
+        $m = new mif_mr_upload();
+
+        // p($m->get_path( $id ));
+        // p($m->get_name( $id ));
+        // p($m->get_type( $id ));
+
+        $this->download( $m->get_path( $id ), $m->get_name( $id ), $m->get_type( $id ), false );
+
+        // exit;
     }
 
 
@@ -134,11 +154,9 @@ class mif_mr_download {
     // Скачивание файла
     // 
 
-    function download( $file, $name = '' ) 
+    function download( $file, $name = '', $content_type = NULL, $unlink = true ) 
     {
         if ( empty( $file ) ) return;
-
-
 
         if ( file_exists( $file ) ) {
 
@@ -149,20 +167,26 @@ class mif_mr_download {
             return;
 
         }
-        $content_types = array(
-            'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-            'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            'xls' => 'application/vnd.ms-excel',
-            'pdf' => 'application/pdf',
-            'zip' => 'application/zip, application/x-compressed-zip',
-        );
+
+        if ( empty( $content_type ) ) {
+    
+            $content_types = array(
+                'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'xls' => 'application/vnd.ms-excel',
+                'pdf' => 'application/pdf',
+                'zip' => 'application/zip, application/x-compressed-zip',
+            );
+            
+            $content_type = 'application/octet-stream';
         
-        $content_type = 'application/octet-stream';
-    
-        $extension_arr = explode( ".", $file );
-        $extension = array_pop( $extension_arr );
-    
-        if ( isset( $content_types[$extension] ) ) $content_type = $content_types[$extension];
+            // $extension_arr = explode( ".", $file );
+            // $extension = array_pop( $extension_arr );
+        
+            $extension = mif_mr_functions::get_ext( $file );
+            if ( isset( $content_types[$extension] ) ) $content_type = $content_types[$extension];
+
+        }
 
         if ( $name == '' ) $name = basename( $file );
 
@@ -182,7 +206,7 @@ class mif_mr_download {
 
         }
 
-        unlink( $file );
+        if ( $unlink ) unlink( $file );
 
         exit;
     }

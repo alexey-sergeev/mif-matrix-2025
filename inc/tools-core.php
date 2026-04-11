@@ -239,6 +239,16 @@ class mif_mr_tools_core {
 
 
 
+    //
+    //
+    //
+
+    function get_path( $id )
+    {
+        $m = new mif_mr_upload();    
+        return $m->get_path( $id );
+    }
+
 
 }
 

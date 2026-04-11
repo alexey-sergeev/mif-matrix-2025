@@ -69,14 +69,20 @@ class mif_mr_lib_references extends mif_mr_companion_core {
             if ( empty( $item ) ) continue;
             
             $data = $p->parse_name( $item );
+            
+            $data_att = ( isset( $data['att'][0] ) ) ? $data['att'][0] : NULL;
+
             $arr3[] = array( 
                 'name' => $data['name'],
-                'att' => $data['att'][0],
+                // 'att' => $data['att'][0],
+                'att' => $data_att,
             );
 
             // p($data['att'][0]);
-            if ( is_numeric( $data['att'][0] ) ) $is_numeric = true;
-            if ( ! is_numeric( $data['att'][0] ) ) $is_string = true;
+            // if ( is_numeric( $data['att'][0] ) ) $is_numeric = true;
+            // if ( ! is_numeric( $data['att'][0] ) ) $is_string = true;
+            if ( is_numeric( $data_att ) ) $is_numeric = true;
+            if ( ! is_numeric( $data_att ) ) $is_string = true;
 
 
         }

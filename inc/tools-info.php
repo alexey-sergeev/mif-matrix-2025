@@ -15,7 +15,7 @@ class mif_mr_tools_info extends mif_mr_tools_core {
     {
         parent::__construct();
 
-        add_filter( 'lib-upload-save-title', array( $this, 'set_save_title'), 10, 2 );
+        add_filter( 'lib-upload-save-title', array( $this, 'set_save_title' ), 10, 2 );
         // add_filter( 'scheme-data-courses', array( $this, 'scheme_data_courses'), 10 );
 
         // $this->scheme = apply_filters( 'scheme-data-courses', array() );
@@ -61,7 +61,9 @@ class mif_mr_tools_info extends mif_mr_tools_core {
     
         $arr = array();
 
-        $m = new mif_mr_xlsx_tpl( get_attached_file( $att_id ) );
+        // $m = new mif_mr_xlsx_tpl( get_attached_file( $att_id ) );
+        // $a = new mif_mr_upload();
+        $m = new mif_mr_xlsx_tpl( $this->get_path( $att_id ) );
         $name = $m->get_name_course();
         // $name = $m->get( $this->scheme['name'][0] );
 
@@ -133,11 +135,13 @@ class mif_mr_tools_info extends mif_mr_tools_core {
         $att = get_post( $att_id );
         
         if ( empty( $att ) ) return;
-        if ( $att->post_type != 'attachment' ) return;
-        if ( ! in_array( mif_mr_functions::get_ext( $att->guid ), array( 'xls', 'xlsx' ) ) ) return;
+        if ( $att->post_type != 'file' ) return;
+        if ( ! in_array( mif_mr_functions::get_ext( $this->get_path( $att_id ) ), array( 'xls', 'xlsx' ) ) ) return;
         
         // $arr = $this->get_courses_form_xls( $att_id );
-        $m = new mif_mr_xlsx_tpl( get_attached_file( $att_id ) );
+        // $m = new mif_mr_xlsx_tpl( get_attached_file( $att_id ) );
+        // p($this->get_path( $att_id ));
+        $m = new mif_mr_xlsx_tpl( $this->get_path( $att_id ) );
         $arr = $m->xlsx_to_arr();
         
         // Course 2

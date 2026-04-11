@@ -78,6 +78,7 @@ class mif_mr_tools_courses extends mif_mr_tools_info {
                             'text' => 'Загрузите файл шаблона учебной дисциплины в формате Excel', 
                             // 'title_placeholder' => 'Название плана', 
                             'url' => 'tools-courses',
+                            'type' => 'x-tpl',
                             'multiple' => true 
                         ) );
         
@@ -111,7 +112,8 @@ class mif_mr_tools_courses extends mif_mr_tools_info {
     {
         $out = '';
 
-        $arr = $this->get_file( array( 'ext' => array( 'xls', 'xlsx' ), 'orderby' => 'title', 'order' => 'ASC' ) );
+        // $arr = $this->get_file( array( 'ext' => array( 'xls', 'xlsx' ), 'orderby' => 'title', 'order' => 'ASC' ) );
+        $arr = $this->get_file( array( 'type' => 'x-tpl', 'orderby' => 'title', 'order' => 'ASC' ) );
 
         // p($arr);
 
@@ -361,7 +363,9 @@ class mif_mr_tools_courses extends mif_mr_tools_info {
         
         $out = '';
         
-        $m = new mif_mr_xlsx_tpl( get_attached_file( $att['att_id'] ) );
+        // $m = new mif_mr_xlsx_tpl( get_attached_file( $att['att_id'] ) );
+        // $a = new mif_mr_upload();
+        $m = new mif_mr_xlsx_tpl( $this->get_path( $att['att_id'] ) );
         $arr = $m->xlsx_to_arr();
 
         // $arr = $this->get_courses_form_xls( $att['att_id'] );
