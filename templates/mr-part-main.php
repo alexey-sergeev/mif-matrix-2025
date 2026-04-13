@@ -5,8 +5,9 @@
 
 <div class="main container mt-3 overflow-auto">
 
-    <div class="mt-5 mb-5">
-        @@@
+    <div class="row mt-5 mb-5">
+    
+        <?php mif_mr_the_competencies(); ?>
         <?php // mif_mr_the_link_edit(); ?>
     
     </div>  

@@ -28,7 +28,7 @@ class mif_mr_table extends mif_mr_part_companion {
     {
         $html = '';
 
-        $html .= '<table border="1">';
+        $html .= '<table border="1" class="live">';
 
         $arr = $this->get_thead_arr($courses_arr);
         

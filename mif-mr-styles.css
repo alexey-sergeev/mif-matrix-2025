@@ -120,15 +120,15 @@
     transition-duration: 100ms;
 }
 
-.part tr:hover td, .part tbody tr:hover th {
+.part .live tr:hover td, .part .live tbody tr:hover th {
     background-color: #ffb;
 }
 
-.part tr:hover td.mr-green, .part tr:hover th.mr-green {
+.part .live tr:hover td.mr-green, .part .live tr:hover th.mr-green {
     background-color: #9f9 !important;
 }
 
-.part tr:hover td.mr-blue {
+.part .live tr:hover td.mr-blue {
     background-color: #deb !important;
 }
 

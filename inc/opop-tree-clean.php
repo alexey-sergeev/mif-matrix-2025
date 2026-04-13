@@ -41,6 +41,7 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
         $tree['content']['courses']['errors'] = $this->make_courses_errors();
         $tree['templates'] = $this->make_templates_clean();
         
+        $tree['content']['competencies']['clean'] = $this->make_courses_competencies();
 
 
         return;
@@ -74,7 +75,41 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
         return apply_filters( 'mif_mr_core_opop_make_templates_clean', $arr );
     }
+    
+    
+    
+    
+    
+    private function make_courses_competencies()
+    {
+        global $tree;
+        
+        if ( empty( $tree['content']['matrix']['data'] ) ) return array();
 
+        $arr = array();
+        
+        $a = array();
+        foreach ( (array) $tree['content']['matrix']['data'] as $item ) $a = array_merge( $a, $item );
+        $c = new cmp();
+        $index = $c->get_cmp( $a, 'arr' );
+
+        foreach ( $index as $key ) {
+
+            $arr[$key]['name'] = $key;
+            if ( isset( $tree['content']['competencies']['data'][$key] ) ) $arr[$key] = $tree['content']['competencies']['data'][$key];
+
+
+        }
+
+
+
+
+        // p($index);
+
+        return apply_filters( 'mif_mr_core_opop_make_courses_competencies', $arr );
+    }
+    
+        
 
 
 

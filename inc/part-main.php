@@ -53,6 +53,50 @@ class mif_mr_main extends mif_mr_table {
     
     
     // 
+    // Показывает список competencies
+    // 
+    
+    public function get_competencies()
+    {
+        global $tree;
+
+        $out = '';
+
+        // p( $tree['content']['competencies']['clean'] );
+        
+        $out .= '<div class="col p-0">';
+        $out .= '<table border="1"><tr><th>Паспорта и программы формирования компетенций</th></tr><tr><td>';
+        $out .= '<div class="p-1 pb-3">';
+        
+        foreach ( $tree['content']['competencies']['clean'] as $name => $data ) {
+            
+            $out .= '<span class="d-inline-block m-0 mb-2 p-0" style="width: 110px;">';
+            
+            $s = '<span class="mr-btn mr-gray rounded p-1 pt-2 pb-2 m-0"><i class="fa-regular fa-file-lines fa-xl" aria-hidden="true"></i></span>';
+            $s .= '<span class="ml-1"><small><b>' . $name . '</b></small></span>';   
+            
+            $out .= ( ! empty( $tree['templates']['passport']['data']['path'] ) ) ? '<a href="?download=passport&comp=' . $name . '">' . $s . '</a>' : $s;
+
+            // $out .= '<span class="mr-btn mr-gray rounded p-1 pt-2 pb-2 m-0"><i class="fa-regular fa-file-lines fa-xl" aria-hidden="true"></i></span>';
+            // $out .= '<span class="ml-1"><small><b>' . $name . '</b></small></span>';       
+            // $out .= '</a>';       
+            
+            $out .= '</span>';
+            
+        }
+
+        $out .= '</div>';
+        $out .= '</tb></tr></table>';
+        $out .= '</div>';
+        
+        return apply_filters( 'mif_mr_part_get_competencies', $out );
+    }
+    
+    
+
+    
+    
+    // 
     // Показывает список дисциплины
     // 
     
@@ -156,7 +200,7 @@ class mif_mr_main extends mif_mr_table {
 
                     'name' => $item['name'],
                     'slug' => $item['att'][0],
-                    'param' => $item['att'][2],
+                    'param' => ( ! empty( $item['att'][2] ) ) ? $item['att'][2] : '',
                     'file' => ( isset( $tree['templates'][$item['att'][0]]['data']['path'] ) ) ? $tree['templates'][$item['att'][0]]['data']['path'] : '',
 
                 );

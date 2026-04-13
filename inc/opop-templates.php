@@ -357,6 +357,16 @@ function mif_mr_the_main()
     echo $mif_mr_main->get_main();
 }
 
+//
+// Выводит 
+//
+
+function mif_mr_the_competencies()
+{
+    global $mif_mr_main;
+    echo $mif_mr_main->get_competencies();
+}
+
 
 //
 // Выводит 
