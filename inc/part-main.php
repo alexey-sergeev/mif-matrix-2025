@@ -131,12 +131,14 @@ class mif_mr_main extends mif_mr_table {
         $course = ( isset( $a[$key2]['course_id'] ) ) ? $a[$key2]['course_id'] : $key2;
 
 
-        $arr[] = $this->add_to_col( $courses_arr[$key]['courses'][$key2]['unit'], array('elem' => 'td', 'class' => '', 'title' => '') );
+        $text = '<div class="text-center"><small>' . $courses_arr[$key]['courses'][$key2]['unit'] . '</small></div>';
+        $arr[] = $this->add_to_col( $text, array('elem' => 'td', 'class' => '', 'title' => '') );
 
         // Файлы 
+        foreach ( $this->index_by_place as $k => $item ) {
 
-        foreach ( $this->index_by_place as $item ) {
-
+            if ( ! preg_match( '/^b.*/', $k ) ) continue;
+           
             $text = '';
 
             foreach ( $item as $i ) {
@@ -165,7 +167,9 @@ class mif_mr_main extends mif_mr_table {
 
         $arr[] = $this->add_to_col( '', array('elem' => 'th' ) );
 
-        foreach ( $this->index_by_place as $item ) {
+        foreach ( $this->index_by_place as $k => $item ) {
+
+            if ( ! preg_match( '/^b.*/', $k ) ) continue;
 
             $text = '<span title="' . $item[0]['name'] . '">' . mb_substr( $item[0]['name'], 0, 1 ) . '</span>';
             $arr[] = $this->add_to_col( $text, array('elem' => 'th' ) );

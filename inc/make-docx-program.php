@@ -28,6 +28,7 @@ class mif_mr_docx_program extends mif_mr_docx {
     {
 
         // p($arr);
+        $a = array();
 
         $a['name'] = $arr['name'];
         $a['place'] = $this->course_place( $arr );
@@ -77,7 +78,11 @@ class mif_mr_docx_program extends mif_mr_docx {
         $a['evaluations_list'] = $this->evaluations_list( $arr['data']['evaluations'] );
         $a['cmp_indicators'] = $this->cmp_indicators( $arr['meta']['cmp'] );
         
-        
+        // Паспорт и программа формирования компетенций
+
+
+
+
         
         // p($arr['meta']['semesters']);
         // $a['sem_hours'] = $arr[''];
@@ -102,6 +107,12 @@ class mif_mr_docx_program extends mif_mr_docx {
 
     }
 
+    
+ 
+
+
+
+    
 
 
     private function all_aud( $a )
@@ -493,6 +504,213 @@ class mif_mr_docx_program extends mif_mr_docx {
         $s = ( ! empty( $b ) ) ? implode( ",\n", $b ) . '.' : '';
         return $s;
     }
+
+
+
+
+
+
+
+   
+    
+    // 
+    // Паспорт и программа формирования компетенций
+    // 
+    
+    function arr_to_docx_passport( $arr )
+    {
+
+        $a = array();
+        // p($arr);
+
+
+        $a['cmp_name'] = $arr['name'];
+        $a['cmp_descr'] = $arr['descr'];
+        $a['cmp_unit'] = $arr['unit'][2];
+        $a['cmp_category'] = $this->cmp_category( $arr['category'] );
+        
+        $a['cmp_indicators'] = $this->cmp_indicators2( $arr['indicators'] );
+
+        $a['cmp_outcomes_z'] = $this->ul2( $arr['outcomes']['z'] );
+        $a['cmp_outcomes_u'] = $this->ul2( $arr['outcomes']['u'] );
+        $a['cmp_outcomes_v'] = $this->ul2( $arr['outcomes']['v'] );
+
+        $a['cmp_forms'] = $this->cmp_forms( $arr['courses'] );
+        $a['cmp_sem'] = $this->cmp_sem( $arr['courses'] );
+        $a['cmp_evaluations'] = $this->cmp_evaluations( $arr['courses'] );
+
+
+        
+
+        // $a[''] = $arr[''];
+        // $a[''] = $arr[''];
+        // $a[''] = $arr[''];
+        // $a[''] = $arr[''];
+
+
+        // p($a);
+
+
+        $path = $this->make_docx( $a );
+
+        return $path;
+
+    }
+
+
+
+
+
+    private function cmp_indicators2( $indicators )
+    {
+        $arr = array();
+
+        $name_indicators = apply_filters( 'mif-mr-name-indicators', array( 'знать', 'уметь' ) );
+
+        foreach ( $indicators as $k => $i ) {
+
+            $arr[] = array(
+                        'cmp_indicators' => $k + 1,
+                        'cmp_indicators_name' => ( isset( $name_indicators[$k] ) ) ? mb_ucfirst( $name_indicators[$k] ) : 'Индикатор ' . $k,
+                        'cmp_indicators_data' => $this->ol2( $i ),
+                    );
+
+        }
+
+        return $arr;
+    }
+
+
+
+    private function cmp_evaluations( $courses )
+    {
+        global $tree;
+
+        $arr = array();
+        
+        foreach ( $courses as $k => $c ) {
+            
+            $e = ( isset( $tree['content']['courses']['clean'][$c]['meta']['evaluations'] ) ) ? $tree['content']['courses']['clean'][$c]['meta']['evaluations'] : array(); 
+
+            $arr[] = array(
+                'cmp_evaluations' => $k + 1,
+                'cmp_courses' => $c,
+                'cmp_evaluations_data' => implode( ". ", $e ),
+
+            );
+
+        }
+
+        return $arr;
+    }
+
+
+
+    private function cmp_sem( $courses )
+    {
+        global $tree;
+
+        
+        
+        $arr = array();
+        
+        foreach ( $courses as $k => $c ) {
+
+            $a = $tree['content']['courses']['clean'][$c]['meta']['semesters'];
+            // p( $a );
+            // p( array_keys($a['semesters']) );
+            // $aa = array();
+            // if ( ! empty( $a['outcomes']['z'] ) ) $aa[] = 'знать:' . "\n" . $this->ul2( $a['outcomes']['z'] );
+            // if ( ! empty( $a['outcomes']['u'] ) ) $aa[] = 'уметь:' . "\n" . $this->ul2( $a['outcomes']['u'] );
+            // if ( ! empty( $a['outcomes']['v'] ) ) $aa[] = 'владеть:' . "\n" . $this->ul2( $a['outcomes']['v'] );
+
+            // $bb = array();
+            // if ( ! empty( $a['hours']['lec'] ) ) $bb[] = 'лекции';
+            // if ( ! empty( $a['hours']['prac'] ) ) $bb[] = 'практические занятия';
+            // if ( ! empty( $a['hours']['lab'] ) ) $bb[] = 'лабораторные работы';
+            // if ( ! empty( $a['hours']['att']['зч'] ) ) $bb[] = 'зачет';
+            // if ( ! empty( $a['hours']['att']['зчо'] ) ) $bb[] = 'зачет с оценкой';
+            // if ( ! empty( $a['hours']['att']['эк'] ) ) $bb[] = 'экзамен';
+            // // if ( ! empty( $a['evaluations'] ) ) $bb = $a['evaluations'];
+
+            $arr[] = array(
+                'cmp_sem' => $k + 1,
+                'cmp_courses' => $c,
+                'cmp_sem1' => ( isset( $a['1'] ) ) ? '+' : '',
+                'cmp_sem2' => ( isset( $a['2'] ) ) ? '+' : '',
+                'cmp_sem3' => ( isset( $a['3'] ) ) ? '+' : '',
+                'cmp_sem4' => ( isset( $a['4'] ) ) ? '+' : '',
+                'cmp_sem5' => ( isset( $a['5'] ) ) ? '+' : '',
+                'cmp_sem6' => ( isset( $a['6'] ) ) ? '+' : '',
+                'cmp_sem7' => ( isset( $a['7'] ) ) ? '+' : '',
+                'cmp_sem8' => ( isset( $a['8'] ) ) ? '+' : '',
+                'cmp_sem9' => ( isset( $a['9'] ) ) ? '+' : '',
+                'cmp_sem10' => ( isset( $a['10'] ) ) ? '+' : '',
+
+                // 'cmp_outcomes' => implode( "\n", $aa ),
+                // 'cmp_forms_data' => mb_strtolower( implode( ", ", $bb ) ),
+
+            );
+
+        }
+
+        return $arr;
+    }
+
+
+
+    private function cmp_forms( $courses )
+    {
+        global $tree;
+
+        $arr = array();
+        
+        foreach ( $courses as $k => $c ) {
+
+            $a = $tree['content']['courses']['clean'][$c]['meta'];
+            // p($a['hours']);
+            $aa = array();
+            if ( ! empty( $a['outcomes']['z'] ) ) $aa[] = 'знать:' . "\n" . $this->ul2( $a['outcomes']['z'] );
+            if ( ! empty( $a['outcomes']['u'] ) ) $aa[] = 'уметь:' . "\n" . $this->ul2( $a['outcomes']['u'] );
+            if ( ! empty( $a['outcomes']['v'] ) ) $aa[] = 'владеть:' . "\n" . $this->ul2( $a['outcomes']['v'] );
+
+            $bb = array();
+            if ( ! empty( $a['hours']['lec'] ) ) $bb[] = 'лекции';
+            if ( ! empty( $a['hours']['prac'] ) ) $bb[] = 'практические занятия';
+            if ( ! empty( $a['hours']['lab'] ) ) $bb[] = 'лабораторные работы';
+            if ( ! empty( $a['hours']['att']['зч'] ) ) $bb[] = 'зачет';
+            if ( ! empty( $a['hours']['att']['зчо'] ) ) $bb[] = 'зачет с оценкой';
+            if ( ! empty( $a['hours']['att']['эк'] ) ) $bb[] = 'экзамен';
+            // if ( ! empty( $a['evaluations'] ) ) $bb = $a['evaluations'];
+
+            $arr[] = array(
+                'cmp_forms' => $k + 1,
+                'cmp_courses' => $c,
+                'cmp_outcomes' => implode( "\n", $aa ),
+                'cmp_forms_data' => mb_strtolower( implode( ", ", $bb ) ),
+
+            );
+
+        }
+
+        return $arr;
+    }
+
+
+
+    private function cmp_category( &$c )
+    {
+        if ( empty( $c ) || $c == 'default' ) return;
+        return "\n" . 'Наименование категории компетенций: ' . mb_strtolower( $c ). ".\n";
+    }
+
+
+
+
+
+
+
+
 
 
 

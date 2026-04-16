@@ -104,6 +104,19 @@ class mif_mr_download {
             $this->download( $a['path'], $a['name'] );
 
         }
+
+        
+        // Паспорта и программы формирования компетенций
+        
+        if ( $item == 'passport' ) {
+
+            $m = new mif_mr_opop();
+            // $m = new mif_mr_xlsx_tpl();
+            $a = $m->make_docx_passport();
+            
+            $this->download( $a['path'], $a['name'] );
+
+        }
         
     }
 

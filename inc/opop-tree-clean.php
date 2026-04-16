@@ -80,6 +80,10 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
     
     
     
+    // 
+    // Сделать competencies чистыми
+    // 
+    
     private function make_courses_competencies()
     {
         global $tree;
@@ -98,6 +102,9 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
             $arr[$key]['name'] = $key;
             if ( isset( $tree['content']['competencies']['data'][$key] ) ) $arr[$key] = $tree['content']['competencies']['data'][$key];
 
+            $arr[$key]['unit'] = $this->get_cmp_unit( $key );
+            $arr[$key]['outcomes'] = $this->get_cmp_outcomes( $key );
+            $arr[$key]['courses'] = $this->get_cmp_courses( $key );
 
         }
 
@@ -109,10 +116,114 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
         return apply_filters( 'mif_mr_core_opop_make_courses_competencies', $arr );
     }
     
+
+    
+    private function get_cmp_outcomes( $name )
+    {
+        global $tree;
+    
+        $arr = array( 'z' => array(), 'u' => array(), 'v' => array() );        
+
+        // p( '@' . $name );
+
+        $c = new cmp();
+
+        foreach ( $tree['content']['courses']['clean'] as $a ) {
+            
+            // p($a);
+
+            if ( empty( $a['meta']['cmp'] ) ) continue;
+            if ( ! in_array( $name, $a['meta']['cmp'] ) ) continue;
+            // if ( in_array( $a['unit'], array( 'ОД', 'ВД', 'УП', 'ПП', 'НИР' ) ) ) $arr['courses'][] = $a['name'];
+            if ( empty( $a['data']['content']['parts'] ) ) continue;
+
+            foreach ( (array) $a['data']['content']['parts'] as $i ) {
+
+                if ( ! in_array( $name, $c->get_cmp( $i['cmp'], 'a' ) ) ) continue;
+
+                // p($i['outcomes']['z']);
+                $arr['z'] = array_merge( $arr['z'], $i['outcomes']['z'] );
+                $arr['u'] = array_merge( $arr['u'], $i['outcomes']['u'] );
+                $arr['v'] = array_merge( $arr['v'], $i['outcomes']['v'] );
+
+            };
+
+        }
+
+        sort( $arr['z'] );
+        sort( $arr['u'] );
+        sort( $arr['v'] );
+
+        // p($arr);
+
+        return $arr;
+    }
+
+
+    
+    
+    private function get_cmp_courses( $name )
+    {
+        global $tree;
+    
+        $arr = array();        
+        $c = new cmp();
+
+        foreach ( $tree['content']['courses']['clean'] as $a ) {
+            
+            if ( empty( $a['meta']['cmp'] ) ) continue;
+            if ( ! in_array( $name, $a['meta']['cmp'] ) ) continue;
+
+            if ( in_array( $a['unit'], array( 'ОД', 'ВД', 'УП', 'ПП', 'НИР' ) ) ) $arr[] = $a['name'];
+
+        }
+
+        // sort( $arr );
+
+        return $arr;
+    }
+
+
+
+
+    private function get_cmp_unit( $name )
+    {
         
+        $prefix = explode( '-', $name )[0];
+        // p($prefix);
+
+        switch ( $prefix ) {
+            
+            case 'УК':
+                $arr = array( 'универсальная', 'универсальные', 'универсальных' );
+                break;
+            
+            case 'ОПК':
+                $arr = array( 'общепрофессиональная', 'общепрофессиональные', 'общепрофессиональных' );
+                break;
+            
+            case 'БК':
+                $arr = array( 'базовая', 'базовые', 'базовых' );
+                break;
+            
+            default:
+                $arr = array( 'профессиональная', 'профессиональные', 'профессиональных' );
+                break;
+
+        }
+        
+        return $arr;
+    }
+
+    
 
 
 
+
+    // 
+    // Сделать courses чистыми
+    // 
+    
     private function make_courses_clean()
     {
         global $tree;
@@ -182,6 +293,7 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
                 $arr[$key2]['meta']['semesters'] = $tree['content']['curriculum']['data'][$key]['semesters'];
                 $arr[$key2]['meta']['semesters_stat'] = $this->get_semesters_stat( $tree['content']['curriculum']['data'][$key]['semesters'] );
                 $arr[$key2]['meta']['exam'] = $this->get_exam( $tree['content']['curriculum']['data'][$key]['semesters'] );
+                // $arr[$key2]['meta']['exam_descr'] = $this->get_exam_descr( $tree['content']['curriculum']['data'][$key]['semesters'] );
 
             }
 
@@ -206,10 +318,13 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
             $d = ( $is_course ) ? $tree['content']['lib-courses']['data'][$item['course_id']]['data'] : array();
             
             $arr[$key2]['meta']['outcomes'] = array( 'z' => NULL, 'u' => NULL, 'v' => NULL );
-
+            
             if ( ! empty( $dd = $this->get_outcomes( $d, 'z' ) ) ) $arr[$key2]['meta']['outcomes']['z'] = $dd;
             if ( ! empty( $dd = $this->get_outcomes( $d, 'u' ) ) ) $arr[$key2]['meta']['outcomes']['u'] = $dd;
             if ( ! empty( $dd = $this->get_outcomes( $d, 'v' ) ) ) $arr[$key2]['meta']['outcomes']['v'] = $dd;
+            
+            if ( ! empty( $dd = $this->get_evaluations( $d ) ) ) $arr[$key2]['meta']['evaluations'] = $dd;
+            
             
             // $arr[$key2]['outcomes']['z'] = $this->get_outcomes( $d, 'z' );
             // $arr[$key2]['outcomes']['u'] = $this->get_outcomes( $d, 'u' );
@@ -367,7 +482,7 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
             }
 
             $err[$key2]['meta']['errors']['outcomes'][] = $this->is_empty( $arr['meta']['outcomes'] );
-
+            // $err[$key2]['meta']['errors']['evaluations'][] = $this->is_empty( $arr['meta']['evaluations'] );
 
             // Содержание дисциплины
 
@@ -769,6 +884,23 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
 
 
+    private function get_evaluations( $d ) 
+    {
+        if ( empty( $d['evaluations'] ) ) return;
+        
+        $a = array();
+        foreach ( $d['evaluations'] as $i ) foreach( (array) $i['data'] as $i2 ) $a[] = $i2['name'];
+        $a = array_unique( $a );
+        sort( $a );
+        
+        // p($a);
+
+        return $a;
+    }
+
+
+
+
     private function get_outcomes( $d, $k = 'z' ) 
     {
         if ( empty( $d['content']['parts'] ) ) return;
@@ -797,6 +929,21 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
         return implode( ', ', $b );
     }
+
+
+
+
+    // private function get_exam_descr( $a ) 
+    // {
+    //     $b = array();
+
+    //     foreach ( $a as $k => $i ) {
+    //         if ( empty( $i['att'] ) ) continue;
+    //         foreach ( $i['att'] as $i2 ) $b[] = $i2;
+    //     }
+
+    //     return $b;
+    // }
 
 
 
