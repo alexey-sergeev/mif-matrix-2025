@@ -37,31 +37,23 @@ class mif_mr_functions {
         // 4 - редактор
         // 5 - админ
     
-        // if ( $post == NULL ) global $post;
-    
+        global $tree;
+
         if ( ! is_user_logged_in() ) return 0;
-        
+
         if ( current_user_can( 'administrator' ) ) return 5;
         if ( current_user_can( 'editor' ) ) return 4;
         
-        // !!!
-        if ( current_user_can( 'author' ) ) return 3;
-        if ( current_user_can( 'contributor' ) ) return 2;
+        $user = wp_get_current_user()->user_login;
+
+        if ( isset( $tree['param']['admins']['data'] ) )
+            foreach ( $tree['param']['admins']['data'] as $u ) if ( $u == $user ) return 3;
+        
+        if ( isset( $tree['param']['users']['data'] ) )
+            foreach ( $tree['param']['users']['data'] as $u ) if ( $u == $user ) return 2;
+
         if ( current_user_can( 'subscriber' ) ) return 1;
-        // !!!
     
-    
-    
-        // if ( current_user_can( 'manage_options' ) ) return 5;
-        // if ( current_user_can( 'edit_pages' ) ) return 4;
-        
-        
-        // // !!!
-        // if ( current_user_can( 'edit_post' ) ) return 3;
-        // if ( current_user_can( 'read' ) ) return 2;
-        // if ( current_user_can( 'read' ) ) return 1;
-        // // !!!
-        
     }
     
     
@@ -258,8 +250,8 @@ class mif_mr_functions {
     
     public function get_download_link( $type = 'text' )
     {
-
-        // !!!!!!!
+        global $mr;
+        if ( ! $mr->user_can(2) ) return;
 
         global $wp_query;
 

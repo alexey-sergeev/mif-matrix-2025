@@ -84,14 +84,19 @@ function mif_mr_show_back( $type = 'courses' )
 
 
 
-//
-// Выводит ОПОП ID
-//
+// //
+// // Выводит ОПОП ID
+// //
+
+// function mif_mr_the_opop_id()
+// {
+//     global $mif_mr_opop;
+//     echo $mif_mr_opop->get_opop_id();
+// }
 
 function mif_mr_the_opop_id()
 {
-    global $mif_mr_opop;
-    echo $mif_mr_opop->get_opop_id();
+    echo mif_mr_opop_core::get_span_id( 'ОПОП ID: ' . mif_mr_opop_core::get_opop_id(), 'bg-secondary p-2 pl-4 pr-4 fw-semibold' );
 }
 
 
@@ -629,6 +634,8 @@ function mif_mr_the_remove_link()
 {
     echo mif_mr_companion_core::get_remove_link();
 }
+
+
 
 
 

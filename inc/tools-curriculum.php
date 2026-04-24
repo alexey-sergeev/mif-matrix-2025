@@ -52,6 +52,9 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
         // global $wp_query;
         // if ( isset( $wp_query->query_vars['id'] ) ) $att_id = $wp_query->query_vars['id'];
         
+        global $mr;
+        if ( ! $mr->user_can(3) ) return;
+
         $att_id = mif_mr_functions::get_att_id();
 
         $out = '';

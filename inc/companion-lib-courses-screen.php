@@ -73,7 +73,10 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses_list {
     //
                     
     public function get_course( $course_id = NULL, $opop_id = NULL )
-    { 
+    {
+        global $mr;
+        if ( ! $mr->user_can(2) ) return;
+
         global $wp_query;
 
         if ( isset( $_REQUEST['sub'] ) ) $this->save_part( sanitize_key( $_REQUEST['sub'] ), $course_id, $opop_id, true );
@@ -236,12 +239,14 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses_list {
     public function get_course_part( $d )
     {
         global $tree;
+        global $mr;
         
         if ( empty( $d['data'] ) ) $d['data'] = $tree['content']['lib-courses']['data'][$d['course_id']]['data'][$d['sub_id']];
         
         $out = '';   
         
-        $f = true;
+        // $f = true;
+        $f = $mr->user_can(3);
         
         $out .= '<span class="content-ajax">';
   

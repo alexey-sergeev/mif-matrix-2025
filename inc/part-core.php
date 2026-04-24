@@ -258,6 +258,9 @@ class mif_mr_part_core {
     
     public function get_item_text( $key )
     {
+        global $mr;
+        if ( ! $mr->user_can(2) ) return;
+
         global $tree;
         // global $mr;
 

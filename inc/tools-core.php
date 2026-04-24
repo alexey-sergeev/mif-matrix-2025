@@ -234,6 +234,8 @@ class mif_mr_tools_core {
 
     function remove_all_link( $type = 'courses' )
     {
+        global $mr;
+        if ( ! $mr->user_can(3) ) return;
         return '<div class="pb-4"><a href="' . mif_mr_opop_core::get_opop_url() . 'tools-' . $type . '/?remove_all">Удалить все файлы</a></div>';
     }
 

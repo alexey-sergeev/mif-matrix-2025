@@ -64,7 +64,7 @@ class mif_mr_main extends mif_mr_table {
 
         // p( $tree['content']['competencies']['clean'] );
         
-        $out .= '<div class="col p-0">';
+        $out .= '<div class="col p-0 mb-6 mt-3">';
         $out .= '<table border="1"><tr><th>Паспорта и программы формирования компетенций</th></tr><tr><td>';
         $out .= '<div class="p-1 pb-3">';
         

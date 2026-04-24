@@ -319,6 +319,9 @@ class mif_mr_companion_core {
     
     public function get_edit( $comp_id )
     {
+        global $mr;
+        if ( ! $mr->user_can(3) ) return;
+
         $post = get_post( $comp_id );
         
         $out = '';
@@ -357,7 +360,8 @@ class mif_mr_companion_core {
     // public function get_sub_edit( $sub_id, $comp_id, $opop_id = NULL )
     public function get_sub_edit( $sub_id, $comp_id, $part = NULL )
     {
-        // ####!!!!!
+        global $mr;
+        if ( ! $mr->user_can(3) ) return;
 
         $arr = $this->get_sub_arr( $comp_id );
         
@@ -546,41 +550,45 @@ class mif_mr_companion_core {
     {
         $out = '';
         
-        $out .= '<div class="row mt-5">';
-
-        $out .= '<div class="col">';
-        $out .= '<button type="button" class="btn btn-primary new mr-3">' . $att['button']. '</button>';
-        if ( isset( $att['a'] ) ) $out .= '<a href="' . $att['url']. '" class="btn btn-light border mr-text-decoration">' . $att['a'] . '</a>';
-        $out .= '</div>';
-
-        // $out .= '<div class="col p-3 bg-light text-end">';
-        // $out .= '</div>';
-
-        $out .= '</div>';
-
-        $out .= '<div class="row new" style="display: none;">';
-        $out .= '<div class="col mt-5">';
-
-        $out .= '<div class="mb-3">';
-        $out .= '<label class="form-label">' . $att['title']. ':</label>';
-        $out .= '<input name="title" class="form-control" autofocus>';
-        $out .= '<div class="form-text">' . $att['hint_a']. '</div>';
-        $out .= '</div>';
-        
-        $out .= '<div class="mb-3">';
-        $out .= '<label class="form-label">' . $att['date']. ':</label>';
-        $out .= '<textarea name="data" class="form-control" rows="3"></textarea>';
-        $out .= '<div class="form-text">' . $att['hint_b']. '</div>';
-        $out .= '<button type="button" class="btn btn-primary mt-4 mr-3 create">Сохранить <i class="fas fa-spinner fa-spin d-none"></i></button>';
-        $out .= '<button type="button" class="btn btn-light border mt-4 mr-3 cancel">Отмена <i class="fas fa-spinner fa-spin d-none"></i></button>';
-        $out .= '</div>';
-        
         $out .= '<input type="hidden" name="opop" value="' . mif_mr_opop_core::get_opop_id() . '">';
         $out .= '<input type="hidden" name="action" value="' . $att['action'] . '">';
         $out .= '<input type="hidden" name="_wpnonce" value="' . wp_create_nonce( 'mif-mr' ) . '">';
         
-        $out .= '</div>';
-        $out .= '</div>';
+        if ( $att['f'] ) {
+
+            $out .= '<div class="row mt-5">';
+    
+            $out .= '<div class="col">';
+            $out .= '<button type="button" class="btn btn-primary new mr-3">' . $att['button']. '</button>';
+            if ( isset( $att['a'] ) ) $out .= '<a href="' . $att['url']. '" class="btn btn-light border mr-text-decoration">' . $att['a'] . '</a>';
+            $out .= '</div>';
+    
+            // $out .= '<div class="col p-3 bg-light text-end">';
+            // $out .= '</div>';
+    
+            $out .= '</div>';
+    
+            $out .= '<div class="row new" style="display: none;">';
+            $out .= '<div class="col mt-5">';
+    
+            $out .= '<div class="mb-3">';
+            $out .= '<label class="form-label">' . $att['title']. ':</label>';
+            $out .= '<input name="title" class="form-control" autofocus>';
+            $out .= '<div class="form-text">' . $att['hint_a']. '</div>';
+            $out .= '</div>';
+            
+            $out .= '<div class="mb-3">';
+            $out .= '<label class="form-label">' . $att['date']. ':</label>';
+            $out .= '<textarea name="data" class="form-control" rows="3"></textarea>';
+            $out .= '<div class="form-text">' . $att['hint_b']. '</div>';
+            $out .= '<button type="button" class="btn btn-primary mt-4 mr-3 create">Сохранить <i class="fas fa-spinner fa-spin d-none"></i></button>';
+            $out .= '<button type="button" class="btn btn-light border mt-4 mr-3 cancel">Отмена <i class="fas fa-spinner fa-spin d-none"></i></button>';
+            $out .= '</div>';
+            
+            $out .= '</div>';
+            $out .= '</div>';
+        
+        }
        
         return apply_filters( 'mif_mr_show_list_compe_create', $out );
     }
@@ -643,6 +651,9 @@ class mif_mr_companion_core {
     {
         global $wp_query;
 
+        global $mr;
+        if ( ! $mr->user_can(3) ) return;
+
         $out = '';
 
         if ( isset( $wp_query->query_vars['id'] ) ) {
@@ -668,6 +679,9 @@ class mif_mr_companion_core {
     {
         global $wp_query;
 
+        global $mr;
+        if ( ! $mr->user_can(3) ) return;
+
         $out = '';
 
         if ( isset( $wp_query->query_vars['id'] ) ) {
@@ -691,7 +705,10 @@ class mif_mr_companion_core {
     public static function get_remove_link()
     {
         global $wp_query;
-        
+
+        global $mr;
+        if ( ! $mr->user_can(3) ) return;
+
         $out = '';
         
         if ( isset( $wp_query->query_vars['id'] ) ) {

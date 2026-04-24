@@ -45,6 +45,9 @@ class mif_mr_set_comp extends mif_mr_set_core {
     
     public function show_set_comp()
     {
+        global $mr;
+        if ( ! $mr->user_can(2) ) return;
+
         global $tree;
         
         $this->save( 'set-competencies', $this->compose_set_comp() );

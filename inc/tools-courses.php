@@ -47,6 +47,9 @@ class mif_mr_tools_courses extends mif_mr_tools_info {
 
     public function get_tools_courses()
     {
+        global $mr;
+        if ( ! $mr->user_can(3) ) return;
+
         $att_id = mif_mr_functions::get_att_id();
 
         $out = '';

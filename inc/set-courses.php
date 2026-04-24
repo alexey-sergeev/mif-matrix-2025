@@ -59,6 +59,9 @@ class mif_mr_set_courses extends mif_mr_set_core {
     
     public function show_set_courses()
     {
+        global $mr;
+        if ( ! $mr->user_can(2) ) return;
+        
         global $tree;
         
         $this->save( 'set-courses', $this->compose_set_course() );

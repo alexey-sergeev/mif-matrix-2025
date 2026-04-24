@@ -49,7 +49,8 @@ class mif_mr_tools_templates extends mif_mr_tools_core {
 
     public function get_tools_templates()
     {
-        
+        global $mr;
+        if ( ! $mr->user_can(3) ) return;
         // $att_id = mif_mr_functions::get_att_id();
 
         $out = '';

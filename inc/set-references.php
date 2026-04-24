@@ -51,6 +51,9 @@ class mif_mr_set_references extends mif_mr_set_core {
     
     public function show_set_references()
     {
+        global $mr;
+        if ( ! $mr->user_can(2) ) return;
+    
         global $tree;
         
         // $arr = $tree['content']['lib-references']['data'];

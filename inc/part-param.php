@@ -40,14 +40,14 @@ class mif_mr_param  extends mif_mr_part_core {
 
     public function the_show()
     {
-        global $mr;
+        // global $mr;
 
-        if ( ! $mr->user_can( 3 ) ) {
+        // if ( ! $mr->user_can( 3 ) ) {
             
-            echo $mr->access_denied();
-            return false;
+        //     echo $mr->access_denied();
+        //     return false;
         
-        }
+        // }
 
 
         if ( $template = locate_template( 'mr-part-param.php' ) ) {
@@ -70,6 +70,9 @@ class mif_mr_param  extends mif_mr_part_core {
     
     public function get_item_templates()
     {
+        global $mr;
+        if ( ! $mr->user_can(2) ) return;
+
         global $tree;
         
         if ( isset( $_REQUEST['edit'] ) ) return $this->get_edit_textarea( 'templates', 'param' );
@@ -137,6 +140,9 @@ class mif_mr_param  extends mif_mr_part_core {
     
     public function get_item_parents()
     {
+        global $mr;
+        if ( ! $mr->user_can(2) ) return;
+
         global $tree;
         
         if ( isset( $_REQUEST['edit'] ) ) return $this->get_edit_textarea( 'parents', 'param' );
@@ -211,6 +217,9 @@ class mif_mr_param  extends mif_mr_part_core {
     
     public function get_item_user( $key = 'admins' )
     {
+        global $mr;
+        if ( ! $mr->user_can(2) ) return;
+        
         global $tree;
         
         if ( isset( $_REQUEST['edit'] ) ) return $this->get_edit_textarea( $key, 'param' );

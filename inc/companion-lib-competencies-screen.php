@@ -48,7 +48,8 @@ class mif_mr_competencies_screen extends mif_mr_lib_competencies {
     
     public function show_comp( $comp_id = NULL, $opop_id = NULL )
     {
-        // Init $comp_id, $opop_id
+        global $mr;
+        if ( ! $mr->user_can(2) ) return;
         
         if ( empty( $comp_id ) ) {
             
@@ -139,8 +140,10 @@ class mif_mr_competencies_screen extends mif_mr_lib_competencies {
     public function show_comp_sub( $sub_id, $comp_id, $opop_id = NULL )
     {
         global $tree;
-        
-        $f = true;
+        global $mr;
+
+        // $f = true;
+        $f = $mr->user_can(3);
         
         if ( empty( $opop_id ) ) $opop_id = mif_mr_opop_core::get_opop_id();
         
@@ -260,11 +263,13 @@ class mif_mr_competencies_screen extends mif_mr_lib_competencies {
     
     public function show_lib_comp( $opop_id = NULL )
     {
+        global $mr;
+        if ( ! $mr->user_can(2) ) return;
+
         if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
         
-        ####!!!!!
-        
-        $f = true;
+        // $f = true;
+        $f = $mr->user_can(3);
        
         $this->create( $opop_id );
         
@@ -320,14 +325,16 @@ class mif_mr_competencies_screen extends mif_mr_lib_competencies {
         
         // if ( $f ) $out .= $this->show_lib_comp_create();
 
-        if ( $f ) $out .= $this->get_lib_create( array(
-                                                    'action' => 'lib-competencies',
-                                                    'button' => 'Создать список',
-                                                    'title' => 'Название cписка компетенций',
-                                                    'hint_a' => 'Например: УК-1. Способен использовать философские знания, ... ',
-                                                    'date' => 'Данные',
-                                                    'hint_b' => '<a href="' . '123' . '">Помощь</a>',
-                                                ) );
+        // if ( $f ) 
+        $out .= $this->get_lib_create( array(
+                                                'action' => 'lib-competencies',
+                                                'button' => 'Создать список',
+                                                'title' => 'Название cписка компетенций',
+                                                'hint_a' => 'Например: УК-1. Способен использовать философские знания, ... ',
+                                                'date' => 'Данные',
+                                                'hint_b' => '<a href="' . '123' . '">Помощь</a>',
+                                                'f' => $f,
+                                            ) );
 
     
         $out .= '</div>';

@@ -50,16 +50,48 @@ class mif_mr_opop extends mif_mr_opop_tree_clean {
     // Главное меню
     //
 
-    public function get_menu_item( $text, $url )
+    public function get_menu_item( $text, $url, $level_access )
     {
-        // global $mr;
+        global $mr;
 
         $out = '';
-        if ( ! empty( $text ) ) $out .= '<div><a href=' . $this->get_opop_url() . $url . '>' . $text . '</a></div>';
-        else $out .= '&nbsp;';
+
+        if ( ! $mr->user_can( $level_access ) ) return;
         
+        if ( ! empty( $text ) ) 
+            $out .= '<div><a href=' . $this->get_opop_url() . $url . '>' . $text . '</a></div>';
+        else 
+            $out .= '&nbsp;';
+
         return apply_filters( 'mif_mr_opop_get_menu_item', $out );
     }
+
+
+    // //
+    // // Главное меню
+    // //
+
+    // public function get_menu_item( $text, $url )
+    // {
+    //     // global $mr;
+
+    //     $image_arr = apply_filters( 'menu-item-image', array( 
+    //                                                     'default' => 'fa-regular fa-house',
+    //                                                     // 'default' => 'fa-solid fa-house',
+    //                                                     'courses' => 'fa-solid fa-list',
+    //                                                     'matrix' => 'fa-solid fa-table-list',
+    //                                                     'curriculum' => 'fa-regular fa-calendar',
+    //                                                      ) );
+
+    //     $image = ( isset( $image_arr[$url] ) ) ? $image_arr[$url] : $image_arr['default'];
+
+    //     $out = '';
+
+    //     if ( ! empty( $text ) ) $out .= '<div><a href=' . $this->get_opop_url() . $url . '><i class="' . $image . ' mr-2"></i>' . $text . '</a></div>';
+    //     else $out .= '&nbsp;';
+        
+    //     return apply_filters( 'mif_mr_opop_get_menu_item', $out );
+    // }
 
 
 

@@ -28,6 +28,9 @@ class mif_mr_lib_courses_list extends mif_mr_lib_courses {
 
     public function get_lib_courses( $opop_id = NULL )
     {
+        global $mr;
+        if ( ! $mr->user_can(2) ) return;
+    
         // global $tree;
         global $wp_query;
         
@@ -35,20 +38,10 @@ class mif_mr_lib_courses_list extends mif_mr_lib_courses {
         
         // if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
         
-        // ####!!!!!
-        
         $this->create( $opop_id, 'lib-courses' );
         
-        // $arr = array();
-        // if ( isset( $tree['content']['lib-courses']['data'] ) ) $arr = $tree['content']['lib-courses']['data'];
-    
-        // $index = array();
-        // foreach ( $arr as $item ) $index[$item['name']][] = $item['comp_id'];
-        
-        // foreach ( $index as $key => $item ) sort( $index[$key] ); 
-        // ksort( $index );
-        
-        $f = true;
+        // $f = true;
+        $f = $mr->user_can(3);
         
         $out = '';
         
@@ -63,16 +56,18 @@ class mif_mr_lib_courses_list extends mif_mr_lib_courses {
         $out .= $this->get_list_courses();
         $out .= '</div>';
 
-        if ( $f ) $out .= $this->get_lib_create( array(
-                                                    'action' => 'lib-courses',
-                                                    'button' => 'Создать дисциплину',
-                                                    'title' => 'Название дисциплины',
-                                                    'hint_a' => 'Например: Математика, Безопасность жизнедеятельности, Педагогическая практика',
-                                                    'date' => 'Данные',
-                                                    'hint_b' => '<a href="' . '123' . '">Помощь</a>',
-                                                    'a' => 'Импорт шаблонов',
-                                                    'url' => mif_mr_opop_core::get_opop_url() . 'tools-courses/',
-                                                ) );
+        // if ( $f ) 
+        $out .= $this->get_lib_create( array(
+                                                'action' => 'lib-courses',
+                                                'button' => 'Создать дисциплину',
+                                                'title' => 'Название дисциплины',
+                                                'hint_a' => 'Например: Математика, Безопасность жизнедеятельности, Педагогическая практика',
+                                                'date' => 'Данные',
+                                                'hint_b' => '<a href="' . '123' . '">Помощь</a>',
+                                                'a' => 'Импорт шаблонов',
+                                                'url' => mif_mr_opop_core::get_opop_url() . 'tools-courses/',
+                                                'f' => $f,
+                                            ) );
     
 
         // $out .= $this->get_page_numbers();

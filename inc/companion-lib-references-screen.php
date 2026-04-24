@@ -47,6 +47,9 @@ class mif_mr_lib_references_screen extends mif_mr_lib_references {
     
     public function show_references( $opop_id = NULL )
     {
+        global $mr;
+        if ( ! $mr->user_can(2) ) return;
+
         global $wp_query;
         global $tree;
 
@@ -253,6 +256,9 @@ class mif_mr_lib_references_screen extends mif_mr_lib_references {
 
     public function get_lib_references( $opop_id = NULL )
     {
+        global $mr;
+        if ( ! $mr->user_can(2) ) return;
+
         global $tree;
         global $wp_query;
         
@@ -260,20 +266,13 @@ class mif_mr_lib_references_screen extends mif_mr_lib_references {
         
         if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
         
-        ####!!!!!
-        
         $this->create( $opop_id, 'lib-references' );
         
         $arr = array();
         if ( isset( $tree['content']['lib-references']['data'] ) ) $arr = $tree['content']['lib-references']['data'];
     
-        // $index = array();
-        // foreach ( $arr as $item ) $index[$item['name']][] = $item['comp_id'];
-        
-        // foreach ( $index as $key => $item ) sort( $index[$key] ); 
-        // ksort( $index );
-        // p($index);
-        $f = true;
+        // $f = true;
+        $f = $mr->user_can(3);
         
         $out = '';
         
@@ -333,14 +332,16 @@ class mif_mr_lib_references_screen extends mif_mr_lib_references {
         
         }
         
-        if ( $f ) $out .= $this->get_lib_create( array(
-                                                    'action' => 'lib-references',
-                                                    'button' => 'Создать справочник',
-                                                    'title' => 'Название справочника',
-                                                    'hint_a' => 'Например: Номера кафедр, Должностные лица',
-                                                    'date' => 'Данные',
-                                                    'hint_b' => '<a href="' . '123' . '">Помощь</a>',
-                                                ) );
+        // if ( $f ) 
+        $out .= $this->get_lib_create( array(
+                                                'action' => 'lib-references',
+                                                'button' => 'Создать справочник',
+                                                'title' => 'Название справочника',
+                                                'hint_a' => 'Например: Номера кафедр, Должностные лица',
+                                                'date' => 'Данные',
+                                                'hint_b' => '<a href="' . '123' . '">Помощь</a>',
+                                                'f' => $f,
+                                            ) );
     
         $out .= '</div>';
         $out .= '</div>';

@@ -48,6 +48,9 @@ class mif_mr_attributes extends mif_mr_part_companion {
     
     public function get_attributes()
     {
+        global $mr;
+        if ( ! $mr->user_can(2) ) return;
+
         global $tree;
         $arr = $tree['content']['attributes']['data'];
         $index = ( isset( $tree['param']['attributes']['data'] )) ? $tree['param']['attributes']['data'] : array();
