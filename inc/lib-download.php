@@ -169,6 +169,13 @@ class mif_mr_download {
 
     function download( $file, $name = '', $content_type = NULL, $unlink = true ) 
     {
+        global $mr;
+        
+        if ( ! $mr->user_can(2) ) {
+            p( 'Access denied' );    
+            return;
+        }
+
         if ( empty( $file ) ) return;
 
         if ( file_exists( $file ) ) {

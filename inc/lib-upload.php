@@ -90,6 +90,11 @@ class mif_mr_upload {
         if ( ! isset( $_FILES['file']['error'] ) ) return;
         if ( ! is_array( $_FILES['file']['error'] ) ) return;
 
+        // ###!!!
+
+        global $mr;
+        if ( ! $mr->user_can(3) ) return;
+
         // $out = '';
         $arr = array();
 
@@ -274,8 +279,10 @@ class mif_mr_upload {
 
     public function remove( $id )
     {
-        // !!!!!!
-
+        // ###!!!!!!
+        global $mr;
+        if ( ! $mr->user_can(3) ) return;
+        
         unlink( $this->get_path( $id ) );
         $res = wp_delete_post( $id, true );
         return ( empty( $res ) ) ? false : true;

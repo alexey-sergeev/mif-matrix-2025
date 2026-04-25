@@ -66,7 +66,8 @@ class mif_mr_companion_core {
         if ( empty( $_REQUEST['content'] ) ) return;
         
         // ####!!!!!
-
+        global $mr;
+        if ( ! $mr->user_can(3) ) return;
 
         $res = false;
 
@@ -93,6 +94,8 @@ class mif_mr_companion_core {
         if ( ! ( isset( $_REQUEST['do'] ) && $_REQUEST['do'] == 'save' ) ) return;
 
         // ####!!!!!
+        global $mr;
+        if ( ! $mr->user_can(3) ) return;
 
         // $res = false;
         
@@ -124,6 +127,10 @@ class mif_mr_companion_core {
 
     public function save( $comp_id, $content )
     {
+        // ###!!!
+        global $mr;
+        if ( ! $mr->user_can(3) ) return;
+
         $res = false;
 
         $res = wp_update_post( array(
@@ -156,6 +163,8 @@ class mif_mr_companion_core {
     public function remove( $comp_id, $opop_id, $type = 'lib-competencies' )
     {
         // ####!!!!!
+        global $mr;
+        if ( ! $mr->user_can(3) ) return;
 
         $res = false;
 
@@ -184,6 +193,8 @@ class mif_mr_companion_core {
     public function create( $opop_id, $type = 'lib-competencies' )
     {
         // ####!!!!!
+        global $mr;
+        if ( ! $mr->user_can(3) ) return;
 
         $res = false;
 

@@ -69,6 +69,9 @@ class mif_mr_courses extends mif_mr_courses_list {
     
     public function get_course()
     {
+        global $mr;
+        if ( ! $mr->user_can(2) ) return;
+    
         global $wp_query;
         // $course_id = $wp_query->query_vars['id'];
     

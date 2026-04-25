@@ -137,6 +137,10 @@ class mif_mr_part_companion extends mif_mr_part_core {
         if ( ! isset( $_REQUEST['save'] )) return false;
         // if ( $_REQUEST['save'] == 'visual' ) return false;
 
+        // ###!!!
+        global $mr;
+        if ( ! $mr->user_can(3) ) return;
+
         if ( $content == NULL && ! isset( $_REQUEST['content'] ) ) return;
         if ( $content == NULL ) $content = sanitize_textarea_field( $_REQUEST['content'] );
 

@@ -59,6 +59,7 @@ class mif_mr_main extends mif_mr_table {
     public function get_competencies()
     {
         global $tree;
+        global $mr;
 
         $out = '';
 
@@ -75,7 +76,7 @@ class mif_mr_main extends mif_mr_table {
             $s = '<span class="mr-btn mr-gray rounded p-1 pt-2 pb-2 m-0"><i class="fa-regular fa-file-lines fa-xl" aria-hidden="true"></i></span>';
             $s .= '<span class="ml-1"><small><b>' . $name . '</b></small></span>';   
             
-            $out .= ( ! empty( $tree['templates']['passport']['data']['path'] ) ) ? '<a href="?download=passport&comp=' . $name . '">' . $s . '</a>' : $s;
+            $out .= ( ! empty( $tree['templates']['passport']['data']['path'] ) && $mr->user_can(2) ) ? '<a href="?download=passport&comp=' . $name . '">' . $s . '</a>' : $s;
 
             // $out .= '<span class="mr-btn mr-gray rounded p-1 pt-2 pb-2 m-0"><i class="fa-regular fa-file-lines fa-xl" aria-hidden="true"></i></span>';
             // $out .= '<span class="ml-1"><small><b>' . $name . '</b></small></span>';       
@@ -124,6 +125,7 @@ class mif_mr_main extends mif_mr_table {
     public function filter_tbody_col( $arr, $key, $key2, $courses_arr )
     {
         global $tree;
+        global $mr;
         
         $a = $tree['content']['courses']['complete'];
 
@@ -146,7 +148,7 @@ class mif_mr_main extends mif_mr_table {
                 if ( ! in_array( $courses_arr[$key]['courses'][$key2]['unit'], array_map( 'trim', explode( ',', $i['param'] ) ) ) ) continue;
 
                 $text = '<span class="mr-btn mr-gray rounded p-0 pl-1 pr-1 m-0"><i class="fa-regular fa-file-lines" aria-hidden="true"></i></span>';
-                if ( ! empty( $i['file'] ) ) $text = '<a href="?download=course-d-' . $i['slug'] . '&course=' . $course . '">' . $text . '</a>';
+                if ( ! empty( $i['file'] ) && $mr->user_can(2) ) $text = '<a href="?download=course-d-' . $i['slug'] . '&course=' . $course . '">' . $text . '</a>';
 
                 break;
 

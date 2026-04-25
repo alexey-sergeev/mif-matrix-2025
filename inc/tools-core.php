@@ -180,7 +180,9 @@ class mif_mr_tools_core {
 
     function remove( $attid )
     {
-        // !!!!!!!
+        // ###!!!!!!!
+        global $mr;
+        if ( ! $mr->user_can(3) ) return;
 
         // $res = ( wp_delete_attachment( $attid, true ) === false ) ? false : true;
         

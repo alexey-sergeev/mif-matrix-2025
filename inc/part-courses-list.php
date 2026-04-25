@@ -97,6 +97,7 @@ class mif_mr_courses_list extends mif_mr_table {
     public function filter_tbody_col( $arr, $key, $key2, $courses_arr )
     {
         global $tree;
+        global $mr;
         
         $a = $tree['content']['courses']['complete'];
         // p($a[$key2]);
@@ -111,6 +112,20 @@ class mif_mr_courses_list extends mif_mr_table {
         $percent = ( isset( $tree['content']['courses']['clean'][$course_id]['percent'] ) ) ? $tree['content']['courses']['clean'][$course_id]['percent'] : 0;
         $percent_color = ( $percent == 100 ) ? 'mr-green' : 'mr-red';
         
+        $green = 'mr-green-2';
+        $blue = 'mr-blue-2';
+        $orange = 'mr-orange-2';
+
+        if ( ! $mr->user_can(2) ) {
+
+            $percent_color = 'mr-gray';
+            $green = 'mr-gray';
+            $blue = 'mr-gray';
+            $orange = 'mr-gray';
+
+
+
+        }
 
         // p($making);
 
@@ -131,12 +146,12 @@ class mif_mr_courses_list extends mif_mr_table {
 
         $text = '';
         if ( isset( $a[$key2]['category'] ) && $a[$key2]['category'] == 'local') 
-            $text = mif_mr_opop_core::get_span_label( 'a', 'mr-green-2', 'Локальная дисциплина', 'p-1 pr-2 pl-2' );    
+            $text = mif_mr_opop_core::get_span_label( 'a', $green, 'Локальная дисциплина', 'p-1 pr-2 pl-2' );    
         if ( isset( $a[$key2]['category'] ) && $a[$key2]['category'] == 'lib') 
-            $text = mif_mr_opop_core::get_span_label( 'b', 'mr-blue-2', 'Дисциплина наследуется', 'p-1 pr-2 pl-2' );    
+            $text = mif_mr_opop_core::get_span_label( 'b', $blue, 'Дисциплина наследуется', 'p-1 pr-2 pl-2' );    
         // $text = '<span class="rounded mr-green p-1" title="Дисциплина наследуется"><i class="fa-solid fa-link fa-xs"></i></span>';
         if ( isset( $a[$key2]['category'] ) && $a[$key2]['category'] == 'missing') 
-            $text = mif_mr_opop_core::get_span_label( 'a', 'mr-orange-2', 'Есть родительская дисциплина, но наследование не применяется', 'p-1 pr-2 pl-2' );    
+            $text = mif_mr_opop_core::get_span_label( 'a', $orange, 'Есть родительская дисциплина, но наследование не применяется', 'p-1 pr-2 pl-2' );    
             // $text = '<span class="rounded mr-yellow p-1" title="Есть родительская дисциплина, но наследование не применяется"><i class="fa-solid fa-link-slash fa-xs"></i></span>';
 
         $arr[] = $this->add_to_col( $text, array('elem' => 'td', 'class' => '', 'title' => '') );    
@@ -158,13 +173,16 @@ class mif_mr_courses_list extends mif_mr_table {
 
         $name_new_course = ( isset( $a[$key2]['course_id'] ) ) ? '' : '&name=' . urlencode( $key2 );
 
-        $text = ( $making ) ? '<a href="' . $link_lib . '?download=course-x-tpl' . $name_new_course . '" class="mr-gray rounded p-1" title="Шаблон дисциплины"><i class="fa-regular fa-file-excel"></i></a>' : '';
+        $s = '<i class="fa-regular fa-file-excel"></i>';
+        $ss = ( $mr->user_can(2) ) ? '<a href="' . $link_lib . '?download=course-x-tpl' . $name_new_course . '" title="Шаблон дисциплины">' . $s . '</a>' : $s;
+        $text = ( $making ) ? '<span class="mr-gray rounded p-1">' . $ss . '</a>' : '';
         $arr[] = $this->add_to_col( $text, array('elem' => 'td', 'class' => '', 'title' => '') );
         
         // Ссылка (clean) 
-        
-        // $text = ( isset( $a[$key2]['course_id'] ) ) ? '<a href="' . mif_mr_opop_core::get_opop_url() . 'courses/' . $a[$key2]['course_id'] . '" class="mr-gray rounded p-1" title="Смотреть дисциплину"><i class="fa-solid fa-caret-right"></i></a>' : '';
-        $text = ( isset( $a[$key2]['course_id'] ) ) ? '<a href="' . $link_clean . '" class="mr-gray rounded p-1" title="Смотреть дисциплину"><i class="fa-solid fa-caret-right"></i></a>' : '';
+
+        $s = '<i class="fa-solid fa-caret-right"></i>';
+        $ss = ( $mr->user_can(2) ) ? '<a href="' . $link_clean . '" title="Смотреть дисциплину">' . $s . '</a>' : $s;
+        $text = ( isset( $a[$key2]['course_id'] ) ) ? '<span class="mr-gray rounded p-1">' . $ss . '</a>' : '';
         $arr[] = $this->add_to_col( $text, array('elem' => 'td', 'class' => '', 'title' => '') );
         
         // Ссылка на библиотеку 
@@ -175,10 +193,10 @@ class mif_mr_courses_list extends mif_mr_table {
             $text = ( $making ) ? mif_mr_opop_core::get_a_id( $a[$key2]['course_id'], 
                                                 // mif_mr_opop_core::get_opop_url() . 'lib-courses/' . $a[$key2]['course_id'] . '?back=courses', 
                                                 $link_lib . '?back=courses', 
-                                                'Ссылка на библиотеку', 'p-1 pl-2 pr-2' ) : '';
+                                                'Ссылка на библиотеку', 'p-1 pl-2 pr-2', $mr->user_can(2) ) : '';
         } else {
 
-            $text = ( $making ) ? mif_mr_opop_core::get_a_id( '<i class="fa-regular fa-file-lines"></i><i class="fa-solid fa-arrow-right"></i>', 
+            $text = ( $making && $mr->user_can(2) ) ? mif_mr_opop_core::get_a_id( '<i class="fa-regular fa-file-lines"></i><i class="fa-solid fa-arrow-right"></i>', 
                                                 // mif_mr_opop_core::get_opop_url() . 'lib-courses/0?back=courses&title=' . urlencode( $key2 ), 
                                                 $link_lib . '?back=courses&title=' . urlencode( $key2 ), 
                                                 'Создать и перейти', 'p-1' ) : '';

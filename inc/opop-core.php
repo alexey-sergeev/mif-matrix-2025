@@ -372,9 +372,13 @@ class mif_mr_opop_core {
     // Получить a ID
     //
 
-    public static function get_a_id( $comp_id, $url, $title = '', $class = 'pl-3 pr-3 p-1' )
+    public static function get_a_id( $comp_id, $url, $title = '', $class = 'pl-3 pr-3 p-1', $f = true )
     {
-        return '<a href="' . $url . '" class="mr-gray rounded ' . $class . '" title="' . $title . '">' . $comp_id . '</a>';
+        if ( $f )
+            return '<a href="' . $url . '" class="mr-gray rounded ' . $class . '" title="' . $title . '">' . $comp_id . '</a>';
+        else
+            return '<span class="mr-gray rounded ' . $class . '">' . $comp_id . '</span>';
+    
     }
     
     
