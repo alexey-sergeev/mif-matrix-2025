@@ -197,23 +197,26 @@ class mif_mr_main extends mif_mr_table {
         $index = array();
 
         // p($tree['param']['templates']['data_att']);
+        if ( isset( $tree['param']['templates']['data_att'] ) ) {
+    
+            foreach( $tree['param']['templates']['data_att'] as $item ) {
+    
+                if ( isset( $item['att'][1] ) && in_array( $item['att'][1], $this->templates_place ) ) {
+    
+                    $index[$item['att'][1]][] = array(
+    
+                        'name' => $item['name'],
+                        'slug' => $item['att'][0],
+                        'param' => ( ! empty( $item['att'][2] ) ) ? $item['att'][2] : '',
+                        'file' => ( isset( $tree['templates'][$item['att'][0]]['data']['path'] ) ) ? $tree['templates'][$item['att'][0]]['data']['path'] : '',
+    
+                    );
+    
+                }
+    
+            };
 
-        foreach( $tree['param']['templates']['data_att'] as $item ) {
-
-            if ( isset( $item['att'][1] ) && in_array( $item['att'][1], $this->templates_place ) ) {
-
-                $index[$item['att'][1]][] = array(
-
-                    'name' => $item['name'],
-                    'slug' => $item['att'][0],
-                    'param' => ( ! empty( $item['att'][2] ) ) ? $item['att'][2] : '',
-                    'file' => ( isset( $tree['templates'][$item['att'][0]]['data']['path'] ) ) ? $tree['templates'][$item['att'][0]]['data']['path'] : '',
-
-                );
-
-            }
-
-        };
+        }
 
         // p($index);
 

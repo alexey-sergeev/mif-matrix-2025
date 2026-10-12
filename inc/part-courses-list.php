@@ -109,8 +109,13 @@ class mif_mr_courses_list extends mif_mr_table {
         $link_lib = mif_mr_opop_core::get_opop_url() . 'lib-courses/' . $course_id;
         $link_clean = ( isset( $a[$key2]['course_id'] ) ) ? mif_mr_opop_core::get_opop_url() . 'courses/' . $a[$key2]['course_id'] : '';
         
-        $percent = ( isset( $tree['content']['courses']['clean'][$course_id]['percent'] ) ) ? $tree['content']['courses']['clean'][$course_id]['percent'] : 0;
-        $percent_color = ( $percent == 100 ) ? 'mr-green' : 'mr-red';
+        // p($tree['content']['courses']['clean'][$course_id]['percent']);
+        // p($key2);
+        // p($course_id);
+
+        $percent = ( isset( $tree['content']['courses']['clean'][$key2]['percent'] ) ) ? $tree['content']['courses']['clean'][$key2]['percent'] : 0;
+        $percent_color = ( $percent == 0 ) ? 'mr-gray' : ( ( $percent == 100 ) ? 'mr-green' : 'mr-red' );
+
         
         $green = 'mr-green-2';
         $blue = 'mr-blue-2';

@@ -164,13 +164,16 @@ class mif_mr_catalog_core {
         
         $arr = array();
 
-        foreach ( (array) $category as $item ) 
+        foreach ( (array) $category as $item ) {
+
             if ( ! empty( $item ) && $item->parent === $index[$slug]['id'] ) {
 
                 $item2 = explode( "\n", $item->$key );
                 $arr[] = ( ! empty( $item2[$n] ) ) ? $item2[$n] : NULL;
                 
             }
+
+        }
                 
         return apply_filters( 'mif_mr_screen_get_category_list', $arr );
     }

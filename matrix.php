@@ -42,7 +42,8 @@ function mif_mr_customizer_scripts()
 {
 
    // jQuery
-   wp_enqueue_script( 'mif_mr_jquery', plugins_url( 'lib/jquery/jquery-3.7.1.min.js', __FILE__ ), '', '3.7.1' );
+//    wp_enqueue_script( 'mif_mr_jquery', plugins_url( 'lib/jquery/jquery-3.7.1.min.js', __FILE__ ), '', '3.7.1' );
+   wp_enqueue_script( 'jquery', plugins_url( 'lib/jquery/jquery-3.7.1.min.js', __FILE__ ), '', '3.7.1' );
    
 
    // Sortable (https://www.cssscript.com/fast-html-table-sorting/)
@@ -69,8 +70,8 @@ function mif_mr_customizer_styles()
     // Font Awesome
     
     // wp_register_style( 'font-awesome', plugins_url( 'lib/fontawesome/css/fontawesome.min.css', __FILE__ ) );
-    wp_register_style( 'font-awesome', plugins_url( 'lib/fontawesome-7.1/css/all.css', __FILE__ ) );
-	wp_enqueue_style( 'font-awesome' );
+    wp_register_style( 'font-awesome-mr', plugins_url( 'lib/fontawesome-7.1/css/all.css', __FILE__ ) );
+	wp_enqueue_style( 'font-awesome-mr' );
 
     // wp_enqueue_script( 'fa-v4-shim', plugins_url( 'lib/fontawesome/js/fa-v4-shims.js', __FILE__ ) );
     // wp_enqueue_script( 'font-awesome-js', plugins_url( 'lib/fontawesome/js/fontawesome-all.js', __FILE__ ), '', '1.1.0' );

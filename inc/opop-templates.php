@@ -96,7 +96,9 @@ function mif_mr_show_back( $type = 'courses' )
 
 function mif_mr_the_opop_id()
 {
-    echo mif_mr_opop_core::get_span_id( 'ОПОП ID: ' . mif_mr_opop_core::get_opop_id(), 'bg-secondary p-2 pl-4 pr-4 fw-semibold' );
+    echo '<div class="copy-wrapper fw-semibold">ОПОП: ';
+    echo mif_mr_opop_core::get_span_id(  mif_mr_opop_core::get_opop_id(), 'bg-secondary p-2 pl-4 pr-4 fw-semibold' );
+    echo '</div>';
 }
 
 

@@ -44,7 +44,7 @@ class mif_mr_docx {
     {
         // $templateProcessor = new \PhpOffice\PhpWord\TemplateProcessor( $this->blank );
         $templateProcessor = new mif_TemplateProcessor( $this->blank );
-
+        
         foreach ( $arr as $key => $item ) {
 
             if ( is_array( $item ) ) {

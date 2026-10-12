@@ -142,7 +142,7 @@ class mif_mr_catalog extends mif_mr_catalog_core {
         $title = $opop->post_title;
         $excerpt = $opop->post_excerpt;
         
-
+        
         $department = $this->get_category_list( $opop->ID, 'department' );
         $degree = $this->get_category_list( $opop->ID, 'degree', 'name' );
         $period = $this->get_category_list( $opop->ID, 'period' );

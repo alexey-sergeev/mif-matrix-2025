@@ -233,8 +233,8 @@ class mif_mr_docx_program extends mif_mr_docx {
 
             // p($tree['content']['competencies']['data']);
             // p($tree['content']['competencies']['data'][$cmp]['indicators']);
-          
-            foreach( $tree['content']['competencies']['data'][$cmp]['indicators'] as $key => $item ) $c[$key] = $this->ol2( $item );
+            if ( isset( $tree['content']['competencies']['data'][$cmp]['indicators'] ) )          
+                foreach( $tree['content']['competencies']['data'][$cmp]['indicators'] as $key => $item ) $c[$key] = $this->ol2( $item );
                 // p($item);
                 // p($c);
             
@@ -529,7 +529,7 @@ class mif_mr_docx_program extends mif_mr_docx {
         $a['cmp_unit'] = $arr['unit'][2];
         $a['cmp_category'] = $this->cmp_category( $arr['category'] );
         
-        $a['cmp_indicators'] = $this->cmp_indicators2( $arr['indicators'] );
+        $a['cmp_indicators'] = ( isset( $arr['indicators'] ) ) ? $this->cmp_indicators2( $arr['indicators'] ) : NULL;
 
         $a['cmp_outcomes_z'] = $this->ul2( $arr['outcomes']['z'] );
         $a['cmp_outcomes_u'] = $this->ul2( $arr['outcomes']['u'] );

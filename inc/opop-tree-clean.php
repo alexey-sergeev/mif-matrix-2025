@@ -63,13 +63,16 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
         $arr = $tree['templates'];
 
         // p($arr);
+        if ( isset( $tree['param']['templates']['data_att'] ) ) {
 
-        foreach( $tree['param']['templates']['data_att'] as $i ) {
-
-            if ( empty( $tree['templates'][$i['att'][0]] ) ) continue;
-            $arr[$i['att'][0]]['data']['name'] = $i['name'];
-
-        };
+            foreach( $tree['param']['templates']['data_att'] as $i ) {
+    
+                if ( empty( $tree['templates'][$i['att'][0]] ) ) continue;
+                $arr[$i['att'][0]]['data']['name'] = $i['name'];
+    
+            };
+        
+        }
 
         // p($arr);
 
@@ -142,9 +145,9 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
                 if ( ! in_array( $name, $c->get_cmp( $i['cmp'], 'a' ) ) ) continue;
 
                 // p($i['outcomes']['z']);
-                $arr['z'] = array_merge( $arr['z'], $i['outcomes']['z'] );
-                $arr['u'] = array_merge( $arr['u'], $i['outcomes']['u'] );
-                $arr['v'] = array_merge( $arr['v'], $i['outcomes']['v'] );
+                if ( isset( $i['outcomes']['z'] ) ) $arr['z'] = array_merge( $arr['z'], $i['outcomes']['z'] );
+                if ( isset( $i['outcomes']['u'] ) ) $arr['u'] = array_merge( $arr['u'], $i['outcomes']['u'] );
+                if ( isset( $i['outcomes']['v'] ) ) $arr['v'] = array_merge( $arr['v'], $i['outcomes']['v'] );
 
             };
 
@@ -278,7 +281,7 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
             // Список дисциплин который связывает по критерии компетенции
 
-            $arr[$key2]['meta']['prev_next'] = $this->get_prev_next( $key );
+            $arr[$key2]['meta']['prev_next'] = $this->get_prev_next( $key ); 
             
 
             // Этапы формирования компетенций 
@@ -379,43 +382,44 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
             $n = 0;
             $cmp_total_arr = array();
 
-            foreach ( (array) $arr[$key2]['meta']['semesters'] as $k => $i ) {
+            if ( isset( $arr[$key2]['meta']['semesters'] ) )
+                foreach ( (array) $arr[$key2]['meta']['semesters'] as $k => $i ) {
 
-                $rating = 0;
-                $cmp_arr = array();
+                    $rating = 0;
+                    $cmp_arr = array();
 
-                if ( isset( $d['evaluations'][$n]['data'] ) ) {
+                    if ( isset( $d['evaluations'][$n]['data'] ) ) {
 
-                    foreach ( $d['evaluations'][$n]['data'] as $k2 => $i2 ) {
+                        foreach ( $d['evaluations'][$n]['data'] as $k2 => $i2 ) {
 
-                        $cmp = $c->get_cmp( $i2['att']['cmp'] );
+                            $cmp = $c->get_cmp( $i2['att']['cmp'] );
 
-                        $arr[$key2]['data']['evaluations'][$k]['data'][] = array(
-                            'name' => $i2['name'],
-                            'att' => array( 
-                                'rating' => $i2['att']['rating'],
-                                'cmp' => $cmp,
-                            )
-                        ); 
+                            $arr[$key2]['data']['evaluations'][$k]['data'][] = array(
+                                'name' => $i2['name'],
+                                'att' => array( 
+                                    'rating' => $i2['att']['rating'],
+                                    'cmp' => $cmp,
+                                )
+                            ); 
 
-                        $rating += $i2['att']['rating'];
-                        $cmp_arr[] = $cmp;
-                        $cmp_total_arr[] = $cmp;
-                        
-                    }
+                            $rating += $i2['att']['rating'];
+                            $cmp_arr[] = $cmp;
+                            $cmp_total_arr[] = $cmp;
+                            
+                        }
 
-                    $arr[$key2]['data']['evaluations'][$k]['stat']['rating'] = $rating;
-                    $arr[$key2]['data']['evaluations'][$k]['stat']['cmp'] = $c->get_cmp( implode( ', ', $cmp_arr ) );
+                        $arr[$key2]['data']['evaluations'][$k]['stat']['rating'] = $rating;
+                        $arr[$key2]['data']['evaluations'][$k]['stat']['cmp'] = $c->get_cmp( implode( ', ', $cmp_arr ) );
 
-                } 
+                    } 
 
 
-                if ( isset( $d['evaluations'][$n+1]['data'] ) ) $n++;
+                    if ( isset( $d['evaluations'][$n+1]['data'] ) ) $n++;
 
-                // p($k);
-                // p($i);
+                    // p($k);
+                    // p($i);
 
-            }
+                }
 
             $arr[$key2]['data']['evaluations_stat'] = array( 'cmp' => $c->get_cmp( implode( ', ', $cmp_total_arr ) ) );
 
@@ -694,7 +698,14 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
     {
         global $tree;
 
+        // p($current_course);
+        // // p($tree['content']['matrix']['data'][$current_course]);
+        // p($tree['content']['curriculum']['data'][$current_course]);
+
+        if ( empty( $tree['content']['curriculum']['data'] ) ) return;
+        if ( empty( $tree['content']['curriculum']['data'][$current_course]['semesters'] ) ) return;
         if ( empty( $tree['content']['matrix']['data'][$current_course] ) ) return;
+
 
         $cmp_arr = $tree['content']['matrix']['data'][$current_course];
         
@@ -707,21 +718,30 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
                         ! in_array( $tree['content']['courses']['complete'][$course]['unit'], array( 'ЭК', 'ЗЧ', 'ЗЧО' ) ) && in_array( $cmp, $i ) ) $courses[] = $course;
         
         // p($tree['content']['courses']['complete'][$course]);
+        // p($tree);
             
         $courses = array_unique( $courses );
         $courses = array_values( $courses );
         
         $semesters = array();
-        foreach ( $courses as $course ) $semesters[] = array( 'name' => $course,
-                                                               'sem' => array_keys( $tree['content']['curriculum']['data'][$course]['semesters'] ) );
+        foreach ( $courses as $course ) {
+
+            if ( isset( $tree['content']['curriculum']['data'][$course]['semesters'] ) )
+                $semesters[] = array( 'name' => $course,
+                                    'sem' => array_keys( (array) $tree['content']['curriculum']['data'][$course]['semesters'] ) );
+    
+        }
 
         foreach ( $semesters as $k => $i ) sort( $semesters[$k]['sem'] );
-
+        
         $cc = array_keys( $tree['content']['curriculum']['data'][$current_course]['semesters'] );
         sort($cc);
         
-        foreach ( $courses as $key => $course ) if ( $semesters[$key]['sem'][0] < $cc[0] ) $a['prev'][] = $course;
-        foreach ( $courses as $key => $course ) if ( $semesters[$key]['sem'][array_key_last($semesters[$key]['sem'])] > $cc[array_key_last($cc)] ) $a['next'][] = $course; 
+        foreach ( $courses as $key => $course )
+            if ( isset( $semesters[$key]['sem'][0] ) && $semesters[$key]['sem'][0] < $cc[0] ) $a['prev'][] = $course;
+        
+        foreach ( $courses as $key => $course ) 
+            if ( isset( $semesters[$key]['sem'] ) && $semesters[$key]['sem'][array_key_last($semesters[$key]['sem'])] > $cc[array_key_last($cc)] ) $a['next'][] = $course; 
  
         // p($a);
         
