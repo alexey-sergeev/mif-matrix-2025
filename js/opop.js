@@ -464,7 +464,8 @@ jQuery( document ).ready( function( jq ) {
     
     
     
-    jq( 'body' ).on( 'click', '.part .comp i.up', function() {
+    // jq( 'body' ).on( 'click', '.part .comp i.up', function() {
+    jq( 'body' ).on( 'click', '.comp i.up', function() {
         
         // console.log( '@' );
         let sort_1 = jq( 'input.sort', jq(this).closest('tr').prev() ).val();
@@ -490,8 +491,10 @@ jQuery( document ).ready( function( jq ) {
         
     })
     
-    jq( 'body' ).on( 'click', '.part .comp i.down', function() {
+    // jq( 'body' ).on( 'click', '.part .comp i.down', function() {
+    jq( 'body' ).on( 'click', '.comp i.down', function() {
         
+        // console.log( '@' );
         
         let sort_1 = jq( 'input.sort', jq(this).closest('tr').next() ).val();
         let sort_2 = jq( 'input.sort', jq(this).closest('tr') ).val();

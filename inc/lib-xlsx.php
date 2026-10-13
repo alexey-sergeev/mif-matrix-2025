@@ -38,8 +38,9 @@ class mif_mr_xlsx  {
 
     function __construct( $path = NULL )
     {
+        if ( ! is_file( $path ) ) $path = '';
         if ( empty( $path ) ) $path = dirname( __FILE__ ) . '/../templates/xlsx/default.xlsx';
-
+        
         $this->spreadsheet = IOFactory::load( $path );
         $this->sheet = $this->spreadsheet->getActiveSheet();
 

@@ -142,7 +142,7 @@ class mif_mr_opop_core {
                 $value = ( isset( $value )) ? $value : $item;
                 // p($value);
                 
-                if ( ! empty( $value ) ) {
+                if ( ! empty( $value ) && ! empty( $key ) ) {
                     
                     if ( $main_key == 'param' ) {
                         
@@ -155,6 +155,7 @@ class mif_mr_opop_core {
 
                         // p($m2);
                         // P($key);
+                        
                         $arr2 = array();
                         // $n = 0;
                         foreach ( $m2[0] as $item2 ) {
@@ -176,13 +177,14 @@ class mif_mr_opop_core {
                             
                             $a = $p->parse_name( $item3 );
 
-                            if ( empty( $a['att'] ) ) continue; 
+                            // if ( empty( $a['att'] ) ) continue; 
+                            $att = ( ! empty( $a['att'] ) ) ? $a['att'] : array();
 
                             $t[$main_key][$key]['data_att'][$key3] = array( 
                                                     'name' => $a['name'],
-                                                    'att' => $a['att'],
+                                                    // 'att' => $a['att'],
+                                                    'att' => $att,
                                                 );
-
                         } 
 
                         // p($m2[0]);
@@ -200,12 +202,9 @@ class mif_mr_opop_core {
                 
                 if ( isset( $value ) ) unset( $value );
                 
-                
             }
             
-
             $t['templates'] = $this->get_templates( $opop_id );
-
 
             wp_cache_set( 'get_param_and_meta', $t, $opop_id );
 
