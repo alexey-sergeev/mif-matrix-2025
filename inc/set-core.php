@@ -102,6 +102,50 @@ class mif_mr_set_core extends mif_mr_part_companion {
     
 
 
+    // //
+    // // 
+    // //
+    
+    // public static function set_comp_to_tree( $t = array() )
+    // {
+    //     $arr = array();
+        
+    //     foreach ( $t['content']['set-competencies']['data'] as $item ) {
+
+    //         if ( is_numeric( $item[2] ) ) {
+
+    //             if ( isset( $t['content']['lib-competencies']['data'][$item[2]] ) )
+    //                 foreach ( $t['content']['lib-competencies']['data'][$item[2]]['data'] as $item2 ) 
+    //                     foreach ( $item2['data'] as $item3 ) 
+    //                         if ( $item3['name'] == $item[1] ) { 
+    //                             $item3['old_name'] = $item3['name'];
+    //                             $item3['comp_id'] = $item[2];
+    //                             $item3['name'] = $item[0];
+    //                             $arr[$item[0]] = $item3;
+    //                         }
+    //         } else {
+                
+    //             foreach ( $t['content']['lib-competencies']['data'] as $item2 ) 
+    //                 foreach ( $item2['data'] as $item3 ) 
+    //                     foreach ( $item3['data'] as $item4 ) 
+    //                         if ( $item4['name'] == $item[1] ) {
+    //                             $item4['old_name'] = $item4['name'];
+    //                             $item4['comp_id'] = $item2['comp_id'];
+    //                             $item4['name'] = $item[0];
+    //                             $arr[$item[0]] = $item4;
+    //                         } 
+
+    //         }
+
+    //     }
+
+    //     // p($arr);
+
+    //     return apply_filters( 'mif_mr_comp_set_comp_to_tree', $arr, $t );
+    // }
+
+
+
     //
     // 
     //
@@ -109,33 +153,85 @@ class mif_mr_set_core extends mif_mr_part_companion {
     public static function set_comp_to_tree( $t = array() )
     {
         $arr = array();
+
+        if ( empty( $t['content']['matrix']['data'] ) ) return array();
+
+        $a = array();
+        foreach ( (array) $t['content']['matrix']['data'] as $item ) $a = array_merge( $a, $item );
+        
+        $c = new cmp();
+        $index = $c->get_cmp( $a, 'arr' );
+
+        foreach ( $index as $i ) $arr[$i] = array();
+
+        // p($index);
+        // p($arr);
+        // p ( $t['content']['set-competencies']['data']);
         
         foreach ( $t['content']['set-competencies']['data'] as $item ) {
 
+            if ( ! isset( $arr[ $item[0] ] ) ) continue;
+            // p($item);
+
+            $b = array();
+
             if ( is_numeric( $item[2] ) ) {
 
-                if ( isset( $t['content']['lib-competencies']['data'][$item[2]] ) )
+                if ( isset( $t['content']['lib-competencies']['data'][$item[2]] ) ) 
                     foreach ( $t['content']['lib-competencies']['data'][$item[2]]['data'] as $item2 ) 
                         foreach ( $item2['data'] as $item3 ) 
-                            if ( $item3['name'] == $item[1] ) { 
-                                $item3['old_name'] = $item3['name'];
-                                $item3['comp_id'] = $item[2];
-                                $item3['name'] = $item[0];
-                                $arr[$item[0]] = $item3;
-                            }
+                            if ( $item3['name'] == $item[1] ) {
+                                    $b = $item3;
+                                    $b['comp_id'] = $item[2];
+                                }
+
             } else {
-                
+
                 foreach ( $t['content']['lib-competencies']['data'] as $item2 ) 
                     foreach ( $item2['data'] as $item3 ) 
                         foreach ( $item3['data'] as $item4 ) 
                             if ( $item4['name'] == $item[1] ) {
-                                $item4['old_name'] = $item4['name'];
-                                $item4['comp_id'] = $item2['comp_id'];
-                                $item4['name'] = $item[0];
-                                $arr[$item[0]] = $item4;
-                            } 
+                                    $b = $item4;
+                                    $b['comp_id'] = $item2['comp_id'];
+                                }
+
 
             }
+
+            $b['old_name'] = $b['name'];
+            $b['name'] = $item[0];
+
+            $arr[$item[0]] = $b;
+
+            // p($arr);
+            // p($b);
+
+            // p( $t['content']['lib-competencies']['data'][$item[2]] );
+
+        //     if ( is_numeric( $item[2] ) ) {
+
+        //         if ( isset( $t['content']['lib-competencies']['data'][$item[2]] ) )
+        //             foreach ( $t['content']['lib-competencies']['data'][$item[2]]['data'] as $item2 ) 
+        //                 foreach ( $item2['data'] as $item3 ) 
+        //                     if ( $item3['name'] == $item[1] ) { 
+        //                         $item3['old_name'] = $item3['name'];
+        //                         $item3['comp_id'] = $item[2];
+        //                         $item3['name'] = $item[0];
+        //                         $arr[$item[0]] = $item3;
+        //                     }
+        //     } else {
+                
+        //         foreach ( $t['content']['lib-competencies']['data'] as $item2 ) 
+        //             foreach ( $item2['data'] as $item3 ) 
+        //                 foreach ( $item3['data'] as $item4 ) 
+        //                     if ( $item4['name'] == $item[1] ) {
+        //                         $item4['old_name'] = $item4['name'];
+        //                         $item4['comp_id'] = $item2['comp_id'];
+        //                         $item4['name'] = $item[0];
+        //                         $arr[$item[0]] = $item4;
+        //                     } 
+
+        //     }
 
         }
 

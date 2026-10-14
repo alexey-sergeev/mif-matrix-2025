@@ -69,7 +69,7 @@ class mif_mr_main extends mif_mr_table {
         $out .= '<table border="1"><tr><th>Паспорта и программы формирования компетенций</th></tr><tr><td>';
         $out .= '<div class="p-1 pb-3">';
         
-        foreach ( $tree['content']['competencies']['clean'] as $name => $data ) {
+        foreach ( $tree['content']['competencies']['data'] as $name => $data ) {
             
             $out .= '<span class="d-inline-block m-0 mb-2 p-0" style="width: 110px;">';
             

@@ -654,9 +654,12 @@ class mif_mr_opop_core {
         $arr = array( 'name' => '', 'path' => '', 'res' => false );
 
         if ( empty( $tree['templates']['passport'] ) ) return $arr;
-        if ( empty( $tree['content']['competencies']['clean'][$_REQUEST['comp']] ) ) return $arr;
+        if ( empty( $tree['content']['competencies']['data'][$_REQUEST['comp']] ) ) return $arr;
        
-        $arr2 = $tree['content']['competencies']['clean'][$_REQUEST['comp']];
+        $arr2 = $tree['content']['competencies']['data'][$_REQUEST['comp']];
+        // if ( empty( $tree['content']['competencies']['clean'][$_REQUEST['comp']] ) ) return $arr;
+       
+        // $arr2 = $tree['content']['competencies']['clean'][$_REQUEST['comp']];
 
         // p($_REQUEST);
 

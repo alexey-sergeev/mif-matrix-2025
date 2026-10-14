@@ -38,6 +38,7 @@ class mif_mr_set_comp extends mif_mr_set_core {
         }
     }
     
+
     
     //
     // Показать cписок компетенций
@@ -49,74 +50,75 @@ class mif_mr_set_comp extends mif_mr_set_core {
         if ( ! $mr->user_can(2) ) return;
 
         global $tree;
+        // p($tree);
         
-        $this->save( 'set-competencies', $this->compose_set_comp() );
+        // $this->save( 'set-competencies', $this->compose_set_comp() );
         // p($_REQUEST);
 
         $out = '';
         
-        if ( isset( $_REQUEST['edit'] ) ) {
+        // if ( isset( $_REQUEST['edit'] ) ) {
             
-            $out .= '<div class="row">';
-            $out .= '<div class="col p-0">';
+        //     $out .= '<div class="row">';
+        //     $out .= '<div class="col p-0">';
             
-            if ( $_REQUEST['edit'] == 'visual' ) {
+        //     if ( $_REQUEST['edit'] == 'visual' ) {
                 
-                $out .= $this->edit_visual();
+        //         $out .= $this->edit_visual();
                 
-            } else {
+        //     } else {
                 
-                $out .= $this->companion_edit( 'set-competencies' );
+        //         $out .= $this->companion_edit( 'set-competencies' );
                 
-            }
+        //     }
             
-            $out .= '</div>';
-            $out .= '</div>';
+        //     $out .= '</div>';
+        //     $out .= '</div>';
             
-        } else {
+        // } else {
             
-            $out .= '<div class="row fiksa">';
-            $out .= '<div class="col p-0">';
-            $out .= '<h4 class="mb-4 mt-0 pt-3 pb-5 bg-body">Компетенции в ОПОП:</h4>';
-            $out .= '</div>';
-            $out .= '</div>';
+        //     $out .= '<div class="row fiksa">';
+        //     $out .= '<div class="col p-0">';
+        //     $out .= '<h4 class="mb-4 mt-0 pt-3 pb-5 bg-body">Компетенции в ОПОП:</h4>';
+        //     $out .= '</div>';
+        //     $out .= '</div>';
             
-            // $out .= mif_mr_comp::get_show_all();
+        //     // $out .= mif_mr_comp::get_show_all();
             
-            $out .= '<div class="row">';
-            $out .= '<div class="col p-0">';
-            $out .= mif_mr_companion_core::get_show_all();
-            $out .= '</div>';
-            $out .= '</div>';
+        //     $out .= '<div class="row">';
+        //     $out .= '<div class="col p-0">';
+        //     $out .= mif_mr_companion_core::get_show_all();
+        //     $out .= '</div>';
+        //     $out .= '</div>';
 
-            $data = $tree['content']['competencies']['data'];
-            $old = '';
-            $n = 0;
-            $index = array();
-            // p($data);
-            foreach ( $data as $key => $item ) {
+        //     $data = $tree['content']['competencies']['data'];
+        //     $old = '';
+        //     $n = 0;
+        //     $index = array();
+        //     // p($data);
+        //     foreach ( $data as $key => $item ) {
                 
-                // p($item);
+        //         // p($item);
 
-                if ( $old == $item['category'] ) $n--;
-                $index[$n][] = $key;
-                $old = $item['category'];
-                $n++;
+        //         if ( $old == $item['category'] ) $n--;
+        //         $index[$n][] = $key;
+        //         $old = $item['category'];
+        //         $n++;
                 
-            }
+        //     }
             
-            foreach ( $index as $item ) {
+        //     foreach ( $index as $item ) {
                 
-                if ( empty( $item ) ) continue;
+        //         if ( empty( $item ) ) continue;
                 
-                $out .= '<span class="content-ajax">';
-                $out .= mif_mr_competencies_screen::get_sub_head( array( 'name' => $data[$item[0]]['category'] ) );
-                foreach ( $item as $item2 ) $out .= mif_mr_competencies_screen::get_item_body( $data[$item2] );
-                $out .= '</span>';
+        //         $out .= '<span class="content-ajax">';
+        //         $out .= mif_mr_competencies_screen::get_sub_head( array( 'name' => $data[$item[0]]['category'] ) );
+        //         foreach ( $item as $item2 ) $out .= mif_mr_competencies_screen::get_item_body( $data[$item2] );
+        //         $out .= '</span>';
                 
-            }
+        //     }
             
-        }
+        // }
         
         
         
@@ -125,35 +127,121 @@ class mif_mr_set_comp extends mif_mr_set_core {
     
     
     
+    // //
+    // // Показать cписок компетенций
+    // //
     
-    //
-    //
-    //
+    // public function show_set_comp()
+    // {
+    //     global $mr;
+    //     if ( ! $mr->user_can(2) ) return;
+
+    //     global $tree;
+        
+    //     $this->save( 'set-competencies', $this->compose_set_comp() );
+    //     // p($_REQUEST);
+
+    //     $out = '';
+        
+    //     if ( isset( $_REQUEST['edit'] ) ) {
+            
+    //         $out .= '<div class="row">';
+    //         $out .= '<div class="col p-0">';
+            
+    //         if ( $_REQUEST['edit'] == 'visual' ) {
+                
+    //             $out .= $this->edit_visual();
+                
+    //         } else {
+                
+    //             $out .= $this->companion_edit( 'set-competencies' );
+                
+    //         }
+            
+    //         $out .= '</div>';
+    //         $out .= '</div>';
+            
+    //     } else {
+            
+    //         $out .= '<div class="row fiksa">';
+    //         $out .= '<div class="col p-0">';
+    //         $out .= '<h4 class="mb-4 mt-0 pt-3 pb-5 bg-body">Компетенции в ОПОП:</h4>';
+    //         $out .= '</div>';
+    //         $out .= '</div>';
+            
+    //         // $out .= mif_mr_comp::get_show_all();
+            
+    //         $out .= '<div class="row">';
+    //         $out .= '<div class="col p-0">';
+    //         $out .= mif_mr_companion_core::get_show_all();
+    //         $out .= '</div>';
+    //         $out .= '</div>';
+
+    //         $data = $tree['content']['competencies']['data'];
+    //         $old = '';
+    //         $n = 0;
+    //         $index = array();
+    //         // p($data);
+    //         foreach ( $data as $key => $item ) {
+                
+    //             // p($item);
+
+    //             if ( $old == $item['category'] ) $n--;
+    //             $index[$n][] = $key;
+    //             $old = $item['category'];
+    //             $n++;
+                
+    //         }
+            
+    //         foreach ( $index as $item ) {
+                
+    //             if ( empty( $item ) ) continue;
+                
+    //             $out .= '<span class="content-ajax">';
+    //             $out .= mif_mr_competencies_screen::get_sub_head( array( 'name' => $data[$item[0]]['category'] ) );
+    //             foreach ( $item as $item2 ) $out .= mif_mr_competencies_screen::get_item_body( $data[$item2] );
+    //             $out .= '</span>';
+                
+    //         }
+            
+    //     }
+        
+        
+        
+    //     return apply_filters( 'mif_mr_show_set_comp', $out );
+    // }
     
-    public function compose_set_comp()
-    {
-        $out = '';        
+    
+    
+    
+    // //
+    // //
+    // //
+    
+    // public function compose_set_comp()
+    // {
+    //     $out = '';        
         
-        // p( $_REQUEST );
+    //     // p( $_REQUEST );
         
-        if ( isset( $_REQUEST['select'] ) ) {
+    //     if ( isset( $_REQUEST['select'] ) ) {
 
-            foreach ( (array) $_REQUEST['select'] as $key => $item ) {
+    //         foreach ( (array) $_REQUEST['select'] as $key => $item ) {
 
-                $new_name = ( isset( $_REQUEST['new_name'][$key] ) ) ? sanitize_textarea_field( $_REQUEST['new_name'][$key] ) : '';
-                $name = ( isset( $_REQUEST['name'][$key] ) ) ? sanitize_textarea_field( $_REQUEST['name'][$key] ) : '';
-                $comp_id = ( isset( $_REQUEST['comp_id'][$key] ) ) ? sanitize_textarea_field( $_REQUEST['comp_id'][$key] ) : '';
+    //             $new_name = ( isset( $_REQUEST['new_name'][$key] ) ) ? sanitize_textarea_field( $_REQUEST['new_name'][$key] ) : '';
+    //             $name = ( isset( $_REQUEST['name'][$key] ) ) ? sanitize_textarea_field( $_REQUEST['name'][$key] ) : '';
+    //             $comp_id = ( isset( $_REQUEST['comp_id'][$key] ) ) ? sanitize_textarea_field( $_REQUEST['comp_id'][$key] ) : '';
 
-                $out .= $new_name . ':' . $name . ':' . $comp_id . "\n";
+    //             $out .= $new_name . ':' . $name . ':' . $comp_id . "\n";
 
-            }
+    //         }
 
-        }
+    //     }
 
-        // p($out);
+    //     // p($out);
 
-        return apply_filters( 'mif_mr_compose_set_comp', $out );
-    }
+    //     return apply_filters( 'mif_mr_compose_set_comp', $out );
+    // }
     
     //
     //

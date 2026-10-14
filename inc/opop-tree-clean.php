@@ -41,7 +41,8 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
         $tree['content']['courses']['errors'] = $this->make_courses_errors();
         $tree['templates'] = $this->make_templates_clean();
         
-        $tree['content']['competencies']['clean'] = $this->make_courses_competencies();
+        // $tree['content']['competencies']['clean'] = $this->make_courses_competencies();
+        $tree['content']['competencies']['data'] = $this->make_courses_competencies();
 
 
         return;
@@ -91,24 +92,31 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
     {
         global $tree;
         
-        if ( empty( $tree['content']['matrix']['data'] ) ) return array();
-
-        $arr = array();
+        if ( empty( $tree['content']['competencies']['data'] ) ) return array();
         
-        $a = array();
-        foreach ( (array) $tree['content']['matrix']['data'] as $item ) $a = array_merge( $a, $item );
-        $c = new cmp();
-        $index = $c->get_cmp( $a, 'arr' );
+        // $arr = array();
+        $arr = $tree['content']['competencies']['data'];
+        
+        // $a = array();
+        // foreach ( (array) $tree['content']['matrix']['data'] as $item ) $a = array_merge( $a, $item );
+        
+        // $c = new cmp();
+        // $index = $c->get_cmp( $a, 'arr' );
+        
+        foreach ( (array) $tree['content']['competencies']['data'] as $key => $cmp ) {
 
-        foreach ( $index as $key ) {
 
-            $arr[$key]['name'] = $key;
-            if ( isset( $tree['content']['competencies']['data'][$key] ) ) $arr[$key] = $tree['content']['competencies']['data'][$key];
-
+            // p($cmp);
+            // p($arr[$key]);
+            
+            //     $arr[$key]['name'] = $key;
+            //     if ( isset( $tree['content']['competencies']['data'][$key] ) ) $arr[$key] = $tree['content']['competencies']['data'][$key];
+            
             $arr[$key]['unit'] = $this->get_cmp_unit( $key );
             $arr[$key]['outcomes'] = $this->get_cmp_outcomes( $key );
             $arr[$key]['courses'] = $this->get_cmp_courses( $key );
-
+            
+            // p($arr[$key]);
         }
 
 
@@ -118,6 +126,44 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
         return apply_filters( 'mif_mr_core_opop_make_courses_competencies', $arr );
     }
+    
+    
+    // // 
+    // // Сделать competencies чистыми
+    // // 
+    
+    // private function make_courses_competencies()
+    // {
+    //     global $tree;
+        
+    //     if ( empty( $tree['content']['matrix']['data'] ) ) return array();
+
+    //     $arr = array();
+        
+    //     $a = array();
+    //     foreach ( (array) $tree['content']['matrix']['data'] as $item ) $a = array_merge( $a, $item );
+        
+    //     $c = new cmp();
+    //     $index = $c->get_cmp( $a, 'arr' );
+        
+    //     foreach ( $index as $key ) {
+
+    //         $arr[$key]['name'] = $key;
+    //         if ( isset( $tree['content']['competencies']['data'][$key] ) ) $arr[$key] = $tree['content']['competencies']['data'][$key];
+
+    //         $arr[$key]['unit'] = $this->get_cmp_unit( $key );
+    //         $arr[$key]['outcomes'] = $this->get_cmp_outcomes( $key );
+    //         $arr[$key]['courses'] = $this->get_cmp_courses( $key );
+
+    //     }
+
+
+
+
+    //     // p($index);
+
+    //     return apply_filters( 'mif_mr_core_opop_make_courses_competencies', $arr );
+    // }
     
 
     
@@ -266,7 +312,8 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
                 foreach ( $tree['content']['matrix']['data'][$key] as $i ) {
 
-                    $arr[$key2]['meta']['cmp_descr'][] = ( isset( $tree['content']['competencies']['data'][$i] ) ) ?
+                    // $arr[$key2]['meta']['cmp_descr'][] = ( isset( $tree['content']['competencies']['data'][$i] ) ) ?
+                    $arr[$key2]['meta']['cmp_descr'][] = ( ! empty( $tree['content']['competencies']['data'][$i] ) ) ?
                             array( 
                                 'name' => $tree['content']['competencies']['data'][$i]['name'],
                                 'descr' => $tree['content']['competencies']['data'][$i]['descr'],
