@@ -17,7 +17,7 @@ class mif_mr_lib_competencies extends mif_mr_companion_core {
     {
         parent::__construct();
 
-        $this->sub_default = apply_filters( 'mif-mr-sub_default', 'default' );
+        $this->sub_default = apply_filters( 'mif-mr-default', 'default' );
 
     }
   

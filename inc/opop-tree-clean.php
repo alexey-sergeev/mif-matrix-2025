@@ -109,7 +109,10 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
             // p($cmp);
             // p($arr[$key]);
             
-            //     $arr[$key]['name'] = $key;
+            if ( empty( $arr[$key]['name'] ) ) $arr[$key]['name'] = $key;
+            if ( empty( $arr[$key]['descr'] ) ) $arr[$key]['descr'] = apply_filters( 'mif-mr-none', 'none' );
+            if ( empty( $arr[$key]['category'] ) ) $arr[$key]['category'] = apply_filters( 'mif-mr-default', 'default' );
+
             //     if ( isset( $tree['content']['competencies']['data'][$key] ) ) $arr[$key] = $tree['content']['competencies']['data'][$key];
             
             $arr[$key]['unit'] = $this->get_cmp_unit( $key );

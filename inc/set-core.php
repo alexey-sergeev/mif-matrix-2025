@@ -168,6 +168,49 @@ class mif_mr_set_core extends mif_mr_part_companion {
         // p($arr);
         // p ( $t['content']['set-competencies']['data']);
         
+
+        // Из библиотеки
+
+        foreach ( $arr as $k => $i ) {
+
+            $b = array();
+
+            foreach ( $t['content']['lib-competencies']['data'] as $item2 ) 
+                foreach ( $item2['data'] as $item3 ) 
+                    foreach ( $item3['data'] as $item4 ) 
+                        if ( $item4['name'] == $k ) {
+                                $b = $item4;
+                                $b['comp_id'] = $item2['comp_id'];
+                                $b['old_name'] = $b['name'];
+                            }
+
+            $arr[$k] = $b;
+
+        }
+
+
+        // Локальные данные
+
+        foreach ( $arr as $k => $i ) {
+
+            $b = array();
+
+            foreach ( $t['content']['lib-competencies']['data'] as $item2 ) 
+                foreach ( $item2['data'] as $item3 ) 
+                    foreach ( $item3['data'] as $item4 )  
+                        if ( $item4['name'] == $k && $item2['from_id'] == mif_mr_opop_core::get_opop_id() ) {
+                                $b = $item4;
+                                $b['comp_id'] = $item2['comp_id'];
+                                $b['old_name'] = $b['name'];
+                            }
+
+            $arr[$k] = $b;
+
+        }
+
+
+        // Ручной метод
+
         foreach ( $t['content']['set-competencies']['data'] as $item ) {
 
             if ( ! isset( $arr[ $item[0] ] ) ) continue;
@@ -203,6 +246,9 @@ class mif_mr_set_core extends mif_mr_part_companion {
 
             $arr[$item[0]] = $b;
 
+        }
+
+
             // p($arr);
             // p($b);
 
@@ -233,7 +279,7 @@ class mif_mr_set_core extends mif_mr_part_companion {
 
         //     }
 
-        }
+        // }
 
         // p($arr);
 

@@ -179,6 +179,7 @@ class mif_mr_part_companion extends mif_mr_part_core {
             
             $tree = array();
             $tree = $mif_mr_opop->get_tree();
+            $mif_mr_opop->get_tree_clean();
             
         }
         
