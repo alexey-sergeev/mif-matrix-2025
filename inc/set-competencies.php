@@ -16,6 +16,7 @@ class mif_mr_set_comp extends mif_mr_set_core {
         parent::__construct();
         
         $this->save( 'set-competencies' );
+        $this->save( 'set-competencies', $this->compose_set_comp() );
 
     }
     
@@ -357,6 +358,52 @@ class mif_mr_set_comp extends mif_mr_set_core {
     //     return apply_filters( 'mif_mr_compose_set_comp', $out );
     // }
     
+    
+    //
+    //
+    //
+    
+    public function compose_set_comp()
+    {
+        $out = '';        
+        
+        // p( $_REQUEST );
+        
+        if ( isset( $_REQUEST['visual'] ) && $_REQUEST['visual'] == 'yes' ) {
+
+            foreach ( (array) $_REQUEST['new_name'] as $key => $new_name ) {
+
+                $new_name = sanitize_text_field( $new_name );
+
+                if ( empty( $new_name ) ) continue;
+                if ( $new_name == $_REQUEST['bak_name'][$key] && ! $_REQUEST['method'][$key] == 'manual' ) continue;
+
+                $name = sanitize_text_field( $_REQUEST['name'][$key] );
+                $comp_id = sanitize_text_field( $_REQUEST['comp_id'][$key] );
+
+                $out .= $new_name . ':' . $name . ':' . $comp_id . "\n";
+
+            }
+
+
+            // p('@');
+            // foreach ( (array) $_REQUEST['select'] as $key => $item ) {
+
+            //     $new_name = ( isset( $_REQUEST['new_name'][$key] ) ) ? sanitize_textarea_field( $_REQUEST['new_name'][$key] ) : '';
+            //     $name = ( isset( $_REQUEST['name'][$key] ) ) ? sanitize_textarea_field( $_REQUEST['name'][$key] ) : '';
+            //     $comp_id = ( isset( $_REQUEST['comp_id'][$key] ) ) ? sanitize_textarea_field( $_REQUEST['comp_id'][$key] ) : '';
+
+            //     $out .= $new_name . ':' . $name . ':' . $comp_id . "\n";
+
+            // }
+
+        }
+
+        // p($out);
+
+        return apply_filters( 'mif_mr_compose_set_comp', $out );
+    }
+    
 
 
     
@@ -392,7 +439,7 @@ class mif_mr_set_comp extends mif_mr_set_core {
                         'descr' => $item3['descr'],
                         // 'category' => $item3['category'],
                         'category' => $item2['name'],
-
+                        // 'method' => $item3['method'],
                         // 'new_name' => '',
                         // 'old_name' => '',
                         // 'sort' => 65535,
@@ -414,14 +461,18 @@ class mif_mr_set_comp extends mif_mr_set_core {
 
             // p($i);
 
-            if ( isset( $item['comp_id'] ) && isset( $arr2[$item['comp_id']][$item['old_name']] ) ) 
+            if ( isset( $item['comp_id'] ) && isset( $arr2[$item['comp_id']][$item['old_name']] ) ) {
+
                 $arr2[$item['comp_id']][$item['old_name']]['new_name'] = $item['name'];  
+                $arr2[$item['comp_id']][$item['old_name']]['method'] = $item['method'];  
+
+            }
                 
         }
 
 
         
-        // p($arr2);
+        // p($arr3);
 
         $arr4 = array();
         foreach ( $arr2 as $item )
@@ -447,56 +498,39 @@ class mif_mr_set_comp extends mif_mr_set_core {
         foreach ( $arr4 as $item ) $arr5[] = $item;
             
 
-        p($index);
+        // p($index);
         // p($arr5);
         // p($arr4);
 
-        // $index = array();
-        // foreach ( $arr as $item ) $index[] = array( $item['old_name'], $item['comp_id'] );
-        // $sort = 0;
-        // p($arr);
 
-        // foreach ( $arr as $key => $item ) {
-        //     // p($item);
-        //     foreach ( $arr2 as $key2 => $item2 ) {
-                
-        //         if ( $item['old_name'] == $item2['name'] && $item['comp_id'] == $item2['comp_id'] ) {
-                    
-        //             $arr2[$key2]['new_name'] = $item['name'];
-        //             // $arr2[$key2]['old_name'] = $item['old_name'];
-        //             $arr2[$key2]['sort'] = $sort++;
-                    
-        //         } 
-                
-        //         // p('$index');
-                
-        //     }
-            
-        // }
-        // p($arr2);
-        
-        // uasort( $arr2, function ( $a, $b ) { return ( $a['sort'] > $b['sort'] ) ? 1 : 0; });
-
-        // $index = array();
-        // foreach ( $arr2 as $item2  ) $index[] = $item2['sort'];
-        // sort( $index );
-        
-        // $arr3 = array();
-        // foreach ( $index as $i ) 
-        //     foreach ( $arr2 as $key2 => $item2 ) 
-        //         if ( $item2['sort'] == $i ) {
-
-        //             $arr3[] = $item2;
-        //             unset( $arr2[$key2] );
-        //             break;
-
-        //         }
-
-        // p($arr2);
-        // p($arr3);
-        
         $out = '';
         
+        if ( ! empty( $index ) ) {
+            
+
+            $out .= '<div class="p-2 mb-6 bg-light border rounded fiksa">';
+            
+            $out .= '<div class="m-3">';
+            $out .= '<h4>Компетенции не задействованы:</h4>';
+            $out .= '</div>';
+
+
+            $out .= '<div class="m-3 mb-3">';
+            // $out .= '<div class="col">';
+
+            foreach ( $index as $i ) {
+                
+                $out .= '<span class="mr-2 mb-3 copy-wrapper d-inline-block">';
+                $out .= mif_mr_opop_core::get_span_id( $i );
+                $out .= '</span> ';
+                
+            }
+            
+            $out .= '</div>';
+            $out .= '</div>';
+        
+        }
+
         $out .= '<table class="vedit">';
         
         $out .= '<thead><tr>';
@@ -532,6 +566,8 @@ class mif_mr_set_comp extends mif_mr_set_core {
         
         $out .= '</table>';
         
+        $out .= '<input name="visual" type="hidden" value="yes">';
+
         return apply_filters( 'mif_mr_edit_visual', $out );
     }
     
@@ -678,6 +714,7 @@ class mif_mr_set_comp extends mif_mr_set_core {
         $out = '';
         
         $new_name = ( isset( $item['new_name'] ) ) ? $item['new_name'] : '';
+        $method = ( isset( $item['method'] ) ) ? $item['method'] : '';
 
         // p($item);
         $out .= '<tr>';
@@ -691,6 +728,10 @@ class mif_mr_set_comp extends mif_mr_set_core {
         // $out .= '<input type="text" class="form-control" style="width: 5em;">';
         // $out .= '<input name="new_name[' . $item['n'] . ']" type="text" value="' . $item['new_name'] . '" class="new_name form-control mt-1">';
         $out .= '<input name="new_name[]" type="text" value="' . $new_name . '" class="new_name form-control mt-1">';
+        $out .= '<input name="bak_name[]" type="hidden" value="' . $new_name . '">';
+        $out .= '<input name="name[]" type="hidden" value="' . $item['name'] . '">';
+        $out .= '<input name="comp_id[]" type="hidden" value="' . $item['comp_id'] . '">';
+        $out .= '<input name="method[]" type="hidden" value="' . $method . '">';
         $out .= '</td>';
         
         // $out .= '<td class="fw-bolder">';
@@ -711,9 +752,11 @@ class mif_mr_set_comp extends mif_mr_set_core {
         $out .= '</td>';
         
         $out .= '<td>';
-        $out .= '<div class="bg-secondary text-light rounded pl-2 pr-2 mt-1">' . $item['comp_id'] . '</div>';
+        // $out .= '<div class="bg-secondary text-light rounded pl-2 pr-2 mt-1">' . $item['comp_id'] . '</div>';
+        $out .= mif_mr_opop_core::get_a_id( $item['comp_id'], 
+                                            mif_mr_opop_core::get_opop_url() . 'lib-competencies/' . $item['comp_id'],
+                                            mif_mr_functions::mb_substr( get_the_title( $item['comp_id'] ), 30 ) );
         // $out .= '<input name="comp_id[' . $item['n'] . ']" type="hidden" value="' . $item['comp_id'] . '" class="comp_id">';
-        $out .= '<input name="comp_id[]" type="hidden" value="' . $item['comp_id'] . '" class="comp_id">';
         $out .= '</td>';
         
         // $out .= '<td class="text-center" style="width: 4em">';

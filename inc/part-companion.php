@@ -131,6 +131,8 @@ class mif_mr_part_companion extends mif_mr_part_core {
     {
         global $mif_mr_opop;
         
+        // p($_REQUEST);
+
         $opop_id = $mif_mr_opop->get_opop_id();
         $opop_title = $mif_mr_opop->get_opop_title();
 

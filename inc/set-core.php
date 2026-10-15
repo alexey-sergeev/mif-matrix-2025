@@ -182,6 +182,7 @@ class mif_mr_set_core extends mif_mr_part_companion {
                                 $b = $item4;
                                 $b['comp_id'] = $item2['comp_id'];
                                 $b['old_name'] = $b['name'];
+                                $b['method'] = 'lib';
                             }
 
             $arr[$k] = $b;
@@ -202,6 +203,7 @@ class mif_mr_set_core extends mif_mr_part_companion {
                                 $b = $item4;
                                 $b['comp_id'] = $item2['comp_id'];
                                 $b['old_name'] = $b['name'];
+                                $b['method'] = 'local';
                             }
 
             $arr[$k] = $b;
@@ -243,6 +245,7 @@ class mif_mr_set_core extends mif_mr_part_companion {
 
             $b['old_name'] = $b['name'];
             $b['name'] = $item[0];
+            $b['method'] = 'manual';
 
             $arr[$item[0]] = $b;
 
