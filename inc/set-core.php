@@ -14,6 +14,11 @@ class mif_mr_set_core extends mif_mr_part_companion {
     function __construct()
     {
 
+        // $this->reference_types = apply_filters( 'mif-mr-reference_types', array(
+        //                                             array( 'name' => 'kaf', 'title' => 'Номера кафедр', 'is_numeric' => true, 'is_string' => false ),
+        //                                             array( 'name' => 'staff', 'title' => 'Должностные лица', 'is_numeric' => false, 'is_string' => true ),
+        //                                         ) );
+
         parent::__construct();
         
     }
@@ -637,8 +642,8 @@ class mif_mr_set_core extends mif_mr_part_companion {
     //
     // Возвращает массив из текста (post)
     //
-    // kaf::reference_id
-    // staff::reference_id
+    // kaf:reference_id
+    // staff:reference_id
     // 
 
     public function get_arr_references( $opop_id = NULL )
@@ -656,7 +661,7 @@ class mif_mr_set_core extends mif_mr_part_companion {
         
         foreach ( $data as $item ) {
             
-            $arr2 = explode( '::', $item );
+            $arr2 = explode( ':', $item );
             $arr2 = array_map( 'trim', $arr2 );
 
             if ( empty( $arr2[0] ) ) continue;
@@ -684,6 +689,45 @@ class mif_mr_set_core extends mif_mr_part_companion {
     {
         $arr = array();
         
+        
+        // $m = new mif_mr_set_references();
+        // $prefix_arr = $m->get_reference_types();
+        // p($prefix_arr);
+        // p( $this->reference_types );
+        $reference_types = apply_filters( 'mif-mr-reference_types', array() );
+        // p( $reference_types );
+
+        
+
+        // Из библиотеки
+        
+        foreach ( $t['content']['lib-references']['data'] as $i ) {
+
+            foreach ( $reference_types as $r ) {
+
+                if ( preg_match( '/^' . $r['title'] . '.*/', $i['name'], $m ) ) $arr[$r['name']] = $i;
+
+            }
+
+        }
+
+
+        // Локальные
+
+        foreach ( $t['content']['lib-references']['data'] as $i ) {
+
+            foreach ( $reference_types as $r ) {
+
+                if ( $i['from_id'] == mif_mr_opop_core::get_opop_id() && 
+                    preg_match( '/^' . $r['title'] . '.*/', $i['name'], $m ) ) $arr[$r['name']] = $i;
+
+            }
+
+        }
+
+
+        // Ручной метод
+
         foreach ( $t['content']['set-references']['data'] as $key => $item ) {
             
             if ( is_numeric( $item ) ) {
@@ -695,10 +739,24 @@ class mif_mr_set_core extends mif_mr_part_companion {
         
         }
 
+        // p($arr);
+
         return apply_filters( 'mif_mr_comp_set_references_to_tree', $arr, $t );
     }
 
 
+
+    // //
+    // //
+
+    // public function get_reference_types()
+    // {
+    //     return $this->reference_types;
+    // }
+        
+
+                
+    // protected $reference_types = array();
 
 
 

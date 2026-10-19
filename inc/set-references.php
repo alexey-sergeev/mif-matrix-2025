@@ -14,10 +14,11 @@ class mif_mr_set_references extends mif_mr_set_core {
     {
         parent::__construct();
 
-        $this->reference_types = apply_filters( 'mif-mr-reference_types', array(
-                                                    array( 'name' => 'kaf', 'title' => 'Номера кафедр', 'is_numeric' => true, 'is_string' => false ),
-                                                    array( 'name' => 'staff', 'title' => 'Должностные лица', 'is_numeric' => false, 'is_string' => true ),
-                                                ) );
+        // $this->reference_types = apply_filters( 'mif-mr-reference_types', array(
+        //                                             array( 'name' => 'kaf', 'title' => 'Номера кафедр', 'is_numeric' => true, 'is_string' => false ),
+        //                                             array( 'name' => 'staff', 'title' => 'Должностные лица', 'is_numeric' => false, 'is_string' => true ),
+        //                                         ) );
+        $this->reference_types = apply_filters( 'mif-mr-reference_types', array() );
 
         $this->do_save();                                       
                                                 
@@ -97,29 +98,34 @@ class mif_mr_set_references extends mif_mr_set_core {
             
             foreach ( $this->reference_types as $item ) {
                 
-                if ( ! empty( $tree['content']['set-references']['data'][$item['name']] ) ) {
+                // p( $tree['content']['references'] );
+                // p( $item['name'] );
+
+                // if ( ! empty( $tree['content']['set-references']['data'][$item['name']] ) ) {
 
                     $out .= '<div class="row">';
-                    $out .= '<div class="col p-3">';
+                    $out .= '<div class="col p-0 pb-3">';
                     $out .= '<span class="fw-bolder">' . $item['title'] . '</span>';
                     $out .= '</div>';
                     $out .= '</div>';
                     
-                    if ( ! empty( $tree['content']['lib-references']['data'][ $tree['content']['set-references']['data'][$item['name']] ] ) ) {
+                    if ( ! empty( $tree['content']['references']['data'][$item['name']] ) ) {
                         
-                        $reference = $tree['content']['lib-references']['data'][ $tree['content']['set-references']['data'][$item['name']] ];
+                        // $reference = $tree['content']['lib-references']['data'][ $tree['content']['set-references']['data'][$item['name']] ];
+                        $reference = $tree['content']['references']['data'][$item['name']];
 
                         // p($reference);
                         // p($references_id);
                         
                         $out .= '<div class="row bg-light border rounded">';
                         
-                        $out .= '<div class="col-10 col-md-11 pt-5 pb-5">';
+                        $out .= '<div class="col-10 col-md-10 pt-5 pb-5">';
                         $out .= '<a href="' . mif_mr_opop_core::get_opop_url() . 'lib-references/' . $reference['comp_id'] . '">' . $reference['name'] . '</a>';
                         $out .= '</div>';
                         
-                        $out .= '<div class="col-2 col-md-1 pt-5 pb-5 text-end">';
-                        $out .= '<span class="bg-secondary text-light rounded pl-3 pr-3 p-1 copy">' . $reference['comp_id'] . '</span>';
+                        $out .= '<div class="col-2 col-md-2 pt-5 pb-5 text-end">';
+                        // $out .= '<span class="bg-secondary text-light rounded pl-3 pr-3 p-1 copy">' . $reference['comp_id'] . '</span>';
+                        $out .= mif_mr_opop_core::get_a_id( $reference['comp_id'], mif_mr_opop_core::get_opop_url() . 'lib-references/' . $reference['comp_id'] );
                         $out .= '</div>';
                         
                         $out .= '</div>';
@@ -159,7 +165,7 @@ class mif_mr_set_references extends mif_mr_set_core {
                    
                    }
                 
-                } 
+                // } 
                 
 
 
@@ -173,6 +179,136 @@ class mif_mr_set_references extends mif_mr_set_core {
         
         return apply_filters( 'mif_mr_show_set_references', $out );
     }
+    
+    // //
+    // // Показать cписок references
+    // //
+    
+    // public function show_set_references()
+    // {
+    //     global $mr;
+    //     if ( ! $mr->user_can(2) ) return;
+    
+    //     global $tree;
+        
+    //     // $arr = $tree['content']['lib-references']['data'];
+    //     // p($arr);
+    //     // p($_REQUEST);
+
+    //     $out = '';
+        
+    //     if ( isset( $_REQUEST['edit'] ) ) {
+            
+    //         // $out .= $this->companion_edit( 'set-references' );
+
+    //         // $out .= '<div class="row">';
+    //         // $out .= '<div class="col p-0">';
+    //         // $out .= '<div class="p-0">';
+    //         // $out .= '@';
+            
+    //         if ( $_REQUEST['edit'] == 'easy' ) {
+                
+    //             $out .= $this->edit_easy();
+                
+    //         } else {
+                
+    //             $out .= $this->companion_edit( 'set-references' );
+                
+    //         }
+            
+    //         // $out .= '@';
+    //         // $out .= '</div>';
+    //         // $out .= '</div>';
+            
+    //     } else {
+            
+    //         $out .= '<div class="row fiksa">';
+    //         $out .= '<div class="col p-0">';
+    //         $out .= '<h4 class="mb-4 mt-0 pt-3 pb-5 bg-body">Справочники в ОПОП:</h4>';
+    //         $out .= '</div>';
+    //         $out .= '</div>';
+            
+    //         // $out .= $this->get_table_html( $arr );       
+            
+    //         foreach ( $this->reference_types as $item ) {
+                
+    //             if ( ! empty( $tree['content']['set-references']['data'][$item['name']] ) ) {
+
+    //                 $out .= '<div class="row">';
+    //                 $out .= '<div class="col p-3">';
+    //                 $out .= '<span class="fw-bolder">' . $item['title'] . '</span>';
+    //                 $out .= '</div>';
+    //                 $out .= '</div>';
+                    
+    //                 if ( ! empty( $tree['content']['lib-references']['data'][ $tree['content']['set-references']['data'][$item['name']] ] ) ) {
+                        
+    //                     $reference = $tree['content']['lib-references']['data'][ $tree['content']['set-references']['data'][$item['name']] ];
+
+    //                     // p($reference);
+    //                     // p($references_id);
+                        
+    //                     $out .= '<div class="row bg-light border rounded">';
+                        
+    //                     $out .= '<div class="col-10 col-md-11 pt-5 pb-5">';
+    //                     $out .= '<a href="' . mif_mr_opop_core::get_opop_url() . 'lib-references/' . $reference['comp_id'] . '">' . $reference['name'] . '</a>';
+    //                     $out .= '</div>';
+                        
+    //                     $out .= '<div class="col-2 col-md-1 pt-5 pb-5 text-end">';
+    //                     // $out .= '<span class="bg-secondary text-light rounded pl-3 pr-3 p-1 copy">' . $reference['comp_id'] . '</span>';
+    //                     $out .= mif_mr_opop_core::get_a_id( $reference['comp_id'], mif_mr_opop_core::get_opop_url() . 'lib-references/' . $reference['comp_id'] );
+    //                     $out .= '</div>';
+                        
+    //                     $out .= '</div>';
+
+    //                     // p($reference);
+    //                     // p($item);
+
+    //                     $out .= '<div class="row">';
+    //                     $out .= '<div class="col p-0 pt-3 pb-5">';
+                        
+    //                     if ( $reference['is_numeric'] === $item['is_numeric'] && $reference['is_string'] === $item['is_string'] ) {
+
+    //                         if ( ! empty( $reference['data'] ) ) {
+            
+    //                             $out .= mif_mr_lib_references_screen::get_references_data( $reference );
+                                
+    //                         }
+                            
+    //                     } else {
+                            
+    //                         $out .= mif_mr_functions::get_callout( 'Кажется, что данные не те', 'warning' );
+                            
+    //                     }
+
+    //                     $out .= '</div>';
+    //                     $out .= '</div>';
+                        
+    //                 } else {
+                        
+    //                     $out .= '<div class="row">';
+    //                     $out .= '<div class="col p-0">';
+                        
+    //                     $out .= mif_mr_functions::get_callout( 'Нет данных', 'warning' );
+                        
+    //                     $out .= '</div>';
+    //                     $out .= '</div>';
+                   
+    //                }
+                
+    //             } 
+                
+
+
+    //         //     $out .= $item['name'];
+            
+    //         // p($item);
+
+    //         }
+           
+    //     }
+        
+    //     return apply_filters( 'mif_mr_show_set_references', $out );
+    // }
     
 
     
@@ -235,28 +371,39 @@ class mif_mr_set_references extends mif_mr_set_core {
         
 
     
-
-
+    
+    
+    
     private function do_save() 
     {
         if ( isset( $_REQUEST['data'] ) ) {
-
+            
             $arr = array();
-            foreach ( (array) $_REQUEST['data'] as $k => $d ) $arr[] =  $k . '::' . $d;
-
+            foreach ( (array) $_REQUEST['data'] as $k => $d ) $arr[] =  $k . ':' . $d;
+            
             $this->save( 'set-references', implode( "\n", $arr ) ); 
+            
+            } else {
+                
+                $this->save( 'set-references' ); 
+                
+                }
+                
+                
+                }
+                
+                
+    //
+    // //
+    // //
 
-        } else {
+    // public function get_reference_types()
+    // {
+    //     return $this->reference_types;
+    // }
+        
 
-            $this->save( 'set-references' ); 
-
-        }
-
-
-    }
-
-
-
+                
     private $reference_types = array();
 
 }

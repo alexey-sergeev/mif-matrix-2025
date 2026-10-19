@@ -60,6 +60,8 @@ class mif_mr_opop_core {
                                         ) );
                                         
         $this->current_opop_id = ( isset( $_REQUEST['opop'] ) ) ? (int) $_REQUEST['opop'] : get_the_ID();
+
+        add_filter( 'mif-mr-reference_types', array( $this, 'reference_types' ) );  
         // p('@');                                
         // p($this->current_opop_id);                                
         // p('$tree');
@@ -69,6 +71,15 @@ class mif_mr_opop_core {
     }
     
     
+
+    public function reference_types()
+    {
+        return array(
+                    array( 'name' => 'kaf', 'title' => 'Номера кафедр', 'is_numeric' => true, 'is_string' => false ),
+                    array( 'name' => 'staff', 'title' => 'Должностные лица', 'is_numeric' => false, 'is_string' => true ),
+                ); 
+    }
+
     
     
     // 

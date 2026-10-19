@@ -119,12 +119,15 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
         if ( empty( $att ) ) return;
         if ( $att->post_type != 'file' ) return;
         if ( mif_mr_functions::get_ext( $this->get_path( $att_id ) ) != 'plx' ) return;
-
+        
         // $ext = explode( '.', $att->guid );
         // if ( array_pop( $ext ) != 'plx' ) return;
         
         // $plx = new plx( get_attached_file( $att_id ) );
         // $m = new mif_mr_upload();
+
+        if ( ! is_file( $this->get_path( $att_id ) ) ) return mif_mr_functions::get_callout( 'Файл не найден', 'danger' );
+        
         $plx = new plx( $this->get_path( $att_id ) );
         if ( empty( $plx->get_att() ) ) return mif_mr_functions::get_callout( 'План не обнаружен', 'danger' ); 
             
@@ -285,9 +288,19 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
 
             $attached = get_post( $att['att_id'] );
 
+            // $title = '';
+            // if ( $att['explanation'] === 'kaf' ) $title = 'Номера кафедр — ';
+            // if ( $att['explanation'] === 'staff' ) $title = 'Должностные лица — ';
+ 
+            // $m = new mif_mr_set_references();
+            // $m = new mif_mr_set_core();
+            // $prefix_arr = $m->get_reference_types();
+            // p($prefix_arr);
+
+            $reference_types = apply_filters( 'mif-mr-reference_types', array() );
+
             $title = '';
-            if ( $att['explanation'] === 'kaf' ) $title = 'Номера кафедр — ';
-            if ( $att['explanation'] === 'staff' ) $title = 'Должностные лица — ';
+            foreach ( $reference_types as $pa ) if ( $att['explanation'] === $pa['name'] ) $title = $pa['title'] . ' — ';
             $title .= $attached->post_title;
             
             $key = $att['key'];
