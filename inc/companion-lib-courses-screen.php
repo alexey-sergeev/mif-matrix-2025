@@ -314,6 +314,7 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses_list {
 
     public function get_item_body_evaluations( $d )
     {
+        // p($d);
         if ( empty( $d['data']) ) return $this->data_none( $d );
 
         $t = apply_filters( 'mif-mr-body-evaluations-text', array( 
@@ -324,8 +325,12 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses_list {
         $style2 = ( isset( $d['coll'] ) && $d['coll'] == true ) ? ' style="display: none;"' : '';
         
         $out = '';
-        
-        $out .= '<span class="coll-ppp"' . $style2 . '">. . .</span>';
+
+        $s1 = ( isset( $d['data'][0]['data'][0]['name'] ) ) ? $t['sem'] . ' 1. ' . $d['data'][0]['data'][0]['name'] . '...' : '';
+        $comm = ( isset( $s1 ) ) ? mif_mr_functions::mb_substr( $s1, 80 ) : '. . .';
+        $out .= '<span class="coll-ppp"' . $style2 . '">' . $comm . '</span>';
+
+        // $out .= '<span class="coll-ppp"' . $style2 . '">. . .</span>';
 
         foreach ( $d['data'] as $item ) {
             
@@ -380,6 +385,7 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses_list {
 
     public function get_item_body_content( $d )
     {
+        // p($d);
         if ( empty( $d['data']) ) return $this->data_none( $d );
 
         $t = apply_filters( 'mif-mr-body-content-text', array( 
@@ -399,7 +405,16 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses_list {
         
         $out = '';
 
-        $out .= '<span class="coll-ppp"' . $style2 . '">. . .</span>';
+        $s1 = ( isset( $d['data']['parts'][0]['name'] ) ) ? $t['part'] . ' 1. ' . $d['data']['parts'][0]['name'] . ': ': '';
+        $s2 = ( isset( $d['data']['parts'][0]['outcomes'][ array_keys( $d['data']['parts'][0]['outcomes'] )[0] ][0] ) ) ? 
+                $t[ array_keys( $d['data']['parts'][0]['outcomes'] )[0] ] . ': ' . $d['data']['parts'][0]['outcomes'][ array_keys( $d['data']['parts'][0]['outcomes'] )[0] ][0] :
+                '';
+        $s3 = $s1 . $s2;
+
+        $comm = ( isset( $s3 ) ) ? mif_mr_functions::mb_substr( $s3, 80 ) : '. . .';
+        $out .= '<span class="coll-ppp"' . $style2 . '">' . $comm . '</span>';
+
+        // $out .= '<span class="coll-ppp"' . $style2 . '">. . .</span>';
 
         // Цель освоения дисциплины
         
@@ -513,6 +528,7 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses_list {
 
     public function get_item_body( $d )
     {
+        // p($d['data']);
         if ( empty( $d['data']) ) return $this->data_none( $d );
 
         $t = apply_filters( 'mif-mr-get-item-body', array(
@@ -537,7 +553,10 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses_list {
         
         $out = '';
 
-        $out .= '<span class="coll-ppp"' . $style2 . '">. . .</span>';
+        $comm = ( isset( $d['data'][ array_keys( $d['data'] )[0] ][0] ) ) ? mif_mr_functions::mb_substr( $d['data'][ array_keys( $d['data'] )[0] ][0], 80 ) : '. . .';
+        $out .= '<span class="coll-ppp"' . $style2 . '">' . $comm . '</span>';
+
+        // $out .= '<span class="coll-ppp"' . $style2 . '">. . .</span>';
         
         foreach ( $t[$d['part']] as $key => $item ) {
             
