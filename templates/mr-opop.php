@@ -26,11 +26,13 @@
                 <?php mif_mr_the_menu_item( 'Дисциплины', 'courses', 1 ); ?>
                 <?php mif_mr_the_menu_item( 'Матрица компетенций', 'matrix', 1 ); ?>
                 <?php mif_mr_the_menu_item( 'Учебный план', 'curriculum', 1 ); ?>
-                <?php mif_mr_the_menu_item( '', '', 2 ); ?>
-                <?php mif_mr_the_menu_item( 'Материалы дисциплин', '', 2 ); ?>
+                <?php // mif_mr_the_menu_item( '', '', 2 ); ?>
+                <?php // mif_mr_the_menu_item( 'Материалы дисциплин', '', 2 ); ?>
                 <?php mif_mr_the_menu_item( '', '', 3 ); ?>
-                <?php mif_mr_the_menu_item( 'Рекомендации', 'stat', 3 ); ?>
+                <?php // mif_mr_the_menu_item( 'Рекомендации', 'stat', 3 ); ?>
                 <?php mif_mr_the_menu_item( 'Статистика ОПОП', 'stat', 2 ); ?>
+                <?php mif_mr_the_menu_item( '', '', 3 ); ?>
+                <?php mif_mr_the_menu_item( 'Инструменты разработки', 'tools', 3 ); ?>
                 <?php // mif_mr_the_menu_item( 'Цели и содержание', '', 1 ); ?>
                 <?php // mif_mr_the_menu_item( 'Описание разделов', '', 1 ); ?>
                 <?php // mif_mr_the_menu_item( 'Оценочные средства', '', 1 ); ?>
@@ -53,9 +55,9 @@
                 <?php mif_mr_the_menu_item( 'Библиотека дисциплин', 'lib-courses', 2 ); ?>
                 <?php mif_mr_the_menu_item( 'Библиотека компетенций', 'lib-competencies', 2 ); ?>
                 <?php mif_mr_the_menu_item( 'Библиотека справочников', 'lib-references', 2 ); ?>
-                <?php // mif_mr_the_menu_item( 'Библиотека шаблонов', 'lib-templates', 1 ); ?>
-                <?php mif_mr_the_menu_item( '', '', 3 ); ?>
-                <?php mif_mr_the_menu_item( 'Инструменты разработки', 'tools', 3 ); ?>
+                <?php mif_mr_the_menu_item( 'Библиотека шаблонов', 'lib-templates', 2 ); ?>
+                <?php // mif_mr_the_menu_item( '', '', 3 ); ?>
+                <?php // mif_mr_the_menu_item( 'Инструменты разработки', 'tools', 3 ); ?>
                 
             </div>
         </div>

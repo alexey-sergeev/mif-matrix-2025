@@ -221,6 +221,30 @@ class mif_mr_opop extends mif_mr_opop_tree_clean {
                 }
 
             break;
+                      
+            case 'lib-templates':
+                
+                global $wp_query;
+                    
+                if ( isset( $wp_query->query_vars['id'] ) ) {
+                        
+                    global $mif_mr_lib_templates;
+                    $mif_mr_lib_templates = new mif_mr_lib_templates_screen();
+                    
+                    $mif_mr_lib_templates->the_show();
+                    
+                } else {
+                    
+                    global $mif_mr_lib_templates;
+                    $mif_mr_lib_templates = new mif_mr_lib_templates_screen();
+                    
+                    global $mif_mr_set_templates;
+                    $mif_mr_set_templates = new mif_mr_set_templates();
+                    $mif_mr_set_templates->the_show();
+
+                }
+
+            break;
             
             case 'tools':
 

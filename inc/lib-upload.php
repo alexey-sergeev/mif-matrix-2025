@@ -98,6 +98,9 @@ class mif_mr_upload {
         // $out = '';
         $arr = array();
 
+        global $wp_query;
+        $parent = ( empty( $wp_query->query_vars['id'] ) ) ? mif_mr_opop_core::get_opop_id() : $wp_query->query_vars['id'];
+
         foreach ( $_FILES['file']['name'] as $key => $item ) {
 
             if ( empty( $item ) ) continue; 
@@ -179,7 +182,8 @@ class mif_mr_upload {
                             'post_status' => 'publish',
                             'tax_input' => array( 'file_type' => $type ),
                             'post_mime_type' => $_FILES['file']['type'][$key],
-                            'post_parent' => mif_mr_opop_core::get_opop_id(),
+                            // 'post_parent' => mif_mr_opop_core::get_opop_id(),
+                            'post_parent' => $parent,
                         ) );
         
                         // p(get_post($file_id));

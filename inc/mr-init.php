@@ -30,6 +30,7 @@ include_once dirname( __FILE__ ) . '/set-core.php';
 include_once dirname( __FILE__ ) . '/set-competencies.php';
 include_once dirname( __FILE__ ) . '/set-courses.php';
 include_once dirname( __FILE__ ) . '/set-references.php';
+include_once dirname( __FILE__ ) . '/set-templates.php';
 
 include_once dirname( __FILE__ ) . '/companion-lib-core.php';
 include_once dirname( __FILE__ ) . '/companion-lib-competencies.php';
@@ -39,7 +40,8 @@ include_once dirname( __FILE__ ) . '/companion-lib-courses-list.php';
 include_once dirname( __FILE__ ) . '/companion-lib-courses-screen.php';
 include_once dirname( __FILE__ ) . '/companion-lib-references.php';
 include_once dirname( __FILE__ ) . '/companion-lib-references-screen.php';
-// include_once dirname( __FILE__ ) . '/companion-lib-templates.php';
+include_once dirname( __FILE__ ) . '/companion-lib-templates.php';
+include_once dirname( __FILE__ ) . '/companion-lib-templates-screen.php';
 
 include_once dirname( __FILE__ ) . '/tools-core.php';
 include_once dirname( __FILE__ ) . '/tools-curriculum.php';
@@ -115,6 +117,7 @@ class mif_mr_init extends mif_mr_types {
         add_action( 'wp_ajax_lib-competencies', array( $this, 'ajax' ) );
         add_action( 'wp_ajax_lib-courses', array( $this, 'ajax' ) );
         add_action( 'wp_ajax_lib-references', array( $this, 'ajax' ) );
+        add_action( 'wp_ajax_lib-templates', array( $this, 'ajax' ) );
         
         add_action( 'wp_ajax_tools', array( $this, 'ajax' ) );
         // add_action( 'wp_ajax_nopriv_tools', array( $this, 'ajax' ) );
@@ -408,29 +411,7 @@ class mif_mr_init extends mif_mr_types {
                 } 
     
                 
-                
                 if ( $_REQUEST['action'] == 'lib-references' ) {
-                    
-                
-                    // if ( in_array( $_REQUEST['do'], array( 'edit', 'cancel' ) ) ) {
-                    //     // p($_REQUEST);
-                    //     $m = new mif_mr_lib_courses_screen();
-                    //     echo $m->get_course_part( array(
-                    //                             'course_id' => (int) $_REQUEST['comp'],
-                    //                             'sub_id' => sanitize_key( $_REQUEST['sub'] ),
-                    //                             'part' => sanitize_key( $_REQUEST['part'] ),
-                    //                             'name' => sanitize_text_field( $_REQUEST['name'] ),
-                    //                             'coll' => true,
-                    //                             ) );
-                    
-                    // } 
-                    
-                    // if ( in_array( $_REQUEST['do'], array( 'save' ) ) ) {
-                    //     // p($_REQUEST);
-                    //     $m = new mif_mr_lib_courses_screen();
-                    //     echo $m->get_course( (int) $_REQUEST['comp'], (int) $_REQUEST['opop'] );
-                        
-                    // } 
                     
                     if ( in_array( $_REQUEST['do'], array( 'remove' ) ) ) {
                         // p($_REQUEST);
@@ -444,6 +425,27 @@ class mif_mr_init extends mif_mr_types {
                         
                         $m = new mif_mr_lib_references_screen();
                         echo $m->get_lib_references( (int) $_REQUEST['opop'] );
+    
+                    } 
+                    
+                } 
+    
+                
+                
+                if ( $_REQUEST['action'] == 'lib-templates' ) {
+                    
+                    if ( in_array( $_REQUEST['do'], array( 'remove' ) ) ) {
+                        // p($_REQUEST);
+                        $m = new mif_mr_lib_rtemplates_screen();
+                        $m->remove( (int) $_REQUEST['comp'], (int) $_REQUEST['opop'], 'lib-templates' );
+                        echo $mif_mr_opop->show_messages();
+                        
+                    } 
+                    
+                    if ( in_array( $_REQUEST['do'], array( 'create' ) ) ) {
+                        
+                        $m = new mif_mr_lib_templates_screen();
+                        echo $m->get_lib_templates( (int) $_REQUEST['opop'] );
     
                     } 
                     

@@ -443,6 +443,16 @@ function mif_mr_the_set_references()
     echo $mif_mr_set_references->show_set_references();
 }
 
+//
+// Выводит 
+//
+
+function mif_mr_the_set_templates()
+{
+    global $mif_mr_set_templates;
+    echo $mif_mr_set_templates->show_set_templates();
+}
+
 
 //
 // Выводит 
@@ -557,6 +567,17 @@ function mif_mr_the_lib_references()
 // Выводит 
 //
 
+function mif_mr_the_lib_templates()
+{
+    global $mif_mr_lib_templates;
+    echo $mif_mr_lib_templates->get_lib_templates();
+}
+
+
+//
+// Выводит 
+//
+
 function mif_mr_show_courses()
 {
     global $mif_mr_lib_courses;
@@ -571,6 +592,16 @@ function mif_mr_show_references()
 {
     global $mif_mr_lib_references;
     echo $mif_mr_lib_references->show_references();
+}
+
+//
+// Выводит 
+//
+
+function mif_mr_show_templates()
+{
+    global $mif_mr_lib_templates;
+    echo $mif_mr_lib_templates->show_templates();
 }
 
 
