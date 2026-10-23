@@ -17,7 +17,8 @@ class mif_mr_upload {
     {
 
         // $this->uploads_dir = apply_filters( 'lib-upload-uploads-dir',  ( (object) wp_upload_dir() )->basedir . '/opop_data/' . mif_mr_opop_core::get_opop_id() . '/');
-        $this->uploads_dir = apply_filters( 'lib-upload-uploads-dir',  ( (object) wp_upload_dir() )->basedir . '/opop_data/' . mif_mr_opop_core::get_opop_id() . '/' );
+        // $this->uploads_dir = apply_filters( 'lib-upload-uploads-dir',  ( (object) wp_upload_dir() )->basedir . '/opop_data/' . mif_mr_opop_core::get_opop_id() . '/' );
+        $this->uploads_dir = apply_filters( 'lib-upload-uploads-dir',  ( (object) wp_upload_dir() )->basedir . '/opop_data/' );
         // p($this->uploads_dir);
 
         // if ( empty( $_REQUEST['download'] ) ) return;
@@ -98,8 +99,13 @@ class mif_mr_upload {
         // $out = '';
         $arr = array();
 
-        global $wp_query;
-        $parent = ( empty( $wp_query->query_vars['id'] ) ) ? mif_mr_opop_core::get_opop_id() : $wp_query->query_vars['id'];
+        // global $wp_query;
+        // $parent = ( empty( $wp_query->query_vars['id'] ) ) ? mif_mr_opop_core::get_opop_id() : $wp_query->query_vars['id'];
+        // $parent = mif_mr_opop_core::get_opop_id();
+        
+        // global $wp_query;
+        // $sub_dir = ( ! empty( $wp_query->query_vars['id'] ) ) ? $wp_query->query_vars['id'] . '/' : '';
+
 
         foreach ( $_FILES['file']['name'] as $key => $item ) {
 
@@ -160,8 +166,12 @@ class mif_mr_upload {
 
                 $type = ( isset( $_REQUEST['type'] ) ) ? sanitize_key( $_REQUEST['type'] ) : '';
                 
-                $uploads_dir = $this->uploads_dir;
+                $uploads_dir = $this->uploads_dir. mif_mr_opop_core::get_opop_id() . '/';
                 if ( ! empty( $type ) ) $uploads_dir .= $type . '/';
+
+                global $wp_query;
+                $sub_dir = ( ! empty( $wp_query->query_vars['id'] ) ) ? $wp_query->query_vars['id'] . '/' : '';
+                $uploads_dir .= $sub_dir;
 
                 $res3 = true;
                 if ( ! is_dir( $uploads_dir ) ) $res3 = mkdir( $uploads_dir, 0755, true );
@@ -173,7 +183,7 @@ class mif_mr_upload {
                     
                     if ( $res2 ) {
                         
-                        $file_path = ( ! empty( $type ) ) ? $type . '/' . $file_name : $file_name;
+                        $file_path = ( ! empty( $type ) ) ? $type . '/' . $sub_dir . $file_name : $file_name;
 
                         $file_id = wp_insert_post( array(
                             'post_title' => $title,
@@ -182,8 +192,8 @@ class mif_mr_upload {
                             'post_status' => 'publish',
                             'tax_input' => array( 'file_type' => $type ),
                             'post_mime_type' => $_FILES['file']['type'][$key],
-                            // 'post_parent' => mif_mr_opop_core::get_opop_id(),
-                            'post_parent' => $parent,
+                            'post_parent' => mif_mr_opop_core::get_opop_id(),
+                            // 'post_parent' => $parent,
                         ) );
         
                         // p(get_post($file_id));
@@ -319,10 +329,20 @@ class mif_mr_upload {
 
 
 
+    // public function get_url( $id )
+    // {
+    //     // p(get_home_url());
+    //     $file = get_post( $id );
+    //     return get_home_url() . $file->post_content;
+    // }
+
+
+
     public function get_path( $id )
     {
         $file = get_post( $id );
-        return $this->uploads_dir . $file->post_content;
+        // p($file);
+        return $this->uploads_dir . $file->post_parent . '/' . $file->post_content;
     }
 
 

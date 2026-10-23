@@ -117,7 +117,37 @@ class mif_mr_download {
             $this->download( $a['path'], $a['name'] );
 
         }
+     
         
+
+        // Шаблон (d-tpl)
+
+        if ( $item == 'd-tpl' ) {
+
+            global $wp_query;
+            global $tree;
+
+            $m = new mif_mr_opop();
+            
+            if ( isset( $wp_query->query_vars['id'] ) && isset( $_REQUEST['slug'] ) ) {
+
+                $slug = sanitize_text_field( $_REQUEST['slug'] );
+                $path = $tree['content']['lib-templates']['data'][$wp_query->query_vars['id']]['index'][$slug];
+    // p( $tree['content']['lib-templates']['data'][$wp_query->query_vars['id']]['index'][$slug]);
+                $name = $slug . '.docx';
+
+                $this->download( $path, $name, NULL, false );
+                    
+            } else {
+                        
+                global $messages;
+                $messages[] = array( 'Какая-то ошибка. Код ошибки: 2310', 'danger' );
+
+            } 
+
+        }
+
+
     }
 
 
@@ -170,7 +200,7 @@ class mif_mr_download {
     function download( $file, $name = '', $content_type = NULL, $unlink = true ) 
     {
         global $mr;
-        
+               
         if ( ! $mr->user_can(2) ) {
             p( 'Access denied' );    
             return;

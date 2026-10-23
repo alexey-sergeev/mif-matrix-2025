@@ -40,7 +40,7 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
         $tree['content']['courses']['clean'] = $this->make_courses_clean();
         $tree['content']['courses']['errors'] = $this->make_courses_errors();
         $tree['templates'] = $this->make_templates_clean();
-        
+        // $this->attach_files_to_templates();
         // $tree['content']['competencies']['clean'] = $this->make_courses_competencies();
         $tree['content']['competencies']['data'] = $this->make_courses_competencies();
 
@@ -49,6 +49,31 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
     }
 
 
+    
+
+
+
+    // // 
+    // // Зацепить файлы 
+    // // 
+    
+    // private function attach_files_to_templates()
+    // {
+    //     global $tree;
+    //     $arr = $tree['content']['lib-templates'];
+
+    //     foreach ( $arr['data'] as $key => $item ) {
+
+    //         p($item);
+
+    //     }
+
+
+    //     p($arr);
+
+    //     return apply_filters( 'mif_mr_attach_files_to_templates', $arr );
+    // }
+    
     
 
 
