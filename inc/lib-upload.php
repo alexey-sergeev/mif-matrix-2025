@@ -96,6 +96,8 @@ class mif_mr_upload {
         global $mr;
         if ( ! $mr->user_can(3) ) return;
 
+        // p('@');
+
         // $out = '';
         $arr = array();
 
@@ -106,6 +108,7 @@ class mif_mr_upload {
         // global $wp_query;
         // $sub_dir = ( ! empty( $wp_query->query_vars['id'] ) ) ? $wp_query->query_vars['id'] . '/' : '';
 
+        $is_save = false;
 
         foreach ( $_FILES['file']['name'] as $key => $item ) {
 
@@ -204,6 +207,8 @@ class mif_mr_upload {
                             $arr[$key]['messages'] = 'Сохранено';
                             $arr[$key]['id'] = $file_id;
 
+                            $is_save = true;
+
                         } else {
                         
                             $arr[$key]['status'] = 'danger';
@@ -233,6 +238,18 @@ class mif_mr_upload {
             }
 
         }
+
+
+        if ( $is_save ) {
+            
+            global $tree;
+            global $mif_mr_opop;
+            
+            $tree = array();
+            $tree = $mif_mr_opop->get_tree();
+            
+        }
+
 
         // p($arr);
         
@@ -299,7 +316,20 @@ class mif_mr_upload {
         
         unlink( $this->get_path( $id ) );
         $res = wp_delete_post( $id, true );
-        return ( empty( $res ) ) ? false : true;
+        
+        $res2 = ( empty( $res ) ) ? false : true;
+        
+        if ( $res2 ) {
+            
+            global $tree;
+            global $mif_mr_opop;
+            
+            $tree = array();
+            $tree = $mif_mr_opop->get_tree();
+            
+        }
+
+        return $res2;
     }
 
 

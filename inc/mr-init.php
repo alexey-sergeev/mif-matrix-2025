@@ -449,6 +449,20 @@ class mif_mr_init extends mif_mr_types {
     
                     } 
                     
+                    if ( in_array( $_REQUEST['do'], array( 'remove-file' ) ) ) {
+                        
+                        // p($_REQUEST);
+
+                        $m = new mif_mr_upload();
+                        $m->remove( (int) $_REQUEST['fileid'] ); 
+                        
+                        $m = new mif_mr_lib_templates_screen();
+                        echo $m->show_templates( (int) $_REQUEST['opop'] );
+
+                    } 
+
+
+                    
                 } 
     
                 

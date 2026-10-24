@@ -994,10 +994,10 @@ jQuery( document ).ready( function( jq ) {
 
 
 
-    jq( 'body' ).on( 'click', '.reload-box .cancel', function() {
-        jq(this).closest('.reload-box').slideUp( function() { jq(this).remove() } );
-        return false;
-    }); 
+    // jq( 'body' ).on( 'click', '.reload-box .cancel', function() {
+    //     jq(this).closest('.reload-box').slideUp( function() { jq(this).remove() } );
+    //     return false;
+    // }); 
 
 
 
@@ -1220,6 +1220,104 @@ jQuery( document ).ready( function( jq ) {
         
         return false;
     });  
+
+
+
+
+    //
+    // lib-templates
+    //
+
+    jq( 'body' ).on( 'click', '.templates .reload', function() {
+      
+        jq( '.reload-box', jq(this).closest('.row') ).slideToggle();
+        return false;
+
+    }); 
+ 
+    jq( 'body' ).on( 'click', '.templates .cancel', function() {
+        jq( '.reload-box', jq(this).closest('.row') ).slideUp();
+        return false;
+
+    }); 
+
+
+    // "remove"
+
+    jq( 'body' ).on( 'click', '.templates .remove-file', function() {
+        
+        // console.log('@');
+
+        let elem = jq(this).closest('div.row');
+        let slug = jq(this).attr( 'data-slug' );    
+        let attid = jq(this).attr( 'data-attid' );    
+        let fileid = jq(this).attr( 'data-fileid' );    
+        // let attid_show = jq( '.show-file' ).attr( 'data-attid' );    
+
+        jq.ajax( {
+            url: ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'lib-templates',
+                do: 'remove-file',
+                slug: slug,
+                attid: attid,
+                fileid: fileid,
+                opop: jq( 'input[name=opop]' ).val(),
+                _wpnonce: jq( 'input[name=_wpnonce]' ).val(),
+            },
+            success: function( response ) {
+                
+                // console.log( response );
+                if ( response ) {
+                    
+                    // jq('.analysis-box').remove();
+                    
+                    // jq( elem ).slideUp( function(){ 
+                        
+                    //     jq(this).remove();
+                    //     // jq('.analysis-box').remove();
+                        
+                    //     if ( jq('.tools .remove').length === 0 ) {
+                    //         jq( '.no-plans' ).slideDown();
+                    //         // jq( '.bottom-panel' ).slideUp();
+                    //         jq( '.bottom-panel' ).hide();
+                    //         // jq( '.bottom-panel' ).slideUp( function(){ jq( '.no-plans' ).slideDown(); } );
+                    //     }  
+                    
+                    // });
+                    
+                    // if ( attid == attid_show ) jq( '.show-file' ).slideUp( function(){ jq(this).remove(); });
+                    jq( 'div.content-ajax' ).replaceWith( response )
+                    // console.log( response );
+                    
+                } else {
+                    
+                    console.log( 'error 21' );
+                    
+                }
+                
+            },
+            error: function( response ) {
+                
+                console.log( 'error 22' );
+                
+            },
+            
+        } );
+
+
+
+        return false;
+        
+    })
+    
+    
+
+
+
+
+
 
 
 

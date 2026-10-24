@@ -113,41 +113,41 @@ class mif_mr_tools_core {
 
 
 
-    //
-    // 
-    //
+    // //
+    // // 
+    // //
 
-    public function reload_box( $attid )
-    {
-        // !!!!!!!
+    // public function reload_box( $attid )
+    // {
+    //     // !!!!!!!
 
-        // p( get_post($attid) );
+    //     // p( get_post($attid) );
 
-        $out = '';
+    //     $out = '';
 
-        $out .= '<div class="reload-box" style="display:none;">';
-        $out .= '<div class="p-0 pb-6 pt-3">';
-        // $out .= $attid;  
+    //     $out .= '<div class="reload-box" style="display:none;">';
+    //     $out .= '<div class="p-0 pb-6 pt-3">';
+    //     // $out .= $attid;  
         
-        $out .= mif_mr_upload::form_upload( array(
-                                'do' => 'reload',
-                                'cancel' => true,
-                                'attid' => $attid,
-                                'url' => 'tools-templates', // !!!
-                                'no_max_filesize' => true, 
-                                'submit' => 'Обновить' 
-                            ) );
+    //     $out .= mif_mr_upload::form_upload( array(
+    //                             'do' => 'reload',
+    //                             'cancel' => true,
+    //                             'attid' => $attid,
+    //                             'url' => 'tools-templates', // !!!
+    //                             'no_max_filesize' => true, 
+    //                             'submit' => 'Обновить' 
+    //                         ) );
             
-        $out .= '</div>';
-        $out .= '</div>';
+    //     $out .= '</div>';
+    //     $out .= '</div>';
 
-        // $out .= '<input type="hidden" name="_wpnonce" value="' . wp_create_nonce( 'mif-mr' ) . '" />';  
-        // $out .= '<input type="hidden" name="opop" value="' . mif_mr_opop_core::get_opop_id() . '" />';  
-        // $out .= '<input type="hidden" name="type" value="' . $type . '" />';  
-        // $out .= '<input type="hidden" name="opop_title" value="' . mif_mr_opop_core::get_opop_title() . '" />';  
+    //     // $out .= '<input type="hidden" name="_wpnonce" value="' . wp_create_nonce( 'mif-mr' ) . '" />';  
+    //     // $out .= '<input type="hidden" name="opop" value="' . mif_mr_opop_core::get_opop_id() . '" />';  
+    //     // $out .= '<input type="hidden" name="type" value="' . $type . '" />';  
+    //     // $out .= '<input type="hidden" name="opop_title" value="' . mif_mr_opop_core::get_opop_title() . '" />';  
         
-        return $out;
-    }
+    //     return $out;
+    // }
 
 
     //
