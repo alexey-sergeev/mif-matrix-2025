@@ -146,6 +146,34 @@ class mif_mr_download {
             } 
 
         }
+        
+
+        // Просто файл
+
+        if ( $item == 'file' ) {
+
+            // global $wp_query;
+
+            // $m = new mif_mr_opop();
+            
+            if ( isset( $_REQUEST['id'] ) ) {
+
+                // $file = get_post( (int) $_REQUEST['id'] );
+                // p($file);
+                $m = new mif_mr_upload();
+                $path = $m->get_path( (int) $_REQUEST['id'] );
+                $name = $m->get_name( (int) $_REQUEST['id'] );
+
+                $this->download( $path, $name, NULL, false );
+                    
+            } else {
+                        
+                global $messages;
+                $messages[] = array( 'Какая-то ошибка. Код ошибки: 2510', 'danger' );
+
+            } 
+
+        }
 
 
     }
