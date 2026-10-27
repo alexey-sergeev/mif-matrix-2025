@@ -56,6 +56,7 @@ class mif_mr_upload {
         if ( isset( $args['do'] ) ) $out .= '<input type="hidden" name="do" value="' . $args['do'] . '">';
         if ( isset( $args['attid'] ) ) $out .= '<input type="hidden" name="attid" value="' . $args['attid'] . '">';
         if ( isset( $args['type'] ) ) $out .= '<input type="hidden" name="type" value="' . $args['type'] . '">';
+        if ( isset( $args['slug'] ) ) $out .= '<input type="hidden" name="slug" value="' . $args['slug'] . '">';
         
         $submit = ( isset( $args['submit'] ) ) ? $args['submit'] : 'Загрузить';
 
@@ -87,12 +88,32 @@ class mif_mr_upload {
     
         // !!!!!!
 
+        // p('@');
         
         if ( ! isset( $_REQUEST['submit'] ) ) return;
         if ( ! isset( $_FILES['file']['error'] ) ) return;
-        if ( ! is_array( $_FILES['file']['error'] ) ) return;
-        // p('@!!');
+        // if ( ! is_array( $_FILES['file']['error'] ) ) return;
+        
+        if ( is_array( $_FILES['file']['error'] ) ) {
 
+            $files = $_FILES;
+
+        } else {
+            
+            $files['file'] = array(
+
+                'name' => array( $_FILES['file']['name'] ),
+                'full_path' => array( $_FILES['file']['full_path'] ),
+                'type' => array( $_FILES['file']['type'] ),
+                'tmp_name' => array( $_FILES['file']['tmp_name'] ),
+                'error' => array( $_FILES['file']['error'] ),
+                'size' => array( $_FILES['file']['size'] ),
+
+            );
+        
+        }
+
+        // p($files);
         // ###!!!
 
         global $mr;
@@ -103,22 +124,16 @@ class mif_mr_upload {
         // $out = '';
         $arr = array();
 
-        // global $wp_query;
-        // $parent = ( empty( $wp_query->query_vars['id'] ) ) ? mif_mr_opop_core::get_opop_id() : $wp_query->query_vars['id'];
-        // $parent = mif_mr_opop_core::get_opop_id();
-        
-        // global $wp_query;
-        // $sub_dir = ( ! empty( $wp_query->query_vars['id'] ) ) ? $wp_query->query_vars['id'] . '/' : '';
-
         $is_save = false;
 
-        foreach ( $_FILES['file']['name'] as $key => $item ) {
+        foreach ( $files['file']['name'] as $key => $item ) {
 
             if ( empty( $item ) ) continue; 
-        
-            $arr[$key]['name'] = $item;
 
             $ext = mif_mr_functions::get_ext( $item );
+            if ( ! empty( $_REQUEST['slug'] ) ) $item = sanitize_key( $_REQUEST['slug'] ) . '.' . $ext;
+
+            $arr[$key]['name'] = $item;
 
             // $a = explode( '.', $item );
             // $ext = array_pop( $a );
@@ -137,38 +152,12 @@ class mif_mr_upload {
 
             } 
                 
-            $res = $this->proceeding_upload( $_FILES['file']['error'][$key] );
+            $res = $this->proceeding_upload( $files['file']['error'][$key] );
 
             if ( $res == 'file' ) {
 
-                // require_once( ABSPATH . 'wp-admin/includes/image.php' );
-                // require_once( ABSPATH . 'wp-admin/includes/file.php' );
-                // require_once( ABSPATH . 'wp-admin/includes/media.php' );
-
-                // // $id = media_handle_upload( 'file', mif_mr_opop_core::get_opop_id(), array( 'post_title' => mif_mr_opop_core::get_opop_title() . ' - ' . $item ) );
-                
-                // $file = array(  
-                //     'name' => $_FILES['file']['name'][$key],
-                //     'tmp_name' => $_FILES['file']['tmp_name'][$key],
-                //     'error' => $_FILES['file']['error'][$key],
-                //     'size' => $_FILES['file']['size'][$key],
-                // );
-
-                // // p($_FILES['file']['tmp_name'][$key]);
-
-                // $title = apply_filters( 'lib-upload-save-title', NULL, $_FILES['file']['tmp_name'][$key], $_FILES['file']['name'][$key] );
-                // $id = media_handle_sideload( $file, mif_mr_opop_core::get_opop_id(), $title );
-                
-                // $file = array(  
-                //     'name' => $_FILES['file']['name'][$key],
-                //     'tmp_name' => $_FILES['file']['tmp_name'][$key],
-                //     'error' => $_FILES['file']['error'][$key],
-                //     'size' => $_FILES['file']['size'][$key],
-                // );
-
-                $title = apply_filters( 'lib-upload-save-title', NULL, $_FILES['file']['tmp_name'][$key], $_FILES['file']['name'][$key] );
-                // $id = media_handle_sideload( $file, mif_mr_opop_core::get_opop_id(), $title );
-
+                $title = apply_filters( 'lib-upload-save-title', NULL, $files['file']['tmp_name'][$key], $files['file']['name'][$key] );
+                if ( ! empty( $_REQUEST['slug'] ) ) $title = sanitize_key( $_REQUEST['slug'] );
                 $arr[$key]['title'] = $title;
 
                 $type = ( isset( $_REQUEST['type'] ) ) ? sanitize_key( $_REQUEST['type'] ) : '';
@@ -186,8 +175,9 @@ class mif_mr_upload {
 
                 if ( $res3 ) {
 
-                    $file_name = wp_unique_filename( $uploads_dir, $_FILES['file']['name'][$key] );
-                    $res2 = move_uploaded_file( $_FILES['file']['tmp_name'][$key], $uploads_dir . $file_name );
+                    // $file_name = wp_unique_filename( $uploads_dir, $files['file']['name'][$key] );
+                    $file_name = wp_unique_filename( $uploads_dir, $item );
+                    $res2 = move_uploaded_file( $files['file']['tmp_name'][$key], $uploads_dir . $file_name );
                     
                     // p($_FILES['file']['tmp_name'][$key]);
                     // p($uploads_dir . $file_name);
@@ -202,7 +192,7 @@ class mif_mr_upload {
                             'post_type' => 'file',
                             'post_status' => 'publish',
                             'tax_input' => array( 'file_type' => $type ),
-                            'post_mime_type' => $_FILES['file']['type'][$key],
+                            'post_mime_type' => $files['file']['type'][$key],
                             'post_parent' => mif_mr_opop_core::get_opop_id(),
                             // 'post_parent' => $parent,
                         ) );

@@ -1342,18 +1342,21 @@ jQuery( document ).ready( function( jq ) {
         formData.append( '_wpnonce', jq('input[name=_wpnonce]').val() );
         formData.append( 'submit', 'save' );
         formData.append( 'type', 'templates' );
-        formData.append( 'quiet_mode', 'yes' );
+        formData.append( 'slug', jq('input[name=slug]', jq(this).closest('.row')).val() );
+        // formData.append( 'quiet_mode', 'yes' );
 
-        let fileInput = jq('input[type=file][name="file[]"]', jq(this).closest('.row'))[0]; 
-        // let fileInput = jq( 'input[type=file][name="file[]"]', jq(this).closest('.row') ); 
+        // Это режим 'multiple'
+
+        // let fileInput = jq('input[type=file][name="file[]"]', jq(this).closest('.row'))[0]; 
+        // if ( fileInput.files && fileInput.files.length > 0 ) 
+        //     for ( let i = 0; i < fileInput.files.length; i++ ) formData.append( 'file[]', fileInput.files[i] ); 
         
-        console.log(fileInput);
+        // Это режим 'single'
         
-        if ( fileInput.files && fileInput.files.length > 0 ) 
-            for ( let i = 0; i < fileInput.files.length; i++ ) formData.append( 'file[]', fileInput.files[i] ); 
+        let fileInput = jq('input[type=file][name="file"]', jq(this).closest('.row'))[0]; 
+        if ( fileInput.files && fileInput.files.length > 0 ) formData.append( 'file', fileInput.files[0] ); 
         
         // if ( fileInput.files && fileInput.files.length > 0 ) { 
-        //     console.log('2@2');
             // formData.append( 'file', fileInput.files, fileInput.files.name ); }
 
         jq.ajax({
