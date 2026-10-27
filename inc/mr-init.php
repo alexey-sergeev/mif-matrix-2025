@@ -427,6 +427,7 @@ class mif_mr_init extends mif_mr_types {
                         echo $m->get_lib_references( (int) $_REQUEST['opop'] );
     
                     } 
+
                     
                 } 
     
@@ -460,8 +461,21 @@ class mif_mr_init extends mif_mr_types {
                         echo $m->show_templates( (int) $_REQUEST['opop'] );
 
                     } 
+                    
+                    if ( in_array( $_REQUEST['do'], array( 'upload' ) ) ) {
 
+                        // p($_REQUEST);
+                        // p($_FILES);
 
+                        // $m = new mif_mr_upload();
+                        // $m->save( array( 'ext' => array( 'docx' ) ) ); 
+
+                        $m = new mif_mr_lib_templates_screen();
+                        echo $m->show_templates( (int) $_REQUEST['opop'] );
+
+                        // echo '@@@';
+    
+                    } 
                     
                 } 
     

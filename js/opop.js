@@ -1268,28 +1268,9 @@ jQuery( document ).ready( function( jq ) {
             },
             success: function( response ) {
                 
-                // console.log( response );
                 if ( response ) {
                     
-                    // jq('.analysis-box').remove();
-                    
-                    // jq( elem ).slideUp( function(){ 
-                        
-                    //     jq(this).remove();
-                    //     // jq('.analysis-box').remove();
-                        
-                    //     if ( jq('.tools .remove').length === 0 ) {
-                    //         jq( '.no-plans' ).slideDown();
-                    //         // jq( '.bottom-panel' ).slideUp();
-                    //         jq( '.bottom-panel' ).hide();
-                    //         // jq( '.bottom-panel' ).slideUp( function(){ jq( '.no-plans' ).slideDown(); } );
-                    //     }  
-                    
-                    // });
-                    
-                    // if ( attid == attid_show ) jq( '.show-file' ).slideUp( function(){ jq(this).remove(); });
                     jq( 'div.content-ajax' ).replaceWith( response )
-                    // console.log( response );
                     
                 } else {
                     
@@ -1305,6 +1286,107 @@ jQuery( document ).ready( function( jq ) {
             },
             
         } );
+
+
+
+        return false;
+        
+    })
+    
+    
+
+    // "submit"
+
+    jq( 'body' ).on( 'click', '.templates .reload-box .submit', function() {
+        
+        // console.log('@');
+
+        // jq.ajax( {
+        //     url: ajaxurl,
+        //     type: 'POST',
+        //     data: {
+        //         action: 'lib-templates',
+        //         do: 'upload',
+        //         attid: jq( 'input[name=attid]' ).val(),
+        //         opop: jq( 'input[name=opop]' ).val(),
+        //         _wpnonce: jq( 'input[name=_wpnonce]' ).val(),
+        //     },
+        //     success: function( response ) {
+                
+        //         if ( response ) {
+                    
+        //             jq( 'div.content-ajax' ).replaceWith( response )
+                    
+        //         } else {
+                    
+        //             console.log( 'error 23' );
+                    
+        //         }
+                
+        //     },
+        //     error: function( response ) {
+                
+        //         console.log( 'error 24' );
+                
+        //     },
+            
+        // } );
+
+
+        let formData = new FormData();
+
+        formData.append( 'action', 'lib-templates' );
+        formData.append( 'do', 'upload' );
+        formData.append( 'attid', jq('input[name=attid]').val() );
+        formData.append( 'opop', jq('input[name=opop]').val() ) ;
+        formData.append( '_wpnonce', jq('input[name=_wpnonce]').val() );
+        formData.append( 'submit', 'save' );
+        formData.append( 'type', 'templates' );
+        formData.append( 'quiet_mode', 'yes' );
+
+        let fileInput = jq('input[type=file][name="file[]"]', jq(this).closest('.row'))[0]; 
+        // let fileInput = jq( 'input[type=file][name="file[]"]', jq(this).closest('.row') ); 
+        
+        console.log(fileInput);
+        
+        if ( fileInput.files && fileInput.files.length > 0 ) 
+            for ( let i = 0; i < fileInput.files.length; i++ ) formData.append( 'file[]', fileInput.files[i] ); 
+        
+        // if ( fileInput.files && fileInput.files.length > 0 ) { 
+        //     console.log('2@2');
+            // formData.append( 'file', fileInput.files, fileInput.files.name ); }
+
+        jq.ajax({
+            url: ajaxurl,
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+ 
+            success: function( response ) {
+                
+                if ( response ) {
+                    
+                    jq( 'div.content-ajax' ).replaceWith( response )
+                    
+                } else {
+                    
+                    console.log( 'error 23' );
+                    
+                }
+                
+            },
+            error: function( response ) {
+                
+                console.log( 'error 24' );
+                
+            },
+
+
+            // error: function(xhr, status, error) {
+            //     console.error('Ошибка:', error);
+            // }
+        });
 
 
 

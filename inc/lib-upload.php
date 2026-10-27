@@ -60,7 +60,7 @@ class mif_mr_upload {
         $submit = ( isset( $args['submit'] ) ) ? $args['submit'] : 'Загрузить';
 
         $out .= '<div class="mt-5">';
-        $out .= '<input type="submit" name="submit" value="' . $submit . '" class="btn btn-primary mr-3">';
+        $out .= '<input type="submit" name="submit" value="' . $submit . '" class="submit btn btn-primary mr-3">';
         // $out .= '<input type="button" value="Отмена" class="btn btn-light mt-6 mb-6 mr-3">';
         if ( isset( $args['cancel'] ) ) $out .= '<input type="button" value="Отмена" class="cancel btn btn-light border">';
         $out .= '</div>';
@@ -87,9 +87,11 @@ class mif_mr_upload {
     
         // !!!!!!
 
+        
         if ( ! isset( $_REQUEST['submit'] ) ) return;
         if ( ! isset( $_FILES['file']['error'] ) ) return;
         if ( ! is_array( $_FILES['file']['error'] ) ) return;
+        // p('@!!');
 
         // ###!!!
 
@@ -167,6 +169,8 @@ class mif_mr_upload {
                 $title = apply_filters( 'lib-upload-save-title', NULL, $_FILES['file']['tmp_name'][$key], $_FILES['file']['name'][$key] );
                 // $id = media_handle_sideload( $file, mif_mr_opop_core::get_opop_id(), $title );
 
+                $arr[$key]['title'] = $title;
+
                 $type = ( isset( $_REQUEST['type'] ) ) ? sanitize_key( $_REQUEST['type'] ) : '';
                 
                 $uploads_dir = $this->uploads_dir. mif_mr_opop_core::get_opop_id() . '/';
@@ -174,6 +178,7 @@ class mif_mr_upload {
 
                 global $wp_query;
                 $sub_dir = ( ! empty( $wp_query->query_vars['id'] ) ) ? $wp_query->query_vars['id'] . '/' : '';
+                $sub_dir = ( ! empty( $_REQUEST['attid'] ) ) ? sanitize_key( $_REQUEST['attid'] ) . '/' : '';
                 $uploads_dir .= $sub_dir;
 
                 $res3 = true;
@@ -184,6 +189,9 @@ class mif_mr_upload {
                     $file_name = wp_unique_filename( $uploads_dir, $_FILES['file']['name'][$key] );
                     $res2 = move_uploaded_file( $_FILES['file']['tmp_name'][$key], $uploads_dir . $file_name );
                     
+                    // p($_FILES['file']['tmp_name'][$key]);
+                    // p($uploads_dir . $file_name);
+
                     if ( $res2 ) {
                         
                         $file_path = ( ! empty( $type ) ) ? $type . '/' . $sub_dir . $file_name : $file_name;
