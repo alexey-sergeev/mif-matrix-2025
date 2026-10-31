@@ -143,9 +143,9 @@ class mif_mr_part_companion extends mif_mr_part_core {
         global $mr;
         if ( ! $mr->user_can(3) ) return;
 
-        if ( $content == NULL && ! isset( $_REQUEST['content'] ) ) return;
-        if ( $content == NULL ) $content = sanitize_textarea_field( $_REQUEST['content'] );
-
+        if ( $content === NULL && ! isset( $_REQUEST['content'] ) ) return;
+        if ( $content === NULL ) $content = sanitize_textarea_field( $_REQUEST['content'] );
+        
         $res = $this->companion_insert( $att = array(
                     'type' => $type,
                     'opop_id' => $opop_id, 

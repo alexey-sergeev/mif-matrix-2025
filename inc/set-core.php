@@ -658,7 +658,7 @@ class mif_mr_set_core extends mif_mr_part_companion {
 
         $data = preg_split( '/\\r\\n?|\\n/', $text );
         $data = array_map( 'strim', $data );
-        
+
         foreach ( $data as $item ) {
             
             $arr2 = explode( ':', $item );
@@ -674,8 +674,54 @@ class mif_mr_set_core extends mif_mr_part_companion {
             }
 
         }
-        
+
         return apply_filters( 'mif_mr_set_references_arr_comp', $arr );
+    }
+
+
+
+   
+    //
+    // Возвращает массив из текста (post)
+    //
+    // templates_id
+    // 
+
+    public function get_arr_templates( $opop_id = NULL )
+    {
+        if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
+        
+        $arr = array();
+        
+        $text = $this->get_companion_content( 'set-templates', $opop_id );
+        
+        // Разбить текст на массив строк
+
+        $data = preg_split( '/\\r\\n?|\\n/', $text );
+        $data = array_map( 'strim', $data );
+        
+        // p($data);
+
+        // foreach ( $data as $item ) {
+            
+        //     $arr2 = explode( ':', $item );
+        //     $arr2 = array_map( 'trim', $arr2 );
+
+        //     if ( empty( $arr2[0] ) ) continue;
+        //     if ( empty( $arr2[1] ) ) continue;
+
+        //     if ( is_string( $arr2[0] ) && is_numeric( $arr2[1] ) ) {
+                
+        //         $arr[$arr2[0]] = $arr2[1];
+                
+        //     }
+
+        // }
+        $arr['templates'] = $data[0];
+
+        // p($arr);
+
+        return apply_filters( 'mif_mr_set_templates_arr_comp', $arr );
     }
     
     
@@ -742,6 +788,50 @@ class mif_mr_set_core extends mif_mr_part_companion {
         // p($arr);
 
         return apply_filters( 'mif_mr_comp_set_references_to_tree', $arr, $t );
+    }
+
+
+
+
+    //
+    // 
+    //
+    
+    public static function set_templates_to_tree( $t = array() )
+    {
+        $arr = array();
+        // p($t['content']['lib-templates']['data']);
+        
+        // Из библиотеки
+        
+        foreach ( $t['content']['lib-templates']['data'] as $i ) {
+
+             $arr['templates'] = $i;
+
+        }
+
+
+        // Локальные
+
+        foreach ( $t['content']['lib-templates']['data'] as $i ) {
+
+            if ( $i['from_id'] == mif_mr_opop_core::get_opop_id() ) $arr['templates'] = $i;
+
+        }
+
+
+        // Ручной метод
+
+        foreach ( $t['content']['set-templates']['data'] as $key => $item ) {
+           
+                if ( isset( $t['content']['lib-templates']['data'][$item] ) )
+                    $arr[$key] = $t['content']['lib-templates']['data'][$item];
+        
+        }
+
+        // p($arr);
+
+        return apply_filters( 'mif_mr_comp_set_templates_to_tree', $arr, $t );
     }
 
 

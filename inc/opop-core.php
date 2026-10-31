@@ -608,7 +608,7 @@ class mif_mr_opop_core {
 
         if ( isset( $_REQUEST['course'] ) ) 
             if ( is_numeric( $_REQUEST['course'] ) ) {
-                p($_REQUEST['course']);
+                
                 if ( ! empty( $tree['content']['courses']['index'][(int) $_REQUEST['course']] ) )
                     $key = $tree['content']['courses']['index'][(int) $_REQUEST['course']];
             } else {

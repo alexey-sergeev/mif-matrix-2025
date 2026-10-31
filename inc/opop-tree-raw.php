@@ -118,6 +118,7 @@ class mif_mr_opop_tree_raw extends mif_mr_opop_core {
             $t = $this->arr_replace( $t, $this->get_companion( 'set-competencies', $item ) ); 
             $t = $this->arr_replace( $t, $this->get_companion( 'set-courses', $item ) ); 
             $t = $this->arr_replace( $t, $this->get_companion( 'set-references', $item ) ); 
+            $t = $this->arr_replace( $t, $this->get_companion( 'set-templates', $item ) ); 
             // 
             
             // p($this->get_companion( 'competencies', $item ));
@@ -128,6 +129,7 @@ class mif_mr_opop_tree_raw extends mif_mr_opop_core {
         $t['content']['courses']['index'] = mif_mr_set_core::set_courses_index( $t );
         $t['content']['competencies']['data'] = mif_mr_set_core::set_comp_to_tree( $t );
         $t['content']['references']['data'] = mif_mr_set_core::set_references_to_tree( $t );
+        $t['content']['templates']['data'] = mif_mr_set_core::set_templates_to_tree( $t );
         
         return apply_filters( 'mif_mr_core_opop_get_tree_raw', $t );
     }
@@ -248,22 +250,25 @@ class mif_mr_opop_tree_raw extends mif_mr_opop_core {
             break;
                 
             case 'set-competencies':
-                // p('@');
                 $m = new mif_mr_set_core();
                 $data = $m->get_arr_competencies( $opop_id );
             break;
             
                 
             case 'set-courses':
-                // p('@');
                 $m = new mif_mr_set_core();
                 $data = $m->get_arr_courses( $opop_id );
             break;
             
             case 'set-references':
-                // p('@');
                 $m = new mif_mr_set_core();
                 $data = $m->get_arr_references( $opop_id );
+            break;
+            
+            
+            case 'set-templates':
+                $m = new mif_mr_set_core();
+                $data = $m->get_arr_templates( $opop_id );
             break;
             
 

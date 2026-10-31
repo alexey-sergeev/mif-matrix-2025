@@ -58,14 +58,14 @@
     
     
 
-    <div class="row mt-4 border bg-body-secondary fw-semibold text-center">
+    <!-- <div class="row mt-4 border bg-body-secondary fw-semibold text-center">
         <div class="col-1 p-2"></div>
         <div class="col-10 p-2">Параметры для шаблонов</div>
         <div class="col-1 p-2"></div>
     </div>
-    
-    <?php mif_mr_show_explanation('templates'); ?>
-    <div class="row"><?php mif_mr_the_templates(); ?></div>
+     -->
+    <!-- < ?php mif_mr_show_explanation('templates'); ?>
+    <div class="row">< ?php mif_mr_the_templates(); ?></div> -->
     
     <!-- <div class="row mt-4 bg-primary-subtle border border-primary-subtle fw-semibold text-center">
         <div class="col-1 p-2"></div>

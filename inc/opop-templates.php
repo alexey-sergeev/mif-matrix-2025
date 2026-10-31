@@ -159,15 +159,15 @@ function mif_mr_the_text( $key )
 
 
 
-//
-// Выводит 
-//
+// //
+// // Выводит 
+// //
 
-function mif_mr_the_templates()
-{
-    global $mif_mr_param;
-    echo $mif_mr_param->get_item_templates();
-}
+// function mif_mr_the_templates()
+// {
+//     global $mif_mr_param;
+//     echo $mif_mr_param->get_item_templates();
+// }
 
 
 
@@ -239,9 +239,17 @@ function mif_mr_the_link_edit_visual()
 
 function mif_mr_the_link_edit_easy()
 {
+    global $mif_mr_set_templates;
     global $mif_mr_set_references;
     global $mif_mr_attributes;
     global $mif_mr_param;
+    
+    if ( ! empty( $mif_mr_set_templates ) ) {
+
+        echo $mif_mr_set_templates->get_link_edit_easy();
+        return;
+  
+    }
     
     if ( ! empty( $mif_mr_set_references ) ) {
 
