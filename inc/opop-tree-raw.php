@@ -29,37 +29,6 @@ class mif_mr_opop_tree_raw extends mif_mr_opop_core {
     }
     
 
-    // // 
-    // // Tree
-    // // 
-    
-    // public function get_tree()
-    // {
-    //     $t = $this->get_tree_clean(); 
-    //     return apply_filters( 'mif_mr_core_opop_get_tree', $t );
-    // }
-    
-    
-    
-    // // 
-    // // Tree clean
-    // // 
-    
-    // public function get_tree_clean()
-    // {
-        
-    //     $t = $this->get_tree_raw(); 
-        
-    //     // $t['content']['competencies']['from_id'] = $this->get_opop_id();
-    //     // $t['content']['competencies']['data'] = mif_mr_comp::set_comp_to_tree( $t );
-        
-    //     $t['content']['courses']['complete'] = mif_mr_set_core::set_courses_to_tree( $t, $this->opop_id );
-    //     $t['content']['competencies']['data'] = mif_mr_set_core::set_comp_to_tree( $t );
-    //     $t['content']['references']['data'] = mif_mr_set_core::set_references_to_tree( $t );
-        
-    //     return apply_filters( 'mif_mr_core_opop_get_tree_clean', $t );
-    // }
-
 
 
     // 
@@ -97,14 +66,6 @@ class mif_mr_opop_tree_raw extends mif_mr_opop_core {
         
         
         foreach ( $this->parents_arr as $item ) {
-            
-            // p($item);
-            // p($this->get_param_and_meta( $item ));
-            // p($this->get_courses( $item ));
-            // $t = array_replace_recursive( $t, $this->get_param_and_meta( $item ) ); 
-            // $t = array_replace_recursive( $t, $this->get_companion( 'courses', $item ) ); 
-            // $t = array_replace_recursive( $t, $this->get_companion( 'matrix', $item ) ); 
-            // $t = array_replace_recursive( $t, $this->get_companion( 'curriculum', $item ) ); 
             
             $t = $this->arr_replace( $t, $this->get_param_and_meta( $item ) ); 
             $t = $this->arr_replace( $t, $this->get_companion( 'courses', $item ) ); 
@@ -293,25 +254,6 @@ class mif_mr_opop_tree_raw extends mif_mr_opop_core {
     
 
     private $opop_id = NULL;
-
-
-    // private function param_map_index()
-    // {
-    //     $arr = array();
-
-    //     // foreach ( $this->param_map as $item ) 
-    //     //     foreach ( (array) $item['key'] as $key => $item2 ) 
-    //     //         if ( $key != 0 ) $arr[ $item['key'][0] ][] = $item2;
-        
-    //     foreach ( $this->param_map as $item )
-    //         foreach ( (array) $item['key'] as $item2 ) 
-    //             $arr[$item2] = $item['key'][0];
-        
-    //     return $arr;    
-    
-    // }
-
-
    
 }
 

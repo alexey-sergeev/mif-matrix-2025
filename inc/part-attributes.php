@@ -86,54 +86,6 @@ class mif_mr_attributes extends mif_mr_part_companion {
         foreach ( $index as $item ) unset( $arr[$item] );
         if ( ! empty( $arr ) ) $out .= $this->get_attributes_part( $title[1], $arr );
 
-
-        // $out .= '<div class="row pt-3 pb-3 bg-body-secondary fw-bold text-center border">';
-        
-        // $out .= '<div class="col">';
-        // $out .= 'Основные атрибуты';
-        // $out .= '</div>';
-        
-        // $out .= '</div>';
-
-        // foreach ( $index as $item ) {
-            
-        //     $out .= '<div class="row bg-light fw-semibold mt-3 pt-2 pb-2">';
-            
-        //     $out .= '<div class="col-11">';
-        //     $out .= $item;
-        //     $out .= '</div>';
-            
-        //     $out .= '<div class="col-1 text-end">';
-        //     $out .= '<a href="#"><i class="fa-regular fa-clone"></i></a>';
-        //     $out .= '</div>';
-            
-        //     $out .= '</div>';
-            
-            
-        //     $out .= '<div class="row mt-3">';
-            
-        //     $out .= '<div class="col-12">';
-        //     $out .= ( ! empty( $arr[$item] ) ) ? $arr[$item] : '<i class="mr-yellow p-1 pr-5 pl-5">нет данных</i>';
-        //     $out .= '</div>';
-            
-        //     $out .= '</div>';
-           
-        // }
-        
-        // foreach ( $index as $item ) unset( $arr[$item] );
-        // if ( ! empty( $arr ) ) 
-            
-
-        
-
-
-        // $out .= '</div>';
-        
-
-        // $out .= '@@@@@@';
-
-        // p($arr);
-        
         return apply_filters( 'mif_mr_part_get_attributes', $out );
     }
     

@@ -29,12 +29,6 @@ class mif_mr_xlsx  {
 
     private $blank = '';
 
-    // function __construct( $blank = '' )
-    // {
-    //     $this->blank = dirname( __FILE__ ) . '/../templates/xlsx/default.xlsx';
-    //     if ( $blank ) $this->blank = $blank;        
-
-    // }
 
     function __construct( $path = NULL )
     {
@@ -43,17 +37,6 @@ class mif_mr_xlsx  {
         
         $this->spreadsheet = IOFactory::load( $path );
         $this->sheet = $this->spreadsheet->getActiveSheet();
-
-
-        // $this->scheme = apply_filters( 'scheme-data-courses', array() );
-        // add_filter( 'scheme-data-courses', array( $this, 'scheme_data_courses'), 10 );
-
-
-
-        // $cellValue = $spreadsheet->getActiveSheet()->getCell('C4')->getValue();
-        // $cellValue = $this->sheet->getCell('C4')->getValue();
-        // p($cellValue);
-        // p($this->sheet);
 
     }
 
@@ -166,23 +149,6 @@ class mif_mr_xlsx  {
         $this->sheet->getRowDimension( $this->sheet->getCell( $this->scheme['hours'][0] )->getRow() )->setRowHeight( 25 );
     }
 
-
-
-
-
-    // //
-    // // Получить из файла данные
-    // // 
-    // // 
-
-    // function get_courses( $path )
-    // {
-    //     $arr = $this->get( $path );
-
-    //     p($arr);
-
-    //     return $arr;
-    // }
 
 
     private $spreadsheet;

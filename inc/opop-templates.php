@@ -159,17 +159,6 @@ function mif_mr_the_text( $key )
 
 
 
-// //
-// // Выводит 
-// //
-
-// function mif_mr_the_templates()
-// {
-//     global $mif_mr_param;
-//     echo $mif_mr_param->get_item_templates();
-// }
-
-
 
 //
 // Выводит 

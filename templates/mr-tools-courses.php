@@ -12,12 +12,9 @@
             
             <?php mif_mr_show_messages() ?>
             
-            <!-- <div class="container"> -->
             <div>
                 
-                <?php mif_mr_tools_courses();
-                // mif_mr_form_upload( 'Загрузите файл учебного плана в формате XML', 'tools-curriculum' ); 
-                // ?>
+                <?php mif_mr_tools_courses(); ?>
                 
             </div>
             
@@ -37,5 +34,4 @@
     </div>
 </div>
 
-<?php // mif_mr_the_form_end(); ?>
 

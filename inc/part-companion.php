@@ -60,18 +60,6 @@ class mif_mr_part_companion extends mif_mr_part_core {
         
         $out = $mr->get_link_edit_advanced( $companion_id );
 
-        // if ( $mr->user_can(3) ) {
-            
-        //     $out .= '<div class="row mt-1">';
-        //     $out .= '<div class="col-12 p-0 mb-3">';
-        //     if ( $f ) $out .= '<a href="' . get_edit_post_link( $companion_id ) . '" target="_blank">';
-        //     $out .= 'Расширенный редактор';
-        //     if ( $f ) $out .= '</a>';
-        //     $out .= '</div>';
-        //     $out .= '</div>';
-
-        // }
-
         return apply_filters( 'mif_mr_part_core_link_edit_advanced', $out );
     }
     
@@ -152,25 +140,6 @@ class mif_mr_part_companion extends mif_mr_part_core {
                     'opop_title' => $opop_title,
                     'content' => $content,
                     ) );
-    
-        // if ( $this->get_companion_id( $type, $opop_id ) === NULL) {
-            
-        //     $res = wp_insert_post( array(
-        //         'post_title'    => $opop_title . ' (' . $opop_id . ')',
-        //         'post_type'     => $type,
-        //         'post_status'   => 'publish',
-        //         'post_parent'   => $opop_id,
-        //         'post_content'  => $content,
-        //         ) );
-                
-        // } else {
-            
-        //     $res = wp_update_post( array(
-        //         'ID' => $this->get_companion_id( $type, $opop_id ),
-        //         'post_content' => $content,
-        //         ) );
-                
-        // }
 
         global $messages;
         $messages[] = ( $res ) ? array( 'Сохранено', 'success' ) : array( 'Какая-то ошибка. Код ошибки: 102 (' . $type . ')', 'danger' );
@@ -199,13 +168,6 @@ class mif_mr_part_companion extends mif_mr_part_core {
         $opop_title = $att['opop_title'];
         $content = $att['content'];
         
-        // p($type);
-        // p($opop_id);
-        // p($opop_title);
-        // p($content);
-    
-        // remove_filter( 'content_save_pre', 'wp_filter_post_kses' ); 
-
         if ( $this->get_companion_id( $type, $opop_id ) === NULL) {
             // p('@');
             $res = wp_insert_post( array(
@@ -217,8 +179,6 @@ class mif_mr_part_companion extends mif_mr_part_core {
                 ) );
                 
         } else {
-            // p('@@');
-            // remove_filter( 'content_save_pre', 'wp_filter_post_kses' ); 
 
             $res = wp_update_post( array(
                 'ID' => $this->get_companion_id( $type, $opop_id ),
@@ -231,14 +191,6 @@ class mif_mr_part_companion extends mif_mr_part_core {
     }
     
     
-    
-    
-    // public function get_courses_tree( $arr )
-    // {
-    //     $m = new modules();
-    //     $arr = $m->get_courses_tree( $arr );
-    //     return $arr;
-    // }
     
 }
 

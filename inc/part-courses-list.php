@@ -8,8 +8,6 @@
 
 defined( 'ABSPATH' ) || exit;
 
-// include_once dirname( __FILE__ ) . '/part-core.php';
-
 class mif_mr_courses_list extends mif_mr_table {
     
     function __construct()
@@ -28,45 +26,6 @@ class mif_mr_courses_list extends mif_mr_table {
     }
     
 
-    
-    // // 
-    // // Показывает часть 
-    // // 
-
-    // public function the_show()
-    // {
-
-    //     global $wp_query;
-
-
-    //     if ( isset( $wp_query->query_vars['id'] ) ) {
-
-    //         if ( $template = locate_template( 'mr-course.php' ) ) {
-               
-    //             load_template( $template, false );
-    
-    //         } else {
-    
-    //             load_template( dirname( __FILE__ ) . '/../templates/mr-course.php', false );
-    
-    //         }
-
-    //     } else {
-
-    //         if ( $template = locate_template( 'mr-part-courses.php' ) ) {
-               
-    //             load_template( $template, false );
-    
-    //         } else {
-    
-    //             load_template( dirname( __FILE__ ) . '/../templates/mr-part-courses.php', false );
-    
-    //         }
-        
-    //     }
-
-    // }
-    
     
     
     // 
@@ -109,10 +68,6 @@ class mif_mr_courses_list extends mif_mr_table {
         $link_lib = mif_mr_opop_core::get_opop_url() . 'lib-courses/' . $course_id;
         $link_clean = ( isset( $a[$key2]['course_id'] ) ) ? mif_mr_opop_core::get_opop_url() . 'courses/' . $a[$key2]['course_id'] : '';
         
-        // p($tree['content']['courses']['clean'][$course_id]['percent']);
-        // p($key2);
-        // p($course_id);
-
         $percent = ( isset( $tree['content']['courses']['clean'][$key2]['percent'] ) ) ? $tree['content']['courses']['clean'][$key2]['percent'] : 0;
         $percent_color = ( $percent == 0 ) ? 'mr-gray' : ( ( $percent == 100 ) ? 'mr-green' : 'mr-red' );
 
@@ -131,16 +86,6 @@ class mif_mr_courses_list extends mif_mr_table {
 
 
         }
-
-        // p($making);
-
-
-
-
-        // // Ссылка 
-
-        // $text = '<a href="#"><i class="fa-regular fa-file-lines"></i></a>';
-        // $arr[] = $this->add_to_col( $text, array('elem' => 'td', 'class' => '', 'title' => '') );
 
         // %
 

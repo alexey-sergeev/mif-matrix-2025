@@ -53,15 +53,10 @@ class mif_mr_tools_core {
         $opop_id = ( isset( $att['opop_id'] ) ) ? $att['opop_id'] : mif_mr_opop_core::get_opop_id();
         $type = ( isset( $att['type'] ) ) ? $att['type'] : '';
 
-        // p($type );
-        // p($opop_id );
-
         $args = array(
             'numberposts' => -1,
             'post_parent' => $opop_id, 
-            // 'post_type' => 'attachment',
             'post_type' => 'file',
-            // 'order' => 'ASC',
             'order' => 'DESC',
             'post_status' => 'publish',
             'tax_query' => array( array(
@@ -71,26 +66,11 @@ class mif_mr_tools_core {
                                 ) ),   
         );
 
-        // P(mif_mr_opop_core::get_opop_id());
         if ( ! empty( $att['orderby'] ) ) $args['orderby'] = $att['orderby'];
         if ( ! empty( $att['order'] ) ) $args['order'] = $att['order'];
 
         $arr = get_posts( $args );
             
-        // p($arr);
-
-        // // Удалить из ответа лишние файлы 
-        
-        // if ( isset( $att['ext'] ) ) {
-        
-        //     foreach ( $arr as $key => $item ) {
-        //         $arr_tmp = explode( '.', $item->guid );
-        //         $ext = array_pop( $arr_tmp );
-        //         if ( ! in_array( $ext, (array) $att['ext'] ) ) unset( $arr[$key] );
-        //     }
-
-        // }
-
         return $arr;
     }
 
@@ -111,43 +91,6 @@ class mif_mr_tools_core {
         return $out;
     }
 
-
-
-    // //
-    // // 
-    // //
-
-    // public function reload_box( $attid )
-    // {
-    //     // !!!!!!!
-
-    //     // p( get_post($attid) );
-
-    //     $out = '';
-
-    //     $out .= '<div class="reload-box" style="display:none;">';
-    //     $out .= '<div class="p-0 pb-6 pt-3">';
-    //     // $out .= $attid;  
-        
-    //     $out .= mif_mr_upload::form_upload( array(
-    //                             'do' => 'reload',
-    //                             'cancel' => true,
-    //                             'attid' => $attid,
-    //                             'url' => 'tools-templates', // !!!
-    //                             'no_max_filesize' => true, 
-    //                             'submit' => 'Обновить' 
-    //                         ) );
-            
-    //     $out .= '</div>';
-    //     $out .= '</div>';
-
-    //     // $out .= '<input type="hidden" name="_wpnonce" value="' . wp_create_nonce( 'mif-mr' ) . '" />';  
-    //     // $out .= '<input type="hidden" name="opop" value="' . mif_mr_opop_core::get_opop_id() . '" />';  
-    //     // $out .= '<input type="hidden" name="type" value="' . $type . '" />';  
-    //     // $out .= '<input type="hidden" name="opop_title" value="' . mif_mr_opop_core::get_opop_title() . '" />';  
-        
-    //     return $out;
-    // }
 
 
     //
@@ -184,9 +127,6 @@ class mif_mr_tools_core {
         global $mr;
         if ( ! $mr->user_can(3) ) return;
 
-        // $res = ( wp_delete_attachment( $attid, true ) === false ) ? false : true;
-        
-        // $
         $m = new mif_mr_upload();
         return $m->remove( $attid );
     }

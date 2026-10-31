@@ -25,22 +25,6 @@ class mif_mr_part_core {
     }
    
     
-        
-    // // 
-    // // Выноска
-    // // 
-    
-    // public function get_callout( $text, $class = 'body' )
-    // {
-    //     $out = '';
-
-    //     $out .= '<div class="callout mt-4 mb-4 pt-2 pb-2 bg-' . $class . ' border-start border-5 border-' . $class . '">';
-    //     $out .= $text;
-    //     $out .= '</div>';
-
-    //     return apply_filters( 'mif_mr_part_core_get_callout', $out, $text, $class );
-    // }
-    
     
     
     // 
@@ -114,31 +98,6 @@ class mif_mr_part_core {
         return apply_filters( 'mif_mr_part_core_link_edit_easy', $out );
     }
     
-    
-    
-    // // 
-    // // 
-    // // 
-    
-    // public function get_link_edit_advanced( $type )
-    // {
-    //     global $mr;
-
-    //     $out = '';
-        
-    //     $id 
-
-    //     if (  $mr->user_can(3) ) {
-            
-    //         $out .= '<div class="row mt-1">';
-    //         $out .= '<div class="col-12 p-0 mb-3"><a href="' . get_edit_post_link( $wp_query->queried_object->ID ) . '">Расширенный редактор</a></div>';
-    //         $out .= '</div>';
-    //         // $out .= '<div class="mb-3"><a href="?edit=visual"></a></div>';
-
-    //     }
-
-    //     return apply_filters( 'mif_mr_part_core_link_edit_advanced', $out );
-    // }
     
     
     
@@ -379,9 +338,6 @@ class mif_mr_part_core {
     
     public function mb_substr( $s, $length )
     {
-        // $out = mb_substr( $s, 0, $length - 3 );
-        // if ( mb_strlen( $s ) >= $length ) $out .= '...';
-        // return apply_filters( 'mif_mr_part_core_mb_substr', $out );
         return mif_mr_functions::mb_substr( $s, $length );
     }
     

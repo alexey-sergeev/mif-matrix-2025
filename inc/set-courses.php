@@ -82,75 +82,7 @@ class mif_mr_set_courses extends mif_mr_set_core {
             
             $arr = $tree['content']['courses']['complete'];
 
-            // $a = array();
-
-            // foreach ( $arr as $k => $i ) {
-
-            //     // label_1
-            //     $a[$k]['label_1'] = 'o';
-            //     $a[$k]['color_1'] = 'mr-red-2';
-            //     $a[$k]['item_1'] = 'none';
-            //     $a[$k]['desc_1'] = $this->description['none'];
-
-            //     if ( isset( $i['method'] ) && $i['method'] == 'local' ) {
-            //         $a[$k]['label_1'] = 'a';
-            //         $a[$k]['color_1'] = 'mr-green-2';
-            //         $a[$k]['item_1'] = 'local';
-            //         $a[$k]['desc_1'] = $this->description['local'];
-            //     }
-                    
-            //     if ( isset( $i['method'] ) && $i['method'] == 'lib' ) {
-            //         $a[$k]['label_1'] = 'b';
-            //         $a[$k]['color_1'] = 'mr-blue-2';
-            //         $a[$k]['item_1'] = 'lib';
-            //         $a[$k]['desc_1'] = $this->description['lib'];
-            //     }
-                    
-            //     if ( isset( $i['method'] ) && $i['method'] == 'manual' ) {
-            //         $a[$k]['label_1'] = 'p';
-            //         $a[$k]['color_1'] = 'mr-magenta-2';
-            //         $a[$k]['item_1'] = 'manual';
-            //         $a[$k]['desc_1'] = $this->description['manual'];
-            //     }
-
-            //     // label_2
-
-            //     $a[$k]['label_2'] = '';
-            //     $a[$k]['color_2'] = '';
-            //     $a[$k]['item_2'] = 'count-no';
-            //     $a[$k]['desc_2'] = '';
-            //     // $a[$k]['desc_2']['desc'] = $this->description['count-no'];
-            //     // $a[$k]['label_2'] = 'o';
-            //     // $a[$k]['color_2'] = 'mr-gray-2';
-                
-            //     if ( isset( $i['count'] ) && $i['count'] > 1 ) {
-            //         $a[$k]['label_2'] = 'm';
-            //         $a[$k]['color_2'] = 'mr-blue-2';
-            //         $a[$k]['item_2'] = 'count-yes';
-            //         $a[$k]['desc_2'] = $this->description['count-yes'];
-            //     }
-
-            //     // label_3
-
-            //     $a[$k]['label_3'] = '';
-            //     $a[$k]['color_3'] = '';
-            //     $a[$k]['item_3'] = 'name-old-no';
-            //     $a[$k]['desc_3'] = '';
-            //     // $a[$k]['desc_3']['desc'] = $this->description['name-old-no'];
-            //     // $a[$k]['label_3'] = 'o';
-            //     // $a[$k]['color_3'] = 'mr-gray-2';
-                
-            //     if ( isset( $i['name_old'] ) && $i['name_old'] != $k ) {
-            //         $a[$k]['label_3'] = 'e';
-            //         $a[$k]['color_3'] = 'mr-orange-2';
-            //         $a[$k]['item_3'] = 'name-old-yes';
-            //         $a[$k]['desc_3'] = $this->description['name-old-yes'];
-            //     }
-
-            // }
-
             $a = $this->get_select_info();
-
 
             $out = '';
 
@@ -242,27 +174,6 @@ class mif_mr_set_courses extends mif_mr_set_core {
         // p($arr);
         foreach ( $arr as $k => $i ) {
 
-            // // label
-            
-            // $a[$k]['label'] = 'o';
-            // $a[$k]['color'] = 'mr-red-2';
-            // $a[$k]['item'] = 'none';
-            // $a[$k]['desc'] = $this->description['none'];
-
-            // if ( isset( $i['category'] ) && $i['category'] == 'local' ) {
-            //     $a[$k]['label'] = 'a';
-            //     $a[$k]['color'] = 'mr-green-2';
-            //     $a[$k]['item'] = 'local';
-            //     $a[$k]['desc'] = $this->description['cat-local'];
-            // }
-                
-            // if ( isset( $i['category'] ) && $i['category'] == 'lib' ) {
-            //     $a[$k]['label'] = 'b';
-            //     $a[$k]['color'] = 'mr-blue-2';
-            //     $a[$k]['item'] = 'lib';
-            //     $a[$k]['desc'] = $this->description['cat-lib'];
-            // }
-                
             // label_1
 
             $a[$k]['label_1'] = 'o';
@@ -353,16 +264,6 @@ class mif_mr_set_courses extends mif_mr_set_core {
                 'name-old-no' => false,
             );
 
-        // foreach ( $arr_info as $item ) {
-
-        //     $arr[$item['item_1']] = true;
-        //     $arr[$item['item_2']] = true;
-        //     $arr[$item['item_3']] = true;
-
-        // }
-        
-        // p($arr);
-        
         $arr2 = array( '1' => array(), '2' => array(), '3' => array() );
         
         foreach ( $arr_info as $i ) {

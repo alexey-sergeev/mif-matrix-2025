@@ -1,6 +1,4 @@
 <h3 class="pt-4 pb-4">Компетенции</h3>
-<!-- <h3 class="pt-4 pb-4">Все компетенции</h3> -->
-
 
 <div class="comp container">
     <div class="row">

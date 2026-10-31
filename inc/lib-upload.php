@@ -16,14 +16,7 @@ class mif_mr_upload {
     function __construct()
     {
 
-        // $this->uploads_dir = apply_filters( 'lib-upload-uploads-dir',  ( (object) wp_upload_dir() )->basedir . '/opop_data/' . mif_mr_opop_core::get_opop_id() . '/');
-        // $this->uploads_dir = apply_filters( 'lib-upload-uploads-dir',  ( (object) wp_upload_dir() )->basedir . '/opop_data/' . mif_mr_opop_core::get_opop_id() . '/' );
         $this->uploads_dir = apply_filters( 'lib-upload-uploads-dir',  ( (object) wp_upload_dir() )->basedir . '/opop_data/' );
-        // p($this->uploads_dir);
-
-        // if ( empty( $_REQUEST['download'] ) ) return;
-
-        // $this->force_download();
 
     }
 
@@ -263,10 +256,6 @@ class mif_mr_upload {
 
     public function reload()
     {
-        // p($att);
-        // p($_FILES);
-    //     // p($_REQUEST);
-    
         // !!!!!!
 
         if ( ! isset( $_REQUEST['submit'] ) ) return;
@@ -279,23 +268,6 @@ class mif_mr_upload {
                 mif_mr_functions::get_ext( $this->get_path( $id ) ) ) return false;
 
         $res = move_uploaded_file( $_FILES['file']['tmp_name'], $this->get_path( $id ) );
-
-
-        // $res = $this->proceeding_upload( $_FILES['file']['error'] );
-
-        // if ( $res == 'file' ) {
-
-        //     $file = array(  
-        //         'name' => $_FILES['file']['name'],
-        //         'tmp_name' => $_FILES['file']['tmp_name'],
-        //         'error' => $_FILES['file']['error'],
-        //         'size' => $_FILES['file']['size'],
-        //     );
-        
-        //     $att_id = (int) $_REQUEST['attid'];
-        //     $res2 = move_uploaded_file( $_FILES['file']['tmp_name'], get_attached_file( $att_id ) );
-
-        // }
 
         return $res;
     }
@@ -356,16 +328,6 @@ class mif_mr_upload {
     }
 
 
-
-    // public function get_url( $id )
-    // {
-    //     // p(get_home_url());
-    //     $file = get_post( $id );
-    //     return get_home_url() . $file->post_content;
-    // }
-
-
-
     public function get_path( $id )
     {
         $file = get_post( $id );
@@ -389,46 +351,7 @@ class mif_mr_upload {
 
 
 
-
-
-
-
     private $uploads_dir = '';
-
-
-
-
-
-
-
-    // //
-    // // Сохранить файл 
-    // // 
-
-    // public function remove_all( $att = array() )
-    // {
-    //     $res = true;
-
-    //     $args = array(
-    //         'numberposts' => -1,
-    //         'post_parent' => mif_mr_opop_core::get_opop_id(), 
-    //         'post_type' => 'attachment',
-    //         'post_status' => 'inherit',
-    //     );
-        
-    //     $arr = get_posts( $args );
-
-
-
-    
-    //     return $res;
-    // }
-
-
-
-
-
-
 
 }
 

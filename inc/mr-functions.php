@@ -93,66 +93,6 @@ class mif_mr_functions {
     
 
 
-    // //
-    // // Получить URL ОПОП
-    // //
-
-    // public function get_opop_url()
-    // {
-    //     global $tree;
-    //     return get_permalink( $tree['main']['id'] );
-    // }
-
-
-
-    // //
-    // // Получить ссылку поста
-    // //
-
-    // public function get_link_post( $id, $type = '' )
-    // {
-    //     if ( (int) $id === 0 ) return $id;
-
-    //     // $post = get_post( $id );
-        
-    //     // if ( empty( $post ) ) return $id;
-    //     // if ( ! empty( $type ) && $post->post_type != $type ) return $id;
-        
-    //     if ( ! get_post_type( $id ) && get_post_type( $id ) != $type ) return $id;
-
-    //     $out = '<a href="' . get_permalink( $id ) . '">' . get_the_title( $id ) . '</a>';
-
-    //     return apply_filters( 'mif_mr_core_get_link_post', $out, $id, $type );
-    // }
-
-
-
-    // //
-    // // Получить ссылку пользователей
-    // //
-
-    // public function get_link_user( $login )
-    // {
-
-    //     $user = get_user_by( 'login', $login );
-
-    //     if ( empty( $user ) ) return $login;
-        
-    //     // p($user);
-
-    //     // if ( function_exists( 'bp_core_get_user_domain' ) ) {
-    //     //     $user_url = bp_core_get_user_domain( $user_id );
-    //     // } else {
-    //     //     $user_url = get_the_author_link( $user_id );
-    //     // }
-
-    //     $out = $user->display_name . ' (' . $user->user_login . ')';
-
-    //     return apply_filters( 'mif_mr_core_get_link_user', $out );
-    // }
-
-
-
     
     // 
     // link_edit_advanced
@@ -222,11 +162,6 @@ class mif_mr_functions {
 
 
 
-    // public static function mb_ucfirst( $text )  {
-    //     return mb_strtoupper( mb_substr( $text, 0, 1 ) ) . mb_substr( $text, 1 );
-    // }
-
-
     //
     //  
     //
@@ -276,36 +211,6 @@ class mif_mr_functions {
     }
 
     
-    
-    
-    // //
-    // // 
-    // //
-    
-    // public function make_text_raw()
-    // {
-    //     $arr = array();
-
-    //     $p = get_post( mif_mr_opop_core::get_opop_id() );
-    //     p($p);
-
-
-
-    //     global $wp_query;
-
-
-
-    //     if ( isset( $wp_query->query_vars['id'] ) ) {
-
-
-    //     }
-
-    //     return $res;
-        
-    // }
-
-
-
 }
 
 ?>

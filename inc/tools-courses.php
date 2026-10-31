@@ -53,9 +53,6 @@ class mif_mr_tools_courses extends mif_mr_tools_info {
         $att_id = mif_mr_functions::get_att_id();
 
         $out = '';
-
-        // p($_FILES);
-        // p($_REQUEST);
         
         // Разбор формы
         
@@ -178,9 +175,6 @@ class mif_mr_tools_courses extends mif_mr_tools_info {
             $out .= '<div class="col p-2"><a href="' .  mif_mr_opop_core::get_opop_url() . 'tools-courses/' . $item->ID . '" class="info">' . $item->post_title . '</a></div>';
             $out .= '<div class="col col-2 p-2 text-center">';
             
-            // $out .= '<span class="p-1 mr-1 text-light rounded ' . $arr_info[$key]['class_1'] . ' item-1"><i class="fa-solid fa-1 fa-xs"></i></span>';
-            // $out .= '<span class="p-1 mr-1 text-light rounded ' . $arr_info[$key]['class_2'] . ' item-2"><i class="fa-solid fa-2 fa-xs"></i></span>';
-            // $out .= '<span class="p-1 mr-1 text-light rounded ' . $arr_info[$key]['class_3'] . ' item-3"><i class="fa-solid fa-3 fa-xs"></i></span>';
             $out .= mif_mr_opop_core::get_span_label( $arr_info[$key]['label_1'], $arr_info[$key]['class_1'], $arr_info[$key]['desc_1'] );
             $out .= mif_mr_opop_core::get_span_label( $arr_info[$key]['label_2'], $arr_info[$key]['class_2'], $arr_info[$key]['desc_2'] );
             $out .= mif_mr_opop_core::get_span_label( $arr_info[$key]['label_3'], $arr_info[$key]['class_3'], $arr_info[$key]['desc_3'] );
@@ -188,11 +182,9 @@ class mif_mr_tools_courses extends mif_mr_tools_info {
             $out .= '</div>';
             $out .= '<div class="col col-2 p-2 text-end">';
             $out .= '<a href="#" class="mr-3 info"><i class="fa-solid fa-chart-simple fa-lg"></i></a>';
-            // $out .= '<a href="#" class="mr-3 export"><i class="fa-solid fa-file-export fa-lg"></i></a>';
             $out .= '<a href="#" class="mr-3 export"><i class="fa-regular fa-floppy-disk fa-lg"></i></a>';
             $out .= '<a href="#" class="remove" data-attid="' . $item->ID . '"><i class="fa-regular fa-trash-can fa-lg"></i></a>';
             $out .= '<input class="form-check-input ml-2 mr-1" type="checkbox" value="' . $item->ID . '" name="ids[]">';
-            // $out .= '<input type="hidden" value="' . $item->ID . '" name="attid">';
             $out .= '</div>';
             $out .= '</div>';
             
@@ -209,9 +201,6 @@ class mif_mr_tools_courses extends mif_mr_tools_info {
 
             $out .= '<div class="row bg-light pt-5 pb-5 bottom-panel">';
             $out .= '<div class="col">';
-            // $out .= '<button type="button" class="btn btn-primary">Экспорт</button>';
-            // $out .= '<button type="button" class="btn btn-primary">Сохранить и удалить</button>';
-            // $out .= '<button type="button" class="btn btn-secondary">Удалить</button>';
             $out .= '<a href="#" class="mr-3 export-all"><i class="fa-regular fa-floppy-disk fa-lg"></i>Сохранить</a>';
             $out .= '<a href="#" class="remove-all"><i class="fa-regular fa-trash-can fa-lg"></i>Удалить</a>';
             $out .= '</div>';

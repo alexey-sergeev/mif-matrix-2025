@@ -119,27 +119,12 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
         if ( empty( $att ) ) return;
         if ( $att->post_type != 'file' ) return;
         if ( mif_mr_functions::get_ext( $this->get_path( $att_id ) ) != 'plx' ) return;
-        
-        // $ext = explode( '.', $att->guid );
-        // if ( array_pop( $ext ) != 'plx' ) return;
-        
-        // $plx = new plx( get_attached_file( $att_id ) );
-        // $m = new mif_mr_upload();
 
         if ( ! is_file( $this->get_path( $att_id ) ) ) return mif_mr_functions::get_callout( 'Файл не найден', 'danger' );
         
         $plx = new plx( $this->get_path( $att_id ) );
         if ( empty( $plx->get_att() ) ) return mif_mr_functions::get_callout( 'План не обнаружен', 'danger' ); 
             
-        // p($plx);
-        // p($plx->get_courses());
-        // p($plx->get_curriculum());
-        // p($plx->get_matrix());
-        // p($plx->get_cmp());
-        // p($plx->get_kaf());
-        // p($plx->get_att());
-        // p($plx->get_att_arr());
-        
         $out = '';
         
         $out .= '<div class="container show-file" data-attid="' . $att_id . '">';
@@ -200,8 +185,6 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
     {
         $out = '';
 
-        // $arr = $this->get_file_curriculum();
-        // $arr = $this->get_file( array( 'ext' => array( 'plx' ) ) );
         $arr = $this->get_file( array( 'type' => 'plx' ) );
 
         // p($arr);
@@ -287,15 +270,6 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
         } elseif ( in_array( $att['key'], array( 'lib-competencies', 'lib-references' ) ) ) {
 
             $attached = get_post( $att['att_id'] );
-
-            // $title = '';
-            // if ( $att['explanation'] === 'kaf' ) $title = 'Номера кафедр — ';
-            // if ( $att['explanation'] === 'staff' ) $title = 'Должностные лица — ';
- 
-            // $m = new mif_mr_set_references();
-            // $m = new mif_mr_set_core();
-            // $prefix_arr = $m->get_reference_types();
-            // p($prefix_arr);
 
             $reference_types = apply_filters( 'mif-mr-reference_types', array() );
 

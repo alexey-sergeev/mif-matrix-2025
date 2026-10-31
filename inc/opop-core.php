@@ -668,108 +668,17 @@ class mif_mr_opop_core {
         if ( empty( $tree['content']['competencies']['data'][$_REQUEST['comp']] ) ) return $arr;
        
         $arr2 = $tree['content']['competencies']['data'][$_REQUEST['comp']];
-        // if ( empty( $tree['content']['competencies']['clean'][$_REQUEST['comp']] ) ) return $arr;
-       
-        // $arr2 = $tree['content']['competencies']['clean'][$_REQUEST['comp']];
 
-        // p($_REQUEST);
+        $blank = $tree['templates']['passport']['data']['path'];
+        
+        $m = new mif_mr_docx_program( $blank );
 
+        $arr['name'] = sanitize_text_field( $_REQUEST['comp'] ) . ' (паспорт компетенции).docx';
+        $arr['path'] = $m->arr_to_docx_passport( $arr2 );
 
-        // $course_id = NULL;
-        // $key = NULL;
-
-        // if ( isset( $_REQUEST['course'] ) ) 
-        //     if ( is_numeric( $_REQUEST['course'] ) ) {
-        //         p($_REQUEST['course']);
-        //         if ( ! empty( $tree['content']['courses']['index'][(int) $_REQUEST['course']] ) )
-        //             $key = $tree['content']['courses']['index'][(int) $_REQUEST['course']];
-        //     } else {
-        //         if ( ! empty( $tree['content']['courses']['complete'][sanitize_text_field($_REQUEST['course'])] ) )
-        //             $key = sanitize_text_field( $_REQUEST['course'] );
-        //     }
-            
-        // if ( isset( $wp_query->query_vars['id'] ) ) 
-        //     if ( ! empty( $tree['content']['courses']['index'][$wp_query->query_vars['id']] ) )
-        //         $key = $tree['content']['courses']['index'][$wp_query->query_vars['id']];
-
-        // if ( ! empty( $key ) ) {
-
-        //     $arr2 = ( isset( $tree['content']['courses']['clean'][$key] ) ) ?
-        //          $tree['content']['courses']['clean'][$key] :
-        //          array();
-
-        //     // p($tree['templates'][$type]);
-
-            $blank = $tree['templates']['passport']['data']['path'];
-            
-        //     $text = ( ! empty( $tree['templates'][$type]['data']['name'] ) ) ?
-        //             ' (' . mb_strtolower( $tree['templates'][$type]['data']['name'] ) . ')' :
-        //             '';
-
-        //     // $blank = dirname( __FILE__ ) . '/../templates/docx/program.docx';
-            $m = new mif_mr_docx_program( $blank );
-
-            $arr['name'] = sanitize_text_field( $_REQUEST['comp'] ) . ' (паспорт компетенции).docx';
-            $arr['path'] = $m->arr_to_docx_passport( $arr2 );
-
-        // } else {
-            
-        //     p('@@');
-
-        // }
-
-        // p($arr);
         return $arr;
-        // return ;
         
     }
-    
-    // //
-    // // Делает программу дисциплины для выдачи пользователю (d-program)
-    // //
-    
-    // public function make_docx_program()
-    // {
-    //     global $wp_query;
-    //     global $tree;
-       
-    //     $arr = array( 'name' => '', 'path' => '', 'res' => false );
-
-    //     $course_id = NULL;
-
-    //     if ( isset( $_REQUEST['course'] ) ) 
-    //         if ( is_numeric( $_REQUEST['course'] ) ) $course_id = (int) $_REQUEST['course'];
-    //         else $course_name = sanitize_text_field( $_REQUEST['course'] );
-
-    //     if ( isset( $wp_query->query_vars['id'] ) ) $course_id = $wp_query->query_vars['id'];
-        
-    //     if ( ! empty( $course_id ) || ! empty( $course_name ) ) {
-
-
-    //         $key = $tree['content']['courses']['index'][$course_id]; 
-
-
-    //         $arr2 = ( isset( $tree['content']['courses']['clean'][$key] ) ) ?
-    //              $tree['content']['courses']['clean'][$key] :
-    //              array();
-
-    //         $blank = dirname( __FILE__ ) . '/../templates/docx/program.docx';
-    //         $m = new mif_mr_docx_program( $blank );
-
-    //         $arr['name'] .= $arr2['name'] . ' (программа дисциплины).docx';
-    //         $arr['path'] = $m->arr_to_docx( $arr2 );
-
-    //     } else {
-            
-    //         p('@@');
-
-    //     }
-
-    //     // p($arr);
-    //     return $arr;
-        
-    // }
-    
     
 
     

@@ -107,50 +107,6 @@ class mif_mr_set_core extends mif_mr_part_companion {
     
 
 
-    // //
-    // // 
-    // //
-    
-    // public static function set_comp_to_tree( $t = array() )
-    // {
-    //     $arr = array();
-        
-    //     foreach ( $t['content']['set-competencies']['data'] as $item ) {
-
-    //         if ( is_numeric( $item[2] ) ) {
-
-    //             if ( isset( $t['content']['lib-competencies']['data'][$item[2]] ) )
-    //                 foreach ( $t['content']['lib-competencies']['data'][$item[2]]['data'] as $item2 ) 
-    //                     foreach ( $item2['data'] as $item3 ) 
-    //                         if ( $item3['name'] == $item[1] ) { 
-    //                             $item3['old_name'] = $item3['name'];
-    //                             $item3['comp_id'] = $item[2];
-    //                             $item3['name'] = $item[0];
-    //                             $arr[$item[0]] = $item3;
-    //                         }
-    //         } else {
-                
-    //             foreach ( $t['content']['lib-competencies']['data'] as $item2 ) 
-    //                 foreach ( $item2['data'] as $item3 ) 
-    //                     foreach ( $item3['data'] as $item4 ) 
-    //                         if ( $item4['name'] == $item[1] ) {
-    //                             $item4['old_name'] = $item4['name'];
-    //                             $item4['comp_id'] = $item2['comp_id'];
-    //                             $item4['name'] = $item[0];
-    //                             $arr[$item[0]] = $item4;
-    //                         } 
-
-    //         }
-
-    //     }
-
-    //     // p($arr);
-
-    //     return apply_filters( 'mif_mr_comp_set_comp_to_tree', $arr, $t );
-    // }
-
-
-
     //
     // 
     //
@@ -169,10 +125,6 @@ class mif_mr_set_core extends mif_mr_part_companion {
 
         foreach ( $index as $i ) $arr[$i] = array();
 
-        // p($index);
-        // p($arr);
-        // p ( $t['content']['set-competencies']['data']);
-        
 
         // Из библиотеки
 
@@ -256,41 +208,6 @@ class mif_mr_set_core extends mif_mr_part_companion {
 
         }
 
-
-            // p($arr);
-            // p($b);
-
-            // p( $t['content']['lib-competencies']['data'][$item[2]] );
-
-        //     if ( is_numeric( $item[2] ) ) {
-
-        //         if ( isset( $t['content']['lib-competencies']['data'][$item[2]] ) )
-        //             foreach ( $t['content']['lib-competencies']['data'][$item[2]]['data'] as $item2 ) 
-        //                 foreach ( $item2['data'] as $item3 ) 
-        //                     if ( $item3['name'] == $item[1] ) { 
-        //                         $item3['old_name'] = $item3['name'];
-        //                         $item3['comp_id'] = $item[2];
-        //                         $item3['name'] = $item[0];
-        //                         $arr[$item[0]] = $item3;
-        //                     }
-        //     } else {
-                
-        //         foreach ( $t['content']['lib-competencies']['data'] as $item2 ) 
-        //             foreach ( $item2['data'] as $item3 ) 
-        //                 foreach ( $item3['data'] as $item4 ) 
-        //                     if ( $item4['name'] == $item[1] ) {
-        //                         $item4['old_name'] = $item4['name'];
-        //                         $item4['comp_id'] = $item2['comp_id'];
-        //                         $item4['name'] = $item[0];
-        //                         $arr[$item[0]] = $item4;
-        //                     } 
-
-        //     }
-
-        // }
-
-        // p($arr);
-
         return apply_filters( 'mif_mr_comp_set_comp_to_tree', $arr, $t );
     }
 
@@ -336,132 +253,8 @@ class mif_mr_set_core extends mif_mr_part_companion {
 
         }
         
-
-        // if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
-        
-        // $arr = array();
-
-        // $text = $this->get_companion_content( 'set-courses', $opop_id );
-        
-        // // Разбить текст на массив строк
-
-        // $data = preg_split( '/\\r\\n?|\\n/', $text );
-        // $data = array_map( 'strim', $data );
-        
-        // foreach ( $data as $item ) {
-            
-        //     $arr2 = explode( '::', $item );
-        //     $arr2 = array_map( 'trim', $arr2 );
-        //     $arr2[] = '';
-        //     $arr2[] = '';
-
-        //     if ( empty( $arr2[0] ) ) continue;
-            
-        //     if ( is_string( $arr2[0] ) && empty( $arr2[1] ) && empty( $arr2[2] ) ) {
-                
-        //         $arr[] = array( $arr2[0], $arr2[0], NULL );
-        //         continue;                
-                
-        //     }
-            
-        //     if ( is_string( $arr2[0] ) && is_numeric( $arr2[1] ) && empty( $arr2[2] ) ) {
-                
-        //         $arr[] = array( $arr2[0], $arr2[0], $arr2[1] );
-        //         continue;                
-                
-        //     }
-            
-        //     if ( is_string( $arr2[0] ) && is_string( $arr2[1] ) && empty( $arr2[2] ) ) {
-                
-        //         $arr[] = array( $arr2[0], $arr2[1], NULL );
-        //         continue;                
-                
-        //     }
-            
-        //     if ( is_string( $arr2[0] ) && is_string( $arr2[1] ) && is_numeric( $arr2[2] ) ) {
-               
-        //         $arr[] = array( $arr2[0], $arr2[1], $arr2[2] );
-        //         continue;                
-            
-        //     }
-
-        // }
-        
         return apply_filters( 'mif_mr_set_core_arr_courses', $arr );
     }
-
-
-
-
-
-
-    // //
-    // // Возвращает массив из текста (post)
-    // //
-    // // новая::старая::course_id
-    // //
-    // // новая == старая          => Дисциплина                          => Дисциплина::Дисциплина
-    // // новая == старая, id      => Дисциплина::123                     => Дисциплина::Дисциплина::123
-    // // новая != старая          => Дисциплина 1::Дисциплина 2          => Дисциплина 1::Дисциплина 2
-    // // новая != старая, id      => Дисциплина 1::Дисциплина 2::123     => Дисциплина 1::Дисциплина 2::123
-    // // 
-
-    // public function get_arr_courses( $opop_id = NULL )
-    // {
-    //     if ( $opop_id === NULL ) $opop_id = mif_mr_opop_core::get_opop_id();
-        
-    //     $arr = array();
-
-    //     $text = $this->get_companion_content( 'set-courses', $opop_id );
-        
-    //     // Разбить текст на массив строк
-
-    //     $data = preg_split( '/\\r\\n?|\\n/', $text );
-    //     $data = array_map( 'strim', $data );
-        
-    //     foreach ( $data as $item ) {
-            
-    //         $arr2 = explode( '::', $item );
-    //         $arr2 = array_map( 'trim', $arr2 );
-    //         $arr2[] = '';
-    //         $arr2[] = '';
-
-    //         if ( empty( $arr2[0] ) ) continue;
-            
-    //         if ( is_string( $arr2[0] ) && empty( $arr2[1] ) && empty( $arr2[2] ) ) {
-                
-    //             $arr[] = array( $arr2[0], $arr2[0], NULL );
-    //             continue;                
-                
-    //         }
-            
-    //         if ( is_string( $arr2[0] ) && is_numeric( $arr2[1] ) && empty( $arr2[2] ) ) {
-                
-    //             $arr[] = array( $arr2[0], $arr2[0], $arr2[1] );
-    //             continue;                
-                
-    //         }
-            
-    //         if ( is_string( $arr2[0] ) && is_string( $arr2[1] ) && empty( $arr2[2] ) ) {
-                
-    //             $arr[] = array( $arr2[0], $arr2[1], NULL );
-    //             continue;                
-                
-    //         }
-            
-    //         if ( is_string( $arr2[0] ) && is_string( $arr2[1] ) && is_numeric( $arr2[2] ) ) {
-               
-    //             $arr[] = array( $arr2[0], $arr2[1], $arr2[2] );
-    //             continue;                
-            
-    //         }
-
-    //     }
-        
-    //     return apply_filters( 'mif_mr_set_core_arr_courses', $arr );
-    // }
-    
-    
 
 
 
@@ -472,32 +265,11 @@ class mif_mr_set_core extends mif_mr_part_companion {
     
     public static function set_courses_complete( $t = array(), $opop_id = NULL )
     {
-        // global $mif_mr_opop;
-        // $arr = array();
-
-
-        // foreach ( $t['content']['set-courses']['data'] as $key => $item ) {
-            
-        //     if ( is_numeric( $item ) ) {
-           
-        // //         if ( isset( $t['content']['lib-references']['data'][$item] ) )
-        //             $arr[$key] = $t['content']['lib-references']['data'][$item];
-            
-        //     } 
-        
-        // }
-
 
         $arr_raw = $t['content']['courses']['data'];
         $arr_lib = $t['content']['lib-courses']['data'];
         $arr_set = $t['content']['set-courses']['data'];
 
-        // p($arr_set);
-        // p($arr_lib);
-
-
-        // $arr_param = $t['param']['parents']['data'];
-        
         $index = array();
 
         foreach ( $arr_raw as $key => $item ) 
@@ -509,19 +281,12 @@ class mif_mr_set_core extends mif_mr_part_companion {
                                     'code' => $item2['code'], 
                                     'kaf' => ( ! empty( $item2['kaf'] ) ) ? $item2['kaf'] : array(), 
                                 );
-                // foreach ( $item['courses'] as $key2 => $item2 ) $index[$key2] = array( 'key' => $key, 'name' => $key2 );
         
         ksort( $index );
 
         $arr = array();
         foreach ( $arr_lib as $key => $item ) $arr[$item['name']][] = array( 'comp_id' => $item['comp_id'], 'from_id' => $item['from_id']  );
 
-        // p($arr);
-        // p($mif_mr_opop->current_opop_id);
-        // p($index);
-
-
-     
 
         // Ручной метод
         
@@ -539,17 +304,12 @@ class mif_mr_set_core extends mif_mr_part_companion {
 
         foreach ( $arr_set_clean as $key => $item ) {
 
-            // p('@');
-            // p($key);
-            // p($item['name']);
-
-            if ( ! isset( $index[$key] ) ) continue;
+        if ( ! isset( $index[$key] ) ) continue;
             if ( isset( $index[$key]['course_id'] ) ) continue;
             if ( $key != $item['name'] ) $index[$key]['name_old'] = $item['name'];
             $index[$key]['course_id'] = $item['comp_id'];
             $index[$key]['from_id'] = $item['from_id'];
             $index[$key]['method'] = 'manual';
-            // $index[$key]['category'] = ( $item['from_id'] == get_the_ID() ) ? 'local' : 'lib';
 
         }
 
@@ -559,7 +319,6 @@ class mif_mr_set_core extends mif_mr_part_companion {
             if ( ! isset( $index[$key]['method'] ) ) continue;
             if ( $index[$key]['method'] != 'manual' ) continue;
 
-            // $index[$key]['category'] = ( $index[$key]['from_id'] == get_the_ID() ) ? 'local' : 'missing'; 
             $index[$key]['category'] = ( $index[$key]['from_id'] == $opop_id ) ? 'local' : 'missing'; 
             
         }
@@ -700,26 +459,7 @@ class mif_mr_set_core extends mif_mr_part_companion {
         $data = preg_split( '/\\r\\n?|\\n/', $text );
         $data = array_map( 'strim', $data );
         
-        // p($data);
-
-        // foreach ( $data as $item ) {
-            
-        //     $arr2 = explode( ':', $item );
-        //     $arr2 = array_map( 'trim', $arr2 );
-
-        //     if ( empty( $arr2[0] ) ) continue;
-        //     if ( empty( $arr2[1] ) ) continue;
-
-        //     if ( is_string( $arr2[0] ) && is_numeric( $arr2[1] ) ) {
-                
-        //         $arr[$arr2[0]] = $arr2[1];
-                
-        //     }
-
-        // }
         $arr['templates'] = $data[0];
-
-        // p($arr);
 
         return apply_filters( 'mif_mr_set_templates_arr_comp', $arr );
     }
@@ -735,15 +475,7 @@ class mif_mr_set_core extends mif_mr_part_companion {
     {
         $arr = array();
         
-        
-        // $m = new mif_mr_set_references();
-        // $prefix_arr = $m->get_reference_types();
-        // p($prefix_arr);
-        // p( $this->reference_types );
         $reference_types = apply_filters( 'mif-mr-reference_types', array() );
-        // p( $reference_types );
-
-        
 
         // Из библиотеки
         
@@ -800,7 +532,6 @@ class mif_mr_set_core extends mif_mr_part_companion {
     public static function set_templates_to_tree( $t = array() )
     {
         $arr = array();
-        // p($t['content']['lib-templates']['data']);
         
         // Из библиотеки
         
@@ -833,21 +564,6 @@ class mif_mr_set_core extends mif_mr_part_companion {
 
         return apply_filters( 'mif_mr_comp_set_templates_to_tree', $arr, $t );
     }
-
-
-
-    // //
-    // //
-
-    // public function get_reference_types()
-    // {
-    //     return $this->reference_types;
-    // }
-        
-
-                
-    // protected $reference_types = array();
-
 
 
 }
