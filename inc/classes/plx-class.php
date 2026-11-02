@@ -29,7 +29,7 @@ class plx {
         $this->xml = simplexml_load_file( $file );
         
         libxml_use_internal_errors( false );
-        // p($this->xml);
+        // p($this->xml->xpath ("./*")[0]);
 
     }
 
@@ -452,7 +452,6 @@ class plx {
         // Информация ООП
         
         $d = current( (array) $data->{"ООП"} );
-        // $d = current( $data->{"ООП"} );
         
         if ( $show == 'main' ) {
     
@@ -479,7 +478,9 @@ class plx {
             $arr["Версия стандарта"] = (string) $d["ТипГОСа"];
             
             // Информация учебного плана
-            
+
+            // p( $data->{"Планы"} );
+
             foreach ( $data->{"Планы"} as $d ) {
                 
                 // Умеем выбирать данные только первого плана
@@ -495,6 +496,7 @@ class plx {
                 $arr["Версия стандарта"] = (string) $d["ТипГОСа"];
                 $arr["Год начала подготовки"] = (string) $d["ГодНачалаПодготовки"];
                 $arr["Уровень образования"] = $level_arr[(int) $d["КодУровняОбразования"]];
+                $arr["Число сессий"] = (int) $d["ЧислоСессий"];
                 
                 // p($d);
                 

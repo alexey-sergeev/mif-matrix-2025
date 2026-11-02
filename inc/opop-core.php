@@ -215,7 +215,7 @@ class mif_mr_opop_core {
                 
             }
             
-            $t['templates'] = $this->get_templates( $opop_id );
+            // $t['templates'] = $this->get_templates( $opop_id );
 
             wp_cache_set( 'get_param_and_meta', $t, $opop_id );
 
@@ -228,43 +228,44 @@ class mif_mr_opop_core {
 
 
 
-        // 
-    // 
-    // 
+
+    //     // 
+    // // 
+    // // 
     
-    protected function get_templates( $opop_id )
-    {
-        $t = array();
-        // $data = array();
+    // protected function get_templates( $opop_id )
+    // {
+    //     $t = array();
+    //     // $data = array();
 
-        $opop_id = (int) $opop_id;
+    //     $opop_id = (int) $opop_id;
 
-        // p($opop_id);
-        // $arr = mif_mr_tools_core::get_file( array( 'ext' => array( 'docx' ), 'opop_id' => $opop_id ) ); // !!!
-        $arr = mif_mr_tools_core::get_file( array( 'type' => 'templates', 'opop_id' => $opop_id ) ); 
-        // p($arr);
+    //     // p($opop_id);
+    //     // $arr = mif_mr_tools_core::get_file( array( 'ext' => array( 'docx' ), 'opop_id' => $opop_id ) ); // !!!
+    //     $arr = mif_mr_tools_core::get_file( array( 'type' => 'templates', 'opop_id' => $opop_id ) ); 
+    //     // p($arr);
 
-        $m = new mif_mr_upload();
+    //     $m = new mif_mr_upload();
 
-        foreach ( $arr as $a ) {
+    //     foreach ( $arr as $a ) {
         
-            $t[$a->post_title] = array( 
-                                    'from_id' => $opop_id,
-                                    'data' => array( 
-                                        'att_id' => $a->ID,
-                                        'url' => $a->guid,
-                                        // 'path' => get_attached_file( $a->ID ),
-                                        'path' => $m->get_path( $a->ID ),
-                                    )   
-                            );
+    //         $t[$a->post_title] = array( 
+    //                                 'from_id' => $opop_id,
+    //                                 'data' => array( 
+    //                                     'att_id' => $a->ID,
+    //                                     'url' => $a->guid,
+    //                                     // 'path' => get_attached_file( $a->ID ),
+    //                                     'path' => $m->get_path( $a->ID ),
+    //                                 )   
+    //                         );
         
-        }
+    //     }
 
-        // p($opop_id);
-        // p($t);
+    //     // p($opop_id);
+    //     // p($t);
 
-        return apply_filters( 'mif_mr_core_opop_get_templates', $t, $opop_id );
-    }
+    //     return apply_filters( 'mif_mr_core_opop_get_templates', $t, $opop_id );
+    // }
        
    
     // // 
@@ -601,7 +602,8 @@ class mif_mr_opop_core {
 
         $arr = array( 'name' => '', 'path' => '', 'res' => false );
         
-        if ( empty( $tree['templates'][$type] ) ) return $arr;
+        // if ( empty( $tree['templates'][$type] ) ) return $arr;
+        if ( empty( $tree['content']['templates']['data']['templates']['index'][$type] ) ) return $arr;
 
         $course_id = NULL;
         $key = NULL;
@@ -628,7 +630,8 @@ class mif_mr_opop_core {
 
             // p($tree['templates'][$type]);
 
-            $blank = $tree['templates'][$type]['data']['path'];
+            // $blank = $tree['templates'][$type]['data']['path'];
+            $blank = $tree['content']['templates']['data']['templates']['index'][$type];
             
             $text = ( ! empty( $tree['templates'][$type]['data']['name'] ) ) ?
                     ' (' . mb_strtolower( $tree['templates'][$type]['data']['name'] ) . ')' :
@@ -663,13 +666,15 @@ class mif_mr_opop_core {
         global $tree;
         
         $arr = array( 'name' => '', 'path' => '', 'res' => false );
-
-        if ( empty( $tree['templates']['passport'] ) ) return $arr;
+        
+        // if ( empty( $tree['templates']['passport'] ) ) return $arr;
+        if ( empty( $tree['content']['templates']['data']['templates']['index']['passport'] ) ) return $arr;
         if ( empty( $tree['content']['competencies']['data'][$_REQUEST['comp']] ) ) return $arr;
        
         $arr2 = $tree['content']['competencies']['data'][$_REQUEST['comp']];
 
-        $blank = $tree['templates']['passport']['data']['path'];
+        // $blank = $tree['templates']['passport']['data']['path'];
+        $blank = $tree['content']['templates']['data']['templates']['index']['passport'];
         
         $m = new mif_mr_docx_program( $blank );
 

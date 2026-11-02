@@ -60,11 +60,11 @@ class mif_mr_curriculum extends mif_mr_table {
         if ( isset( $_REQUEST['edit'] ) ) return $this->companion_edit( 'curriculum' );
 
         $arr = $this->get_courses_arr(); 
-
+  
         $out = '';
         $out .= '<div class="content-ajax col-12 p-0">';
         
-        $out .= $this->get_table_html( $arr );;
+        $out .= $this->get_table_html( $arr );
 
         $out .= '</div>';
         
@@ -76,15 +76,42 @@ class mif_mr_curriculum extends mif_mr_table {
     
     private function get_num_semesters()
     {
+        $cache = wp_cache_get( 'get_num_semesters' );
+        if ( $cache ) return $cache;
+    
         $curriculum_arr = $this->get_curriculum_arr();
         $n = 0;
 
         foreach ( $curriculum_arr as $item ) 
             foreach ( $item['semesters'] as $key => $item2 ) if ( $key > $n ) $n = $key;
 
+        wp_cache_add( 'get_num_semesters', $n );
+
         return $n;
     }
     
+
+
+        
+    private function get_num_semesters_arr()
+    {
+        $cache = wp_cache_get( 'get_num_semesters_arr' );
+        if ( $cache ) return $cache;
+
+        $curriculum_arr = $this->get_curriculum_arr();
+        $arr = array();
+        
+        $n = $this->get_num_semesters();
+        for ( $i = 1; $i < $n;  $i++) $arr[$i] = 0;
+        
+        foreach ( $curriculum_arr as $item )
+            foreach ( $item['semesters'] as $k => $i ) $arr[$k]++;
+
+        wp_cache_add( 'get_num_semesters_arr', $arr );
+
+        return $arr;
+    }
+
 
   
     
@@ -112,7 +139,8 @@ class mif_mr_curriculum extends mif_mr_table {
         $curriculum_arr = $this->get_curriculum_arr();
         
         $n = $this->get_num_semesters();
-        
+        $n_arr = $this->get_num_semesters_arr();
+
         // if ( isset( $curriculum_arr[$key2] ) ) {
         if ( ! empty( $n ) && ! empty( $curriculum_arr[$key2]['course_stat'] ) ) {
             
@@ -144,8 +172,12 @@ class mif_mr_curriculum extends mif_mr_table {
             $arr[] = $this->add_to_col( $e, array('elem' => 'th', 'class' => 'cell long text-center') );
 
 
+            $ii = 1;
+
             for ( $i = 1; $i <= $n; $i++ ) {
-                 
+                
+                if ( $n_arr[$i] == 0 ) continue;
+
                 $lec = ''; 
                 $lab = '';
                 $prac = '';
@@ -181,7 +213,7 @@ class mif_mr_curriculum extends mif_mr_table {
                 
                 if ( empty ( $v ) ) $v = ( ! empty( $exam_att ) ) ? $exam_att : '';
                
-                $class = ( $i % 2 == 0 ) ? 'cell' : 'cell mr-blue';
+                $class = ( $ii % 2 == 0 ) ? 'cell' : 'cell mr-blue';
                 if ( $f ) $class = 'cell mr-green';
                 $class .= ' rsm-' . $i;
                 
@@ -193,6 +225,7 @@ class mif_mr_curriculum extends mif_mr_table {
                 $arr[] = $this->add_to_col( $exam_att, array('elem' => 'td', 'class' => $class) );
                 $arr[] = $this->add_to_col( $v, array('elem' => 'td', 'class' => $class . ' d-none') );
                 
+                $ii++;
             }
             
         } else {
@@ -208,10 +241,13 @@ class mif_mr_curriculum extends mif_mr_table {
     
     public function filter_thead_row( $arr, $courses_arr )
     {
+        // global $tree;
+        
         $arr = array();
         
         $n = $this->get_num_semesters();
-        
+        $n_arr = $this->get_num_semesters_arr();
+
         if ( ! empty( $n ) ) {
             
             $arr2 = array();
@@ -223,14 +259,19 @@ class mif_mr_curriculum extends mif_mr_table {
             $arr2[] = $this->add_to_col( 'Всего', array('elem' => 'th', 'colspan' => 4) );
             
             for ( $i = 1; $i <= $n; $i++ ) {
-                
-                $text = 'Семестр ' . $i;
+
+                if ( $n_arr[$i] == 0 ) continue;
+
+                $text = $this->title_col( $i );
+                $text2 = $this->title_col( $i, false );
+
                 $sm = 'csm-' . $i;
-                $class = 'selectable rsm-' . $i;
+                $class = 'selectable';
+                $class .= ' rsm-' . $i;
                 $class .= ' csm-' . $i;
 
                 $arr2[] = $this->add_to_col( $text, array('elem' => 'th', 'class' => $class, 'colspan' => 6, 'data-cmp' => $sm) );
-                $arr2[] = $this->add_to_col( $i, array('elem' => 'th', 'class' => $class . ' d-none', 'data-cmp' => $sm) );
+                $arr2[] = $this->add_to_col( $text2, array('elem' => 'th', 'class' => $class . ' d-none', 'data-cmp' => $sm) );
                 
             }
             
@@ -243,9 +284,13 @@ class mif_mr_curriculum extends mif_mr_table {
             $arr2[] = $this->add_to_col( 'с', array('elem' => 'th', 'title' => 'Часов СРС') );
             $arr2[] = $this->add_to_col( 'к', array('elem' => 'th', 'title' => 'Часов контроля') );
 
+            $ii = 1;
+
             for ( $i = 1; $i <= $n; $i++ ) {
                 
-                $class = ( $i % 2 == 0 ) ? 'cell' : 'cell mr-blue';
+                if ( $n_arr[$i] == 0 ) continue;
+
+                $class = ( $ii % 2 == 0 ) ? 'cell' : 'cell mr-blue';
                 $class .= ' rsm-' . $i;
 
                 $arr2[] = $this->add_to_col( 'л', array('elem' => 'th', 'class' => $class, 'title' => 'Лекции') );
@@ -256,6 +301,8 @@ class mif_mr_curriculum extends mif_mr_table {
                 $arr2[] = $this->add_to_col( 'к', array('elem' => 'th', 'class' => $class, 'title' => 'Тип контроля') );
                 $arr2[] = $this->add_to_col( 'в', array('elem' => 'th', 'class' => $class . ' d-none', 'title' => 'Всего часов') );
                 
+                $ii++;
+
             }
             
             $arr[] = $this->add_to_row( $arr2, array( 'elem' => 'tr' ) );
@@ -270,9 +317,13 @@ class mif_mr_curriculum extends mif_mr_table {
             $arr2[] = $this->add_to_col( '', array('elem' => 'th', 'class' => 'mr-blue') );
             $arr2[] = $this->add_to_col( '', array('elem' => 'th', 'colspan' => 4) );
             
+            $ii = 1;
+
             for ( $i = 1; $i <= $n; $i++ ) {
                 
-                $class = ( $i % 2 == 0 ) ? 'cell' : 'cell mr-blue';
+                if ( $n_arr[$i] == 0 ) continue;
+
+                $class = ( $ii % 2 == 0 ) ? 'cell' : 'cell mr-blue';
                 $class .= ' rsm-' . $i;
                 
                 $ch = '<input type="checkbox" class="rsm" data-row="rsm-' . $i . '" name="rsm-' . $i . '" value="on" checked />';
@@ -280,6 +331,8 @@ class mif_mr_curriculum extends mif_mr_table {
                 
                 $ch = '<input type="checkbox" class="rsm" data-row="rsm-' . $i . '" name="rsm-' . $i . '" value="on" />';
                 $arr2[] = $this->add_to_col( $ch, array('elem' => 'th', 'class' => $class . ' d-none' ) );
+                
+                $ii++;
                 
             }
             
@@ -322,6 +375,57 @@ class mif_mr_curriculum extends mif_mr_table {
         return $n;
     }
     
+    
+    
+    private function title_col( $i, $f = true )
+    {
+
+        global $tree;
+        $out = '';
+
+        $ending = apply_filters( 'mif_mr_curriculum_ending', array( 
+                                                                    '1' => 'уст.',                                                                    
+                                                                    '2' => 'зима',                                                                    
+                                                                    '3' => 'лето',                                                                    
+                                                                    ) );
+
+    
+        if ( ! ( isset( $tree['content']['attributes']['data']['Число сессий'] ) &&
+                    is_numeric( $tree['content']['attributes']['data']['Число сессий'] ) &&
+                    $tree['content']['attributes']['data']['Число сессий'] != 0 ) ) {
+
+            $out .= ( $f ) ? 'Семестр ' . $i : $i;
+            
+        } else {
+            
+            $n = ceil( $i / $tree['content']['attributes']['data']['Число сессий'] );
+
+            if ( $f ) {
+
+                $out .= 'Курс ' .  $n;
+                $out .= '<br /> (';
+                
+                $n_ses = ( $i - 1 ) %  $tree['content']['attributes']['data']['Число сессий'] + 1;
+                
+                $out .= ( empty( $ending[$n_ses] ) ) ? 'сессия ' . $n_ses : $ending[$n_ses];
+                
+                $out .= ')';
+
+            } else {
+
+                $out .= $n;
+
+            }
+
+        }
+
+        return $out;
+    }
+    
+
+
+
+
 }
 
 ?>

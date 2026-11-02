@@ -76,7 +76,8 @@ class mif_mr_main extends mif_mr_table {
             $s = '<span class="mr-btn mr-gray rounded p-1 pt-2 pb-2 m-0"><i class="fa-regular fa-file-lines fa-xl" aria-hidden="true"></i></span>';
             $s .= '<span class="ml-1"><small><b>' . $name . '</b></small></span>';   
             
-            $out .= ( ! empty( $tree['templates']['passport']['data']['path'] ) && $mr->user_can(2) ) ? '<a href="?download=passport&comp=' . $name . '">' . $s . '</a>' : $s;
+            // $out .= ( ! empty( $tree['templates']['passport']['data']['path'] ) && $mr->user_can(2) ) ? '<a href="?download=passport&comp=' . $name . '">' . $s . '</a>' : $s;
+            $out .= ( ! empty( $tree['content']['templates']['data']['templates']['index']['passport'] ) && $mr->user_can(2) ) ? '<a href="?download=passport&comp=' . $name . '">' . $s . '</a>' : $s;
 
             // $out .= '<span class="mr-btn mr-gray rounded p-1 pt-2 pb-2 m-0"><i class="fa-regular fa-file-lines fa-xl" aria-hidden="true"></i></span>';
             // $out .= '<span class="ml-1"><small><b>' . $name . '</b></small></span>';       
@@ -197,9 +198,13 @@ class mif_mr_main extends mif_mr_table {
         $index = array();
 
         // p($tree['param']['templates']['data_att']);
-        if ( isset( $tree['param']['templates']['data_att'] ) ) {
+        // p( $tree['content']['templates']['data']['templates']['data']);
+        // if ( isset( $tree['param']['templates']['data_att'] ) ) {
+        if ( isset( $tree['content']['templates']['data']['templates']['data'] ) ) {
     
-            foreach( $tree['param']['templates']['data_att'] as $item ) {
+            // foreach( $tree['param']['templates']['data_att'] as $item ) {
+            foreach( $tree['content']['templates']['data']['templates']['data'] as $item ) {
+                // p($item);
     
                 if ( isset( $item['att'][1] ) && in_array( $item['att'][1], $this->templates_place ) ) {
     
@@ -208,7 +213,8 @@ class mif_mr_main extends mif_mr_table {
                         'name' => $item['name'],
                         'slug' => $item['att'][0],
                         'param' => ( ! empty( $item['att'][2] ) ) ? $item['att'][2] : '',
-                        'file' => ( isset( $tree['templates'][$item['att'][0]]['data']['path'] ) ) ? $tree['templates'][$item['att'][0]]['data']['path'] : '',
+                        // 'file' => ( isset( $tree['templates'][$item['att'][0]]['data']['path'] ) ) ? $tree['templates'][$item['att'][0]]['data']['path'] : '',
+                        'file' => ( isset( $item['file']['path'] ) ) ? $item['file']['path'] : '',
     
                     );
     
