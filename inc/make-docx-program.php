@@ -16,7 +16,6 @@ class mif_mr_docx_program extends mif_mr_docx {
 
     function __construct( $path = NULL )
     {
-        
         parent::__construct( $path );
 
     }
@@ -78,10 +77,7 @@ class mif_mr_docx_program extends mif_mr_docx {
         $a['evaluations_list'] = $this->evaluations_list( $arr['data']['evaluations'] );
         $a['cmp_indicators'] = $this->cmp_indicators( $arr['meta']['cmp'] );
         
-        // Паспорт и программа формирования компетенций
-
-
-
+        $a = $this->add_att( $a );
 
         $path = $this->make_docx( $a );
 
@@ -94,7 +90,23 @@ class mif_mr_docx_program extends mif_mr_docx {
 
 
 
+    private function add_att( $a )
+    {
+        global $tree;
+
+        if ( empty( $tree['content']['attributes']['data'] ) ) return $a;
+
+        foreach ( $tree['content']['attributes']['data'] as $key => $item ) {
+
+            $a['att:' . $key] = $item;
+            $a['att: ' . $key] = $item;
+
+        }
+
+        return $a;
+    }
     
+
 
 
     private function all_aud( $a )
@@ -470,6 +482,8 @@ class mif_mr_docx_program extends mif_mr_docx {
         // $a[''] = $arr[''];
         // $a[''] = $arr[''];
         // $a[''] = $arr[''];
+
+        $a = $this->add_att( $a );
 
         // p($a);
 
