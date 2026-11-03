@@ -125,7 +125,7 @@ class mif_mr_attributes extends mif_mr_part_companion {
             
             $out .= '<div class="col-1 text-end">';
             // $out .= '<a href="#"><i class="fa-regular fa-clone"></i></a>';
-            $out .= ( ! $f && ! empty( $arr[$item] ) ) ? '<span class="copy-button"><i class="fa-regular fa-clone"></i></span>' : '';
+            $out .= ( ! $f && isset( $arr[$item] ) ) ? '<span class="copy-button"><i class="fa-regular fa-clone"></i></span>' : '';
             // $out .= '<span class="copy-button"><i class="fa-regular fa-clone"></i></span>';
             $out .= '</div>';
             
@@ -138,7 +138,10 @@ class mif_mr_attributes extends mif_mr_part_companion {
             $out .= ( ! $f ) ? '' : '<input type="hidden" name="name[]" value="' . $item . '">';
             $out .= ( ! $f ) ? '' : '<textarea name="data[]" class="textarea mr-mh-4">';
             // $out .= ( ! empty( $arr[$item] ) ) ? $arr[$item] : '<i class="mr-yellow p-1 pr-5 pl-5">нет данных</i>';
-            $out .= ( ! $f ) ? ( ! empty( $arr[$item] ) ) ? $arr[$item] : '<i class="mr-yellow p-1 pr-5 pl-5">нет данных</i>' : $arr[$item];
+            // $out .= ( ! $f ) ? ( ! empty( $arr[$item] ) ) ? $arr[$item] : '<i class="mr-yellow p-1 pr-5 pl-5">нет данных</i>' : $arr[$item];
+            $out .= ( ! $f ) ? ( ( isset( $arr[$item] ) ) ? $arr[$item] : '<i class="mr-yellow p-1 pr-5 pl-5">нет данных</i>' ) : 
+                                ( ( isset( $arr[$item] ) ) ? $arr[$item] : '' );
+            // $out .= ( ! $f ) ? ( ! empty( $arr[$item] ) ) ? $arr[$item] : '<i class="mr-yellow p-1 pr-5 pl-5">нет данных</i>' : '';
             $out .= ( ! $f ) ? '' : '</textarea>';
             $out .= '</div>';
             

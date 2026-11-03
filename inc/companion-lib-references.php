@@ -87,12 +87,22 @@ class mif_mr_lib_references extends mif_mr_companion_core {
 
         }
 
+        $index = array();
+        foreach ( $arr3 as $i ) $index[$i['name']] = $i['att'];
+        
+        $index_r = array();
+        foreach ( $arr3 as $i ) $index_r[$i['att']] = $i['name'];
+
+
+
         $arr['comp_id'] = $references_id;
         $arr['from_id'] = $post->post_parent;
         $arr['name'] = $post->post_title;
         $arr['is_numeric'] = $is_numeric;
         $arr['is_string'] = $is_string;
         $arr['data'] = $arr3;
+        $arr['index'] = $index;
+        $arr['index_r'] = $index_r;
         
         // p($arr);
 

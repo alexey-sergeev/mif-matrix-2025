@@ -30,6 +30,7 @@ class mif_mr_docx_program extends mif_mr_docx {
         $a = array();
 
         $a['name'] = $arr['name'];
+        $a['kaf'] = $this->kaf( $arr );
         $a['place'] = $this->course_place( $arr );
         $a['target'] = $this->p( $arr['data']['content']['target'] );
         $a['cmp_total'] = $this->cmp( $arr['meta']['cmp_descr'] );
@@ -106,6 +107,23 @@ class mif_mr_docx_program extends mif_mr_docx {
         return $a;
     }
     
+
+
+
+    private function kaf( $a )
+    {   
+        if ( empty( $a['kaf'] ) ) return;
+
+        global $tree;
+
+        $arr = array();
+
+        foreach ( $a['kaf'] as $item ) 
+            if ( ! empty( $tree['content']['references']['data']['kaf']['index_r'][$item] ) )
+                $arr[] = $tree['content']['references']['data']['kaf']['index_r'][$item];
+        
+        return implode( "\n", $arr );
+    }
 
 
 

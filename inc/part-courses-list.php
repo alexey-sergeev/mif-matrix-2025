@@ -115,8 +115,13 @@ class mif_mr_courses_list extends mif_mr_table {
 
         // Каф.
 
+        // p($tree['content']['references']['data']['kaf']['data']);
+        ;
+
+
         $text = ( isset( $courses_arr[$key]['courses'][$key2]['kaf'] )) ?
-            implode( ', ', (array) $courses_arr[$key]['courses'][$key2]['kaf'] ) : '';
+            // implode( ', ', (array) $courses_arr[$key]['courses'][$key2]['kaf'] ) : '';
+                    $this->get_kaf( $courses_arr[$key]['courses'][$key2]['kaf'] ) : '';
         $arr[] = $this->add_to_col( $text, array('elem' => 'td', 'class' => '', 'title' => '') );    
         
         // Шаблон
@@ -160,6 +165,31 @@ class mif_mr_courses_list extends mif_mr_table {
     }
     
     
+    private function get_kaf( $kaf )
+    {
+        global $tree;
+
+        // $out = '';
+        $arr = array();
+
+        foreach ( $kaf as $item ) {
+
+            $title = ( ! empty( $tree['content']['references']['data']['kaf']['index_r'][$item] ) ) ? 
+                       ' title="' . $tree['content']['references']['data']['kaf']['index_r'][$item] . '" class="hint"'  : 
+                        '';
+            $arr[] = '<span' . $title . '>' . $item . '</span>';
+
+        }
+
+        // p($kaf);
+        // p($tree['content']['references']['data']['kaf']['index_r']);
+        // p($arr);
+
+        return implode( ', ', $arr );
+    }
+
+
+
     public function filter_thead_col( $arr )
     {
         // $arr[] = $this->add_to_col( '', array('elem' => 'th' ) );

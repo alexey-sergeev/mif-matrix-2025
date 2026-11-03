@@ -33,7 +33,7 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
         $tree['content']['courses']['clean'] = $this->make_courses_clean();
         $tree['content']['courses']['errors'] = $this->make_courses_errors();
-        $tree['templates'] = $this->make_templates_clean();
+        // $tree['templates'] = $this->make_templates_clean();
         $tree['content']['competencies']['data'] = $this->make_courses_competencies();
 
 
@@ -44,32 +44,32 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
     
 
 
-    // 
-    // Сделать templates чистыми
-    // 
+    // // 
+    // // Сделать templates чистыми
+    // // 
     
-    private function make_templates_clean()
-    {
-        global $tree;
+    // private function make_templates_clean()
+    // {
+    //     global $tree;
 
-        $arr = $tree['templates'];
+    //     $arr = $tree['templates'];
 
-        // p($arr);
-        if ( isset( $tree['param']['templates']['data_att'] ) ) {
+    //     // p($arr);
+    //     if ( isset( $tree['param']['templates']['data_att'] ) ) {
 
-            foreach( $tree['param']['templates']['data_att'] as $i ) {
+    //         foreach( $tree['param']['templates']['data_att'] as $i ) {
     
-                if ( empty( $tree['templates'][$i['att'][0]] ) ) continue;
-                $arr[$i['att'][0]]['data']['name'] = $i['name'];
+    //             if ( empty( $tree['templates'][$i['att'][0]] ) ) continue;
+    //             $arr[$i['att'][0]]['data']['name'] = $i['name'];
     
-            };
+    //         };
         
-        }
+    //     }
 
-        // p($arr);
+    //     // p($arr);
 
-        return apply_filters( 'mif_mr_core_opop_make_templates_clean', $arr );
-    }
+    //     return apply_filters( 'mif_mr_core_opop_make_templates_clean', $arr );
+    // }
     
     
     
