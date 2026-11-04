@@ -31,6 +31,8 @@ class mif_mr_docx_program extends mif_mr_docx {
 
         $a['name'] = $arr['name'];
         $a['kaf'] = $this->kaf( $arr );
+        $a['kaf_one'] = $this->kaf( $arr, false );
+        $a['council'] = $this->council();
         $a['place'] = $this->course_place( $arr );
         $a['target'] = $this->p( $arr['data']['content']['target'] );
         $a['cmp_total'] = $this->cmp( $arr['meta']['cmp_descr'] );
@@ -79,6 +81,9 @@ class mif_mr_docx_program extends mif_mr_docx {
         $a['cmp_indicators'] = $this->cmp_indicators( $arr['meta']['cmp'] );
         
         $a = $this->add_att( $a );
+        $a = $this->add_staff( $a );
+
+        // p($a);
 
         $path = $this->make_docx( $a );
 
@@ -91,26 +96,78 @@ class mif_mr_docx_program extends mif_mr_docx {
 
 
 
-    private function add_att( $a )
+    private function add_att( $arr )
     {
         global $tree;
 
-        if ( empty( $tree['content']['attributes']['data'] ) ) return $a;
+        if ( empty( $tree['content']['attributes']['data'] ) ) return $arr;
 
         foreach ( $tree['content']['attributes']['data'] as $key => $item ) {
 
-            $a['att:' . $key] = $item;
-            $a['att: ' . $key] = $item;
+            $arr['att:' . $key] = $item;
+            $arr['att: ' . $key] = $item;
 
         }
 
-        return $a;
+        return $arr;
+    }
+
+
+
+    private function add_staff( $arr )
+    {
+        global $tree;
+
+        if ( empty( $tree['content']['references']['data']['staff']['index'] ) ) return $arr;
+
+        foreach ( $tree['content']['references']['data']['staff']['index'] as $key => $item ) {
+
+            $arr['staff:' . $key] = $item;
+            $arr['staff: ' . $key] = $item;
+
+        }
+
+        return $arr;
     }
     
 
 
 
-    private function kaf( $a )
+
+
+
+
+
+    private function council()
+    {   
+        // {Рассмотрена и одобрена на заседании} учёного совета факультета математики, информатики и физики
+        // {Рассмотрена и одобрена на заседании} учёного совета института математики, информатики и физики
+        // {Рассмотрена и одобрена на заседании} кафедры педагогики
+
+        global $tree;
+
+        $out = 'учёного совета ';
+        
+        if ( empty( $tree['content']['attributes']['data']['Институт'] ) ) {
+
+            $out .= '_____________________________________________________';
+
+        } else {
+
+            $out .= $tree['content']['attributes']['data']['Институт'];
+
+            $out = str_replace( 'учёного совета Факультет', 'учёного совета факультета', $out );
+            $out = str_replace( 'учёного совета Институт', 'учёного совета института', $out );
+            $out = str_replace( 'учёного совета Кафедра', 'кафедры', $out );
+            
+        }
+
+        return apply_filters( 'mif_mr_docx_program_council', $out );;
+    }
+
+
+
+    private function kaf( $a, $f = true )
     {   
         if ( empty( $a['kaf'] ) ) return;
 
@@ -122,7 +179,9 @@ class mif_mr_docx_program extends mif_mr_docx {
             if ( ! empty( $tree['content']['references']['data']['kaf']['index_r'][$item] ) )
                 $arr[] = $tree['content']['references']['data']['kaf']['index_r'][$item];
         
-        return implode( "\n", $arr );
+        $ret = ( $f ) ? implode( "\n", $arr ) : mb_strtolower( $arr[0] );
+        
+        return $ret;
     }
 
 
@@ -502,6 +561,7 @@ class mif_mr_docx_program extends mif_mr_docx {
         // $a[''] = $arr[''];
 
         $a = $this->add_att( $a );
+        $a = $this->add_staff( $a );
 
         // p($a);
 
