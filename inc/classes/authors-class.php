@@ -26,6 +26,8 @@ class authors {
     
         }
 
+        // p($data);
+
         foreach ( $data as $item ) {
 
             if ( isset( $item['authors']['data'] ) ) {
@@ -39,6 +41,8 @@ class authors {
             }
         
         }
+
+        // p($this->authors_arr);
 
     }
     

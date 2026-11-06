@@ -65,6 +65,7 @@ include_once dirname( __FILE__ ) . '/classes/curriculum-class.php';
 include_once dirname( __FILE__ ) . '/classes/attributes-class.php';
 // include_once dirname( __FILE__ ) . '/classes/assessments-class.php';
 include_once dirname( __FILE__ ) . '/classes/evaluations-class.php';
+include_once dirname( __FILE__ ) . '/classes/guidelines-class.php';
 include_once dirname( __FILE__ ) . '/classes/authors-class.php';
 include_once dirname( __FILE__ ) . '/classes/biblio-class.php';
 include_once dirname( __FILE__ ) . '/classes/content-class.php';

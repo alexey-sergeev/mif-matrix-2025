@@ -192,6 +192,16 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses_list {
                                                     // 'coll' => $this->coll_on_off( 'mto', false ),
                                                     'coll' => $this->coll_on_off( 'mto', empty( $arr['data']['mto'] ) ),
                                                 ));
+                                                
+                $out .= $this->get_course_part( array(
+                                                    'course_id' => $course_id,
+                                                    'name' => 'Методические рекомендации',
+                                                    'part' => 'guidelines',
+                                                    'sub_id' => 'guidelines',
+                                                    'data' => $arr['data']['guidelines'],
+                                                    // 'coll' => $this->coll_on_off( 'mto', false ),
+                                                    'coll' => $this->coll_on_off( 'guidelines', empty( $arr['data']['guidelines'] ) ),
+                                                ));
 
                 $out .= $this->get_course_part( array(
                                                     'course_id' => $course_id,
@@ -287,6 +297,12 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses_list {
                     
                 break;
                     
+                case 'guidelines':
+
+                    $out .= $this->get_item_body_guidelines( $d );
+                    
+                break;
+                    
                 default:
                 
                     $out .= $this->get_item_body( $d );
@@ -305,6 +321,42 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses_list {
     }
 
 
+
+
+
+    //
+    // guidelines
+    //
+
+    public function get_item_body_guidelines( $d )
+    {
+        // p($d);
+        
+        if ( empty( $d['data']) ) return $this->data_none( $d, 'стандартные рекомендации' );
+        
+        $style = ( isset( $d['coll'] ) && $d['coll'] == false ) ? ' style="display: none;"' : '';
+        $style2 = ( isset( $d['coll'] ) && $d['coll'] == true ) ? ' style="display: none;"' : '';
+        
+        $out = '';
+
+        $comm = ( isset( $d['data'][ array_keys( $d['data'] )[0] ]['text'] ) ) ? mif_mr_functions::mb_substr( $d['data'][ array_keys( $d['data'] )[0] ]['text'], 80 ) : '. . .';
+        $out .= '<span class="coll-ppp"' . $style2 . '">' . $comm . '</span>';
+
+        foreach ( $d['data'] as $item ) {
+         
+            $out .= '<div class="row coll"' . $style . '">';
+            
+            $out .= '<div class="col">';
+            $out .= '<p class="fw-bolder">' . $item['name'] . '</p>';
+            $out .= '<div class="pb-5"><p>' . str_replace( "\n", '</p><p>', $item['text'] ). '</p></div>';
+            $out .= '</div>';
+            
+            $out .= '</div>';
+            
+        }
+
+        return apply_filters( 'mif_mr_companion_lib_courses_get_item_body_evaluations', $out, $d );
+    }
 
 
 
@@ -583,14 +635,14 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses_list {
     // Показать "нет данных" 
     //
     
-    protected function data_none( $d )
+    protected function data_none( $d, $s = 'нет данных' )
     {
         $style = ( isset( $d['coll'] ) && $d['coll'] == false ) ? ' style="display: none;"' : '';
 
         $out = '';
         $out .= '<div class="row coll"' . $style . '">';
         $out .= '<div class="col">';
-        $out .= '<p class="mt-4"><em>нет данных</em></p>';
+        $out .= '<p class="mt-4"><em>' . $s . '</em></p>';
         $out .= '</div>';
         $out .= '</div>';
         

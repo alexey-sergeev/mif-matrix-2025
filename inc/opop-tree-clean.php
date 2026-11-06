@@ -567,6 +567,10 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
             
             $err[$key2]['data']['mto']['errors']['mto'][] = $this->is_empty( $arr['data']['mto']['mto'] );
             
+            
+            // Методические рекомендации
+            $err[$key2]['data']['guidelines']['errors']['guidelines'][] = 0;  // !!!!
+
 
             // Разработчики
             
@@ -602,6 +606,9 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
             
             $b[] = $this->total( $err[$key2]['data']['mto'] );
             $err[$key2]['data']['mto']['total'] = $b[array_key_last( $b )];
+            
+            $b[] = $this->total( $err[$key2]['data']['guidelines'] );
+            $err[$key2]['data']['guidelines']['total'] = $b[array_key_last( $b )];
             
             $b[] = $this->total( $err[$key2]['data']['authors'] );
             $err[$key2]['data']['authors']['total'] = $b[array_key_last( $b )];

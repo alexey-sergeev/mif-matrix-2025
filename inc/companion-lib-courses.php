@@ -125,8 +125,16 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
                         
                     break;
                     
-                    case 'authors':
+                    case 'guidelines':
                             
+                        // p($item);
+                        $c = new guidelines( $item );
+                        $arr3 = array_merge( $c->get_arr(), $arr3 );
+
+                    break;
+                    
+                    case 'authors':
+                         
                         $c = new authors( $item );
                         $arr3 = array_merge( $c->get_arr(), $arr3 );
 

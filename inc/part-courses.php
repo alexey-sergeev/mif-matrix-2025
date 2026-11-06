@@ -258,6 +258,19 @@ class mif_mr_courses extends mif_mr_courses_list {
         $out .= $this->row( $n++ . '. Материально-техническое обеспечение', 'fw-bolder p-2 mt-6', $err['data']['mto']['total'], 'mr-gray' );
         // if ( isset( $arr['data']['mto']['mto'] ) ) $out .= $this->row(  $this->ol( $arr['data']['mto']['mto'] ) );
         $out .= $this->row( ( isset( $arr['data']['mto']['mto'] ) ) ? $this->ol( $arr['data']['mto']['mto'] ) : $this->qqq(''), 'mt-3'  );
+        
+        // Методические рекомендации
+        
+        $out .= $this->row( $n++ . '. Методические рекомендации', 'fw-bolder p-2 mt-6', $err['data']['guidelines']['total'], 'mr-gray' );
+        // p($arr['data']['guidelines']);
+        foreach ( (array) $arr['data']['guidelines'] as $item ) {
+
+            $out .= $this->row( ( isset( $item['text'] ) ) ? '<b>' . $this->t( $item['name'] ) . '</b>': $this->qqq(''), 'mt-3' );
+            $out .= $this->row( ( isset( $item['text'] ) ) ? $this->t( $item['text'] ) : $this->qqq(''), 'mt-3' );
+
+        } 
+            
+            
 
         // Разработчики
 
@@ -294,7 +307,12 @@ class mif_mr_courses extends mif_mr_courses_list {
         return '<p>' . implode( '</p><p>', $a ) . '</p>';
     }
     
-    
+
+    private function t( $a )
+    {
+        if ( empty( $a ) ) return;
+        return '<p>' . str_replace( "\n", '</p><p>', $a ) . '</p>';
+    }
 
 
     private function q( $s )

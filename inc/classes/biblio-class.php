@@ -18,14 +18,16 @@ class biblio {
 
     function __construct( $data )
     {
-
+    
         if ( is_string( $data ) ) {
     
             $p = new parser();
             $data = $p->get_arr( $data, array( 'section' => 'biblio' ) );
     
         }
-        
+    
+        // p($data);
+
         foreach ( $data as $item ) {
 
             if ( isset( $item['biblio']['data'] ) ) {
@@ -37,6 +39,7 @@ class biblio {
 
         }
 
+        // p($this->biblio_arr);
 
     }
 

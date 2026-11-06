@@ -102,9 +102,9 @@ class mif_mr_curriculum extends mif_mr_table {
         $arr = array();
         
         $n = $this->get_num_semesters();
-        for ( $i = 1; $i < $n;  $i++) $arr[$i] = 0;
-        
-        foreach ( $curriculum_arr as $item )
+        for ( $i = 1; $i <= $n;  $i++) $arr[$i] = 0;
+            
+        foreach ( $curriculum_arr as $item ) 
             foreach ( $item['semesters'] as $k => $i ) $arr[$k]++;
 
         wp_cache_add( 'get_num_semesters_arr', $arr );
