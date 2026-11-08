@@ -477,13 +477,18 @@ class mif_mr_set_core extends mif_mr_part_companion {
         
         $reference_types = apply_filters( 'mif-mr-reference_types', array() );
 
+        // p($reference_types);
+
         // Из библиотеки
         
         foreach ( $t['content']['lib-references']['data'] as $i ) {
 
+            // p($i);
+
             foreach ( $reference_types as $r ) {
 
-                if ( preg_match( '/^' . $r['title'] . '.*/', $i['name'], $m ) ) $arr[$r['name']] = $i;
+                // if ( preg_match( '/^' . $r['title'] . '.*/', $i['name'], $m ) ) $arr[$r['name']] = $i;
+                if ( $i['slug'] == $r['name'] ) $arr[$r['name']] = $i;
 
             }
 
@@ -497,7 +502,8 @@ class mif_mr_set_core extends mif_mr_part_companion {
             foreach ( $reference_types as $r ) {
 
                 if ( $i['from_id'] == mif_mr_opop_core::get_opop_id() && 
-                    preg_match( '/^' . $r['title'] . '.*/', $i['name'], $m ) ) $arr[$r['name']] = $i;
+                    // preg_match( '/^' . $r['title'] . '.*/', $i['name'], $m ) ) $arr[$r['name']] = $i;
+                    $i['slug'] == $r['name'] ) $arr[$r['name']] = $i;
 
             }
 

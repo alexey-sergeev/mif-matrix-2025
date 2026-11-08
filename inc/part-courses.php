@@ -93,8 +93,11 @@ class mif_mr_courses extends mif_mr_courses_list {
         $out .= '<div class="container">';
         
         $out .= $this->row( $arr['name'], 'fw-bolder text-center mr-gray p-3' );
-        $out .= $this->row( '<b>Компетенции: </b>' . $this->span( $this->q( $arr['meta']['cmp_raw'] ) ), 'mt-4' );
+        // $out .= $this->row( '<b>Кафедра: </b>' . $this->span( implode( '<br /> ', $arr['kaf_descr'] ) ), 'mt-4' );
+        $out .= $this->row( '<b>Кафедра: </b>' . $this->span( $this->qq( $arr['kaf_descr'] ) ), 'mt-4' );
+        $out .= $this->row( '<b>Компетенции: </b>' . $this->span( $this->q( $arr['meta']['cmp_raw'] ) ) );
         $out .= $this->row( '<b>Академические часы: </b>' . $this->span( $this->q( $arr['meta']['hours_raw'] ) ) . ' (лек, лаб, пр, СРС, кон)');
+        $out .= $this->row( '<b>Контроль: </b>' . $this->span(  $this->q( $arr['meta']['exam_stat'] ) ) );
         $out .= $this->row( '<b>Зачетных единиц: </b>' . $this->span(  $this->q( $arr['meta']['hours_stat']['hours_ze'] ) ) );
         $out .= $this->row( '<b>Семестры: </b>' . $this->span(  $this->q( $arr['meta']['exam'] ) ) );
 
@@ -286,6 +289,27 @@ class mif_mr_courses extends mif_mr_courses_list {
     
     
 
+    
+    // private function get_kaf( $kaf )
+    // {
+    //     global $tree;
+
+    //     $index = array();
+        
+    //     if ( ! empty( $tree['content']['references']['data']['kaf']['data']['kaf'] ) )
+    //         foreach ( $tree['content']['references']['data']['kaf']['data']['kaf'] as $item ) 
+    //             $index[ $item['value'] ] = $item['key']; 
+
+    //     $arr = array();
+
+    //     foreach ( $kaf as $item )
+    //         // if ( ! empty( $index[$item] ) ) $arr[] = $index[$item]; 
+    //         $arr[] = ( ! empty( $index[$item] ) ) ? $index[$item] : $item; 
+
+    //     return implode( '<br /> ', $arr );
+    // }
+
+
 
     private function mdash( $a )
     {
@@ -319,6 +343,24 @@ class mif_mr_courses extends mif_mr_courses_list {
     {
         // return ( $s ) ? $s : '?';
         return ( $s ) ? '<span class="p-1 pl-3 pr-3 rounded mr-gray">' . $s . '</span>' : '<span class="p-1 pl-3 pr-3 rounded mr-red">?</span>';
+    }
+
+    private function qq( $a )
+    {
+        // return ( $s ) ? $s : '?';
+        $b = array();
+
+        if ( ! empty( $a ) ) {
+
+            foreach ( $a as $i ) $b[] = '<span class="p-1 pl-3 pr-3 mt-2 rounded mr-gray d-inline-block">' . $i . '</span>';
+
+        } else {
+
+            $b[] = '<span class="p-1 pl-3 pr-3 rounded mr-red">?</span>';
+
+        }
+        
+        return implode( '<br />', $b );
     }
     
     

@@ -117,10 +117,16 @@ class mif_mr_docx_program extends mif_mr_docx {
     private function add_staff( $arr )
     {
         global $tree;
+        
+        if ( empty( $tree['content']['references']['data']['staff']['data']['staff'] ) ) return $arr;
+        
+        // p($tree['content']['references']['data']['staff']['data']['staff']);
+        // p($tree['content']);
 
-        if ( empty( $tree['content']['references']['data']['staff']['index'] ) ) return $arr;
+        $index = array();
+        foreach ( $tree['content']['references']['data']['staff']['data']['staff'] as $item )  $index[ $item['key'] ] = $item['value'];
 
-        foreach ( $tree['content']['references']['data']['staff']['index'] as $key => $item ) {
+        foreach ( $index as $key => $item ) {
 
             $arr['staff:' . $key] = $item;
             $arr['staff: ' . $key] = $item;
@@ -169,20 +175,27 @@ class mif_mr_docx_program extends mif_mr_docx {
 
     private function kaf( $a, $f = true )
     {   
-        if ( empty( $a['kaf'] ) ) return;
-
-        global $tree;
-
-        $arr = array();
-
-        foreach ( $a['kaf'] as $item ) 
-            if ( ! empty( $tree['content']['references']['data']['kaf']['index_r'][$item] ) )
-                $arr[] = $tree['content']['references']['data']['kaf']['index_r'][$item];
-        
-        $ret = ( $f ) ? implode( "\n", $arr ) : mb_strtolower( $arr[0] );
-        
-        return $ret;
+        if ( empty( $a['kaf_descr'] ) ) return;
+        return ( $f ) ? implode( "\n", $a['kaf_descr'] ) : mb_strtolower( $a['kaf_descr'][0] );
     }
+
+
+    // private function kaf( $a, $f = true )
+    // {   
+    //     if ( empty( $a['kaf'] ) ) return;
+
+    //     global $tree;
+
+    //     $arr = array();
+
+    //     foreach ( $a['kaf'] as $item ) 
+    //         if ( ! empty( $tree['content']['references']['data']['kaf']['index_r'][$item] ) )
+    //             $arr[] = $tree['content']['references']['data']['kaf']['index_r'][$item];
+        
+    //     $ret = ( $f ) ? implode( "\n", $arr ) : mb_strtolower( $arr[0] );
+        
+    //     return $ret;
+    // }
 
 
 

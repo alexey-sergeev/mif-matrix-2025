@@ -164,26 +164,28 @@ class mif_mr_courses_list extends mif_mr_table {
         return $arr;
     }
     
+
     
     private function get_kaf( $kaf )
     {
         global $tree;
 
-        // $out = '';
+        $index = array();
+        
+        if ( ! empty( $tree['content']['references']['data']['kaf']['data']['kaf'] ) )
+            foreach ( $tree['content']['references']['data']['kaf']['data']['kaf'] as $item ) 
+                $index[ $item['value'] ] = $item['key']; 
+
         $arr = array();
 
         foreach ( $kaf as $item ) {
 
-            $title = ( ! empty( $tree['content']['references']['data']['kaf']['index_r'][$item] ) ) ? 
-                       ' title="' . $tree['content']['references']['data']['kaf']['index_r'][$item] . '" class="hint"'  : 
+            $title = ( ! empty( $index[$item] ) ) ? 
+                       ' title="' . $index[$item] . '" class="hint"'  : 
                         '';
             $arr[] = '<span' . $title . '>' . $item . '</span>';
 
         }
-
-        // p($kaf);
-        // p($tree['content']['references']['data']['kaf']['index_r']);
-        // p($arr);
 
         return implode( ', ', $arr );
     }

@@ -87,7 +87,7 @@ class mif_mr_lib_references extends mif_mr_companion_core {
                     // if ( ! empty( $item2['name'] ) ) $arr2[$name]['name'] = $item2['name'];
                     // $arr2[$name]['date'][0]['key'] = implode( "\n", $item2['data'] );
                     $slug2 = ( ! empty( $item2['att'][0] ) ) ? $item2['att'][0] : 'default';
-                    $arr2[$slug2] = array( 
+                    $arr2[$slug2][] = array( 
                                         'key' => ( ! empty( $item2['name'] ) ) ? $item2['name'] : NULL, 
                                         'value' => implode( "\n", $item2['data'] ),
                                         );
@@ -154,7 +154,7 @@ class mif_mr_lib_references extends mif_mr_companion_core {
 
 
         $arr['comp_id'] = $references_id;
-        // $arr['from_id'] = $post->post_parent;
+        $arr['from_id'] = $post->post_parent;
         $arr['name'] = $post->post_title;
         $arr['slug'] = $slug;
         // $arr['is_numeric'] = $is_numeric;
@@ -163,7 +163,7 @@ class mif_mr_lib_references extends mif_mr_companion_core {
         // // $arr['index'] = $index;
         // // $arr['index_r'] = $index_r;
         
-        p($arr);
+        // p($arr);
 
         return apply_filters( 'mif_mr_get_references_arr', $arr, $references_id );
     }        

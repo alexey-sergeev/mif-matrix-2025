@@ -256,6 +256,7 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
             $arr[$key2]['unit'] = $item['unit'];
             $arr[$key2]['code'] = $item['code'];
             $arr[$key2]['kaf'] = $item['kaf'];
+            $arr[$key2]['kaf_descr'] = $this->get_kaf( $item['kaf'] );
 
 
             // Компетенции
@@ -301,9 +302,10 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
                 $arr[$key2]['meta']['semesters_stat'] = $this->get_semesters_stat( $tree['content']['curriculum']['data'][$key]['semesters'] );
                 $arr[$key2]['meta']['exam'] = $this->get_exam( $tree['content']['curriculum']['data'][$key]['semesters'] );
                 // $arr[$key2]['meta']['exam_descr'] = $this->get_exam_descr( $tree['content']['curriculum']['data'][$key]['semesters'] );
+                $arr[$key2]['meta']['exam_stat'] = $this->get_exam_stat( $tree['content']['curriculum']['data'][$key]['semesters'] );
 
             }
-
+            // p($tree['content']['curriculum']['data'][$key]['course_stat']);
 
             // Cтатистика по всем семестрам 
             
@@ -638,6 +640,26 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
 
 
+    private function get_kaf( $kaf )
+    {
+        global $tree;
+
+        $index = array();
+        
+        if ( ! empty( $tree['content']['references']['data']['kaf']['data']['kaf'] ) )
+            foreach ( $tree['content']['references']['data']['kaf']['data']['kaf'] as $item ) 
+                $index[ $item['value'] ] = $item['key']; 
+
+        $arr = array();
+
+        foreach ( $kaf as $item )
+            $arr[] = ( ! empty( $index[$item] ) ) ? $index[$item] : $item; 
+
+        return $arr;
+    }
+
+
+
     private function total( $arr )
     {
         // $sum = 0;
@@ -821,6 +843,22 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
             $e = ( isset( $i['att'] ) ) ? ' (' . implode( ', ', $i['att'] ) . ')' : '';
             $b[] = $k . $e;
         }
+
+        return implode( ', ', $b );
+    }
+
+
+    private function get_exam_stat( $a ) 
+    {
+        $b = array();
+
+        foreach ( $a as $i ) 
+            if ( isset( $i['att'] ) ) $b = array_merge( $b, $i['att'] );
+
+        $b = array_unique( $b );
+        sort( $b );
+
+        if ( empty( $b ) ) $b[] = 'нет'; 
 
         return implode( ', ', $b );
     }

@@ -75,10 +75,15 @@ class mif_mr_opop_core {
     public function reference_types()
     {
         return array(
-                    array( 'name' => 'kaf', 'title' => 'Номера кафедр', 'is_numeric' => true, 'is_string' => false ),
-                    array( 'name' => 'staff', 'title' => 'Должностные лица', 'is_numeric' => false, 'is_string' => true ),
-                    array( 'name' => 'guidelines', 'title' => 'Методические рекомендации', 'is_numeric' => false, 'is_string' => true ),
+                    array( 'name' => 'kaf', 'title' => 'Номера кафедр' ),
+                    array( 'name' => 'staff', 'title' => 'Должностные лица' ),
+                    array( 'name' => 'guidelines', 'title' => 'Методические рекомендации' ),
                 ); 
+        // return array(
+        //             array( 'name' => 'kaf', 'title' => 'Номера кафедр', 'is_numeric' => true, 'is_string' => false ),
+        //             array( 'name' => 'staff', 'title' => 'Должностные лица', 'is_numeric' => false, 'is_string' => true ),
+        //             array( 'name' => 'guidelines', 'title' => 'Методические рекомендации', 'is_numeric' => false, 'is_string' => true ),
+        //         ); 
     }
 
     

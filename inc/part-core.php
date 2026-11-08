@@ -331,6 +331,30 @@ class mif_mr_part_core {
     }
     
 
+    // public function get_kaf( $kaf )
+    // {
+    //     global $tree;
+
+    //     $index = array();
+        
+    //     if ( ! empty( $tree['content']['references']['data']['kaf']['data']['kaf'] ) )
+    //         foreach ( $tree['content']['references']['data']['kaf']['data']['kaf'] as $item ) 
+    //             $index[ $item['value'] ] = $item['key']; 
+
+    //     $arr = array();
+
+    //     foreach ( $kaf as $item ) {
+
+    //         $title = ( ! empty( $index[$item] ) ) ? 
+    //                    ' title="' . $index[$item] . '" class="hint"'  : 
+    //                     '';
+    //         $arr[] = '<span' . $title . '>' . $item . '</span>';
+
+    //     }
+
+    //     return apply_filters( 'mif_mr_core_get_kaf', implode( ', ', $arr ), $kaf );
+    // }
+
     
     //
     //  

@@ -361,9 +361,11 @@ class plx {
     // Получить список кафедр
     // 
 
-    function get_kaf()
+    function get_kaf( $f = false )
     {
         $out = '';
+        
+        if ( $f ) $out .= "== kaf\n\n";
 
         $kaf_arr = $this->get_kaf_arr();
 
@@ -381,9 +383,11 @@ class plx {
     // Получить атрибуты образовательной программы
     // 
 
-    function get_att( $show = 'main' )
+    function get_att( $show = 'main', $f = false )
     {
         $out = '';
+
+        if ( $f ) $out .= "== " . $show . "\n\n";
 
         $att_arr = $this->get_att_arr( $show );
 

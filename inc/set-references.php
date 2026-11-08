@@ -77,7 +77,7 @@ class mif_mr_set_references extends mif_mr_set_core {
             
             foreach ( $this->reference_types as $item ) {
                 
-                $out .= '<div class="row">';
+                $out .= '<div class="row mt-5">';
                 $out .= '<div class="col p-0 pb-3">';
                 $out .= '<span class="fw-bolder">' . $item['title'] . '</span>';
                 $out .= '</div>';
@@ -108,21 +108,21 @@ class mif_mr_set_references extends mif_mr_set_core {
                     // p($item);
 
                     $out .= '<div class="row">';
-                    $out .= '<div class="col p-0 pt-3 pb-5">';
+                    $out .= '<div class="col p-0 pt-4 pb-6">';
                     
-                    if ( $reference['is_numeric'] === $item['is_numeric'] && $reference['is_string'] === $item['is_string'] ) {
+                    // if ( $reference['is_numeric'] === $item['is_numeric'] && $reference['is_string'] === $item['is_string'] ) {
 
-                        if ( ! empty( $reference['data'] ) ) {
+                        // if ( ! empty( $reference['data'] ) ) {
         
                             $out .= mif_mr_lib_references_screen::get_references_data( $reference );
                             
-                        }
+                        // }
                         
-                    } else {
+                    // } else {
                         
-                        $out .= mif_mr_functions::get_callout( 'Кажется, что данные не те', 'warning' );
+                    //     $out .= mif_mr_functions::get_callout( 'Кажется, что данные не те', 'warning' );
                         
-                    }
+                    // }
 
                     $out .= '</div>';
                     $out .= '</div>';

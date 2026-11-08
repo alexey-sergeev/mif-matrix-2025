@@ -180,6 +180,20 @@ class mif_mr_functions {
 
 
     //
+    //  
+    //
+    
+    public static function get_p( $s = '' )
+    {   
+        $s = str_replace( '<', '&lt;', $s );
+        $s = str_replace( '>', '&gt;', $s );
+        return '<p>' . str_replace( "\n", '</p><p>', $s ) . '</p>';
+    }
+    
+
+
+
+    //
     // Показать ссылку на шаблон (д.р.)
     //
     

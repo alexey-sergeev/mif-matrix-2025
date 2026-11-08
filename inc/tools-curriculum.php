@@ -134,8 +134,8 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
         $out .= $this->get_part( array( 'title' => 'Матрица компетенций', 'key' => 'matrix', 'data' => $plx->get_matrix(), 'save' => 'Сохранить в ОПОП', 'analysis' => 'Анализ' ) );
         $out .= $this->get_part( array( 'title' => 'Учебный план', 'key' => 'curriculum', 'data' => $plx->get_curriculum(), 'save' => 'Сохранить в ОПОП', 'analysis' => 'Анализ' ) );
         $out .= $this->get_part( array( 'title' => 'Библиотека компетенций', 'key' => 'lib-competencies', 'data' => $plx->get_cmp(), 'save' => 'Сохранить в библиотеке' ) );
-        $out .= $this->get_part( array( 'title' => 'Библиотека справочников (номера кафедр)', 'key' => 'lib-references', 'data' => $plx->get_kaf(), 'save' => 'Сохранить в библиотеке', 'explanation' => 'kaf' ) );
-        $out .= $this->get_part( array( 'title' => 'Библиотека справочников (должностные лица)', 'key' => 'lib-references', 'data' => $plx->get_att( 'staff' ), 'save' => 'Сохранить в библиотеке', 'explanation' => 'staff' ) );
+        $out .= $this->get_part( array( 'title' => 'Библиотека справочников (номера кафедр)', 'key' => 'lib-references', 'data' => $plx->get_kaf( true ), 'save' => 'Сохранить в библиотеке', 'explanation' => 'kaf' ) );
+        $out .= $this->get_part( array( 'title' => 'Библиотека справочников (должностные лица)', 'key' => 'lib-references', 'data' => $plx->get_att( 'staff', true ), 'save' => 'Сохранить в библиотеке', 'explanation' => 'staff' ) );
 
         $out .= '</div>';
 
@@ -236,6 +236,7 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
     public function save_comp( $att = array() )
     {
     
+        // p($_REQUEST);
         // !!!!!!
     
         $out = '';
@@ -462,8 +463,8 @@ class mif_mr_tools_curriculum extends mif_mr_tools_core {
             case 'curriculum': $data = $plx->get_curriculum(); break;  
             case 'matrix': $data = $plx->get_matrix(); break;  
             case 'lib-competencies': $data = $plx->get_cmp(); break;  
-            case 'lib-references-kaf': $data = $plx->get_kaf(); break;  
-            case 'lib-references-staff': $data = $plx->get_att( 'staff' ); break;  
+            case 'lib-references-kaf': $data = $plx->get_kaf( true ); break;  
+            case 'lib-references-staff': $data = $plx->get_att( 'staff', true ); break;  
             case 'attributes': $data = $plx->get_att(); break;  
             case 'get_att_arr': $data = $plx->get_att_arr(); break;  
             default: $data = ''; break;  

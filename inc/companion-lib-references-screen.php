@@ -142,22 +142,25 @@ class mif_mr_lib_references_screen extends mif_mr_lib_references {
         $out .= '<th>Данные</th>';
         $out .= '</tr></thead>';
 
-        foreach ( $arr['data'] as $item ) {
-            
-            $out .= '<tr>';
-            $out .= '<td>';
-            $out .= ++$n;
-            $out .= '</td>';
+        foreach ( $arr['data'] as $data ) {
+            foreach ( $data as $item ) {
+                
+                $out .= '<tr>';
+                $out .= '<td>';
+                $out .= ++$n;
+                $out .= '</td>';
 
-            $out .= '<td>';
-            $out .= ( isset( $item['name'] ) ) ? $item['name'] : '';
-            $out .= '</td>';
-            
-            $out .= '<td>';
-            $out .= ( isset( $item['att'] ) ) ? $item['att'] : '';
-            $out .= '</td>';
+                $out .= '<td>';
+                $out .= ( isset( $item['key'] ) ) ? mif_mr_functions::get_p( $item['key'] ) : '';
+                $out .= '</td>';
+                
+                $out .= '<td>';
+                $out .= ( isset( $item['value'] ) ) ? mif_mr_functions::get_p( $item['value'] ) : '';
+                $out .= '</td>';
 
-            $out .= '</tr>';
+                $out .= '</tr>';
+
+            }
         }
 
         $out .= '</table>';
