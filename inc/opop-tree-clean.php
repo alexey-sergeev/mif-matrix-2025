@@ -646,8 +646,8 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
         $index = array();
         
-        if ( ! empty( $tree['content']['references']['data']['kaf']['data']['kaf'] ) )
-            foreach ( $tree['content']['references']['data']['kaf']['data']['kaf'] as $item ) 
+        if ( ! empty( $tree['content']['references']['data']['kaf']['data'][0] ) )
+            foreach ( $tree['content']['references']['data']['kaf']['data'][0]['data'] as $item ) 
                 $index[ $item['value'] ] = $item['key']; 
 
         $arr = array();

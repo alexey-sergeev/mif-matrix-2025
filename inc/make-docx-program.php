@@ -118,13 +118,13 @@ class mif_mr_docx_program extends mif_mr_docx {
     {
         global $tree;
         
-        if ( empty( $tree['content']['references']['data']['staff']['data']['staff'] ) ) return $arr;
+        if ( empty( $tree['content']['references']['data']['staff']['data'][0] ) ) return $arr;
         
         // p($tree['content']['references']['data']['staff']['data']['staff']);
         // p($tree['content']);
 
         $index = array();
-        foreach ( $tree['content']['references']['data']['staff']['data']['staff'] as $item )  $index[ $item['key'] ] = $item['value'];
+        foreach ( $tree['content']['references']['data']['staff']['data'][0]['data'] as $item )  $index[ $item['key'] ] = $item['value'];
 
         foreach ( $index as $key => $item ) {
 

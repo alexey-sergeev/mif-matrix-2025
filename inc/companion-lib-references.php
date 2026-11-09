@@ -55,114 +55,118 @@ class mif_mr_lib_references extends mif_mr_companion_core {
         
         $post = get_post( $references_id );
 
-        // p($post);
-        // p($post->post_content);
-        
-        
-        // $arr2 = explode( "\n", $post->post_content );
-        // $arr2 = array_map( 'strim', $arr2 );
-        
-        $data = $post->post_content;
-        $data = "== default\n" . $data;
-        
+        // $data = $post->post_content;
+        $data = explode( "\n", $post->post_content );
+        $data = array_map( 'strim', $data );  
+
         $p = new parser();
-        $d = $p->get_arr( $data );
-        
-        // p($d);
-        
-        
-        $arr2 = array();
-        
-        foreach ( $d as $item ) {
+
+        $key = "default";
+        $n = 0;
+
+        $d = array();
+
+        foreach ( $data as $item ) {
+
+            if ( empty( $item ) ) continue;
             
-            $slug = $item['default']['name'];
+            if ( preg_match( '/^==/', $item ) ) {
+                
+                $name_data = $p->parse_name( $item );
+                $key = $name_data['name'];
+                continue;
             
-            // if ( isset( $item['default']['data'] ) ) $arr2 = $this->get_data( implode( "\n", $item['default']['data'] ) );
-            if ( isset( $item['default']['data'] ) ) $arr2[$slug] = $this->get_data( implode( "\n", $item['default']['data'] ) );
+            }
             
-            if ( isset( $item['default']['parts'] ) )
-                foreach ( $item['default']['parts'] as $item2 ) {
+            if ( preg_match( '/^=/', $item ) ) {
+                
+                $name_data = $p->parse_name( $item );
+                $n++;
                
-                    // $name = ( ! empty( $item2['att'][0] ) ) ? $item2['att'][0] : 'default';
-                    // if ( ! empty( $item2['name'] ) ) $arr2[$name]['name'] = $item2['name'];
-                    // $arr2[$name]['date'][0]['key'] = implode( "\n", $item2['data'] );
-                    $slug2 = ( ! empty( $item2['att'][0] ) ) ? $item2['att'][0] : 'default';
-                    $arr2[$slug2][] = array( 
-                                        'key' => ( ! empty( $item2['name'] ) ) ? $item2['name'] : NULL, 
-                                        'value' => implode( "\n", $item2['data'] ),
-                                        );
-                    // $arr2[] = array(
-                    //                 'name' => ( ! empty( $item2['att'][0] ) ) ? $item2['att'][0] : NULL,
-                    //                 'data' => array( 
-                    //                                 'key' => ( ! empty( $item2['name'] ) ) ? $item2['name'] : NULL, 
-                    //                                 'value' => implode( "\n", $item2['data'] ),
-                    //                             )
-                    //                 );
-                    // $arr2[] = array(
-                    //                 'name' => ( ! empty( $item2['name'] ) ) ? $item2['name'] : NULL,
-                    //                 'data' => array( 
-                    //                                 'key' => ( ! empty( $item2['att'][0] ) ) ? $item2['att'][0] : NULL,
-                    //                                 'value' => implode( "\n", $item2['data'] ),
-                    //                             )
-                    //                 );
+                $key2 = $name_data['att'][0];
+                
+                $slug = ( ! empty( $name_data['name'] ) ) ? $name_data['name'] : $key2;
+                $whose = ( ! empty( $name_data['att'][1] ) ) ? $name_data['att'][1] : '';
+
+                continue;
+            
+            }
+            
+            // if ( preg_match( '/^=(?<key>\w+)/', $item, $m ) ) {
+            //     $key2 = $m['key'];
+            //     continue;
+            // }
+
+            if ( $n === 0 ) {
+
+                $d[$n]['data'][] = $this->get_data( $item );
+                // $d[$key][$key2]['data'][] = $item;
+                
+            } else {
+
+                $d[$n]['att'] = array( 
+                                        'slug' => $slug,
+                                        // 'descr' => $descr,
+                                        'whose' => $whose,
+                                    );
+
+                $d[$n]['data'][0]['key'] = $key2;
+                
+                if ( ! isset( $d[$n]['data'][0]['value'] ) ) $d[$n]['data'][0]['value'] = '';
+                $d[$n]['data'][0]['value'] .= $item . "\n";
 
 
-                    // p('@');
-                    // p($item2);
 
-                }
-
+            }
 
 
         }
 
-        // p($arr2);
 
-
-        // $is_numeric = false;
-        // $is_string = false;
-
-        // foreach ( $arr2 as $item ) {
-                
-        //     if ( empty( $item ) ) continue;
+        // p($data);
+        // p($d);
+      
+        // $data = "== default\n" . $data;
+        
+        // $p = new parser();
+        // $d = $p->get_arr( $data );
+        
+        // $arr2 = array();
+        
+        // foreach ( $d as $item ) {
             
-        //     $data = $p->parse_name( $item );
+        //     $slug = $item['default']['name'];
             
-        //     $data_att = ( isset( $data['att'][0] ) ) ? $data['att'][0] : NULL;
+        //     if ( isset( $item['default']['data'] ) ) $arr2[] = array(
+        //                                                                 'data' => $this->get_data( implode( "\n", $item['default']['data'] ) ),
+        //                                                             );
 
-        //     $arr3[] = array( 
-        //         'name' => $data['name'],
-        //         // 'att' => $data['att'][0],
-        //         'att' => $data_att,
-        //     );
-
-        //     // p($data['att'][0]);
-        //     // if ( is_numeric( $data['att'][0] ) ) $is_numeric = true;
-        //     // if ( ! is_numeric( $data['att'][0] ) ) $is_string = true;
-        //     if ( is_numeric( $data_att ) ) $is_numeric = true;
-        //     if ( ! is_numeric( $data_att ) ) $is_string = true;
-
+        //     if ( isset( $item['default']['parts'] ) )
+        //         foreach ( $item['default']['parts'] as $item2 ) {
+               
+        //             $slug2 = ( ! empty( $item2['att'][0] ) ) ? $item2['att'][0] : 'default';
+        //             $arr2[] = array(
+        //                                 'att' => ( isset( $item2['att'] ) ) ? $item2['att'] : array(),
+        //                                 'data' => array( 
+        //                                     array(
+        //                                             'key' => ( ! empty( $item2['name'] ) ) ? $item2['name'] : NULL, 
+        //                                             'value' => implode( "\n", $item2['data'] ),
+        //                                         ),
+        //                                 )
+        //                             );
+                    
+        //         }
 
         // }
-
-        // // $index = array();
-        // // foreach ( $arr3 as $i ) $index[$i['name']] = $i['att'];
-        
-        // // $index_r = array();
-        // // foreach ( $arr3 as $i ) $index_r[$i['att']] = $i['name'];
-
-
 
         $arr['comp_id'] = $references_id;
         $arr['from_id'] = $post->post_parent;
         $arr['name'] = $post->post_title;
-        $arr['slug'] = $slug;
-        // $arr['is_numeric'] = $is_numeric;
-        // $arr['is_string'] = $is_string;
-        $arr['data'] = $arr2;
-        // // $arr['index'] = $index;
-        // // $arr['index_r'] = $index_r;
-        
+        $arr['slug'] = $key;
+        // $arr['slug'] = $slug;
+        // $arr['data'] = $arr2;
+        $arr['data'] = $d;
+
         // p($arr);
 
         return apply_filters( 'mif_mr_get_references_arr', $arr, $references_id );
@@ -170,32 +174,50 @@ class mif_mr_lib_references extends mif_mr_companion_core {
     
 
 
-    private function get_data( $d )
+    private function get_data( $item )
     {
         $arr = array();
 
-        $arr2 = explode( "\n", $d );
-        $arr2 = array_map( 'strim', $arr2 );
-        
         $p = new parser();
+        
+        $data = $p->parse_name( $item );
+        $data_att = ( isset( $data['att'][0] ) ) ? $data['att'][0] : NULL;
 
-        foreach ( $arr2 as $item ) {
-                
-            if ( empty( $item ) ) continue;
-            
-            $data = $p->parse_name( $item );
-            
-            $data_att = ( isset( $data['att'][0] ) ) ? $data['att'][0] : NULL;
-
-            $arr[] = array( 
-                'key' => $data['name'],
-                'value' => $data_att,
-            );
-
-        }
+        $arr = array( 
+            'key' => $data['name'],
+            'value' => $data_att,
+        );
 
         return $arr;
     }
+
+
+    // private function get_data( $d )
+    // {
+    //     $arr = array();
+
+    //     $arr2 = explode( "\n", $d );
+    //     $arr2 = array_map( 'strim', $arr2 );
+        
+    //     $p = new parser();
+
+    //     foreach ( $arr2 as $item ) {
+                
+    //         if ( empty( $item ) ) continue;
+            
+    //         $data = $p->parse_name( $item );
+            
+    //         $data_att = ( isset( $data['att'][0] ) ) ? $data['att'][0] : NULL;
+
+    //         $arr[] = array( 
+    //             'key' => $data['name'],
+    //             'value' => $data_att,
+    //         );
+
+    //     }
+
+    //     return $arr;
+    // }
 
 
 

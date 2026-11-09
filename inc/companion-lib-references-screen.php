@@ -143,7 +143,10 @@ class mif_mr_lib_references_screen extends mif_mr_lib_references {
         $out .= '</tr></thead>';
 
         foreach ( $arr['data'] as $data ) {
-            foreach ( $data as $item ) {
+
+            $att = ( ! empty( $data['att']['whose'] ) ) ? '<br /><span class="p-1 pl-3 pr-3 d-inline-block rounded mr-gray">' . $data['att']['whose'] . '</span>' : '';
+
+            foreach ( $data['data'] as $item ) {
                 
                 $out .= '<tr>';
                 $out .= '<td>';
@@ -151,7 +154,8 @@ class mif_mr_lib_references_screen extends mif_mr_lib_references {
                 $out .= '</td>';
 
                 $out .= '<td>';
-                $out .= ( isset( $item['key'] ) ) ? mif_mr_functions::get_p( $item['key'] ) : '';
+                // $out .= ( isset( $item['key'] ) ) ? mif_mr_functions::get_p( $item['key'] ) . $att : '';
+                $out .= ( isset( $item['key'] ) ) ? $item['key'] . $att : '';
                 $out .= '</td>';
                 
                 $out .= '<td>';
@@ -161,6 +165,7 @@ class mif_mr_lib_references_screen extends mif_mr_lib_references {
                 $out .= '</tr>';
 
             }
+        
         }
 
         $out .= '</table>';
