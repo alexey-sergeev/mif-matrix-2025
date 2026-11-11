@@ -331,6 +331,17 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
 
 
                 break;
+
+                case 'guidelines':
+                
+                    foreach ( $item as $key2 => $item2 ) {
+
+                        $s .= '= ' . $item2['name'] . ' (' . $key2 . ')' . "\n\n";
+                        $s .= $item2['text'] . "\n\n";
+    
+                    }
+
+                break;
                 
                 default:
                 

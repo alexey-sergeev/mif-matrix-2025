@@ -82,6 +82,7 @@ class mif_mr_docx_program extends mif_mr_docx {
         
         $a = $this->add_att( $a );
         $a = $this->add_staff( $a );
+        $a = $this->add_guidelines( $a, $arr );
 
         // p($a);
 
@@ -132,6 +133,36 @@ class mif_mr_docx_program extends mif_mr_docx {
             $arr['staff: ' . $key] = $item;
 
         }
+
+        return $arr;
+    }
+    
+
+
+    private function add_guidelines( $arr, $course_data )
+    {
+        global $tree;
+
+        if ( empty( $course_data['data']['guidelines'] ) ) return $arr;  
+
+        if ( isset( $tree['content']['references']['data']['guidelines']['data'] ) ) 
+            foreach ( $tree['content']['references']['data']['guidelines']['data'] as $item ) {
+        
+                $arr['guidelines:' . $item['att']['slug'] ] = '';
+                $arr['guidelines: ' . $item['att']['slug'] ] = '';
+
+            }
+
+        foreach ( $course_data['data']['guidelines'] as $key => $item ) {
+
+            $arr2 = explode( "\n", $item['text']);
+            foreach ( $arr2 as $k => $i ) $arr2[$k] = "</w:t></w:r><w:r><w:tab/></w:r><w:r><w:t>" . $i;
+            $text = implode( "\n", $arr2 );
+
+            $arr['guidelines:' . $key] = $text;
+            $arr['guidelines: ' . $key] = $text;
+
+        } 
 
         return $arr;
     }
