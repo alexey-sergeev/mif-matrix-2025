@@ -357,7 +357,7 @@ class mif_mr_companion_core {
         $out .= '</form>';        
 
 
-        return apply_filters( ' mif_mr_companion_lib_core_get_edit', $out, $comp_id );
+        return apply_filters( 'mif_mr_companion_lib_core_get_edit', $out, $comp_id );
     }
     
 

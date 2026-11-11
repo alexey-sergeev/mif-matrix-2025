@@ -434,12 +434,24 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
             // p($tree['content']['lib-courses']['data'][$item['course_id']]['data']);
 
             // p($item);
-
+            // p($d);
+            
             $arr[$key2]['data']['biblio'] = ( $is_course ) ? $d['biblio'] : array( 'basic' => NULL, 'additional' => NULL );
             $arr[$key2]['data']['it'] = ( $is_course ) ? $d['it'] : array( 'inet' => NULL, 'app' => NULL );
             $arr[$key2]['data']['mto'] = ( $is_course ) ? $d['mto'] : array( 'mto' => NULL );
-            $arr[$key2]['data']['guidelines'] = ( $is_course ) ? $d['guidelines'] : array();
+            // $arr[$key2]['data']['guidelines'] = ( $is_course ) ? $d['guidelines'] : array();
+
+            $g = new guidelines();
+            
+            $lib = ( ! empty( $tree['content']['references']['data']['guidelines'] ) ) ? $tree['content']['references']['data']['guidelines'] : '';
+            $cur = ( ! empty( $tree['content']['curriculum']['data'][$key] ) ) ? $tree['content']['curriculum']['data'][$key] : '';
+            
+
+            $arr[$key2]['data']['guidelines'] = ( $is_course ) ? $g->get_guidelines( $d['guidelines'], $lib, $arr[$key2] ) : array();
+
             $arr[$key2]['data']['authors'] = ( $is_course ) ? $d['authors'] : array( 'authors' => NULL );
+
+            // p($arr[$key2]);
 
         }
 

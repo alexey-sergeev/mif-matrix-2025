@@ -144,7 +144,8 @@ class mif_mr_lib_references_screen extends mif_mr_lib_references {
 
         foreach ( $arr['data'] as $data ) {
 
-            $att = ( ! empty( $data['att']['whose'] ) ) ? '<br /><span class="p-1 pl-3 pr-3 d-inline-block rounded mr-gray">' . $data['att']['whose'] . '</span>' : '';
+            $units = ( ! empty( $data['att']['units'] ) ) ? '<br /><span class="p-1 pl-3 pr-3 mb-2 d-inline-block rounded mr-gray">' . $data['att']['units'] . '</span>' : '';
+            $exam = ( ! empty( $data['att']['exam'] ) ) ? '<br /><span class="p-1 pl-3 pr-3 mb-2 d-inline-block rounded mr-gray">' . $data['att']['exam'] . '</span>' : '';
 
             foreach ( $data['data'] as $item ) {
                 
@@ -155,7 +156,7 @@ class mif_mr_lib_references_screen extends mif_mr_lib_references {
 
                 $out .= '<td>';
                 // $out .= ( isset( $item['key'] ) ) ? mif_mr_functions::get_p( $item['key'] ) . $att : '';
-                $out .= ( isset( $item['key'] ) ) ? $item['key'] . $att : '';
+                $out .= ( isset( $item['key'] ) ) ? $item['key'] . $units . $exam : '';
                 $out .= '</td>';
                 
                 $out .= '<td>';

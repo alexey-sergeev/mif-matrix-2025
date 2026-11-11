@@ -83,10 +83,12 @@ class mif_mr_lib_references extends mif_mr_companion_core {
                 $name_data = $p->parse_name( $item );
                 $n++;
                
-                $key2 = $name_data['att'][0];
+                $slug = $name_data['att'][0];
                 
-                $slug = ( ! empty( $name_data['name'] ) ) ? $name_data['name'] : $key2;
-                $whose = ( ! empty( $name_data['att'][1] ) ) ? $name_data['att'][1] : '';
+                $key2 = ( ! empty( $name_data['name'] ) ) ? $name_data['name'] : $slug;
+                // $whose = ( ! empty( $name_data['att'][1] ) ) ? $name_data['att'][1] : '';
+                $units = ( ! empty( $name_data['att'][1] ) ) ? $name_data['att'][1] : '';
+                $exam = ( ! empty( $name_data['att'][2] ) ) ? $name_data['att'][2] : '';
 
                 continue;
             
@@ -107,7 +109,9 @@ class mif_mr_lib_references extends mif_mr_companion_core {
                 $d[$n]['att'] = array( 
                                         'slug' => $slug,
                                         // 'descr' => $descr,
-                                        'whose' => $whose,
+                                        // 'whose' => $whose,
+                                        'units' => $units,
+                                        'exam' => $exam,
                                     );
 
                 $d[$n]['data'][0]['key'] = $key2;
