@@ -438,7 +438,7 @@ class mif_mr_init extends mif_mr_types {
                     
                     if ( in_array( $_REQUEST['do'], array( 'remove' ) ) ) {
                         // p($_REQUEST);
-                        $m = new mif_mr_lib_rtemplates_screen();
+                        $m = new mif_mr_lib_templates_screen();
                         $m->remove( (int) $_REQUEST['comp'], (int) $_REQUEST['opop'], 'lib-templates' );
                         echo $mif_mr_opop->show_messages();
                         
