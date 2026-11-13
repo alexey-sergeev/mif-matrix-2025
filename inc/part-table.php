@@ -118,7 +118,7 @@ class mif_mr_table extends mif_mr_part_companion {
     public function get_tbody_arr( $courses_arr = array() )
     {
         
-        $mode = $this->get_mode($courses_arr);
+        $mode = $this->get_mode( $courses_arr );
 
         $arr = array();
         $n = 1;
@@ -131,7 +131,8 @@ class mif_mr_table extends mif_mr_part_companion {
 
             if ( $mode == 'modules' ) $arr2[] = $this->add_to_col( $code, array('elem' => 'th') );
 
-            $text = ( $key == '__default__' ) ? 'Дисциплины и практики вне модулей' : $key;
+            $text = ( $key == '__default__' ) ? mif_mr_opop_core::get_caption( 'default' ) : $key;
+            // $text = ( $key == '__default__' ) ? 'Дисциплины и практики вне модулей' : $key;
             $arr2[] = ( $mode == 'modules' ) ? 
                 $this->add_to_col( $text, array( 'elem' => 'th', 'colspan' => apply_filters( 'mif-mr-tbody-colspan', 1 ) ) ) :
                 $this->add_to_col( $item['att']['plural'], array( 'elem' => 'th', 'colspan' => apply_filters( 'mif-mr-tbody-colspan', 2 ) ) ) ;

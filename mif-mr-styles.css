@@ -124,7 +124,7 @@
     background-color: #ffb;
 }
 
-.part .live tr:hover td.mr-green, .part .live tr:hover th.mr-green {
+.part .live tr:hover td.mr-green, .part .live tr:hover th.mr-green, .part .live tr:hover td.on {
     background-color: #9f9 !important;
 }
 

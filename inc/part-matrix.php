@@ -60,12 +60,45 @@ class mif_mr_matrix extends mif_mr_table {
         
         $arr = $this->get_courses_arr();    
         
+        // p($this->get_matrix_arr());
+        
         $out = '';
         $out .= '<div class="content-ajax col-12 p-0">';
         $out .= $this->get_table_html( $arr );
         $out .= '</div>';
         
         return apply_filters( 'mif_mr_part_get_matrix', $out );
+    }
+    
+    
+    
+    // 
+    // Показывает панель для скачивания
+    // 
+    
+    public function get_panel_for_download()
+    {
+        $out = '';
+
+        // $out .= '<div class="mt-3">'; 
+        $out .= '<div class="row mt-3">'; 
+        $out .= '<div class="col-12 p-0 mb-3">'; 
+        
+        // $out .= '<a href="?download=matrix"><span class="mr-btn mr-gray p-2 rounded"><i class="fa-regular fa-file-lines fa-xl" aria-hidden="true"></i></span>Матрица компетенций</a>';
+        // $out .= '<a href="?download=matrix"><span class="mr-btn mr-gray p-2 rounded"><i class="fa-solid fa-table-list fa-lg"></i></span>Матрица компетенций</a>';
+        $out .= '<a href="?download=matrix"><span class="mr-btn mr-gray p-2 rounded"><i class="fa-solid fa-table-cells-large fa-lg"></i></span>Матрица компетенций</a>';
+        // $out .= '<a href="?download=matrix"><span class="mr-btn mr-gray p-2 rounded"><i class="fa-solid fa-table-cells fa-lg"></i></span>Матрица компетенций</a>';
+        
+        $out .= '</div>'; 
+        $out .= '</div>'; 
+
+            //         $s = '<span class="mr-btn mr-gray rounded p-1 pt-2 pb-2 m-0"><i class="fa-regular fa-file-lines fa-xl" aria-hidden="true"></i></span>';
+            // $s .= '<span class="ml-1"><small><b>' . $name . '</b></small></span>';   
+        // $out .= '<div class="content-ajax col-12 p-0">';
+        // $out .= $this->get_table_html( $arr );
+        // $out .= '</div>';
+        
+        return apply_filters( 'mif_mr_part_matrix_get_panel_for_download', $out );
     }
     
     
@@ -83,7 +116,8 @@ class mif_mr_matrix extends mif_mr_table {
         $arr2 = array();
 
         $arr2[] = $this->add_to_col( '', array( 'elem' => 'th' ) );
-        $arr2[] = $this->add_to_col( 'ИТОГО:', array( 'elem' => 'th' ) );
+        // $arr2[] = $this->add_to_col( 'ИТОГО:', array( 'elem' => 'th' ) );
+        $arr2[] = $this->add_to_col( mif_mr_opop_core::get_caption( 'total_all' ), array( 'elem' => 'th' ) );
         
         $count_arr = array();
 
@@ -141,7 +175,8 @@ class mif_mr_matrix extends mif_mr_table {
         $arr2 = array();
 
         $arr2[] = $this->add_to_col( '', array( 'elem' => 'th' ) );
-        $arr2[] = $this->add_to_col( 'итого по разделу:', array( 'elem' => 'th' ) );
+        $arr2[] = $this->add_to_col( mif_mr_opop_core::get_caption( 'total' ), array( 'elem' => 'th' ) );
+        // $arr2[] = $this->add_to_col( 'итого по разделу:', array( 'elem' => 'th' ) );
         
         $count_arr = array();
 
@@ -318,14 +353,25 @@ class mif_mr_matrix extends mif_mr_table {
 
     private function get_cmp( $matrix_arr )
     {
-        $arr = array();
-        foreach ( $matrix_arr as $item ) $arr = array_merge( $arr, $item );
-        
-        $c = new cmp();
-        $arr2 = $c->get_cmp( $arr, 'arr' );
-    
-        return $arr2;
+        global $tree;
+        return array_keys( $tree['content']['competencies']['data'] );
     }
+    
+
+    // // 
+    // // Функция возвращает все возможные компетенции
+    // // 
+
+    // private function get_cmp( $matrix_arr )
+    // {
+    //     $arr = array();
+    //     foreach ( $matrix_arr as $item ) $arr = array_merge( $arr, $item );
+        
+    //     $c = new cmp();
+    //     $arr2 = $c->get_cmp( $arr, 'arr' );
+    
+    //     return $arr2;
+    // }
 
 }
 

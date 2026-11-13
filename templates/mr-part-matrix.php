@@ -8,11 +8,12 @@
     <div class="mt-5 mb-5">
     
         <?php mif_mr_the_link_edit(); ?>
+        <?php mif_mr_panel_for_download( 'matrix' ); ?>
     
     </div>  
 
 
-    <?php mif_mr_show_explanation('matrix'); ?>
+    <?php mif_mr_show_explanation( 'matrix' ); ?>
 
     <div class="row">
         <?php mif_mr_show_panel( 'matrix' ); ?>

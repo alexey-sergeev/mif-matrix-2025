@@ -226,6 +226,25 @@ function mif_mr_the_link_edit_visual()
 // Выводит 
 //
 
+function mif_mr_panel_for_download( $type = 'matrix' )
+{
+
+    if ( $type == 'matrix' ) {
+
+        global $mif_mr_matrix;
+        echo $mif_mr_matrix->get_panel_for_download();
+
+    }
+
+    
+}
+
+
+
+//
+// Выводит 
+//
+
 function mif_mr_the_link_edit_easy()
 {
     global $mif_mr_set_templates;

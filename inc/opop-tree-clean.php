@@ -35,6 +35,10 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
         $tree['content']['courses']['errors'] = $this->make_courses_errors();
         // $tree['templates'] = $this->make_templates_clean();
         $tree['content']['competencies']['data'] = $this->make_courses_competencies();
+        
+        $tree['content']['matrix']['stat']['modules'] = $this->make_matrix_stat( 'modules' );
+        $tree['content']['matrix']['stat']['courses'] = $this->make_matrix_stat( 'courses' );
+        $tree['content']['matrix']['stat']['all'] = $this->make_matrix_stat_all();
 
 
         return;
@@ -42,6 +46,72 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
 
     
+
+
+    private function make_matrix_stat( $by = 'modules' )
+    {
+        global $tree;
+    
+        $courses_arr = $tree['content']['courses']['data'];
+        $matrix_arr = $tree['content']['matrix']['data'];
+
+        if ( $by == 'courses' ) {
+
+            $m = new modules();
+            $courses_arr = $m->get_courses_tree( $courses_arr );
+
+        }
+
+        // p($courses_arr);
+        // p($matrix_arr);
+
+        $cmp_stat = array();
+
+        foreach ( $courses_arr as $key => $item ) {
+        
+            foreach ( $item['courses'] as $key2 => $item2 ) {
+            
+                foreach ( $matrix_arr[$key2] as $c ) {
+             
+                    if ( ! isset( $cmp_stat[$key][$c] ) ) $cmp_stat[$key][$c] = 0;
+                    $cmp_stat[$key][$c]++;
+
+                }
+
+            }
+
+        }
+
+        // p($cmp_stat);
+        return $cmp_stat;
+    }
+
+    
+    
+    private function make_matrix_stat_all()
+    {
+        global $tree;
+    
+        $matrix_arr = $tree['content']['matrix']['data'];
+
+        $cmp_stat = array();
+
+        foreach ( $matrix_arr as $course ) {
+  
+            foreach ( $course as $c ) {
+            
+                if ( ! isset( $cmp_stat[$c] ) ) $cmp_stat[$c] = 0;
+                $cmp_stat[$c]++;
+            
+            }
+
+        }
+
+        // p($cmp_stat);
+        return $cmp_stat;
+    }
+
+
 
 
     // // 

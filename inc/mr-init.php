@@ -58,6 +58,7 @@ include_once dirname( __FILE__ ) . '/lib-processor.php';
 
 include_once dirname( __FILE__ ) . '/make-xlsx-tpl.php';
 include_once dirname( __FILE__ ) . '/make-docx-program.php';
+include_once dirname( __FILE__ ) . '/make-xlsx-matrix.php';
 
 include_once dirname( __FILE__ ) . '/classes/modules-class.php';
 include_once dirname( __FILE__ ) . '/classes/matrix-class.php';

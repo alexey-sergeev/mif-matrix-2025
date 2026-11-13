@@ -54,26 +54,55 @@ class mif_mr_xlsx  {
     //  $cell - левая верхняя ячейка, откуда начинать заполнять
     // 
 
-    function make_xlsx_form_arr( $arr = array(), $blank = '', $cell = 'A1' )
+    function make_xlsx_form_arr( $arr = array(), $cell = 'A1' )
+    // function make_xlsx_form_arr( $arr = array(), $blank = '', $cell = 'A1' )
     {
-        if ( empty( $blank ) ) $blank = dirname( __FILE__ ) . '/../templates/xlsx/default.xlsx';
+        // if ( empty( $blank ) ) $blank = dirname( __FILE__ ) . '/../templates/xlsx/default.xlsx';
 
-        $spreadsheet = IOFactory::load( $blank );
-        $sheet = $spreadsheet->getActiveSheet();
+        // $spreadsheet = IOFactory::load( $blank );
+        // $sheet = $spreadsheet->getActiveSheet();
 
         // $sheet->setCellValue( 'A1', 'Hello World !' );
-        $sheet->fromArray( $arr, '', $cell, true );
+        $this->sheet->fromArray( $arr, '', $cell, true );
        
         // $upload_dir = (object) wp_upload_dir();
         // $file = trailingslashit( $upload_dir->path ) . md5( serialize( $arr ) . $cell ) . '.xlsx';
         
         $file = mif_mr_download::get_path_tmp( 'xlsx' );
 
-        $writer = new Xlsx( $spreadsheet );
+        $writer = new Xlsx( $this->spreadsheet );
         $writer->save( $file );
 
         return $file;
     }
+
+    // //
+    // // Получить готовый xlsx-файл
+    // // 
+    // //  $arr - данные, которые надо вставить в таблицу
+    // //  $cell - левая верхняя ячейка, откуда начинать заполнять
+    // // 
+
+    // function make_xlsx_form_arr( $arr = array(), $blank = '', $cell = 'A1' )
+    // {
+    //     if ( empty( $blank ) ) $blank = dirname( __FILE__ ) . '/../templates/xlsx/default.xlsx';
+
+    //     $spreadsheet = IOFactory::load( $blank );
+    //     $sheet = $spreadsheet->getActiveSheet();
+
+    //     // $sheet->setCellValue( 'A1', 'Hello World !' );
+    //     $sheet->fromArray( $arr, '', $cell, true );
+       
+    //     // $upload_dir = (object) wp_upload_dir();
+    //     // $file = trailingslashit( $upload_dir->path ) . md5( serialize( $arr ) . $cell ) . '.xlsx';
+        
+    //     $file = mif_mr_download::get_path_tmp( 'xlsx' );
+
+    //     $writer = new Xlsx( $spreadsheet );
+    //     $writer->save( $file );
+
+    //     return $file;
+    // }
 
 
     //
