@@ -31,10 +31,10 @@ class mif_mr_xlsx  {
 
 
     function __construct( $path = NULL )
-    {
+    {   
         if ( ! is_file( $path ) ) $path = '';
         if ( empty( $path ) ) $path = dirname( __FILE__ ) . '/../templates/xlsx/default.xlsx';
-        
+
         $this->spreadsheet = IOFactory::load( $path );
         $this->sheet = $this->spreadsheet->getActiveSheet();
 
@@ -68,6 +68,16 @@ class mif_mr_xlsx  {
         // $upload_dir = (object) wp_upload_dir();
         // $file = trailingslashit( $upload_dir->path ) . md5( serialize( $arr ) . $cell ) . '.xlsx';
         
+        // p($this->sheet->getCell( 'B7' )->getRow());
+        //         global $tree;
+        // p($tree);
+
+        $set_row_auto = apply_filters( 'mif_mr_xlsx_set_row_auto', array() );
+        foreach ( $set_row_auto as $i ) $this->sheet->getRowDimension( $i )->setRowHeight( -1 );
+        
+        $set_col_visible = apply_filters( 'mif_mr_xlsx_set_col_visible', array() );
+        foreach ( $set_col_visible as $i ) $this->sheet->getColumnDimensionByColumn( $i )->setVisible( false );
+
         $file = mif_mr_download::get_path_tmp( 'xlsx' );
 
         $writer = new Xlsx( $this->spreadsheet );
