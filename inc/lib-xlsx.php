@@ -23,7 +23,7 @@ require dirname( __FILE__ ) . '/../vendor/autoload.php';
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-
+use PhpOffice\PhpSpreadsheet\Style\Border;
 
 class mif_mr_xlsx  {
 
@@ -75,8 +75,27 @@ class mif_mr_xlsx  {
         $set_row_auto = apply_filters( 'mif_mr_xlsx_set_row_auto', array() );
         foreach ( $set_row_auto as $i ) $this->sheet->getRowDimension( $i )->setRowHeight( -1 );
         
+        $set_row_visible = apply_filters( 'mif_mr_xlsx_set_row_visible', array() );
+        foreach ( $set_row_visible as $i ) $this->sheet->getRowDimension( $i )->setVisible( false );
+        // foreach ( $set_row_visible as $i ) $this->sheet->removeRow($i);
+        
         $set_col_visible = apply_filters( 'mif_mr_xlsx_set_col_visible', array() );
         foreach ( $set_col_visible as $i ) $this->sheet->getColumnDimensionByColumn( $i )->setVisible( false );
+
+$styleArray = [
+    'borders' => [
+        'allBorders' => [
+            'borderStyle' => Border::BORDER_THIN,
+            'color' => ['argb' => '000000'], // чёрный
+        ],
+    ],
+];
+
+// Применяем рамку к диапазону A1:C3
+$this->sheet->getStyle('A5:EA551')->applyFromArray($styleArray);
+$this->sheet->getStyle('A7')->applyFromArray($styleArray);
+
+
 
         $file = mif_mr_download::get_path_tmp( 'xlsx' );
 
