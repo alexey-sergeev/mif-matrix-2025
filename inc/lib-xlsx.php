@@ -84,6 +84,7 @@ class mif_mr_xlsx  {
             // p($e);
             if ( isset( $i['bg-color'] ) ) $this->sheet->getStyle( 'A' . $r . ':' . $e . $r )->getFill()->setFillType( Fill::FILL_SOLID )->getStartColor()->setRGB( $i['bg-color'] );
             if ( isset( $i['bold'] ) ) $this->sheet->getStyle( 'A' . $r . ':' . $e . $r )->getFont()->setBold( true );
+            if ( isset( $i['size'] ) ) $this->sheet->getStyle( 'A' . $r . ':' . $e . $r )->getFont()->setSize( $i['size'] );
             if ( isset( $i['merge-end'] ) ) $this->sheet->mergeCells( $i['merge-end'] . $r . ':' . $e . $r );
             if ( isset( $i['height'] ) ) $this->sheet->getRowDimension( $r )->setRowHeight( $i['height'] );
 
@@ -91,7 +92,9 @@ class mif_mr_xlsx  {
 
         $set_row_auto = apply_filters( 'mif_mr_xlsx_set_row_auto', array() );
         foreach ( $set_row_auto as $i ) $this->sheet->getRowDimension( $i )->setRowHeight( -1 );
-        
+        // p($set_row_auto);
+        // p($arr);
+
         $set_row_visible = apply_filters( 'mif_mr_xlsx_set_row_visible', array() );
         foreach ( $set_row_visible as $i ) $this->sheet->getRowDimension( $i )->setVisible( false );
         // foreach ( $set_row_visible as $i ) $this->sheet->removeRow($i);
@@ -102,7 +105,6 @@ class mif_mr_xlsx  {
         $set_borders_array = apply_filters( 'mif_mr_xlsx_set_borders_array', array() );
         // foreach ( $set_col_visible as $i ) $this->sheet->getColumnDimensionByColumn( $i )->setVisible( false );
 
-
         if ( ! empty( $set_borders_array ) ) {
 
             $this->sheet->getStyle( 
@@ -111,12 +113,18 @@ class mif_mr_xlsx  {
                                 ':' .
                                 Coordinate::stringFromColumnIndex( $set_borders_array[2] ) .
                                 $set_borders_array[3]
-                            // )->applyFromArray($styleArray);
                             )->applyFromArray( [ 'borders' => [ 'allBorders' => [ 'borderStyle' => Border::BORDER_THIN, 'color' => ['argb' => '000000'], ], ], ] );
-                            $this->sheet->getStyle( 
-                                                Coordinate::stringFromColumnIndex( $set_borders_array[0] ) .
-                                                $set_borders_array[1] + 1 
-                                            )->applyFromArray( array() );
+            $this->sheet->getStyle( 
+                                Coordinate::stringFromColumnIndex( $set_borders_array[2] + 2 ) .
+                                $set_borders_array[1] .
+                                ':' .
+                                Coordinate::stringFromColumnIndex( $set_borders_array[2] + 3 ) .
+                                $set_borders_array[3]
+                            )->applyFromArray( [ 'borders' => [ 'left' => [ 'borderStyle' => Border::BORDER_THIN, 'color' => ['argb' => '000000'], ], ], ] );
+            $this->sheet->getStyle( 
+                                Coordinate::stringFromColumnIndex( $set_borders_array[0] ) .
+                                $set_borders_array[1] + 1 
+                            )->applyFromArray( array() );
         
         }
 
