@@ -24,6 +24,9 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+
 
 class mif_mr_xlsx  {
 
@@ -54,7 +57,7 @@ class mif_mr_xlsx  {
     //  $cell - левая верхняя ячейка, откуда начинать заполнять
     // 
 
-    function make_xlsx_form_arr( $arr = array(), $cell = 'A1' )
+    function make_xlsx_form_arr( $arr = array(), $cell = 'A1', $arr_att = array(), $end = 0 )
     // function make_xlsx_form_arr( $arr = array(), $blank = '', $cell = 'A1' )
     {
         // if ( empty( $blank ) ) $blank = dirname( __FILE__ ) . '/../templates/xlsx/default.xlsx';
@@ -72,6 +75,20 @@ class mif_mr_xlsx  {
         //         global $tree;
         // p($tree);
 
+        $e = Coordinate::stringFromColumnIndex( $end );
+
+        foreach ( $arr_att as $k => $i ) {
+
+            // if ( isset( $i['bg-color'] ) ) $this->sheet->getStyle( 'A' . ( $k + 1 ) )->getFill()->setFillType( Fill::FILL_SOLID )->getStartColor()->setRGB( $i['bg-color'] );
+            $r = $k + 1;
+            // p($e);
+            if ( isset( $i['bg-color'] ) ) $this->sheet->getStyle( 'A' . $r . ':' . $e . $r )->getFill()->setFillType( Fill::FILL_SOLID )->getStartColor()->setRGB( $i['bg-color'] );
+            if ( isset( $i['bold'] ) ) $this->sheet->getStyle( 'A' . $r . ':' . $e . $r )->getFont()->setBold( true );
+            if ( isset( $i['merge-end'] ) ) $this->sheet->mergeCells( $i['merge-end'] . $r . ':' . $e . $r );
+            if ( isset( $i['height'] ) ) $this->sheet->getRowDimension( $r )->setRowHeight( $i['height'] );
+
+        }
+
         $set_row_auto = apply_filters( 'mif_mr_xlsx_set_row_auto', array() );
         foreach ( $set_row_auto as $i ) $this->sheet->getRowDimension( $i )->setRowHeight( -1 );
         
@@ -82,20 +99,26 @@ class mif_mr_xlsx  {
         $set_col_visible = apply_filters( 'mif_mr_xlsx_set_col_visible', array() );
         foreach ( $set_col_visible as $i ) $this->sheet->getColumnDimensionByColumn( $i )->setVisible( false );
 
-$styleArray = [
-    'borders' => [
-        'allBorders' => [
-            'borderStyle' => Border::BORDER_THIN,
-            'color' => ['argb' => '000000'], // чёрный
-        ],
-    ],
-];
-
-// Применяем рамку к диапазону A1:C3
-$this->sheet->getStyle('A5:EA551')->applyFromArray($styleArray);
-$this->sheet->getStyle('A7')->applyFromArray($styleArray);
+        $set_borders_array = apply_filters( 'mif_mr_xlsx_set_borders_array', array() );
+        // foreach ( $set_col_visible as $i ) $this->sheet->getColumnDimensionByColumn( $i )->setVisible( false );
 
 
+        if ( ! empty( $set_borders_array ) ) {
+
+            $this->sheet->getStyle( 
+                                Coordinate::stringFromColumnIndex( $set_borders_array[0] ) .
+                                $set_borders_array[1] .
+                                ':' .
+                                Coordinate::stringFromColumnIndex( $set_borders_array[2] ) .
+                                $set_borders_array[3]
+                            // )->applyFromArray($styleArray);
+                            )->applyFromArray( [ 'borders' => [ 'allBorders' => [ 'borderStyle' => Border::BORDER_THIN, 'color' => ['argb' => '000000'], ], ], ] );
+                            $this->sheet->getStyle( 
+                                                Coordinate::stringFromColumnIndex( $set_borders_array[0] ) .
+                                                $set_borders_array[1] + 1 
+                                            )->applyFromArray( array() );
+        
+        }
 
         $file = mif_mr_download::get_path_tmp( 'xlsx' );
 

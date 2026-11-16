@@ -80,23 +80,27 @@ class mif_mr_matrix extends mif_mr_table {
     {
         $out = '';
 
-        // $out .= '<div class="mt-3">'; 
         $out .= '<div class="row mt-3">'; 
-        $out .= '<div class="col-12 p-0 mb-3">'; 
+        $out .= '<div class="col-12 p-0">'; 
         
         // $out .= '<a href="?download=matrix"><span class="mr-btn mr-gray p-2 rounded"><i class="fa-regular fa-file-lines fa-xl" aria-hidden="true"></i></span>Матрица компетенций</a>';
         // $out .= '<a href="?download=matrix"><span class="mr-btn mr-gray p-2 rounded"><i class="fa-solid fa-table-list fa-lg"></i></span>Матрица компетенций</a>';
+        // $out .= '<a href="?download=matrix"><span class="mr-btn mr-gray p-2 rounded"><i class="fa-solid fa-table-cells-large fa-lg"></i></span>Матрица компетенций (по модулям)</a>';
         $out .= '<a href="?download=matrix"><span class="mr-btn mr-gray p-2 rounded"><i class="fa-solid fa-table-cells-large fa-lg"></i></span>Матрица компетенций</a>';
         // $out .= '<a href="?download=matrix"><span class="mr-btn mr-gray p-2 rounded"><i class="fa-solid fa-table-cells fa-lg"></i></span>Матрица компетенций</a>';
         
         $out .= '</div>'; 
         $out .= '</div>'; 
 
-            //         $s = '<span class="mr-btn mr-gray rounded p-1 pt-2 pb-2 m-0"><i class="fa-regular fa-file-lines fa-xl" aria-hidden="true"></i></span>';
-            // $s .= '<span class="ml-1"><small><b>' . $name . '</b></small></span>';   
-        // $out .= '<div class="content-ajax col-12 p-0">';
-        // $out .= $this->get_table_html( $arr );
-        // $out .= '</div>';
+
+        $out .= '<div class="row mt-3">'; 
+        $out .= '<div class="col-12 p-0 mb-3">'; 
+        
+        $out .= '<a href="?download=matrix&key=courses"><span class="mr-btn mr-gray p-2 rounded"><i class="fa-solid fa-table-cells-large fa-lg"></i></span>Матрица компетенций (по дисциплинам)</a>';
+        
+        $out .= '</div>'; 
+        $out .= '</div>'; 
+
         
         return apply_filters( 'mif_mr_part_matrix_get_panel_for_download', $out );
     }
