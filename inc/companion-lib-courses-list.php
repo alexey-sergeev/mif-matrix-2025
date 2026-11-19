@@ -193,10 +193,12 @@ class mif_mr_lib_courses_list extends mif_mr_lib_courses {
         
         if ( empty( $out ) ) {
 
-            $out .= '<div class="bg-light p-5 mb-5 text-center">';
-            $out .= '<p class="text-secondary mt-4 mb-0"><i class="fas fa-3x fa-ellipsis-h"></i></p>';
-            $out .= '<p class="mb-5 fw-semibold">' . __( 'Ничего не найдено', 'mif-mr' ) . '</p>';
-            $out .= '</div>';
+            $out .= mif_mr_opop_core::get_none();
+
+            // $out .= '<div class="bg-light p-5 mb-5 text-center">';
+            // $out .= '<p class="text-secondary mt-4 mb-0"><i class="fas fa-3x fa-ellipsis-h"></i></p>';
+            // $out .= '<p class="mb-5 fw-semibold">' . __( 'Ничего не найдено', 'mif-mr' ) . '</p>';
+            // $out .= '</div>';
 
         }
 

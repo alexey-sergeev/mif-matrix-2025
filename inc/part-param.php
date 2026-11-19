@@ -40,14 +40,14 @@ class mif_mr_param  extends mif_mr_part_core {
 
     public function the_show()
     {
-        // global $mr;
+        global $mr;
 
-        // if ( ! $mr->user_can( 3 ) ) {
+        if ( ! $mr->user_can( 2 ) ) {
             
-        //     echo $mr->access_denied();
-        //     return false;
+            echo $mr->access_denied();
+            return false;
         
-        // }
+        }
 
 
         if ( $template = locate_template( 'mr-part-param.php' ) ) {

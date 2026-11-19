@@ -255,15 +255,22 @@ class mif_mr_opop extends mif_mr_opop_make {
             break;
             
             case 'stat':
-                global $tree;
+                
+                global $mr;
 
-                p('====== 1 ======');
-                foreach ( $tree as $k => $i ) p($k);
+                if ( $mr->user_can( 3 ) ) {
+                    
+                    global $tree;
 
-                p('====== 2 ======');
-                foreach ( $tree['content'] as $k => $i ) p($k);
+                    p('====== 1 ======');
+                    foreach ( $tree as $k => $i ) p($k);
 
-                p($tree);
+                    p('====== 2 ======');
+                    foreach ( $tree['content'] as $k => $i ) p($k);
+
+                    p($tree);
+                
+                }
 
             break;
             

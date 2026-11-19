@@ -28,6 +28,15 @@ class mif_mr_competencies_screen extends mif_mr_lib_competencies {
 
     public function the_show()
     {
+        global $mr;
+
+        if ( ! $mr->user_can( 2 ) ) {
+            
+            echo $mr->access_denied();
+            return false;
+        
+        }
+
         if ( $template = locate_template( 'mr-lib-competencies.php' ) ) {
            
             load_template( $template, false );
@@ -105,6 +114,8 @@ class mif_mr_competencies_screen extends mif_mr_lib_competencies {
                 }
 
             }
+
+            
             // New
 
             if ( $f ) $out .= '<div class="row mb-3 mt-6">';
@@ -117,7 +128,7 @@ class mif_mr_competencies_screen extends mif_mr_lib_competencies {
             $out .= '</div>';
             
         }
-        
+
         // Hidden
         
         if ( $f ) $out .= '<input type="hidden" name="opop" value="' . $opop_id . '">';
@@ -281,13 +292,6 @@ class mif_mr_competencies_screen extends mif_mr_lib_competencies {
         
         $out .= $this->get_lib_head( array( 'title' => 'Библиотека компетенций' ) );
 
-        // $out .= '<div class="row">';
-        
-        // $out .= '<div class="col">';
-        // $out .= '<h4 class="border-bottom pb-5"><i class="fa-regular fa-file-lines"></i> Библиотека компетенций</h4>';
-        // $out .= '</div>';
-        
-        // $out .= '</div>';
         global $tree;
 
         $arr = array();
@@ -302,30 +306,10 @@ class mif_mr_competencies_screen extends mif_mr_lib_competencies {
                                                 'type' => 'lib-competencies',    
                                             ) );
             
-
-            // // p($item);
-            
-            // $out .= '<div class="row mt-3 mb-3">';
-            
-            // $out .= '<div class="col-10 col-md-11 pt-1 pb-1">';
-            // $out .= '<a href="' . mif_mr_opop_core::get_opop_url() . 'lib-competencies/' . $item['comp_id'] . '">' . $item['name'] . '</a>';
-            // $out .= '</div>';
-            
-            // $out .= '<div class="col-2 col-md-1 pt-1 pb-1 text-end">';
-            // $out .= ( $item['from_id'] == mif_mr_opop_core::get_opop_id() ||  $item['from_id'] == 0 ) ?
-            //         // $item['parent'] :
-            //         '' :
-            //         '<a href="' .  get_permalink( $item['from_id'] ) . 'lib-competencies/' . $item['from_id'] . '" title="' . 
-            //         $this->mb_substr( get_the_title( $item['from_id'] ), 20 ) . '">' . $item['from_id'] . '</a>';
-            // $out .= '</div>';
-            
-            // $out .= '</div>';
-            
         }
-        
-        // if ( $f ) $out .= $this->show_lib_comp_create();
+  
+        if ( empty( $arr ) ) $out .= mif_mr_opop_core::get_none();
 
-        // if ( $f ) 
         $out .= $this->get_lib_create( array(
                                                 'action' => 'lib-competencies',
                                                 'button' => 'Создать список',
@@ -339,11 +323,8 @@ class mif_mr_competencies_screen extends mif_mr_lib_competencies {
 
     
         $out .= '</div>';
-        
         $out .= '</div>';
-        
         $out .= '</div>';
-        
         
         return apply_filters( 'mif_mr_show_list_competencies', $out );
     }

@@ -39,6 +39,15 @@ class mif_mr_set_courses extends mif_mr_set_core {
     
     public function the_show()
     {
+        global $mr;
+
+        if ( ! $mr->user_can( 2 ) ) {
+            
+            echo $mr->access_denied();
+            return false;
+        
+        }
+
         if ( $template = locate_template( 'mr-set-courses.php' ) ) {
             
             load_template( $template, false );
@@ -82,6 +91,8 @@ class mif_mr_set_courses extends mif_mr_set_core {
             
             $arr = $tree['content']['courses']['complete'];
 
+            // p($arr);
+
             $a = $this->get_select_info();
 
             $out = '';
@@ -92,65 +103,80 @@ class mif_mr_set_courses extends mif_mr_set_core {
             $out .= '</div>';
             $out .= '</div>';
 
-            $out .= '<div class="row">';
-            $out .= '<div class="col p-2 pt-4 pb-4 select-menu">';
-            $out .= $this->get_select_menu( $arr );
-            $out .= '</div>';
-            $out .= '</div>';
+            if ( ! empty( $arr ) ) {
 
-
-            $out .= '<div class="row fw-semibold">';
-            $out .= '<div class="col col-1 p-2 pt-4 pb-4">№</div>';
-            $out .= '<div class="col col-11 p-2 pt-4 pb-4">Название дисциплины</div>';
-            $out .= '</div>';
-
-            $n = 1;
-            
-            $out .= '<div class="striped">';
-
-            foreach ( $arr as $k => $i ) {
-                
-                // p($i);
-
-                // $course_id = ( isset( $i['course_id'] ) ) ? $i['course_id'] : '';
-                $course_id_manual = ( isset( $i['method'] ) && $i['method'] == 'manual' ) ? $i['course_id'] : '';
-                // $span_id = ( isset( $i['course_id'] ) ) ? mif_mr_opop_core::get_span_id( $i['course_id'] ) : '';
-                // $span_id = ( isset( $i['course_id'] ) ) ? '<a href="' . mif_mr_opop_core::get_opop_url() . 'lib-courses/' . $i['course_id'] . '" class="rounded mr-gray p-1 pr-3 pl-3">' . $i['course_id'] . '</a>' : '';
-                $span_id = ( isset( $i['course_id'] ) ) ? mif_mr_opop_core::get_a_id( $i['course_id'], mif_mr_opop_core::get_opop_url() . 'lib-courses/' . $i['course_id'] ) : '';
-                $question = ( isset( $i['name_old'] ) ) ? '<span class="question rounded-circle mr-gray ml-2 p-1 pr-2 pl-2"><i class="fa-solid fa-question fa-xs"></i></span>' : '';
-                $name_old = ( isset( $i['name_old'] ) ) ? '<div class="answer" style="display: none;"><div class="p-2 mt-3 mb-3 mr-gray"><i>Старое название: ' . $i['name_old'] . '</i></div></div>' : '';
-
-                $out .= '<div class="row select-item select-yes ' . $a[$k]['item_1'] . ' ' . $a[$k]['item_2'] . ' ' . $a[$k]['item_3'] . '">';
-                $out .= '<div class="col col-1 p-2">' . $n++ . '</div>';
-                
-                $out .= '<div class="col p-2">' . $k . $question . $name_old . '</div>';
-
-                $out .= '<div class="col col-2 p-2">';
-                $out .= mif_mr_opop_core::get_span_label( $a[$k]['label_3'], $a[$k]['color_3'], $a[$k]['desc_3'] ); 
-                $out .= mif_mr_opop_core::get_span_label( $a[$k]['label_2'], $a[$k]['color_2'], $a[$k]['desc_2'] ); 
-                $out .= mif_mr_opop_core::get_span_label( $a[$k]['label_1'], $a[$k]['color_1'], $a[$k]['desc_1'] ); 
+                $out .= '<div class="row">';
+                $out .= '<div class="col p-2 pt-4 pb-4 select-menu">';
+                $out .= $this->get_select_menu( $arr );
                 $out .= '</div>';
+                $out .= '</div>';
+
+
+                $out .= '<div class="row fw-semibold">';
+                $out .= '<div class="col col-1 p-2 pt-4 pb-4">№</div>';
+                $out .= '<div class="col col-11 p-2 pt-4 pb-4">Название дисциплины</div>';
+                $out .= '</div>';
+
+                $n = 1;
                 
-                if ( isset( $_REQUEST['edit'] ) && $_REQUEST['edit'] == 'visual' ) {
+                $out .= '<div class="striped">';
 
-                    $out .= '<div class="col col-1 p-0">';
-                    $out .= '<input name="new_course_id[]" type="text" value="' . $course_id_manual . '" class="form-control p-1 pl-2 pr-0 mt-1">';
-                    $out .= '<input name="name[]" type="hidden" value="' . $k . '">';
+                foreach ( $arr as $k => $i ) {
+                    
+                    // p($i);
+
+                    // $course_id = ( isset( $i['course_id'] ) ) ? $i['course_id'] : '';
+                    $course_id_manual = ( isset( $i['method'] ) && $i['method'] == 'manual' ) ? $i['course_id'] : '';
+                    // $span_id = ( isset( $i['course_id'] ) ) ? mif_mr_opop_core::get_span_id( $i['course_id'] ) : '';
+                    // $span_id = ( isset( $i['course_id'] ) ) ? '<a href="' . mif_mr_opop_core::get_opop_url() . 'lib-courses/' . $i['course_id'] . '" class="rounded mr-gray p-1 pr-3 pl-3">' . $i['course_id'] . '</a>' : '';
+                    $span_id = ( isset( $i['course_id'] ) ) ? mif_mr_opop_core::get_a_id( $i['course_id'], mif_mr_opop_core::get_opop_url() . 'lib-courses/' . $i['course_id'] ) : '';
+                    $question = ( isset( $i['name_old'] ) ) ? '<span class="question rounded-circle mr-gray ml-2 p-1 pr-2 pl-2"><i class="fa-solid fa-question fa-xs"></i></span>' : '';
+                    $name_old = ( isset( $i['name_old'] ) ) ? '<div class="answer" style="display: none;"><div class="p-2 mt-3 mb-3 mr-gray"><i>Старое название: ' . $i['name_old'] . '</i></div></div>' : '';
+
+
+                    $out .= '<div class="row select-item select-yes ' . $a[$k]['item_1'] . ' ' . $a[$k]['item_2'] . ' ' . $a[$k]['item_3'] . '">';
+
+                    
+                    $out .= '<div class="col col-1 p-2">' . $n++ . '</div>';
+                    $out .= '<div class="col p-2">' . $k . $question . $name_old . '</div>';
+
+                    $out .= '<div class="col col-2 p-2">';
+                    $out .= mif_mr_opop_core::get_span_label( $a[$k]['label_3'], $a[$k]['color_3'], $a[$k]['desc_3'] ); 
+                    $out .= mif_mr_opop_core::get_span_label( $a[$k]['label_2'], $a[$k]['color_2'], $a[$k]['desc_2'] ); 
+                    $out .= mif_mr_opop_core::get_span_label( $a[$k]['label_1'], $a[$k]['color_1'], $a[$k]['desc_1'] ); 
                     $out .= '</div>';
+                    
+                    if ( isset( $_REQUEST['edit'] ) && $_REQUEST['edit'] == 'visual' ) {
 
-                } else {
+                        $out .= '<div class="col col-1 p-0">';
+                        $out .= '<input name="new_course_id[]" type="text" value="' . $course_id_manual . '" class="form-control p-1 pl-2 pr-0 mt-1">';
+                        $out .= '<input name="name[]" type="hidden" value="' . $k . '">';
+                        $out .= '</div>';
 
-                    $out .= '<div class="col col-1 p-2">' . $span_id . '</div>';
+                    } else {
 
+                        $out .= '<div class="col col-1 p-2">' . $span_id . '</div>';
+
+                    }
+                    
+
+                    $out .= '</div>';
+                    
                 }
                 
-
-
                 $out .= '</div>';
+
+            } else {
                 
+                $out .= '<div class="row">';
+                $out .= '<div class="col p-0">';
+                
+                $out .= mif_mr_functions::get_callout( 'Нет данных', 'warning' );
+                
+                $out .= '</div>';
+                $out .= '</div>';
+
             }
-            
-            $out .= '</div>';
 
         }
         

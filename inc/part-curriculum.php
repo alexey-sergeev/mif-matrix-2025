@@ -34,6 +34,15 @@ class mif_mr_curriculum extends mif_mr_table {
 
     public function the_show()
     {
+        global $mr;
+
+        if ( ! $mr->user_can( 1 ) ) {
+            
+            echo $mr->access_denied();
+            return false;
+
+        }
+        
         if ( $template = locate_template( 'mr-part-curriculum.php' ) ) {
            
             load_template( $template, false );

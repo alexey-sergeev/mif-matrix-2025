@@ -26,6 +26,15 @@ class mif_mr_tools_courses extends mif_mr_tools_info {
 
     public function the_show()
     {
+        global $mr;
+
+        if ( ! $mr->user_can( 3 ) ) {
+            
+            echo $mr->access_denied();
+            return false;
+
+        }
+
         if ( $template = locate_template( 'mr-tools-courses.php' ) ) {
            
             load_template( $template, false );

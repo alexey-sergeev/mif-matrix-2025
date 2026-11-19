@@ -36,6 +36,15 @@ class mif_mr_matrix extends mif_mr_table {
 
     public function the_show()
     {
+        global $mr;
+
+        if ( ! $mr->user_can( 1 ) ) {
+            
+            echo $mr->access_denied();
+            return false;
+
+        }
+
         if ( $template = locate_template( 'mr-part-matrix.php' ) ) {
            
             load_template( $template, false );
@@ -78,6 +87,8 @@ class mif_mr_matrix extends mif_mr_table {
     
     public function get_panel_for_download()
     {
+        if ( empty( $this->get_matrix_arr() ) ) return;
+
         $out = '';
 
         $out .= '<div class="row mt-3">'; 
@@ -116,6 +127,9 @@ class mif_mr_matrix extends mif_mr_table {
     {
         $matrix_arr = $this->get_matrix_arr();
         $cmp = $this->get_cmp( $matrix_arr );
+
+        if ( empty( $matrix_arr ) ) return array();
+
 
         $arr2 = array();
 

@@ -228,11 +228,16 @@ function mif_mr_the_link_edit_visual()
 
 function mif_mr_panel_for_download( $type = 'matrix' )
 {
-
+    global $mr;
+    
     if ( $type == 'matrix' ) {
+        
+        if ( $mr->user_can( 2 ) ) {
 
-        global $mif_mr_matrix;
-        echo $mif_mr_matrix->get_panel_for_download();
+            global $mif_mr_matrix;
+            echo $mif_mr_matrix->get_panel_for_download();
+
+        } 
 
     }
 

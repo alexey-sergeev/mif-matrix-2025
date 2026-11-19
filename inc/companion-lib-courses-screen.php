@@ -28,6 +28,15 @@ class mif_mr_lib_courses_screen extends mif_mr_lib_courses_list {
     
     public function the_show()
     {
+        global $mr;
+
+        if ( ! $mr->user_can( 2 ) ) {
+            
+            echo $mr->access_denied();
+            return false;
+        
+        }
+
         if ( $template = locate_template( 'mr-lib-course.php' ) ) {
            
             load_template( $template, false );

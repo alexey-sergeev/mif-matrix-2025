@@ -71,13 +71,17 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
         
             foreach ( $item['courses'] as $key2 => $item2 ) {
             
-                foreach ( $matrix_arr[$key2] as $c ) {
-             
-                    if ( ! isset( $cmp_stat[$key][$c] ) ) $cmp_stat[$key][$c] = 0;
-                    $cmp_stat[$key][$c]++;
+                if ( isset( $matrix_arr[$key2] ) ) {
+                 
+                    foreach ( $matrix_arr[$key2] as $c ) {
+                
+                        if ( ! isset( $cmp_stat[$key][$c] ) ) $cmp_stat[$key][$c] = 0;
+                        $cmp_stat[$key][$c]++;
+
+                    }
 
                 }
-
+                
             }
 
         }

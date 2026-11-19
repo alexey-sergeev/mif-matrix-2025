@@ -28,6 +28,15 @@ class mif_mr_tools_core {
 
     public function the_show()
     {
+        global $mr;
+
+        if ( ! $mr->user_can( 3 ) ) {
+            
+            echo $mr->access_denied();
+            return false;
+
+        }
+
         if ( $template = locate_template( 'mr-tools.php' ) ) {
            
             load_template( $template, false );

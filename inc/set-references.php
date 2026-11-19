@@ -28,6 +28,15 @@ class mif_mr_set_references extends mif_mr_set_core {
     
     public function the_show()
     {
+        global $mr;
+
+        if ( ! $mr->user_can( 2 ) ) {
+            
+            echo $mr->access_denied();
+            return false;
+        
+        }
+
         if ( $template = locate_template( 'mr-set-references.php' ) ) {
             
             load_template( $template, false );

@@ -37,6 +37,14 @@ class mif_mr_main extends mif_mr_table {
 
     public function the_show()
     {
+        global $mr;
+
+        if ( ! $mr->user_can( 1 ) ) {
+            
+            echo $mr->access_denied();
+            return false;
+
+        }
 
         if ( $template = locate_template( 'mr-part-main.php' ) ) {
             
@@ -61,36 +69,44 @@ class mif_mr_main extends mif_mr_table {
         global $tree;
         global $mr;
 
+        $competencies = $tree['content']['competencies']['data'];
+
         $out = '';
 
         // p( $tree['content']['competencies']['clean'] );
         
         $out .= '<div class="col p-0 mb-6 mt-3">';
-        $out .= '<table border="1"><tr><th>Паспорта и программы формирования компетенций</th></tr><tr><td>';
-        $out .= '<div class="p-1 pb-3">';
+        $out .= '<table border="1"><tr><th>Паспорта и программы формирования компетенций</th></tr>';
         
-        foreach ( $tree['content']['competencies']['data'] as $name => $data ) {
-            
-            $out .= '<span class="d-inline-block m-0 mb-2 p-0" style="width: 110px;">';
-            
-            $s = '<span class="mr-btn mr-gray rounded p-1 pt-2 pb-2 m-0"><i class="fa-regular fa-file-lines fa-xl" aria-hidden="true"></i></span>';
-            $s .= '<span class="ml-1"><small><b>' . $name . '</b></small></span>';   
-            
-            // $out .= ( ! empty( $tree['templates']['passport']['data']['path'] ) && $mr->user_can(2) ) ? '<a href="?download=passport&comp=' . $name . '">' . $s . '</a>' : $s;
-            $out .= ( ! empty( $tree['content']['templates']['data']['templates']['index']['passport'] ) && $mr->user_can(2) ) ? '<a href="?download=passport&comp=' . $name . '">' . $s . '</a>' : $s;
+        if ( ! empty( $competencies ) ) {
 
-            // $out .= '<span class="mr-btn mr-gray rounded p-1 pt-2 pb-2 m-0"><i class="fa-regular fa-file-lines fa-xl" aria-hidden="true"></i></span>';
-            // $out .= '<span class="ml-1"><small><b>' . $name . '</b></small></span>';       
-            // $out .= '</a>';       
+            $out .= '<tr><td>';
+            $out .= '<div class="p-1 pb-3">';
             
-            $out .= '</span>';
-            
+            foreach ( $competencies as $name => $data ) {
+                
+                $out .= '<span class="d-inline-block m-0 mb-2 p-0" style="width: 110px;">';
+                
+                $s = '<span class="mr-btn mr-gray rounded p-1 pt-2 pb-2 m-0"><i class="fa-regular fa-file-lines fa-xl" aria-hidden="true"></i></span>';
+                $s .= '<span class="ml-1"><small><b>' . $name . '</b></small></span>';   
+                
+                $out .= ( ! empty( $tree['content']['templates']['data']['templates']['index']['passport'] ) && $mr->user_can(2) ) ? '<a href="?download=passport&comp=' . $name . '">' . $s . '</a>' : $s;
+                
+                $out .= '</span>';
+                
+            }
+    
+            $out .= '</div>';
+            $out .= '</tb></tr>';
+
         }
 
-        $out .= '</div>';
-        $out .= '</tb></tr></table>';
-        $out .= '</div>';
+        $out .= '</table>';
         
+        if ( empty( $competencies ) ) $out .= mif_mr_functions::get_callout( 'Нет данных', 'warning' ); 
+        
+        $out .= '</div>';
+
         return apply_filters( 'mif_mr_part_get_competencies', $out );
     }
     

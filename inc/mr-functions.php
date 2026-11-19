@@ -52,7 +52,11 @@ class mif_mr_functions {
         if ( isset( $tree['param']['users']['data'] ) )
             foreach ( $tree['param']['users']['data'] as $u ) if ( $u == $user ) return 2;
 
-        if ( current_user_can( 'subscriber' ) ) return 1;
+        // p(current_user_can( 'subscriber' ));
+
+        // if ( current_user_can( 'subscriber' ) ) return 1;
+        
+        return 1;
     
     }
     
@@ -67,9 +71,24 @@ class mif_mr_functions {
     
     function access_denied()
     {
-        return '<div class="alert alert-warning" role="alert">
-                    Доступ ограничен. Возможно, надо просто <a href="' . get_site_url() . '/wp-login.php?redirect_to=' . get_permalink() . '">войти на сайт</a>.
-                    </div>';
+        // return '<div class="alert alert-warning" role="alert">
+        //             Доступ ограничен. Возможно, надо просто <a href="' . get_site_url() . '/wp-login.php?redirect_to=' . get_permalink() . '">войти на сайт</a>.
+        //             </div>';
+
+        $out = '';
+        
+        $out .= '<div class="mt-6 mb-6">';
+        
+        $out .= $this->get_callout( '<p class="mt-2 mb-2">Доступ ограничен. Возможно, надо просто <a href="' . 
+                                    get_site_url() . '/wp-login.php?redirect_to=' . get_permalink() . '">войти на сайт</a></p>', 'warning' );
+        
+        $out .= '<p><br /><br /></p>';
+        $out .= '<p><br /><br /></p>';
+        $out .= '<p><br /><br /></p>';
+        $out .= '</div>';
+
+
+        return apply_filters( 'mif_mr_part_core_access_denied', $out );
     }
     
 

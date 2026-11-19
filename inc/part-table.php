@@ -42,8 +42,10 @@ class mif_mr_table extends mif_mr_part_companion {
         $html .= '<tbody>';
         $html .= $this->get_html_part($arr);
         $html .= '</tbody>';
-
+        
         $html .= '</table>';
+        
+        if ( empty( $arr ) ) $html .= mif_mr_functions::get_callout( 'Нет данных', 'warning' );
 
         return $html;
     }

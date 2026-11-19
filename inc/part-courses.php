@@ -27,7 +27,15 @@ class mif_mr_courses extends mif_mr_courses_list {
 
     public function the_show()
     {
+        global $mr;
 
+        if ( ! $mr->user_can( 1 ) ) {
+            
+            echo $mr->access_denied();
+            return false;
+
+        }
+    
         global $wp_query;
 
         if ( isset( $wp_query->query_vars['id'] ) ) {

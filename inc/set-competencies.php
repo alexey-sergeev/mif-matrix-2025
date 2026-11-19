@@ -28,6 +28,15 @@ class mif_mr_set_comp extends mif_mr_set_core {
     
     public function the_show()
     {
+        global $mr;
+
+        if ( ! $mr->user_can( 2 ) ) {
+            
+            echo $mr->access_denied();
+            return false;
+        
+        }
+        
         if ( $template = locate_template( 'mr-set-competencies.php' ) ) {
             
             load_template( $template, false );
@@ -74,24 +83,11 @@ class mif_mr_set_comp extends mif_mr_set_core {
             
         } else {
             
-            $out .= '<div class="row fiksa">';
-            $out .= '<div class="col p-0">';
-            $out .= '<h4 class="mb-4 mt-0 pt-3 pb-5 bg-body">Компетенции в ОПОП:</h4>';
-            $out .= '</div>';
-            $out .= '</div>';
-            
-            $out .= '<div class="row">';
-            $out .= '<div class="col p-0">';
-            $out .= mif_mr_companion_core::get_show_all();
-            $out .= '</div>';
-            $out .= '</div>';
-            
             $arr = $tree['content']['competencies']['data'];
 
             $old = '';
             $n = 0;
             $index = array();
-            // p($arr);
 
             foreach ( $arr as $key => $item ) {
                 
@@ -109,21 +105,45 @@ class mif_mr_set_comp extends mif_mr_set_core {
                 }
 
             }
-            
-            foreach ( $index as $item ) {
-                
-                // p($item);
-                if ( empty( $item ) ) continue;
-                
-                $out .= '<span class="content-ajax">';
-                // $category = ( isset( $arr[$item[0]]['category'] ) ) ? $arr[$item[0]]['category'] : apply_filters( 'mif-mr-sub_default', 'default' );
-                $out .= mif_mr_competencies_screen::get_sub_head( array( 'name' => $arr[$item[0]]['category'] ) );
-                foreach ( $item as $item2 ) $out .= mif_mr_competencies_screen::get_item_body( $arr[$item2] );
-                $out .= '</span>';
-                
-            }
-            
+        
 
+
+            $out .= '<div class="row fiksa">';
+            $out .= '<div class="col p-0">';
+            $out .= '<h4 class="mb-4 mt-0 pt-3 pb-5 bg-body">Компетенции в ОПОП:</h4>';
+            $out .= '</div>';
+            $out .= '</div>';
+            
+            if ( ! empty( $index ) ) {
+                
+                $out .= '<div class="row">';
+                $out .= '<div class="col p-0">';
+                $out .= mif_mr_companion_core::get_show_all();
+                $out .= '</div>';
+                $out .= '</div>';
+
+                foreach ( $index as $item ) {
+                    
+                    if ( empty( $item ) ) continue;
+                    
+                    $out .= '<span class="content-ajax">';
+                    $out .= mif_mr_competencies_screen::get_sub_head( array( 'name' => $arr[$item[0]]['category'] ) );
+                    foreach ( $item as $item2 ) $out .= mif_mr_competencies_screen::get_item_body( $arr[$item2] );
+                    $out .= '</span>';
+                    
+                }
+            
+            } else {
+
+                $out .= '<div class="row">';
+                $out .= '<div class="col p-0">';
+                
+                $out .= mif_mr_functions::get_callout( 'Нет данных', 'warning' );
+                
+                $out .= '</div>';
+                $out .= '</div>';
+
+            }
 
 
 

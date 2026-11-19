@@ -34,6 +34,15 @@ class mif_mr_courses_list extends mif_mr_table {
     
     public function get_list_courses()
     {
+        // global $mr;
+
+        // if ( ! $mr->user_can( 1 ) ) {
+            
+        //     echo $mr->access_denied();
+        //     return false;
+        
+        // }
+
         if ( isset( $_REQUEST['edit'] ) ) return $this->companion_edit( 'courses' );
         
         $arr = $this->get_courses_arr(); 
