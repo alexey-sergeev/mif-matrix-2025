@@ -21,10 +21,10 @@
                 <?php mif_mr_show_explanation('users'); ?>
                 
                 <div class="row">
-                    <div class="col-11 bg-light p-2 mt-4 border border-light fw-semibold">Полный доступ (администраторы)</div>
+                    <div class="col-11 bg-light p-2 mt-4 border border-light fw-semibold">Полный доступ (редактор ОПОП)</div>
                     <div class="col-1 bg-light p-2 mt-4 border border-light fw-semibold text-center text-black-50"><?php mif_mr_the_from_id('admins'); ?></div>
                     <?php mif_mr_the_user('admins'); ?>
-                    <div class="col-11 bg-light p-2 mt-4 border border-light fw-semibold">Просмотр материалов</div>
+                    <div class="col-11 bg-light p-2 mt-4 border border-light fw-semibold">Просмотр материалов (читатель)</div>
                     <div class="col-1 bg-light p-2 mt-4 border border-light fw-semibold text-center text-black-50"><?php mif_mr_the_from_id('users'); ?></div>
                     <?php mif_mr_the_user('users'); ?>
                 </div>
@@ -58,6 +58,8 @@
         <div class="sidebar col-2 pl-5">
             
             <div class="fiksa">
+
+                <?php mif_mr_the_widget_user() ?>
 
                 <div class="container">
 

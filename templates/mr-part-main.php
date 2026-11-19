@@ -6,6 +6,7 @@
         
         <div class="col-10 p-0">
             
+            <?php // mif_mr_the_avatar() ?>
             <?php mif_mr_the_competencies(); ?>
             
             <div class="container">
@@ -15,19 +16,20 @@
                 </div>
             </div>
 
-
         </div>
         
         <div class="sidebar col-2 pl-5">
 
             <div class="fiksa">
             
-                @    
-                <?php echo wp_get_current_user()->user_login ; ?>
+                <?php mif_mr_the_widget_user() ?>
+
+                <!-- @     -->
+                <?php // echo wp_get_current_user()->user_login ; ?>
                 
-                <?php if ( ! is_user_logged_in() ) echo '<br><a href="' . wp_login_url(get_permalink()) . '">войти на сайт</a>'; ?>
+                <?php // if ( ! is_user_logged_in() ) echo '<br><a href="' . wp_login_url(get_permalink()) . '">войти на сайт</a>'; ?>
                 
-                <?php if ( is_user_logged_in() ) echo '<br><a href="' . wp_logout_url(get_permalink()) . '">выйти</a>'; ?>
+                <?php // if ( is_user_logged_in() ) echo '<br><a href="' . wp_logout_url(get_permalink()) . '">выйти</a>'; ?>
             
             </div>
 

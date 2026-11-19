@@ -691,6 +691,18 @@ function mif_mr_the_remove_link()
 
 
 
+//
+// Выводит 
+//
+
+function mif_mr_the_widget_user()
+{
+    global $mr;
+    echo $mr->get_widget_user();
+}
+
+
+
 
 
 ?>

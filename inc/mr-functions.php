@@ -26,7 +26,8 @@ class mif_mr_functions {
 
 
 
-    function level_access( $post = NULL ) 
+    // function level_access( $post = NULL, $user_login = NULL ) 
+    function level_access( $user_login = NULL ) 
     {
         //  http://codex.wordpress.org/Roles_and_Capabilities
         
@@ -44,13 +45,13 @@ class mif_mr_functions {
         if ( current_user_can( 'administrator' ) ) return 5;
         if ( current_user_can( 'editor' ) ) return 4;
         
-        $user = wp_get_current_user()->user_login;
+        if ( $user_login === NULL ) $user_login = wp_get_current_user()->user_login;
 
         if ( isset( $tree['param']['admins']['data'] ) )
-            foreach ( $tree['param']['admins']['data'] as $u ) if ( $u == $user ) return 3;
+            foreach ( $tree['param']['admins']['data'] as $u ) if ( $u == $user_login ) return 3;
         
         if ( isset( $tree['param']['users']['data'] ) )
-            foreach ( $tree['param']['users']['data'] as $u ) if ( $u == $user ) return 2;
+            foreach ( $tree['param']['users']['data'] as $u ) if ( $u == $user_login ) return 2;
 
         // p(current_user_can( 'subscriber' ));
 
@@ -63,7 +64,7 @@ class mif_mr_functions {
     
     function user_can( $level_access, $post = NULL )
     {
-        if ( $this->level_access( $post ) >= $level_access ) return true;
+        if ( $this->level_access() >= $level_access ) return true;
         return false;
     }
     
@@ -94,6 +95,107 @@ class mif_mr_functions {
 
 
             
+    function get_widget_user()
+    {
+        if ( ! is_user_logged_in() ) return;
+
+        $user = wp_get_current_user(); 
+
+        $out = '';
+
+        $out .= '<div class="row mb-5">';
+        $out .= '<div class="col bg-light border rounded no-gutters p-3">';
+        
+        $out .= '<div>' . $this->get_avatar( $user->user_login ) . '</div>';  
+        $out .= '<div>' . $this->get_display_name( $user->user_login ) . '</div>';  
+        $out .= '<div>Статус: ' . $this->get_user_can( $user->user_login ) . '</div>';  
+        
+        $out .= '</div>';
+        $out .= '</div>';
+
+
+        return apply_filters( 'mif_mr_get_avatar', $out );
+    }
+
+            
+
+
+
+    function get_avatar( $user_login = NULL )
+    {
+        // if ( ! is_user_logged_in() ) return;
+
+        // $user = ( $user_login === NULL ) ? wp_get_current_user() : get_user_by( 'slug', $user_login );
+        $user = ( $user_login === NULL ) ? wp_get_current_user() : get_user_by( 'login', $user_login );
+
+        if ( function_exists( 'bp_is_active' ) && bp_is_active() ) {
+
+            $a1 = '<a href="' . network_home_url() . 'members/' . $user->user_nicename . '" title="' . $user->display_name . '">';
+            $a2 = '</a>';
+            
+        } else {
+            
+            $a1 = '<span title="' . $user->display_name . '">';
+            $a2 = '</span>';
+
+        }
+
+        $out = '';
+        $out .= $a1 . get_avatar( $user->ID, 50 ) . $a2;  
+        // $out .= '<div>' . $a1 . get_avatar( $user->ID, 50 ) . $a2 . '</div>';  
+        
+        // if ( $is_display_name ) $out .= '<div>' . $this->get_display_name() . '</div>';  
+        // if ( $is_user_can ) $out .= '<div>Статус: ' . $this->get_user_can() . '</div>';  
+
+        return apply_filters( 'mif_mr_get_avatar', $out );
+    }
+    
+
+    
+    
+    function get_display_name( $user_login = NULL )
+    {
+        // if ( ! is_user_logged_in() ) return;
+
+        // $user = ( $user_login === NULL ) ? wp_get_current_user() : get_user_by( 'slug', $user_login );
+        $user = ( $user_login === NULL ) ? wp_get_current_user() : get_user_by( 'login', $user_login );
+
+        $out = '';
+        $out .= $user->display_name;  
+
+        return apply_filters( 'mif_mr_get_display_name', $out );
+    }
+
+    
+    
+    function get_user_can( $user_login = NULL )
+    {
+        // if ( ! is_user_logged_in() ) return;
+
+        // $user = ( $user_login === NULL ) ? wp_get_current_user() : get_user_by( 'slug', $user_login );
+        $user = ( $user_login === NULL ) ? wp_get_current_user() : get_user_by( 'login', $user_login );
+
+        $user_can = apply_filters( 'mif_mr_user_can', array(  
+                                                                // 0 => '', // ничего не умеет
+                                                                1 => 'посетитель', // просмотр общедоступной информации
+                                                                2 => 'читатель', // просмотр всей информации ОПОП
+                                                                3 => 'редактор ОПОП', // изменение информации ОПОП
+                                                                4 => 'редактор сайта', // редактор
+                                                                5 => 'администратор', // админ
+                                                            ) );
+
+        $out = '';
+        $out .= $user_can[ $this->level_access() ];  
+
+        return apply_filters( 'mif_mr_get_user_can', $out );
+    }
+    
+
+
+            
+
+
+
     // 
     // Выноска
     // 
