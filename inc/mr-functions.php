@@ -108,10 +108,10 @@ class mif_mr_functions {
         $out .= '<div class="col">';
         
         $out .= '<div>' . $this->get_avatar( $user->user_login ) . '</div>';  
-        $out .= '<div><small>' . $this->get_display_name( $user->user_login ) . '</small></div>';  
-        $out .= '<div><small>' . $this->get_login( $user->user_login ) . '</small></div>';  
-        $out .= '<div><small><b>Статус:</b> ' . $this->get_user_can( $user->user_login ) . '</small></div>';  
-        $out .= '<div><small><a href="' . wp_logout_url( home_url() ) . '">выйти</a></small></div>';  
+        $out .= '<div>' . $this->get_display_name( $user->user_login ) . '</div>';  
+        // $out .= '<div>' . $this->get_login( $user->user_login ) . '</div>'; 
+        $out .= '<div><b>Статус:</b> ' . $this->get_user_can( $user->user_login ) . '</div>';  
+        $out .= '<div><a href="' . wp_logout_url( home_url() ) . '">выйти</a></div>';  
         
         $out .= '</div>';
         $out .= '</div>';

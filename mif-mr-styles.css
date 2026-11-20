@@ -374,3 +374,12 @@ img.avatar {
 .logo {
     background-color: #888;
 } */
+
+footer hr {
+    background-color: #3b4252;
+    opacity: .5;
+}
+
+footer {
+    padding: 3rem 1.5rem 3rem !important;
+}
