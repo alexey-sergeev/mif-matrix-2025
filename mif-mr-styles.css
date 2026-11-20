@@ -363,6 +363,13 @@ background-color: #FFFFFF !important;
     height: 24px;
     margin: 0 3px;
 }
+
+img.avatar {
+  background: #fff;
+  border: 1px solid #E7E7E7;
+  padding: 3px;
+  border-radius: 8px;
+}
 /* 
 .logo {
     background-color: #888;

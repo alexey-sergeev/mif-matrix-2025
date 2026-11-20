@@ -59,7 +59,7 @@
             
             <div class="fiksa">
 
-                <?php mif_mr_the_widget_user() ?>
+                <?php // mif_mr_the_widget_user() ?>
 
                 <div class="container">
 

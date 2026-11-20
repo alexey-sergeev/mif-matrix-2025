@@ -122,7 +122,8 @@ class mif_mr_param  extends mif_mr_part_core {
 
                 if ( preg_match( '/^#.*/', $item ) ) continue; 
                 
-                $out .= '<div class="col-12 mt-2">' . $this->get_link_user( $item ) . '</div>'; // ###!!!
+                // $out .= '<div class="col-12 mt-2">' . $this->get_link_user( $item ) . '</div>'; // ###!!!
+                $out .= '<div class="col-12 mt-2">' . $mr->get_avatar( $item, 35 ) . '<span class="m-3">' . $this->get_link_user( $item ) . '</span></div>'; // ###!!!
                 
             }
             

@@ -104,11 +104,14 @@ class mif_mr_functions {
         $out = '';
 
         $out .= '<div class="row mb-5">';
-        $out .= '<div class="col bg-light border rounded no-gutters p-3">';
+        // $out .= '<div class="col bg-light border rounded no-gutters p-3">';
+        $out .= '<div class="col">';
         
         $out .= '<div>' . $this->get_avatar( $user->user_login ) . '</div>';  
-        $out .= '<div>' . $this->get_display_name( $user->user_login ) . '</div>';  
-        $out .= '<div>Статус: ' . $this->get_user_can( $user->user_login ) . '</div>';  
+        $out .= '<div><small>' . $this->get_display_name( $user->user_login ) . '</small></div>';  
+        $out .= '<div><small>' . $this->get_login( $user->user_login ) . '</small></div>';  
+        $out .= '<div><small><b>Статус:</b> ' . $this->get_user_can( $user->user_login ) . '</small></div>';  
+        $out .= '<div><small><a href="' . wp_logout_url( home_url() ) . '">выйти</a></small></div>';  
         
         $out .= '</div>';
         $out .= '</div>';
@@ -121,7 +124,7 @@ class mif_mr_functions {
 
 
 
-    function get_avatar( $user_login = NULL )
+    function get_avatar( $user_login = NULL, $size = 50 )
     {
         // if ( ! is_user_logged_in() ) return;
 
@@ -130,7 +133,8 @@ class mif_mr_functions {
 
         if ( function_exists( 'bp_is_active' ) && bp_is_active() ) {
 
-            $a1 = '<a href="' . network_home_url() . 'members/' . $user->user_nicename . '" title="' . $user->display_name . '">';
+            // $a1 = '<a href="' . network_home_url() . 'members/' . $user->user_nicename . '" title="' . $user->display_name . '">';
+            $a1 = '<a href="' . network_home_url() . 'members/' . $user->user_nicename . '">';
             $a2 = '</a>';
             
         } else {
@@ -141,13 +145,30 @@ class mif_mr_functions {
         }
 
         $out = '';
-        $out .= $a1 . get_avatar( $user->ID, 50 ) . $a2;  
-        // $out .= '<div>' . $a1 . get_avatar( $user->ID, 50 ) . $a2 . '</div>';  
+        $out .= $a1 . get_avatar( $user->ID, $size ) . $a2;  
+        // $out .= '<div>' . $a1 . get_avatar( $user->ID, $size ) . $a2 . '</div>';  
+        // $out .= '<div class="rounded">' . $a1 . get_avatar( $user->ID, $size ) . $a2 . '</div>';  
         
         // if ( $is_display_name ) $out .= '<div>' . $this->get_display_name() . '</div>';  
         // if ( $is_user_can ) $out .= '<div>Статус: ' . $this->get_user_can() . '</div>';  
 
         return apply_filters( 'mif_mr_get_avatar', $out );
+    }
+    
+
+    
+    
+    function get_login( $user_login = NULL )
+    {
+        // if ( ! is_user_logged_in() ) return;
+
+        // $user = ( $user_login === NULL ) ? wp_get_current_user() : get_user_by( 'slug', $user_login );
+        $user = ( $user_login === NULL ) ? wp_get_current_user() : get_user_by( 'login', $user_login );
+
+        $out = '@';
+        $out .= $user->user_login;  
+
+        return apply_filters( 'mif_mr_get_display_name', $out );
     }
     
 
@@ -181,7 +202,8 @@ class mif_mr_functions {
                                                                 2 => 'читатель', // просмотр всей информации ОПОП
                                                                 3 => 'редактор ОПОП', // изменение информации ОПОП
                                                                 4 => 'редактор сайта', // редактор
-                                                                5 => 'администратор', // админ
+                                                                // 5 => 'администратор сайта', // админ
+                                                                5 => 'админ. сайта', // админ
                                                             ) );
 
         $out = '';
