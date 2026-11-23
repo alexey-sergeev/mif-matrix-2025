@@ -157,10 +157,34 @@ class mif_mr_lib_courses extends mif_mr_companion_core {
         $arr['name'] = $post->post_title;
         $arr['data'] = $arr4;
         
+        // $arr = $this->do_adapter( $arr );
+
         return apply_filters( 'mif_mr_get_courses_arr', $arr, $course_id );
     }        
     
     
+
+
+
+    
+    // //
+    // // 
+    // //
+
+    // public function do_adapter( $arr )
+    // {
+    //     global $tree;
+
+    //     p($tree['param']['parents']['adapter']);
+
+
+
+
+    //     return apply_filters( 'mif_mr_do_adapter', $arr );
+
+    // }
+
+
     
     
     //

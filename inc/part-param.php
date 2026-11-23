@@ -72,7 +72,7 @@ class mif_mr_param  extends mif_mr_part_core {
     {
         global $mr;
         if ( ! $mr->user_can(2) ) return;
-
+        
         global $tree;
         
         if ( isset( $_REQUEST['edit'] ) ) return $this->get_edit_textarea( 'parents', 'param' );
@@ -84,7 +84,11 @@ class mif_mr_param  extends mif_mr_part_core {
             foreach ( (array) $tree['param']['parents']['data_att'] as $item ) {
 
                 $out .= '<div class="col-12 bg-light p-2 mt-3 border border-light">' . $this->get_link_post( $item['name'], 'opop' ) . '</div>';
-                foreach ( $item ['att'] as $item2 ) $out .= '<div class="col-12 p-2">' . $item2 . '</div>';
+                // foreach ( $item ['att'] as $item2 ) $out .= '<div class="col-12 p-2">' . $item2 . '</div>';
+
+                if ( isset( $tree['param']['parents']['adapter'][$item['name']] ) ) 
+                    foreach ( $tree['param']['parents']['adapter'][$item['name']] as $c => $cs ) 
+                        $out .= '<div class="col-12 p-2">' . $c . ' → ' . implode( ', ', $cs ) .  '</div>';
 
             }
 

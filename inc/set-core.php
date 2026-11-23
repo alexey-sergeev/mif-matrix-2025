@@ -130,22 +130,40 @@ class mif_mr_set_core extends mif_mr_part_companion {
 
         foreach ( $arr as $k => $i ) {
 
+            // p($k);
             $b = array();
 
-            foreach ( $t['content']['lib-competencies']['data'] as $item2 ) 
-                foreach ( $item2['data'] as $item3 ) 
-                    foreach ( $item3['data'] as $item4 ) 
+            // p($t['content']['lib-competencies']['data']);
+            
+            foreach ( $t['content']['lib-competencies']['data'] as $item2 ) {
+            
+                // p($item2);
+                
+                foreach ( $item2['data'] as $item3 ) { 
+
+                    // p($item3);
+                    
+                    foreach ( $item3['data'] as $item4 ) { 
+                        
+                        // p($item4);
+                    
                         if ( $item4['name'] == $k ) {
-                                $b = $item4;
-                                $b['comp_id'] = $item2['comp_id'];
-                                $b['old_name'] = $b['name'];
-                                $b['method'] = 'lib';
-                            }
+                            
+                            // p($item4['name']);
+                            $b = $item4;
+                            $b['comp_id'] = $item2['comp_id'];
+                            $b['old_name'] = $b['name'];
+                            $b['method'] = 'lib';
+                        }
+                    }
+                }
+            }
 
             $arr[$k] = $b;
 
         }
 
+        // p($arr);
 
         // Локальные данные
 
@@ -161,12 +179,15 @@ class mif_mr_set_core extends mif_mr_part_companion {
                                 $b['comp_id'] = $item2['comp_id'];
                                 $b['old_name'] = $b['name'];
                                 $b['method'] = 'local';
+                                
+                                $arr[$k] = $b;
                             }
 
-            $arr[$k] = $b;
+            // $arr[$k] = $b;
 
         }
 
+        // p($arr);
 
         // Ручной метод
 

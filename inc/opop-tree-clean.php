@@ -31,6 +31,9 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
     {
         global $tree;
 
+        $tree['param']['parents']['adapter'] = $this->get_param_adapter();
+        $tree['content']['lib-courses']['data'] = $this->make_lib_courses_clean();
+        
         $tree['content']['courses']['clean'] = $this->make_courses_clean();
         $tree['content']['courses']['errors'] = $this->make_courses_errors();
         // $tree['templates'] = $this->make_templates_clean();
@@ -39,13 +42,163 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
         $tree['content']['matrix']['stat']['modules'] = $this->make_matrix_stat( 'modules' );
         $tree['content']['matrix']['stat']['courses'] = $this->make_matrix_stat( 'courses' );
         $tree['content']['matrix']['stat']['all'] = $this->make_matrix_stat_all();
+        
 
 
         return;
     }
+    
+    
+    
+
+
+   // 
+    // Сделать lib competencies чистыми
+    // 
+    
+    private function make_lib_courses_clean()
+    {
+        global $tree;
+        
+        if ( empty( $tree['content']['lib-courses']['data'] ) ) return array();
+        
+        $arr = $tree['content']['lib-courses']['data'];
+        
+        // p( $tree['content']['lib-courses']['data'] );
+        
+        foreach ( $arr as $key => $item ) {
+
+            if ( $item['from_id'] === mif_mr_opop_core::get_opop_id() ) continue;
+
+
+            if ( isset( $item['data']['content']['parts'] ) ) {
+
+                foreach ( $item['data']['content']['parts'] as $k => $i ) {
+
+                    $arr[$key]['data']['content']['parts'][$k]['cmp'] = $this->do_adapter( $i['cmp'], $item['from_id'] );
+
+                }
+
+            }
+
+
+            if ( isset( $item['data']['evaluations'] ) ) {
+
+                foreach ( $item['data']['evaluations'] as $k => $i ) {
+                
+                    foreach ( $i['data'] as $k2 => $i2 ) {
+
+                        $arr[$key]['data']['evaluations'][$k]['data'][$k2]['att']['cmp'] = $this->do_adapter( $i2['att']['cmp'], $item['from_id'] );
+
+                    }
+
+                }
+      
+            }
+
+            // p($item);
+
+        }
+
+
+        return apply_filters( 'mif_mr_core_opop_make_lib_courses', $arr );
+    }
+
+
+
+
+
+
+    // 
+    // 
+    //
+
+    private function do_adapter( $cmp, $from_id )
+    {
+        global $tree;
+
+        $arr = array();
+
+        // p($tree['param']['parents']['adapter'][$from_id]);
+        
+        // p('@');
+        // p($cmp);
+
+        $m = new cmp();
+
+        if ( isset( $tree['param']['parents']['adapter'][$from_id] ) ) {
+            
+            $adapter = $tree['param']['parents']['adapter'][$from_id];
+
+            foreach ( $m->get_cmp( $cmp, 'a' ) as $c ) {
+
+                if ( isset( $adapter[$c] ) ) {
+
+                    foreach ( $adapter[$c] as $i ) $arr[] = $i;
+
+                } else {
+
+                    $arr[] = $c;
+
+                }
+
+                // p( $c );
+
+
+            }  
+
+
+
+
+
+        }
+
+        // p($arr);
+
+        return implode( ', ', $arr );
+
+    }
+
+
+
 
 
     
+    private function get_param_adapter()
+    {
+        global $tree;
+
+        $arr = array();
+
+        // p($tree['param']['parents']['data_att']);
+    
+        foreach ( $tree['param']['parents']['data_att'] as $item ) {
+
+            // p( $item );
+
+            foreach ( $item['att'] as $i ) {
+
+                // p( $i );
+
+                $a = array_map( 'trim', explode( ':', $i ) );
+
+                if ( isset( $a[1] ) ) {
+
+                    $arr[ $item['name'] ][ $a[0] ][] = $a[1]; 
+
+                }
+                // p( $a );
+
+            }
+
+        }
+        
+        // p($arr);
+        
+        return $arr;
+    }
+
+
 
 
     private function make_matrix_stat( $by = 'modules' )

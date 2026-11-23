@@ -49,8 +49,8 @@ class mif_mr_download {
             $item = new mif_mr_catalog_shortcode();
             $arr = $item->get_opops_list_xlsx();
 
-            $xlsx = new mif_mr_xlsx();
-            $file = $xlsx->make_xlsx_form_arr( $arr, $blank, 'A1' );
+            $xlsx = new mif_mr_xlsx( $blank );
+            $file = $xlsx->make_xlsx_form_arr( $arr, 'A1' );
             
             $this->download( $file, $name );
 
