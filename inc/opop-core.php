@@ -475,6 +475,26 @@ class mif_mr_opop_core {
     }
 
 
+
+
+    // //
+    // // Надпись
+    // //
+
+    // public static function get_download_panel_names()
+    // {
+    //     global $tree;
+    //     $index = $tree['content']['templates']['data']['templates']['index_by_place'];
+    //     ksort( $index );
+
+    //     $names = array();
+    //     foreach ( $index as $k => $i ) $names[$k] = $i[ array_keys( $i )[0] ]['name'];
+
+    //     return $names;
+    // }
+
+
+
     //
     // Надпись
     //

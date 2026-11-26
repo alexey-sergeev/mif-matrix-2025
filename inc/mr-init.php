@@ -56,6 +56,8 @@ include_once dirname( __FILE__ ) . '/lib-xlsx.php';
 include_once dirname( __FILE__ ) . '/lib-docx.php';
 include_once dirname( __FILE__ ) . '/lib-processor.php';
 
+include_once dirname( __FILE__ ) . '/helper-download-ajax.php';
+
 include_once dirname( __FILE__ ) . '/make-xlsx-tpl.php';
 include_once dirname( __FILE__ ) . '/make-docx-program.php';
 include_once dirname( __FILE__ ) . '/make-xlsx-matrix.php';
@@ -122,6 +124,7 @@ class mif_mr_init extends mif_mr_types {
         add_action( 'wp_ajax_lib-templates', array( $this, 'ajax' ) );
         
         add_action( 'wp_ajax_tools', array( $this, 'ajax' ) );
+        add_action( 'wp_ajax_download', array( $this, 'ajax' ) );
         // add_action( 'wp_ajax_nopriv_tools', array( $this, 'ajax' ) );
         
         
@@ -480,7 +483,14 @@ class mif_mr_init extends mif_mr_types {
                     } 
                     
                 } 
-    
+
+                
+                if ( $_REQUEST['action'] == 'download' ) {
+                    
+                    $m = new mif_mr_helper_download_ajax();
+                    echo $m->force_download();
+                
+                } 
                 
                 
                 

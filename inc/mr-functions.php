@@ -18,7 +18,7 @@ class mif_mr_functions {
     function __construct()
     {
   
-
+        add_filter( 'mif-mr-download-panel-names', array( $this, 'download_panel_names'), 10 );
 
     }
 
@@ -368,6 +368,40 @@ class mif_mr_functions {
     }
 
     
+
+
+
+
+    //
+    // Надпись
+    //
+
+    public static function get_download_panel_names()
+    {
+        global $tree;
+        $index = $tree['content']['templates']['data']['templates']['index_by_place'];
+        ksort( $index );
+
+        $names = array();
+        foreach ( $index as $k => $i ) $names[$k] = $i[ array_keys( $i )[0] ]['name'];
+
+        return $names;
+    }
+
+
+
+    public function download_panel_names( $arr )
+    {
+
+        $arr['a'] = 'Паспорта и программы формирования компетенций';
+        $arr['b1'] = 'Аннотации дисциплин';
+        $arr['b2'] = 'Программы учебных дисциплин';
+        $arr['b3'] = 'Фонды оценочных средств';
+
+        return $arr;
+    }
+        
+
 }
 
 ?>

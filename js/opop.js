@@ -1402,6 +1402,71 @@ jQuery( document ).ready( function( jq ) {
 
 
 
+jq( 'body' ).on( 'click', '.one-archive', function() {
+        
+        // console.log('@');
+
+        let elem = jq(this);
+
+        jq('.zip', this).addClass('d-none');
+        jq('.loading', this).removeClass('d-none');
+        // jq(this).closest('.zip').addClass('d-none');
+
+        // jq(this).closest('.zip').removeClass('d-none');
+
+
+        // let elem = jq(this).closest('div.row');
+        // let slug = jq(this).attr( 'data-slug' );    
+        // let attid = jq(this).attr( 'data-attid' );    
+        let download = jq(this).attr( 'data-download' );    
+        // // let attid_show = jq( '.show-file' ).attr( 'data-attid' );    
+
+        jq.ajax( {
+            url: ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'download',
+                download: download,
+                // do: 'remove-file',
+                // slug: slug,
+                // attid: attid,
+                // fileid: fileid,
+                opop: jq( 'input[name=opop]' ).val(),
+                _wpnonce: jq( 'input[name=_wpnonce]' ).val(),
+            },
+            success: function( response ) {
+                
+                if ( response ) {
+                    
+                    console.log( response );
+                                
+                    jq('.zip', elem).removeClass('d-none');
+                    jq('.loading', elem).addClass('d-none');
+
+                    // jq( 'div.content-ajax' ).replaceWith( response )
+                    
+                } else {
+                    
+                    console.log( 'error 25' );
+                    
+                }
+                
+            },
+            error: function( response ) {
+                
+                console.log( 'error 26' );
+                
+            },
+            
+        } );
+
+
+
+        return false;
+        
+    })
+
+
 
 
 

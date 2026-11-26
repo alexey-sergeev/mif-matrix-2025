@@ -40,7 +40,7 @@ class mif_mr_docx {
     //  $arr - данные, которые надо вставить в шаблон
     // 
 
-    function make_docx( $arr = array() )
+    function make_docx( $arr = array(), $file = NULL )
     {
         // $templateProcessor = new \PhpOffice\PhpWord\TemplateProcessor( $this->blank );
         $templateProcessor = new mif_TemplateProcessor( $this->blank );
@@ -59,10 +59,9 @@ class mif_mr_docx {
 
         }
 
-        $file = mif_mr_download::get_path_tmp( 'docx' );
-
+        if ( $file === NULL ) $file = mif_mr_download::get_path_tmp( 'docx' );
+        
         $templateProcessor->saveAs( $file );
-
 
         return $file;
     }

@@ -1,0 +1,320 @@
+<?php
+
+//
+// Главная
+// 
+//
+
+
+defined( 'ABSPATH' ) || exit;
+
+// include_once dirname( __FILE__ ) . '/part-core.php';
+
+class mif_mr_main extends mif_mr_table {
+    
+    function __construct()
+    {
+
+        parent::__construct();
+        
+        $this->index_by_place = $this->get_index_by_place();
+
+
+        add_filter( 'mif-mr-tbody-col', array( $this, 'filter_tbody_col'), 10, 4 );
+        add_filter( 'mif-mr-thead-col', array( $this, 'filter_thead_col'), 10 );
+        add_filter( 'mif-mr-tbody-colspan', array( $this, 'filter_tbody_colspan'), 10 );
+        
+        add_filter( 'mif-mr-download-panel-names', array( $this, 'download_panel_names'), 10 );
+       
+
+        $this->save( 'courses' );
+
+    }
+    
+
+    
+    // 
+    // Показывает часть 
+    // 
+
+    public function the_show()
+    {
+        global $mr;
+
+        if ( ! $mr->user_can( 1 ) ) {
+            
+            echo $mr->access_denied();
+            return false;
+
+        }
+
+        if ( $template = locate_template( 'mr-part-main.php' ) ) {
+            
+            load_template( $template, false );
+
+        } else {
+
+            load_template( dirname( __FILE__ ) . '/../templates/mr-part-main.php', false );
+
+        }
+    
+    }
+    
+    
+    
+    // 
+    // Показывает список competencies
+    // 
+    
+    public function get_competencies()
+    {
+        global $tree;
+        global $mr;
+
+        $competencies = $tree['content']['competencies']['data'];
+
+        $out = '';
+
+        // p( $tree['content']['competencies']['clean'] );
+        
+        $out .= '<div class="col p-0 mb-6 mt-3">';
+        $out .= '<table border="1"><tr><th>Паспорта и программы формирования компетенций</th></tr>';
+        
+        if ( ! empty( $competencies ) ) {
+
+            $out .= '<tr><td>';
+            $out .= '<div class="p-1 pb-3">';
+            
+            foreach ( $competencies as $name => $data ) {
+                
+                $out .= '<span class="d-inline-block m-0 mb-2 p-0" style="width: 110px;">';
+                
+                $s = '<span class="mr-btn mr-gray rounded p-1 pt-2 pb-2 m-0"><i class="fa-regular fa-file-lines fa-xl" aria-hidden="true"></i></span>';
+                $s .= '<span class="ml-1"><small><b>' . $name . '</b></small></span>';   
+                
+                $out .= ( ! empty( $tree['content']['templates']['data']['templates']['index']['passport'] ) && $mr->user_can(2) ) ? '<a href="?download=passport&comp=' . $name . '">' . $s . '</a>' : $s;
+                
+                $out .= '</span>';
+                
+            }
+    
+            $out .= '</div>';
+            $out .= '</tb></tr>';
+
+        }
+
+        $out .= '</table>';
+        
+        if ( empty( $competencies ) ) $out .= mif_mr_functions::get_callout( 'Нет данных', 'warning' ); 
+        
+        $out .= '</div>';
+
+        return apply_filters( 'mif_mr_part_get_competencies', $out );
+    }
+    
+    
+    
+    
+    
+    // 
+    // Показывает Панель загрузки
+    // 
+    
+    public function get_download_panel()
+    {
+        $index = array_keys( $this->index_by_place );
+        sort( $index );
+
+        $names = array();
+        foreach ( $index as $i ) $names[$i] = $this->index_by_place[$i][0]['name'];
+
+        $names = apply_filters( 'mif-mr-download-panel-names', $names );
+        
+        // p($names);
+        
+        $out = '';
+        
+        $out .= '<div class="col p-0 mb-6 mt-3">';
+
+        foreach ( $names as $key => $item ) $out .= $this->get_one_archive( $item, 'docx-' . $key );
+            
+        //     {
+            
+            
+
+
+        //     // $out .= '<div class="mt-3">';
+        //     // $out .= '<a href="">';
+        //     // $out .= '<span class="mr-btn mr-gray rounded p-1 pt-2 pb-2 m-0 mr-3 float-start"><i class="fa-regular fa-file-zipper fa-xl"></i></span>';
+        //     // $out .= '<b>' . $item . '</b>';  
+
+        //     // // $out .= $item;
+        //     // $out .= '</a>';
+        //     // $out .= '<br /><small>(все документы одним архивом)</small>';
+        //     // $out .= '</div>';
+            
+            
+            
+        // }
+        
+        $out .= '</div>';
+
+        return apply_filters( 'mif_mr_part_get_download_panel', $out );
+    }
+        
+    
+    
+    public function download_panel_names( $arr )
+    {
+
+        $arr['a'] = 'Паспорта и программы формирования компетенций';
+        $arr['b1'] = 'Аннотации дисциплин';
+        $arr['b2'] = 'Программы учебных дисциплин';
+        $arr['b3'] = 'Фонды оценочных средств';
+
+        return $arr;
+    }
+        
+
+
+
+    
+
+
+    // 
+    // Показывает список дисциплины
+    // 
+    
+    public function get_main()
+    {
+        if ( isset( $_REQUEST['edit'] ) ) return $this->companion_edit( 'courses' );
+        
+        $arr = $this->get_courses_arr(); 
+        // return '@2';
+        
+        $out = '';
+        $out .= '<div class="content-ajax col-12 p-0">';
+        
+        $out .= $this->get_table_html( $arr );       
+        $out .= '</div>';
+        
+        return apply_filters( 'mif_mr_part_get_list_courses', $out );
+    }
+    
+    
+
+
+
+  
+    public function filter_tbody_col( $arr, $key, $key2, $courses_arr )
+    {
+        global $tree;
+        global $mr;
+        
+        $a = $tree['content']['courses']['complete'];
+
+        // $making = ( in_array( $courses_arr[$key]['courses'][$key2]['unit'], array( 'ЭК', 'ЗЧ', 'ЗЧО', 'К', 'КР', 'КРП', 'ГИА' ) )  ) ? false : true;
+        $course = ( isset( $a[$key2]['course_id'] ) ) ? $a[$key2]['course_id'] : $key2;
+
+
+        $text = '<div class="text-center"><small>' . $courses_arr[$key]['courses'][$key2]['unit'] . '</small></div>';
+        $arr[] = $this->add_to_col( $text, array('elem' => 'td', 'class' => '', 'title' => '') );
+
+        // Файлы 
+        foreach ( $this->index_by_place as $k => $item ) {
+
+            if ( ! preg_match( '/^b.*/', $k ) ) continue;
+           
+            $text = '';
+
+            foreach ( $item as $i ) {
+
+                if ( ! in_array( $courses_arr[$key]['courses'][$key2]['unit'], array_map( 'trim', explode( ',', $i['param'] ) ) ) ) continue;
+
+                $text = '<span class="mr-btn mr-gray rounded p-0 pl-1 pr-1 m-0"><i class="fa-regular fa-file-lines" aria-hidden="true"></i></span>';
+                if ( ! empty( $i['file'] ) && $mr->user_can(2) ) $text = '<a href="?download=course-d-' . $i['slug'] . '&course=' . $course . '">' . $text . '</a>';
+
+                break;
+
+            }
+
+
+            $arr[] = $this->add_to_col( $text, array('elem' => 'td', 'class' => '', 'title' => '') );
+
+        }
+
+
+        return $arr;
+    }
+    
+    
+    public function filter_thead_col( $arr )
+    {
+
+        $arr[] = $this->add_to_col( '', array('elem' => 'th' ) );
+
+        foreach ( $this->index_by_place as $k => $item ) {
+
+            if ( ! preg_match( '/^b.*/', $k ) ) continue;
+
+            $text = '<span title="' . $item[0]['name'] . '">' . mb_substr( $item[0]['name'], 0, 1 ) . '</span>';
+            $arr[] = $this->add_to_col( $text, array('elem' => 'th' ) );
+
+        }
+
+        return $arr;
+    }
+
+
+
+    public function filter_tbody_colspan( $n )
+    {
+        return $n + count( $this->index_by_place ) + 1;
+    }
+
+
+
+    private function get_index_by_place()
+    {
+        global $tree;
+
+        $index = array();
+
+        // p($tree['param']['templates']['data_att']);
+        // p( $tree['content']['templates']['data']['templates']['data']);
+        // if ( isset( $tree['param']['templates']['data_att'] ) ) {
+        if ( isset( $tree['content']['templates']['data']['templates']['data'] ) ) {
+    
+            // foreach( $tree['param']['templates']['data_att'] as $item ) {
+            foreach( $tree['content']['templates']['data']['templates']['data'] as $item ) {
+                // p($item);
+    
+                if ( isset( $item['att'][1] ) && in_array( $item['att'][1], $this->templates_place ) ) {
+    
+                    $index[$item['att'][1]][] = array(
+    
+                        'name' => $item['name'],
+                        'slug' => $item['att'][0],
+                        'param' => ( ! empty( $item['att'][2] ) ) ? $item['att'][2] : '',
+                        // 'file' => ( isset( $tree['templates'][$item['att'][0]]['data']['path'] ) ) ? $tree['templates'][$item['att'][0]]['data']['path'] : '',
+                        'file' => ( isset( $item['file']['path'] ) ) ? $item['file']['path'] : '',
+    
+                    );
+    
+                }
+    
+            };
+
+        }
+
+        // p($index);
+        
+        return $index;
+    }
+
+
+    private $index_by_place = array();
+
+}
+
+?>

@@ -350,6 +350,26 @@ class mif_mr_upload {
     }
 
 
+    public function get_uploads_dir()
+    {
+        return $this->uploads_dir;
+    }
+
+
+    // public function get_home_dir()
+    // {
+    //     if ( ! is_user_logged_in() ) return;
+
+    //     $user = wp_get_current_user();
+
+    //     $dir = $this->uploads_dir . mif_mr_opop_core::get_opop_id() . '/home/' . $user->user_login;
+        
+    //     if ( ! is_dir( $dir ) ) $res = mkdir( $dir, 0755, true );
+
+    //     return $dir;
+    // }
+
+
 
     private $uploads_dir = '';
 

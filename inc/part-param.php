@@ -215,6 +215,7 @@ class mif_mr_param  extends mif_mr_part_core {
 
             $tree = array();
             $tree = $mif_mr_opop->get_tree();
+            // $tree = $mif_mr_opop->get_tree_clean();
 
         }
 

@@ -17,13 +17,13 @@ class mif_mr_docx_program extends mif_mr_docx {
     function __construct( $path = NULL )
     {
         parent::__construct( $path );
-
+        
     }
 
 
     
     
-    function arr_to_docx( $arr )
+    function arr_to_docx( $arr, $file = NULL )
     {
 
         // p($arr);
@@ -35,6 +35,7 @@ class mif_mr_docx_program extends mif_mr_docx {
         $a['council'] = $this->council();
         $a['place'] = $this->course_place( $arr );
         $a['target'] = $this->p( $arr['data']['content']['target'] );
+        $a['course_content'] = $this->course_content( $arr );
         $a['cmp_total'] = $this->cmp( $arr['meta']['cmp_descr'] );
         $a['prev_next'] = $this->prev_next( $arr );
         $a['outcomes_z_total'] = $this->ul( $arr['meta']['outcomes']['z'] );
@@ -84,10 +85,10 @@ class mif_mr_docx_program extends mif_mr_docx {
         $a = $this->add_staff( $a );
         $a = $this->add_guidelines( $a, $arr );
 
+        $path = $this->make_docx( $a, $file );
+        
         // p($a);
-
-        $path = $this->make_docx( $a );
-
+        
         return $path;
 
     }
@@ -409,6 +410,30 @@ class mif_mr_docx_program extends mif_mr_docx {
         return $out;
     }
 
+
+
+
+    private function course_content( &$arr )
+    {
+        // p($arr['data']['content']['parts']);
+        // p('$arr');
+        // p($arr);
+        // $out = '';    
+
+        $arr2 = array();
+
+        foreach ( $arr['data']['content']['parts'] as $a ) {
+            // p($a['name']);
+            // p($a['content']);
+
+            $arr2[] = $a['name'] . ".\n" . $a['content']; 
+
+        }
+        // p($arr2);
+
+        return implode( "\n\n", $arr2 );
+        // return $out;
+    }
 
 
 

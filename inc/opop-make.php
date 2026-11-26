@@ -54,7 +54,7 @@ class mif_mr_opop_make extends mif_mr_opop_tree_clean {
 
         } else {
             
-            p('@@');
+            p( 'Какая-то ошибка. Код: 26112' );
 
         }
 
@@ -107,7 +107,7 @@ class mif_mr_opop_make extends mif_mr_opop_tree_clean {
 
         } else {
             
-            p('@@');
+            p( 'Какая-то ошибка. Код: 26111' );
 
 
         }
@@ -130,11 +130,11 @@ class mif_mr_opop_make extends mif_mr_opop_tree_clean {
         
         preg_match( '/(^course-d-)(.*)/', $type, $a );
         $type = $a[2];
-
+       
         $arr = array( 'name' => '', 'path' => '', 'res' => false );
         
         // if ( empty( $tree['templates'][$type] ) ) return $arr;
-        if ( empty( $tree['content']['templates']['data']['templates']['index'][$type] ) ) return $arr;
+        if ( empty( $tree['content']['templates']['data']['templates']['index_by_slug'][$type]['path'] ) ) return $arr;
 
         $course_id = NULL;
         $key = NULL;
@@ -159,24 +159,20 @@ class mif_mr_opop_make extends mif_mr_opop_tree_clean {
                  $tree['content']['courses']['clean'][$key] :
                  array();
 
-            // p($tree['templates'][$type]);
-
-            // $blank = $tree['templates'][$type]['data']['path'];
-            $blank = $tree['content']['templates']['data']['templates']['index'][$type];
+            $blank = $tree['content']['templates']['data']['templates']['index_by_slug'][$type]['path'];
             
-            $text = ( ! empty( $tree['templates'][$type]['data']['name'] ) ) ?
-                    ' (' . mb_strtolower( $tree['templates'][$type]['data']['name'] ) . ')' :
+            $text = ( ! empty( $tree['content']['templates']['data']['templates']['index_by_slug'][$type]['name'] ) ) ?
+                    ' (' . mb_strtolower( $tree['content']['templates']['data']['templates']['index_by_slug'][$type]['name'] ) . ')' :
                     '';
 
-            // $blank = dirname( __FILE__ ) . '/../templates/docx/program.docx';
             $m = new mif_mr_docx_program( $blank );
 
-            $arr['name'] .= $arr2['name'] . $text . '.docx';
+            $arr['name'] = $arr2['name'] . $text . '.docx';
             $arr['path'] = $m->arr_to_docx( $arr2 );
 
         } else {
             
-            p('@@');
+            p( 'Какая-то ошибка. Код: 26110' );
 
         }
 

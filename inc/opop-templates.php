@@ -389,6 +389,16 @@ function mif_mr_the_main()
 // Выводит 
 //
 
+function mif_mr_the_download_panel()
+{
+    global $mif_mr_main;
+    echo $mif_mr_main->get_download_panel();
+}
+
+//
+// Выводит 
+//
+
 function mif_mr_the_competencies()
 {
     global $mif_mr_main;

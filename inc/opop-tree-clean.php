@@ -16,6 +16,9 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
     {
         parent::__construct();
 
+        // global $tree;
+        // $tree = $this->get_tree(); 
+        
         $this->get_tree_clean(); 
 
     }
@@ -27,9 +30,27 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
     // Tree clean
     // 
     
+    public function get_tree()
+    {
+        global $tree;
+
+        $tree = $this->get_tree_raw();
+        $this->get_tree_clean();
+
+        return $tree;       
+    }
+
+
+
+    // 
+    // Tree clean
+    // 
+    
     public function get_tree_clean()
     {
         global $tree;
+
+        // $tree = $this->get_tree();
 
         $tree['param']['parents']['adapter'] = $this->get_param_adapter();
         $tree['content']['lib-courses']['data'] = $this->make_lib_courses_clean();
@@ -42,10 +63,7 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
         $tree['content']['matrix']['stat']['modules'] = $this->make_matrix_stat( 'modules' );
         $tree['content']['matrix']['stat']['courses'] = $this->make_matrix_stat( 'courses' );
         $tree['content']['matrix']['stat']['all'] = $this->make_matrix_stat_all();
-        
 
-
-        return;
     }
     
     
@@ -172,27 +190,31 @@ class mif_mr_opop_tree_clean extends mif_mr_opop_tree_raw {
 
         // p($tree['param']['parents']['data_att']);
     
-        foreach ( $tree['param']['parents']['data_att'] as $item ) {
+        if ( ! empty( $tree['param']['parents']['data_att'] ) ) {
+        
+            foreach ( $tree['param']['parents']['data_att'] as $item ) {
 
-            // p( $item );
+                // p( $item );
 
-            foreach ( $item['att'] as $i ) {
+                foreach ( $item['att'] as $i ) {
 
-                // p( $i );
+                    // p( $i );
 
-                $a = array_map( 'trim', explode( ':', $i ) );
+                    $a = array_map( 'trim', explode( ':', $i ) );
 
-                if ( isset( $a[1] ) ) {
+                    if ( isset( $a[1] ) ) {
 
-                    $arr[ $item['name'] ][ $a[0] ][] = $a[1]; 
+                        $arr[ $item['name'] ][ $a[0] ][] = $a[1]; 
+
+                    }
+                    // p( $a );
 
                 }
-                // p( $a );
 
             }
-
+            
         }
-        
+
         // p($arr);
         
         return $arr;

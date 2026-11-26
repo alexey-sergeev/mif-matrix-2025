@@ -40,7 +40,8 @@ class modules {
             $arr = array();
 
             if ( isset( $item['modules']['att'] ) ) $arr['att'] = $this->get_att( $item['modules']['att'] );
-            if ( isset( $item['modules']['data'] ) ) $arr['courses'] = $this->get_module_courses( $item['modules']['data'], false );
+            // if ( isset( $item['modules']['data'] ) ) $arr['courses'] = $this->get_module_courses( $item['modules']['data'], false );
+            if ( isset( $item['modules']['data'] ) ) $arr['courses'] = $this->get_module_courses( $item['modules']['data'] );
 
             $this->modules_arr[$item['modules']['name']] = $arr;
 
@@ -336,7 +337,7 @@ class modules {
     function sort_courses( $courses )
     {
         $arr = array();
-
+        
         // Сначала общая сортировка списка (англоязычные названия - внизу)
 
         $prefix = 'яяя-';
@@ -375,7 +376,7 @@ class modules {
         // Записать данные и тех дисциплин, для которых тип не был определен
 
         $arr = array_merge( $arr, $courses );
-
+        
         return $arr;
     }
 

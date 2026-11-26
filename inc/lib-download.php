@@ -33,7 +33,6 @@ class mif_mr_download {
         // !!!!!!
 
         // global $post;
-
         // $opop_id = $post->ID;
 
         $item = sanitize_key( $_REQUEST['download'] );
@@ -97,7 +96,7 @@ class mif_mr_download {
         
         // if ( $item == 'course-d-program' ) {
         if ( preg_match( '/^course-d-/', $item ) ) {
-
+            
             $m = new mif_mr_opop();
             $a = $m->make_docx_program( $item );
             // p($a);

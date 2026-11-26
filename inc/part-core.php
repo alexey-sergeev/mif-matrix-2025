@@ -330,6 +330,29 @@ class mif_mr_part_core {
         return apply_filters( 'mif_mr_core_get_form_end', $out );
     }
     
+    
+    //
+    //  
+    //
+    
+    public function get_one_archive( $name, $download = 'docx-b1' )
+    {
+        $out = '';
+    
+        $out .= '<div class="mt-3">';
+        $out .= '<a href="#" data-download="' . $download . '" class="one-archive">';
+        $out .= '<span class="mr-btn mr-gray rounded p-1 pt-2 pb-2 m-0 mr-3 float-start">';
+        $out .= '<span class="zip"><i class="fa-regular fa-file-zipper fa-xl"></i></span>';
+        $out .= '<span class="loading d-none"><i class="fas fa-spinner fa-xl fa-spin"></i></span>';
+        $out .= '</span>';
+        $out .= '<b>' . $name . '</b>';  
+        $out .= '</a>';
+        $out .= '<br /><small>(все документы одним архивом)</small>';
+        $out .= '</div>';
+
+        return apply_filters( 'mif_mr_core_get_one_archive', $out );
+    }
+    
 
     // public function get_kaf( $kaf )
     // {

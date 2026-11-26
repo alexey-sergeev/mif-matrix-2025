@@ -7,6 +7,7 @@
         <div class="col-10 p-0">
             
             <?php // mif_mr_the_avatar() ?>
+            <?php mif_mr_the_download_panel(); ?>
             <?php mif_mr_the_competencies(); ?>
             
             <div class="container">

@@ -162,7 +162,52 @@ class mif_mr_lib_templates extends mif_mr_companion_core {
 
         }
 
-        foreach ( $arr['data'] as $key => $item ) if ( ! empty( $item['file']['path'] ) ) $arr['index'][$item['att'][0]] = $item['file']['path']; 
+        
+        // Индекс по slug
+        
+        // foreach ( $arr['data'] as $key => $item ) if ( ! empty( $item['file']['path'] ) ) $arr['index'][$item['att'][0]] = $item['file']['path']; 
+        
+        foreach ( $arr['data'] as $key => $item ) {
+
+            if ( ! empty( $item['file']['path'] ) ) 
+                
+                $arr['index_by_slug'][$item['att'][0]] = array( 
+                                                                'name' => $item['name'],
+                                                                'place' => ( isset( $item['att'][2] )) ? $item['att'][2] : NULL,
+                                                                'path' => $item['file']['path'], 
+                                                                );
+        }
+            
+        
+        // Индекс по place
+
+        foreach ( $arr['data'] as $key => $item ) {
+
+            if ( ! empty( $item['att'][1] ) ) {
+
+                $unit = ( isset( $item['att'][2] ) ) ? $item['att'][2] : 'none';
+
+                $unit_arr = array_map( 'trim', explode( ',', $unit ) );
+
+                foreach ( $unit_arr as $u ) {
+
+                    $arr['index_by_place'][$item['att'][1]][$u] = array(
+                                                                        'name' => $item['name'],
+                                                                        'slug' => $item['att'][0],
+                                                                        'path' => ( isset( $item['file']['path'] ) ) ? $item['file']['path'] : NULL,
+                                                                        );
+
+                }
+
+            }
+
+
+            // p($key);
+            // p($item);
+
+        }
+
+        // p( $arr['index_by_place']);
 
         return apply_filters( 'mif_mr_attach_files_to_templates', $arr );
     }
