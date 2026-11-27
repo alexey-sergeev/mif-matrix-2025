@@ -28,7 +28,7 @@ class mif_mr_helper_download_ajax extends mif_mr_download {
 
 
 
-    function force_download2()
+    function force_download()
     {
         global $tree;
         // p($tree);

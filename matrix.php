@@ -28,7 +28,8 @@ add_action( 'wp', 'mr_download' );
 
 function mr_download()
 {
-    new mif_mr_download();
+    new mif_mr_helper_download();
+    // new mif_mr_download();
 }
 
 

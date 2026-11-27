@@ -56,6 +56,7 @@ include_once dirname( __FILE__ ) . '/lib-xlsx.php';
 include_once dirname( __FILE__ ) . '/lib-docx.php';
 include_once dirname( __FILE__ ) . '/lib-processor.php';
 
+include_once dirname( __FILE__ ) . '/helper-download.php';
 include_once dirname( __FILE__ ) . '/helper-download-ajax.php';
 
 include_once dirname( __FILE__ ) . '/make-xlsx-tpl.php';
@@ -488,7 +489,7 @@ class mif_mr_init extends mif_mr_types {
                 if ( $_REQUEST['action'] == 'download' ) {
                     
                     $m = new mif_mr_helper_download_ajax();
-                    echo $m->force_download2();
+                    echo $m->force_download();
                 
                 } 
                 

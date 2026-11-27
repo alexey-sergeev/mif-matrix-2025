@@ -23,233 +23,233 @@ class mif_mr_download {
 
         $this->home_dir = apply_filters( 'mif-mr-home-dir',  ( (object) wp_upload_dir() )->basedir . '/home/' );
         
-        if ( isset( $wp_query->query['part'] ) && $wp_query->query['part'] === 'file' ) $this->file_download( $wp_query->query['id'] );
-        if ( ! empty( $_REQUEST['download'] ) ) $this->force_download();
+        // if ( isset( $wp_query->query['part'] ) && $wp_query->query['part'] === 'file' ) $this->file_download( $wp_query->query['id'] );
+        // if ( ! empty( $_REQUEST['download'] ) ) $this->force_download();
 
 
     }
 
 
 
-    function force_download()
-    {
-        // !!!!!!
+    // function force_download()
+    // {
+    //     // !!!!!!
 
-        // global $post;
-        // $opop_id = $post->ID;
+    //     // global $post;
+    //     // $opop_id = $post->ID;
 
-        $item = sanitize_key( $_REQUEST['download'] );
+    //     $item = sanitize_key( $_REQUEST['download'] );
 
-        // Список  ОПОП
+    //     // Список  ОПОП
 
-        if ( $item == 'opops-list-xlsx' ) {
+    //     if ( $item == 'opops-list-xlsx' ) {
 
-            // $blank = dirname( __FILE__ ) . '/../templates/xlsx/default.xlsx';
-            $blank = dirname( __FILE__ ) . '/../templates/xlsx/opops-list.xlsx';
-            $name = __( 'Список  ОПОП', 'mif-mr' ) . '.xlsx';
+    //         // $blank = dirname( __FILE__ ) . '/../templates/xlsx/default.xlsx';
+    //         $blank = dirname( __FILE__ ) . '/../templates/xlsx/opops-list.xlsx';
+    //         $name = __( 'Список  ОПОП', 'mif-mr' ) . '.xlsx';
 
-            $item = new mif_mr_catalog_shortcode();
-            $arr = $item->get_opops_list_xlsx();
+    //         $item = new mif_mr_catalog_shortcode();
+    //         $arr = $item->get_opops_list_xlsx();
 
-            $xlsx = new mif_mr_xlsx( $blank );
-            $file = $xlsx->make_xlsx_form_arr( $arr, 'A1' );
+    //         $xlsx = new mif_mr_xlsx( $blank );
+    //         $file = $xlsx->make_xlsx_form_arr( $arr, 'A1' );
             
-            $this->download( $file, $name );
+    //         $this->download( $file, $name );
 
-        }
+    //     }
         
         
-        // Текст (как есть)
+    //     // Текст (как есть)
         
-        if ( $item == 'text-raw' ) {
+    //     if ( $item == 'text-raw' ) {
 
-            $m = new mif_mr_opop();
-            $a = $m->make_text_raw();
+    //         $m = new mif_mr_opop();
+    //         $a = $m->make_text_raw();
 
-            // p($a);
+    //         // p($a);
 
-            if ( $a['res'] ) {
+    //         if ( $a['res'] ) {
 
-                $this->download( $a['path'], $a['name'] );
+    //             $this->download( $a['path'], $a['name'] );
 
-            } else {
+    //         } else {
                  
-                global $messages;
-                $messages[] = array( 'Какая-то ошибка. Код ошибки: 1902', 'danger' );
+    //             global $messages;
+    //             $messages[] = array( 'Какая-то ошибка. Код ошибки: 1902', 'danger' );
                 
-            }
+    //         }
 
-        }
+    //     }
         
         
-        // Шаблон дисциплины
+    //     // Шаблон дисциплины
         
-        if ( $item == 'course-x-tpl' ) {
+    //     if ( $item == 'course-x-tpl' ) {
 
-            $m = new mif_mr_opop();
-            // $m = new mif_mr_xlsx_tpl();
-            $a = $m->make_xlsx_tpl();
+    //         $m = new mif_mr_opop();
+    //         // $m = new mif_mr_xlsx_tpl();
+    //         $a = $m->make_xlsx_tpl();
             
-            $this->download( $a['path'], $a['name'] );
+    //         $this->download( $a['path'], $a['name'] );
 
-        }
+    //     }
         
         
-        // Программа дисциплины
+    //     // Программа дисциплины
         
-        // if ( $item == 'course-d-program' ) {
-        if ( preg_match( '/^course-d-/', $item ) ) {
+    //     // if ( $item == 'course-d-program' ) {
+    //     if ( preg_match( '/^course-d-/', $item ) ) {
            
-            $m = new mif_mr_opop();
-            $a = $m->make_docx_program( $item );
-            // p($a);
-            $this->download( $a['path'], $a['name'] );
+    //         $m = new mif_mr_opop();
+    //         $a = $m->make_docx_program( $item );
+    //         // p($a);
+    //         $this->download( $a['path'], $a['name'] );
 
-        }
+    //     }
 
         
-        // Паспорта и программы формирования компетенций
+    //     // Паспорта и программы формирования компетенций
         
-        if ( $item == 'passport' ) {
+    //     if ( $item == 'passport' ) {
 
-            $m = new mif_mr_opop();
-            // $m = new mif_mr_xlsx_tpl();
-            $a = $m->make_docx_passport();
-            // p($a);
-            $this->download( $a['path'], $a['name'] );
+    //         $m = new mif_mr_opop();
+    //         // $m = new mif_mr_xlsx_tpl();
+    //         $a = $m->make_docx_passport();
+    //         // p($a);
+    //         $this->download( $a['path'], $a['name'] );
 
-        }
+    //     }
      
         
 
-        // Шаблон (d-tpl)
+    //     // Шаблон (d-tpl)
 
-        if ( $item == 'd-tpl' ) {
+    //     if ( $item == 'd-tpl' ) {
 
-            global $wp_query;
-            global $tree;
+    //         global $wp_query;
+    //         global $tree;
 
-            $m = new mif_mr_opop();
+    //         $m = new mif_mr_opop();
             
-            if ( isset( $wp_query->query_vars['id'] ) && isset( $_REQUEST['slug'] ) ) {
+    //         if ( isset( $wp_query->query_vars['id'] ) && isset( $_REQUEST['slug'] ) ) {
 
-                $slug = sanitize_text_field( $_REQUEST['slug'] );
-                $path = $tree['content']['lib-templates']['data'][$wp_query->query_vars['id']]['index'][$slug];
-    // p( $tree['content']['lib-templates']['data'][$wp_query->query_vars['id']]['index'][$slug]);
-                $name = $slug . '.docx';
+    //             $slug = sanitize_text_field( $_REQUEST['slug'] );
+    //             $path = $tree['content']['lib-templates']['data'][$wp_query->query_vars['id']]['index'][$slug];
+    // // p( $tree['content']['lib-templates']['data'][$wp_query->query_vars['id']]['index'][$slug]);
+    //             $name = $slug . '.docx';
 
-                $this->download( $path, $name, NULL, false );
+    //             $this->download( $path, $name, NULL, false );
                     
-            } else {
+    //         } else {
                         
-                global $messages;
-                $messages[] = array( 'Какая-то ошибка. Код ошибки: 2310', 'danger' );
+    //             global $messages;
+    //             $messages[] = array( 'Какая-то ошибка. Код ошибки: 2310', 'danger' );
 
-            } 
+    //         } 
 
-        }
+    //     }
         
 
-        // Просто файл
+    //     // Просто файл
 
-        if ( $item == 'file' ) {
+    //     if ( $item == 'file' ) {
 
-            // global $wp_query;
+    //         // global $wp_query;
 
-            // $m = new mif_mr_opop();
+    //         // $m = new mif_mr_opop();
             
-            if ( isset( $_REQUEST['id'] ) ) {
+    //         if ( isset( $_REQUEST['id'] ) ) {
 
-                // $file = get_post( (int) $_REQUEST['id'] );
-                // p($file);
-                $m = new mif_mr_upload();
-                $path = $m->get_path( (int) $_REQUEST['id'] );
-                $name = $m->get_name( (int) $_REQUEST['id'] );
+    //             // $file = get_post( (int) $_REQUEST['id'] );
+    //             // p($file);
+    //             $m = new mif_mr_upload();
+    //             $path = $m->get_path( (int) $_REQUEST['id'] );
+    //             $name = $m->get_name( (int) $_REQUEST['id'] );
 
-                $this->download( $path, $name, NULL, false );
+    //             $this->download( $path, $name, NULL, false );
                     
-            } else {
+    //         } else {
                         
-                global $messages;
-                $messages[] = array( 'Какая-то ошибка. Код ошибки: 2510', 'danger' );
+    //             global $messages;
+    //             $messages[] = array( 'Какая-то ошибка. Код ошибки: 2510', 'danger' );
 
-            } 
+    //         } 
 
-        }
+    //     }
         
 
-        // Просто файл
+    //     // Просто файл
 
-        if ( $item == 'zip' ) {
+    //     if ( $item == 'zip' ) {
 
-            if ( isset( $_REQUEST['type'] ) ) {
+    //         if ( isset( $_REQUEST['type'] ) ) {
 
-                $dir = $this->get_home_dir( sanitize_key( $_REQUEST['type'] ) );
-                // p($dir);
-                $files = scandir( $dir );
-                $files = array_diff( $files, array( '.', '..' ) );
+    //             $dir = $this->get_home_dir( sanitize_key( $_REQUEST['type'] ) );
+    //             // p($dir);
+    //             $files = scandir( $dir );
+    //             $files = array_diff( $files, array( '.', '..' ) );
                 
-                foreach ( $files as $k => $f ) if ( ! preg_match( '/.*.zip$/', $f ) ) unset( $files[$k] );
+    //             foreach ( $files as $k => $f ) if ( ! preg_match( '/.*.zip$/', $f ) ) unset( $files[$k] );
                 
-                $name = array_pop( $files ); // !!!###
+    //             $name = array_pop( $files ); // !!!###
                 
-                foreach ( $files as $f ) unlink( $dir . '/' . $f ); 
+    //             foreach ( $files as $f ) unlink( $dir . '/' . $f ); 
 
 
-                // p($files);
-                // p($dir . '/' . $name);
-                // p($name);
+    //             // p($files);
+    //             // p($dir . '/' . $name);
+    //             // p($name);
 
-                $this->download( $dir . '/' . $name, $name );
+    //             $this->download( $dir . '/' . $name, $name );
                     
                     
-            } else {
+    //         } else {
                         
-                global $messages;
-                $messages[] = array( 'Какая-то ошибка. Код ошибки: 27110', 'danger' );
+    //             global $messages;
+    //             $messages[] = array( 'Какая-то ошибка. Код ошибки: 27110', 'danger' );
 
-            } 
+    //         } 
 
-        }
+    //     }
 
         
 
-        // Матрица компетенций
+    //     // Матрица компетенций
 
-        if ( $item == 'matrix' ) {
+    //     if ( $item == 'matrix' ) {
 
-            global $tree;
-            $m = new mif_mr_opop();
-            // p($tree);
+    //         global $tree;
+    //         $m = new mif_mr_opop();
+    //         // p($tree);
 
-            $a = $m->make_xlsx_matrix();
-            $this->download( $a['path'], $a['name'] );
+    //         $a = $m->make_xlsx_matrix();
+    //         $this->download( $a['path'], $a['name'] );
 
-            // // global $wp_query;
+    //         // // global $wp_query;
 
-            // // $m = new mif_mr_opop();
+    //         // // $m = new mif_mr_opop();
             
-            // if ( isset( $_REQUEST['id'] ) ) {
+    //         // if ( isset( $_REQUEST['id'] ) ) {
 
-            //     // $file = get_post( (int) $_REQUEST['id'] );
-            //     // p($file);
-            //     $m = new mif_mr_upload();
-            //     $path = $m->get_path( (int) $_REQUEST['id'] );
-            //     $name = $m->get_name( (int) $_REQUEST['id'] );
+    //         //     // $file = get_post( (int) $_REQUEST['id'] );
+    //         //     // p($file);
+    //         //     $m = new mif_mr_upload();
+    //         //     $path = $m->get_path( (int) $_REQUEST['id'] );
+    //         //     $name = $m->get_name( (int) $_REQUEST['id'] );
 
-            //     $this->download( $path, $name, NULL, false );
+    //         //     $this->download( $path, $name, NULL, false );
                     
-            // } else {
+    //         // } else {
                         
-            //     global $messages;
-            //     $messages[] = array( 'Какая-то ошибка. Код ошибки: 2510', 'danger' );
+    //         //     global $messages;
+    //         //     $messages[] = array( 'Какая-то ошибка. Код ошибки: 2510', 'danger' );
 
-            // } 
+    //         // } 
 
-        }
+    //     }
 
 
-    }
+    // }
 
 
 
