@@ -602,7 +602,7 @@ class mif_mr_docx_program extends mif_mr_docx {
     // Паспорт и программа формирования компетенций
     // 
     
-    function arr_to_docx_passport( $arr )
+    function arr_to_docx_passport( $arr, $file = NULL )
     {
 
         $a = array();
@@ -614,7 +614,9 @@ class mif_mr_docx_program extends mif_mr_docx {
         $a['cmp_unit'] = $arr['unit'][2];
         $a['cmp_category'] = $this->cmp_category( $arr['category'] );
         
-        $a['cmp_indicators'] = ( isset( $arr['indicators'] ) ) ? $this->cmp_indicators2( $arr['indicators'] ) : NULL;
+        // $a['cmp_indicators'] = ( isset( $arr['indicators'] ) ) ? $this->cmp_indicators2( $arr['indicators'] ) : NULL;
+        // $a['cmp_indicators'] = ( isset( $arr['indicators'] ) ) ? $this->cmp_indicators2( $arr['indicators'] ) : array();
+        $a['cmp_indicators'] = $this->cmp_indicators2( ( isset( $arr['indicators'] ) ) ? $arr['indicators']  : array() );
 
         $a['cmp_outcomes_z'] = $this->ul2( $arr['outcomes']['z'] );
         $a['cmp_outcomes_u'] = $this->ul2( $arr['outcomes']['u'] );
@@ -634,7 +636,7 @@ class mif_mr_docx_program extends mif_mr_docx {
 
         // p($a);
 
-        $path = $this->make_docx( $a );
+        $path = $this->make_docx( $a, $file );
 
         return $path;
 
@@ -659,6 +661,12 @@ class mif_mr_docx_program extends mif_mr_docx {
                     );
 
         }
+
+        if ( empty( $arr ) ) $arr[] = array(
+                                        'cmp_indicators' => '',
+                                        'cmp_indicators_name' => '',
+                                        'cmp_indicators_data' => '',
+                                    );
 
         return $arr;
     }

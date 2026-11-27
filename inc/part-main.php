@@ -122,69 +122,31 @@ class mif_mr_main extends mif_mr_table {
     
     public function get_download_panel()
     {
-        // global $tree;
-        
-        // $index = $tree['content']['templates']['data']['templates']['index_by_place'];
-
-
-
-        // // $index = array_keys( $this->index_by_place );
-        // ksort( $index );
-
-        // $names = array();
-        // // foreach ( $index as $i ) $names[$i] = $this->index_by_place[$i][0]['name'];
-        // foreach ( $index as $k => $i ) $names[$k] = $i[ array_keys( $i )[0] ]['name'];
-
-        // // p($names);
-        // $names = apply_filters( 'mif-mr-download-panel-names', $names );
+        global $tree;
+    
         $names = apply_filters( 'mif-mr-download-panel-names', mif_mr_functions::get_download_panel_names() );
         
-        // p($names);
-        
         $out = '';
-        
-        $out .= '<div class="col p-0 mb-6 mt-3">';
+        $s = '';
 
-        foreach ( $names as $key => $item ) $out .= $this->get_one_archive( $item, 'docx-' . $key );
-            
-        //     {
-            
-            
+        // $out .= '<div class="col p-0 mb-6 mt-3">';
 
+        $flags = array();
+        foreach ( $names as $key => $item ) $flags[$key] = true;
 
-        //     // $out .= '<div class="mt-3">';
-        //     // $out .= '<a href="">';
-        //     // $out .= '<span class="mr-btn mr-gray rounded p-1 pt-2 pb-2 m-0 mr-3 float-start"><i class="fa-regular fa-file-zipper fa-xl"></i></span>';
-        //     // $out .= '<b>' . $item . '</b>';  
+        if ( empty( $tree['content']['competencies']['data'] ) ) $flags['a'] = false;
+        if ( empty( $this->get_courses_arr() ) ) foreach( $flags as $k => $f ) if ( preg_match( '/^b.*/', $k ) ) $flags[$k] = false;
 
-        //     // // $out .= $item;
-        //     // $out .= '</a>';
-        //     // $out .= '<br /><small>(все документы одним архивом)</small>';
-        //     // $out .= '</div>';
+        foreach ( $names as $key => $item ) if ( $flags[$key] ) $s .= $this->get_one_archive( $item, 'docx-' . $key );
             
-            
-            
-        // }
-        
-        $out .= '</div>';
+        // $out .= '</div>';
+
+        if ( ! empty( $s ) ) $out .= '<div class="col p-0 mb-6 mt-3">' . $s . '</div>';
 
         return apply_filters( 'mif_mr_part_get_download_panel', $out );
     }
         
     
-    
-    // public function download_panel_names( $arr )
-    // {
-
-    //     $arr['a'] = 'Паспорта и программы формирования компетенций';
-    //     $arr['b1'] = 'Аннотации дисциплин';
-    //     $arr['b2'] = 'Программы учебных дисциплин';
-    //     $arr['b3'] = 'Фонды оценочных средств';
-
-    //     return $arr;
-    // }
-        
-
 
 
     public function get_download_panel_names()

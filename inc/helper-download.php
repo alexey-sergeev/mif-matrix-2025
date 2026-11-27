@@ -121,7 +121,7 @@ class mif_mr_helper_download extends mif_mr_download {
             if ( isset( $wp_query->query_vars['id'] ) && isset( $_REQUEST['slug'] ) ) {
 
                 $slug = sanitize_text_field( $_REQUEST['slug'] );
-                $path = $tree['content']['lib-templates']['data'][$wp_query->query_vars['id']]['index'][$slug];
+                $path = $tree['content']['lib-templates']['data'][$wp_query->query_vars['id']]['index_by_slug'][$slug]['path'];
                 $name = $slug . '.docx';
 
                 $this->download( $path, $name, NULL, false );
