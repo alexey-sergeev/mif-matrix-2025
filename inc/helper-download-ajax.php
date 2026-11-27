@@ -9,34 +9,34 @@
 defined( 'ABSPATH' ) || exit;
 
 
-// require_once( 'pclzip.lib.php' );
-// include_once dirname( __FILE__ ) . '/classes/plx-class.php';
-
-require_once dirname( __FILE__ ) . '/../vendor/pclzip/pclzip.lib.php';
+// require_once dirname( __FILE__ ) . '/../vendor/pclzip/pclzip.lib.php';
 
 
-class mif_mr_helper_download_ajax { 
+// class mif_mr_helper_download_ajax { 
+class mif_mr_helper_download_ajax extends mif_mr_download {  
 
     
     function __construct()
     {
 
-        $this->home_dir = apply_filters( 'mif-mr-home-dir',  ( (object) wp_upload_dir() )->basedir . '/home/' );
+        parent::__construct();
+
+        // $this->home_dir = apply_filters( 'mif-mr-home-dir',  ( (object) wp_upload_dir() )->basedir . '/home/' );
     
     }
 
 
 
 
-    function force_download()
+    function force_download2()
     {
         global $tree;
         // p($tree);
 
         $item = sanitize_key( $_REQUEST['download'] );
 
-
-        // p($item );
+        $out = '';
+        // p('$item' );
         // Программа дисциплин, паспорта и программы формирования компетенций и д.р.
         
         // if ( $item == 'course-d-program' ) {
@@ -47,8 +47,10 @@ class mif_mr_helper_download_ajax {
 
             if ( preg_match( '/^b.*/', $type ) ) {
 
-                $dir = $this->get_dir( $type );
-
+                // p('@@');
+                $dir = $this->get_home_dir( $type );
+                // p($dir);
+                
                 foreach ( $tree['content']['courses']['clean'] as $course ) {
                     
                     if ( ! empty( $tree['content']['templates']['data']['templates']['index_by_place'][$type][$course['unit']] ) ) {
@@ -77,7 +79,18 @@ class mif_mr_helper_download_ajax {
                 $name_zip = $tree['main']['title'] . ' (' . mb_strtolower( $names[$type] ) . ').zip';
 
                 // p($names[$type]);
-                $this->make_zip( $dir, $name_zip );
+                $name_zip = $this->make_zip( $dir, $name_zip );
+                // p($dir);
+
+
+                // $out .= '<a href="?download=zip&type=' . $type . '">Ссылка</a>';
+                $out .= mif_mr_opop_core::get_opop_url() . '?download=zip&type=' . $type;
+
+                // p($name_zip);
+
+                // $this->download( $dir . '/' . $name_zip, $name_zip );
+
+
 
 
                 // p($tree['content']['courses']['clean']);
@@ -112,42 +125,75 @@ class mif_mr_helper_download_ajax {
      
         
         
-        return '123';
+        return $out;
     }
 
 
 
-    public function get_dir( $type )
-    {
-        if ( ! is_user_logged_in() ) return;
-        $user = wp_get_current_user();
-        $dir = $this->home_dir . $user->user_login . '/' . mif_mr_opop_core::get_opop_id() . '/' . $type;
-        if ( ! is_dir( $dir ) ) $res = mkdir( $dir, 0755, true );
-        return $dir;
-    }
+    // public function get_home_dir( $type )
+    // {
+    //     if ( ! is_user_logged_in() ) return;
+    //     $user = wp_get_current_user();
+    //     $dir = $this->home_dir . $user->user_login . '/' . mif_mr_opop_core::get_opop_id() . '/' . $type;
+    //     if ( ! is_dir( $dir ) ) $res = mkdir( $dir, 0755, true );
+    //     return $dir;
+    // }
 
 
 
     public function make_zip( $dir, $name_zip = '' )
     {
         // global $tree;
-
+        // p('@@@');
         if ( empty( $name_zip ) ) $name_zip = array_pop( explode( '/', $dir ) ) . '.zip';
         // p($name_zip);
         // p($tree['main']['title']);
 
         $files = scandir( $dir );
         $files = array_diff( $files, array( '.', '..' ) );
-        foreach ( $files as &$f ) $f = $dir . '/' . $f;
+        foreach ( $files as $k => $f ) if ( ! preg_match( '/.*.docx$/', $f ) ) unset( $files[$k] );
+        // p($files);
+
+        // foreach ( $files as &$f ) $f = $dir . '/' . $f;
         // p($files);
         
-        //         p($dir);
-        $zip = new PclZip( $dir . '/' . $name_zip );
-        //         // $zip->create( $dir );
+        // //         p($dir);
+        // $zip = new PclZip( $dir . '/' . $name_zip );
+        // //         // $zip->create( $dir );
         
-        if ( ! $zip->create( $files, PCLZIP_OPT_REMOVE_PATH, $dir ) ) p( 'Какая-то ошибка (26115): ' . $zip->errorInfo( true ) );
-        
-        foreach ( $files as &$f ) unlink( $f );
+        // if ( ! $zip->create( $files, PCLZIP_OPT_REMOVE_PATH, $dir ) ) p( 'Какая-то ошибка (26115): ' . $zip->errorInfo( true ) );
+        // p($dir . '/' . $name_zip);
+        $zip = new ZipArchive();
+
+        // $res = $zip->open( 'archive.zip', ZipArchive::CREATE | ZipArchive::OVERWRITE );
+        // p( extension_loaded('zip') );
+
+        if ( $zip->open( $dir . '/' . $name_zip, ZipArchive::CREATE | ZipArchive::OVERWRITE ) ) {
+        // if ( $zip->open( $name_zip, ZipArchive::CREATE | ZipArchive::OVERWRITE ) ) {
+        //     // Добавляем файл из локальной файловой системы
+        //     $zip->addFile('/path/to/file.txt', 'file.txt'); // Второй параметр — имя внутри архива
+
+            foreach ( $files as $f ) $zip->addFile( $dir . '/' . $f, $f );
+            
+
+        //     // Добавляем содержимое строки как файл в архив
+        //     $zip->addFromString('readme.txt', 'Hello from PHP!');
+
+        //     // Добавляем пустую директорию
+        //     $zip->addEmptyDir('logs');
+
+        //     echo "Архив $filename создан успешно.\n";
+            $zip->close(); // Обязательно закрываем архив
+
+        } else {
+
+            p( 'Ошибка создания архива (27111): ' . $zip->getStatusString() );
+
+        }
+
+
+
+        foreach ( $files as $f ) unlink( $dir . '/' . $f );
 
         return $name_zip;
     }
@@ -274,7 +320,7 @@ class mif_mr_helper_download_ajax {
     // }
 
 
-    private $home_dir = '';
+    // private $home_dir = '';
 
 }
 

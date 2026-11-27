@@ -488,7 +488,7 @@ class mif_mr_init extends mif_mr_types {
                 if ( $_REQUEST['action'] == 'download' ) {
                     
                     $m = new mif_mr_helper_download_ajax();
-                    echo $m->force_download();
+                    echo $m->force_download2();
                 
                 } 
                 

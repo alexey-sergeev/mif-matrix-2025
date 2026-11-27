@@ -191,17 +191,15 @@ class mif_mr_opop_make extends mif_mr_opop_tree_clean {
     public function make_docx_passport()
     {
         global $tree;
-        
         $arr = array( 'name' => '', 'path' => '', 'res' => false );
         
-        // if ( empty( $tree['templates']['passport'] ) ) return $arr;
-        if ( empty( $tree['content']['templates']['data']['templates']['index']['passport'] ) ) return $arr;
+        if ( empty( $tree['content']['templates']['data']['templates']['index_by_slug']['passport']['path'] ) ) return $arr;
         if ( empty( $tree['content']['competencies']['data'][$_REQUEST['comp']] ) ) return $arr;
        
         $arr2 = $tree['content']['competencies']['data'][$_REQUEST['comp']];
 
         // $blank = $tree['templates']['passport']['data']['path'];
-        $blank = $tree['content']['templates']['data']['templates']['index']['passport'];
+        $blank = $tree['content']['templates']['data']['templates']['index_by_slug']['passport']['path'];
         
         $m = new mif_mr_docx_program( $blank );
 

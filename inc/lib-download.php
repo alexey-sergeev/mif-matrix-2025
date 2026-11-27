@@ -21,8 +21,11 @@ class mif_mr_download {
         // p($wp_query->query['part']);
         // p($_REQUEST);
 
+        $this->home_dir = apply_filters( 'mif-mr-home-dir',  ( (object) wp_upload_dir() )->basedir . '/home/' );
+        
         if ( isset( $wp_query->query['part'] ) && $wp_query->query['part'] === 'file' ) $this->file_download( $wp_query->query['id'] );
         if ( ! empty( $_REQUEST['download'] ) ) $this->force_download();
+
 
     }
 
@@ -96,7 +99,7 @@ class mif_mr_download {
         
         // if ( $item == 'course-d-program' ) {
         if ( preg_match( '/^course-d-/', $item ) ) {
-            
+           
             $m = new mif_mr_opop();
             $a = $m->make_docx_program( $item );
             // p($a);
@@ -112,7 +115,7 @@ class mif_mr_download {
             $m = new mif_mr_opop();
             // $m = new mif_mr_xlsx_tpl();
             $a = $m->make_docx_passport();
-            
+            // p($a);
             $this->download( $a['path'], $a['name'] );
 
         }
@@ -169,6 +172,41 @@ class mif_mr_download {
                         
                 global $messages;
                 $messages[] = array( 'Какая-то ошибка. Код ошибки: 2510', 'danger' );
+
+            } 
+
+        }
+        
+
+        // Просто файл
+
+        if ( $item == 'zip' ) {
+
+            if ( isset( $_REQUEST['type'] ) ) {
+
+                $dir = $this->get_home_dir( sanitize_key( $_REQUEST['type'] ) );
+                // p($dir);
+                $files = scandir( $dir );
+                $files = array_diff( $files, array( '.', '..' ) );
+                
+                foreach ( $files as $k => $f ) if ( ! preg_match( '/.*.zip$/', $f ) ) unset( $files[$k] );
+                
+                $name = array_pop( $files ); // !!!###
+                
+                foreach ( $files as $f ) unlink( $dir . '/' . $f ); 
+
+
+                // p($files);
+                // p($dir . '/' . $name);
+                // p($name);
+
+                $this->download( $dir . '/' . $name, $name );
+                    
+                    
+            } else {
+                        
+                global $messages;
+                $messages[] = array( 'Какая-то ошибка. Код ошибки: 27110', 'danger' );
 
             } 
 
@@ -254,6 +292,18 @@ class mif_mr_download {
 
 
 
+    public function get_home_dir( $type )
+    {
+        if ( ! is_user_logged_in() ) return;
+        
+        $user = wp_get_current_user();
+        $dir = $this->home_dir . $user->user_login . '/' . mif_mr_opop_core::get_opop_id() . '/' . $type;
+        
+        if ( ! is_dir( $dir ) ) $res = mkdir( $dir, 0755, true );
+        
+        return $dir;
+    }
+
 
 
     // 
@@ -323,6 +373,10 @@ class mif_mr_download {
 
         exit;
     }
+
+
+    private $home_dir = '';
+    // public $home_dir = '';
 
 
 }

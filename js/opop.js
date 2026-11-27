@@ -1438,12 +1438,11 @@ jq( 'body' ).on( 'click', '.one-archive', function() {
                 
                 if ( response ) {
                     
-                    console.log( response );
-                                
+                    // console.log( response );
+                    window.location.href = response;  
+
                     jq('.zip', elem).removeClass('d-none');
                     jq('.loading', elem).addClass('d-none');
-
-                    // jq( 'div.content-ajax' ).replaceWith( response )
                     
                 } else {
                     
